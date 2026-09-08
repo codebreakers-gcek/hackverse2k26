@@ -12,7 +12,7 @@ import {
 } from "@/types/registration";
 import { Input } from "@/components/ui/Input";
 import { Select } from "@/components/ui/Select";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/ButtonNeo";
 import { RegistrationSuccessReceipt } from "./RegistrationSuccessReceipt";
 import { Plus, Trash2, ShieldCheck, Loader2, AlertCircle } from "lucide-react";
 
