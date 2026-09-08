@@ -26,7 +26,7 @@ export function DomainTrackConsole() {
           tag="SYS.TRACK // ARENAS"
           title="CHOOSE YOUR"
           highlightText="BATTLEGROUND"
-          subtitle="Explore the four primary technical divisions powering INNOVEX '26. From non-stop hackathons to high-speed algorithmic combat."
+          subtitle="Explore the four primary technical divisions powering HACKVERSE '26. From non-stop hackathons to high-speed algorithmic combat."
         />
 
         {/* The Console Shell */}

@@ -1,5 +1,6 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Calendar, MapPin, Sparkles, Terminal, Award } from "lucide-react";
 import { EVENT_DATA } from "@/data/event";
 import { CountdownTimer } from "./CountdownTimer";
@@ -22,23 +23,27 @@ export function HeroSection() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         {/* Top Identification Badge */}
-        <div className="inline-flex flex-wrap items-center justify-center gap-2 mb-6">
-          <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-black text-white border-2 border-black shadow-neo-sm">
-            ORG. BY CODEBREAKERS
-          </span>
-          <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-neo-secondary text-black border-2 border-black shadow-neo-sm rotate-1">
-            GOVT. COLLEGE OF ENGINEERING KALAHANDI
-          </span>
+        <div className="w-full flex items-center justify-center mb-6">
+          <div className="inline-flex items-center justify-center gap-2.5">
+            <span className="inline-flex items-center gap-2.5 font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1.5 bg-black text-white border-2 border-black shadow-neo-sm">
+              <Image
+                src="/logo.png"
+                alt="CodeBreakers Logo"
+                width={24}
+                height={24}
+                className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
+                priority
+              />
+              <span>ORGANIZED BY CODEBREAKERS</span>
+            </span>
+          </div>
         </div>
 
         {/* Massive Headline */}
-        <div className="relative inline-block mb-4">
+        <div className="relative inline-block mb-4 ">
           <h1 className="font-black text-5xl sm:text-7xl md:text-8xl lg:text-9xl tracking-tighter text-black uppercase leading-none">
-            INNOVEX <span className="text-neo-accent">&apos;26</span>
+            HACKVERSE <span className="text-neo-accent">&apos;26</span>
           </h1>
-          <div className="mt-2 font-mono text-sm sm:text-base md:text-lg font-black tracking-[0.25em] text-black/80 uppercase">
-            // {EVENT_DATA.edition} //
-          </div>
         </div>
 
         {/* Tagline sticker */}
@@ -47,6 +52,9 @@ export function HeroSection() {
             <p className="font-black text-base sm:text-xl md:text-2xl text-black uppercase tracking-tight">
               &ldquo;{EVENT_DATA.tagline}&rdquo;
             </p>
+          </div>
+          <div className="mt-2 font-mono text-sm sm:text-base md:text-lg font-black tracking-[0.25em] text-black/80 uppercase">
+            {EVENT_DATA.edition}
           </div>
         </div>
 

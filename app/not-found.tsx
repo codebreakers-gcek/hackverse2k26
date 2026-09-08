@@ -17,7 +17,7 @@ export default function NotFound() {
             PAGE DOES NOT EXIST
           </h1>
           <p className="text-sm font-bold text-black/70">
-            The requested terminal coordinates could not be resolved on the INNOVEX &apos;26 mainframe.
+            The requested terminal coordinates could not be resolved on the HACKVERSE &apos;26 mainframe.
           </p>
         </div>
         <div>

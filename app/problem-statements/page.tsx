@@ -5,7 +5,7 @@ import { SectionTitle } from "@/components/common/SectionTitle";
 import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 
 export const metadata: Metadata = {
-  title: "Problem Statements // INNOVEX '26",
+  title: "Problem Statements // HACKVERSE '26",
   description:
     "Explore the official hackathon problem tracks across AI/ML, Web3 & Cyber, Smart Automation, and Open Innovation.",
 };

@@ -1,13 +1,13 @@
 import { EventInfo } from "@/types/event";
 
 export const EVENT_DATA: EventInfo = {
-  name: "INNOVEX '26",
-  edition: "Annual National Tech Fest & Hackathon",
+  name: "HACKVERSE '26",
+  edition: "Tech Feast Hackathon 2026",
   tagline: "BREAK CODE. FORGE REALITY. ELEVATE TOMORROW.",
   shortDescription:
     "The flagship annual national technology festival and hackathon organized by CODEBREAKERS, Government College of Engineering Kalahandi. 36 hours of intense prototyping, competitive engineering, and breakthrough innovation.",
   fullDescription:
-    "INNOVEX '26 brings together the sharpest student minds, developers, designers, and tech enthusiasts across India. Organized by CodeBreakers—the official coding club of Government College of Engineering Kalahandi (GCEK)—this 3-day tech carnival features high-stakes hackathons, algorithmic code combats, hardware expositions, and direct mentorship from top industry engineers.",
+    "HACKVERSE '26 brings together the sharpest student minds, developers, designers, and tech enthusiasts across India. Organized by CodeBreakers—the official coding club of Government College of Engineering Kalahandi (GCEK)—this 3-day tech carnival features high-stakes hackathons, algorithmic code combats, hardware expositions, and direct mentorship from top industry engineers.",
   startDate: "2026-10-16T09:00:00+05:30",
   endDate: "2026-10-18T18:00:00+05:30",
   displayDates: "OCTOBER 16 - 18, 2026",
@@ -26,7 +26,7 @@ export const EVENT_DATA: EventInfo = {
     club: "CodeBreakers - The Premier Coding Club of GCEK",
     institution: "Government College of Engineering Kalahandi",
     establishedYear: 2019,
-    membersCount: "500+",
+    membersCount: "50+",
     website: "https://www.codebreakersgcek.tech",
     socials: {
       github: "https://github.com/codebreakers-gcek",

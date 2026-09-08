@@ -10,14 +10,14 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "INNOVEX '26 // Tech Fest & Hackathon | CodeBreakers GCEK",
+  title: "HACKVERSE '26 // Tech Fest & Hackathon | CodeBreakers GCEK",
   description:
     "Official National Tech Fest & Hackathon organized by CODEBREAKERS, Government College of Engineering Kalahandi (GCEK). 36-hour sprint, ₹1,50,000+ prize pool, AI, Web, Cyber & IoT arenas.",
   keywords: [
     "CodeBreakers",
     "GCEK",
     "Government College of Engineering Kalahandi",
-    "INNOVEX 2026",
+    "HACKVERSE 2026",
     "Hack Nova",
     "Hackathon Odisha",
     "College Tech Fest",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "CodeBreakers GCEK", url: "https://www.codebreakersgcek.tech" }],
   openGraph: {
-    title: "INNOVEX '26 - CodeBreakers GCEK",
+    title: "HACKVERSE '26 - CodeBreakers GCEK",
     description: "National Tech Fest & Hackathon at Government College of Engineering Kalahandi.",
     url: "https://www.codebreakersgcek.tech",
     siteName: "CodeBreakers GCEK Tech Fest",

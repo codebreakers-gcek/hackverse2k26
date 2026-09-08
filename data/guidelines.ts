@@ -81,7 +81,7 @@ export const GUIDELINES_CATEGORIES: GuidelineCategory[] = [
         number: "01",
         heading: "Zero Registration Fee",
         content:
-          "INNOVEX '26 and Hack Nova have NO registration fees. Participation, hackathon lab access, power, high-speed Wi-Fi, and mentoring sessions are provided completely free of charge.",
+          "HACKVERSE '26 and Hack Nova have NO registration fees. Participation, hackathon lab access, power, high-speed Wi-Fi, and mentoring sessions are provided completely free of charge.",
       },
       {
         id: "reg-2",
@@ -153,7 +153,7 @@ export const GUIDELINES_CATEGORIES: GuidelineCategory[] = [
         number: "01",
         heading: "Inclusive & Harassment-Free Space",
         content:
-          "INNOVEX '26 is dedicated to providing a harassment-free experience for everyone, regardless of gender, sexual orientation, disability, appearance, race, or religion. Intimidation, verbal hostility, or unwelcome physical contact results in immediate expulsion without appeal.",
+          "HACKVERSE '26 is dedicated to providing a harassment-free experience for everyone, regardless of gender, sexual orientation, disability, appearance, race, or religion. Intimidation, verbal hostility, or unwelcome physical contact results in immediate expulsion without appeal.",
       },
       {
         id: "coc-2",

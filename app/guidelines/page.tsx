@@ -6,7 +6,7 @@ import { SectionTitle } from "@/components/common/SectionTitle";
 import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 
 export const metadata: Metadata = {
-  title: "Guidelines & Rules // INNOVEX '26",
+  title: "Guidelines & Rules // HACKVERSE '26",
   description:
     "Official hackathon rules, eligibility criteria, code of conduct, and 100-point evaluation scoring rubric.",
 };

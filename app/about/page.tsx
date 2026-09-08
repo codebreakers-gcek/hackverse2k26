@@ -6,9 +6,9 @@ import { ClubMilestones } from "@/features/about/ClubMilestones";
 import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 
 export const metadata: Metadata = {
-  title: "About // INNOVEX '26 | CodeBreakers GCEK",
+  title: "About // HACKVERSE '26 | CodeBreakers GCEK",
   description:
-    "Learn about INNOVEX '26, our mission, core pillars, and the legacy of CodeBreakers GCEK.",
+    "Learn about HACKVERSE '26, our mission, core pillars, and the legacy of CodeBreakers GCEK.",
 };
 
 export default function AboutPage() {

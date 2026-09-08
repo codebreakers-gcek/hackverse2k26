@@ -436,7 +436,7 @@ export function RegistrationForm() {
             className="text-xs sm:text-sm font-bold text-black cursor-pointer leading-snug"
           >
             I verify that all submitted member credentials are valid. Our team has reviewed and agrees to comply strictly with the{" "}
-            <span className="font-black underline">INNOVEX &apos;26 Code of Conduct</span>, intellectual property rules, and academic integrity policies.
+            <span className="font-black underline">HACKVERSE &apos;26 Code of Conduct</span>, intellectual property rules, and academic integrity policies.
           </label>
         </div>
 

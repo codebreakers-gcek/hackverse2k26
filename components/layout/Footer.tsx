@@ -55,7 +55,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/about" className="hover:underline flex items-center gap-2">
-                  <span>▸</span> <span>About INNOVEX &amp; GCEK</span>
+                  <span>▸</span> <span>About HACKVERSE &amp; GCEK</span>
                 </Link>
               </li>
               <li>
