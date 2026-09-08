@@ -25,13 +25,13 @@ export function HeroSection() {
         {/* Top Identification Badge */}
         <div className="w-full flex items-center justify-center mb-6">
           <div className="inline-flex items-center justify-center gap-2.5">
-            <span className="inline-flex items-center gap-2.5 font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1.5 bg-black text-white border-2 border-black shadow-neo-sm">
+            <span className="inline-flex items-center gap-3 font-mono text-sm sm:text-base font-black uppercase px-4 py-2 bg-black text-white border-2 border-black shadow-neo-sm">
               <Image
                 src="/logo.png"
                 alt="CodeBreakers Logo"
-                width={24}
-                height={24}
-                className="w-5 h-5 sm:w-6 sm:h-6 object-contain"
+                width={38}
+                height={38}
+                className="w-6 h-6 sm:w-7 sm:h-7 object-contain"
                 priority
               />
               <span>ORGANIZED BY CODEBREAKERS</span>
