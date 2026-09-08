@@ -1,69 +1,85 @@
-import Image from "next/image";
+import React from "react";
+import Link from "next/link";
+import { HeroSection } from "@/features/home/HeroSection";
+import { QuickStats } from "@/features/home/QuickStats";
+import { DomainTrackConsole } from "@/features/home/DomainTrackConsole";
+import { PrizePoolBanner } from "@/features/home/PrizePoolBanner";
+import { CodeBreakersSpotlight } from "@/features/home/CodeBreakersSpotlight";
+import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
+import { ArrowRight, Terminal } from "lucide-react";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <div className="flex flex-col">
+      {/* 1. Hero Section */}
+      <HeroSection />
+
+      {/* 2. Scrolling Ticker Marquee */}
+      <MarqueeBanner bg="secondary" speed="normal" />
+
+      {/* 3. Event High-Impact Numbers */}
+      <QuickStats />
+
+      {/* 4. Interactive Domain Track Console */}
+      <DomainTrackConsole />
+
+      {/* 5. Ticker Divider */}
+      <MarqueeBanner
+        items={[
+          "CHAMPION: ₹60,000 CASH",
+          "RUNNER UP: ₹40,000 CASH",
+          "2ND RUNNER UP: ₹25,000 CASH",
+          "SPECIAL AWARDS: ₹25,000",
+          "NATIONAL CERTIFICATES",
+          "DIRECT INTERVIEW REFERRALS",
+        ]}
+        bg="accent"
+        speed="fast"
+      />
+
+      {/* 6. Prize Pool Breakdown */}
+      <PrizePoolBanner />
+
+      {/* 7. CodeBreakers Club & GCEK Spotlight */}
+      <CodeBreakersSpotlight />
+
+      {/* 8. Final Call to Action */}
+      <section className="py-20 bg-neo-muted border-b-4 border-black text-center relative overflow-hidden">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
+          <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-black text-white border-2 border-black shadow-neo-sm inline-block">
+            REGISTRATION DEADLINE // OCTOBER 10, 2026
+          </span>
+
+          <h2 className="font-black text-4xl sm:text-6xl text-black uppercase tracking-tight leading-tight">
+            DO NOT MISS OUT. <br />
+            <span className="bg-white px-3 border-4 border-black shadow-neo inline-block rotate-[-1deg] mt-2">
+              CLAIM YOUR SQUAD PASS
+            </span>
+          </h2>
+
+          <p className="text-base sm:text-xl font-bold text-black/80 max-w-2xl mx-auto leading-relaxed">
+            Free participation, real-time mentorship, computing infrastructure, and a national stage at Government College of Engineering Kalahandi.
           </p>
+
+          <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Link
+              href="/register"
+              className="w-full sm:w-auto h-14 px-10 bg-neo-accent text-black font-black text-base uppercase tracking-wider border-4 border-black shadow-neo hover:-translate-y-1 hover:shadow-neo-lg active:translate-x-1 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2"
+            >
+              <span>REGISTER SQUAD NOW</span>
+              <ArrowRight className="w-5 h-5 stroke-[3px]" />
+            </Link>
+
+            <Link
+              href="/problem-statements"
+              className="w-full sm:w-auto h-14 px-8 bg-white text-black font-black text-base uppercase tracking-wider border-4 border-black shadow-neo hover:-translate-y-1 hover:bg-neutral-100 hover:shadow-neo-lg active:translate-x-1 active:translate-y-1 active:shadow-none transition-all flex items-center justify-center gap-2"
+            >
+              <Terminal className="w-5 h-5 stroke-[3px]" />
+              <span>EXPLORE PROBLEMS</span>
+            </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
     </div>
   );
 }
