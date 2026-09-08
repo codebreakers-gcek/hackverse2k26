@@ -5,7 +5,7 @@ export const EVENT_DATA: EventInfo = {
   edition: "Tech Feast Hackathon 2026",
   tagline: "BREAK CODE. FORGE REALITY. ELEVATE TOMORROW.",
   shortDescription:
-    "The flagship annual national technology festival and hackathon organized by CODEBREAKERS, Government College of Engineering Kalahandi. 36 hours of intense prototyping, competitive engineering, and breakthrough innovation.",
+    "The flagship annual STATE technology festival and hackathon organized by CODEBREAKERS, Government College of Engineering Kalahandi. 36 hours of intense prototyping, competitive engineering, and breakthrough innovation.",
   fullDescription:
     "HACKVERSE '26 brings together the sharpest student minds, developers, designers, and tech enthusiasts across India. Organized by CodeBreakers—the official coding club of Government College of Engineering Kalahandi (GCEK)—this 3-day tech carnival features high-stakes hackathons, algorithmic code combats, hardware expositions, and direct mentorship from top industry engineers.",
   startDate: "2026-10-16T09:00:00+05:30",
@@ -46,7 +46,7 @@ export const EVENT_DATA: EventInfo = {
       id: "hackathons",
       code: "TRK-01",
       name: "HACK NOVA (HACKATHON)",
-      tagline: "36-Hour National Software & Hardware Sprint",
+      tagline: "36-Hour STATE Software & Hardware Sprint",
       description:
         "Engineers and builders collaborate under pressure to solve real-world industry and societal problem statements.",
       highlights: [

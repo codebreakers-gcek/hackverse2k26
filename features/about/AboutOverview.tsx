@@ -51,7 +51,7 @@ export function AboutOverview() {
 
           <div className="border-3 border-black bg-white p-5 shadow-neo-sm">
             <Zap className="w-8 h-8 text-black stroke-[3px] mb-3" />
-            <h4 className="font-black text-lg uppercase mb-2">NATIONAL CONNECTIVITY</h4>
+            <h4 className="font-black text-lg uppercase mb-2">STATE CONNECTIVITY</h4>
             <p className="text-xs font-bold text-black/80 leading-snug">
               Unite developers across state borders to exchange techniques, build open-source tools, and forge lasting squads.
             </p>

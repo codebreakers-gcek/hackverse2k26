@@ -65,7 +65,17 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/guidelines" className="hover:underline flex items-center gap-2">
-                  <span>▸</span> <span>Guidelines &amp; Evaluation Rules</span>
+                  <span>▸</span> <span>Guidelines &amp; Regulations</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/event-format" className="hover:underline flex items-center gap-2">
+                  <span>▸</span> <span>Event Format &amp; Stages</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/schedule" className="hover:underline flex items-center gap-2">
+                  <span>▸</span> <span>Event Schedule</span>
                 </Link>
               </li>
               <li>
