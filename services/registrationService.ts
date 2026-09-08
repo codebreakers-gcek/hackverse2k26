@@ -81,7 +81,7 @@ export const registrationService = {
 
       // Generate deterministic pass / ticket ID
       const randomSuffix = Math.floor(1000 + Math.random() * 9000);
-      const ticketId = `INNOVEX-GCEK-${randomSuffix}`;
+      const ticketId = `HACKVERSE-GCEK-${randomSuffix}`;
       const registrationId = `REG-${Date.now().toString().slice(-6)}`;
 
       return {

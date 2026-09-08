@@ -50,7 +50,6 @@ export function Navbar() {
       {/* Top micro-bar: High-contrast alert indicator */}
       <div className="bg-black text-white px-4 py-1 flex items-center justify-between text-[11px] font-mono font-bold tracking-widest uppercase">
         <div className="flex items-center gap-2">
-          <span className="inline-block w-2 h-2 bg-neo-accent animate-ping" />
           <span>GOVT. COLLEGE OF ENGINEERING KALAHANDI // CSE CODEBREAKERS</span>
         </div>
         <div className="hidden sm:flex items-center gap-4">
@@ -75,7 +74,7 @@ export function Navbar() {
               CODEBREAKERS
             </span>
             <span className="font-mono text-[10px] font-black tracking-widest text-black/70 mt-0.5">
-              INNOVEX &apos;26 // GCEK
+              HACKVERSE &apos;26 // GCEK
             </span>
           </div>
         </Link>

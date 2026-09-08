@@ -16,7 +16,7 @@ export function PillarCards() {
         tag="PILLARS // VALUES"
         title="CORE OPPORTUNITY"
         highlightText="PILLARS"
-        subtitle="Every aspect of INNOVEX '26 is engineered around maximizing builder value across four distinct domains."
+        subtitle="Every aspect of HACKVERSE '26 is engineered around maximizing builder value across four distinct domains."
       />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

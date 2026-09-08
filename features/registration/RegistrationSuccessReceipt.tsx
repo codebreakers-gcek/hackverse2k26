@@ -42,7 +42,7 @@ export function RegistrationSuccessReceipt({ result, onReset }: RegistrationSucc
               <Terminal className="w-6 h-6 stroke-[3px]" />
             </div>
             <div>
-              <div className="font-black text-lg tracking-wider">INNOVEX &apos;26 ENTRY PASS</div>
+              <div className="font-black text-lg tracking-wider">HACKVERSE &apos;26 ENTRY PASS</div>
               <div className="font-mono text-xs text-neo-secondary font-bold">
                 CODEBREAKERS // GCE KALAHANDI
               </div>
@@ -51,7 +51,7 @@ export function RegistrationSuccessReceipt({ result, onReset }: RegistrationSucc
           <div className="text-right font-mono">
             <div className="text-[10px] uppercase text-neutral-400">TICKET IDENTIFIER</div>
             <div className="text-sm sm:text-base font-black text-neo-accent">
-              {result.ticketId || "INNOVEX-GCEK-LIVE"}
+              {result.ticketId || "HACKVERSE-GCEK-LIVE"}
             </div>
           </div>
         </div>
@@ -118,7 +118,7 @@ export function RegistrationSuccessReceipt({ result, onReset }: RegistrationSucc
               )}
             </div>
             <div className="font-mono text-[10px] font-black tracking-[0.3em] text-black">
-              * {result.ticketId || "INNOVEX-GCEK-LIVE"} *
+              * {result.ticketId || "HACKVERSE-GCEK-LIVE"} *
             </div>
           </div>
         </div>

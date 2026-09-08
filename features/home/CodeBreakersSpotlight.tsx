@@ -41,7 +41,7 @@ export function CodeBreakersSpotlight() {
                 FOSTERING TECHNICAL EXCELLENCE &amp; HACKATHON CULTURE IN ODISHA
               </h4>
               <p className="text-base font-bold text-black/80 leading-relaxed">
-                CodeBreakers is the premier student-led technical body of Government College of Engineering Kalahandi. As builders who develop and deploy the institute&apos;s digital infrastructure and manage flagship college events like INSPRANO and UDAAN, we created INNOVEX &apos;26 to give developers nationwide a pure, non-stop platform to build real software.
+                CodeBreakers is the premier student-led technical body of Government College of Engineering Kalahandi. As builders who develop and deploy the institute&apos;s digital infrastructure and manage flagship college events like INSPRANO and UDAAN, we created HACKVERSE &apos;26 to give developers nationwide a pure, non-stop platform to build real software.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
