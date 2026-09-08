@@ -133,6 +133,43 @@ body {
   background: rgba(0, 0, 0, 0.4);
 }
 
+/* Continuous Right-to-Left Marquee */
+@keyframes marquee-left {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 26s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-fast {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 16s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-header {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 32s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover,
+.animate-marquee-fast:hover,
+.animate-marquee-header:hover {
+  animation-play-state: paused;
+}
+
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
   *,

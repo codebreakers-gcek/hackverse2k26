@@ -15,8 +15,8 @@ export default function HomePage() {
       {/* 1. Hero Section */}
       <HeroSection />
 
-      {/* 2. Scrolling Ticker Marquee */}
-      <MarqueeBanner bg="secondary" speed="normal" />
+      {/* 2. Scrolling Ticker Marquee (Bended & Flowing Right to Left) */}
+      <MarqueeBanner bg="secondary" speed="normal" bended />
 
       {/* 3. Event High-Impact Numbers */}
       <ScrollReveal>
@@ -28,7 +28,7 @@ export default function HomePage() {
         <DomainTrackConsole />
       </ScrollReveal>
 
-      {/* 5. Ticker Divider */}
+      {/* 5. Ticker Divider (Bended & Flowing Right to Left) */}
       <MarqueeBanner
         items={[
           "CHAMPION: ₹60,000 CASH",
@@ -40,6 +40,7 @@ export default function HomePage() {
         ]}
         bg="accent"
         speed="fast"
+        bended
       />
 
       {/* 6. Prize Pool Breakdown */}

@@ -5,6 +5,9 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ScrollProgressCircle } from "@/components/layout/ScrollProgressCircle";
 import { AmbientCodeShapes } from "@/components/layout/AmbientCodeShapes";
+import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
+import { CustomCursor } from "@/components/ui/CustomCursor";
+import { GsapLoader } from "@/components/ui/GsapLoader";
 
 const thuast = localFont({
   src: "../public/font/Thuast-Demo.otf",
@@ -58,11 +61,15 @@ export default function RootLayout({
         />
       </head>
       <body className={`${thuast.variable} bg-neo-bg text-black min-h-screen flex flex-col font-sans selection:bg-neo-secondary selection:text-black relative`}>
-        <AmbientCodeShapes />
-        <Navbar />
-        <main className="flex-1 relative z-10">{children}</main>
-        <Footer />
-        <ScrollProgressCircle />
+        <GsapLoader />
+        <SmoothScrollProvider>
+          <CustomCursor />
+          <AmbientCodeShapes />
+          <Navbar />
+          <main className="flex-1 relative z-10">{children}</main>
+          <Footer />
+          <ScrollProgressCircle />
+        </SmoothScrollProvider>
       </body>
     </html>
   );
