@@ -27,7 +27,7 @@ export function HeroSection() {
           <div className="inline-flex items-center justify-center gap-2.5">
             <span className="inline-flex items-center gap-3 font-mono text-sm sm:text-base font-black uppercase px-4 py-2 bg-black text-white border-2 border-black shadow-neo-sm">
               <Image
-                src="/logo.png"
+                src="/cblogo.png"
                 alt="CodeBreakers Logo"
                 width={38}
                 height={38}
