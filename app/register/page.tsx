@@ -6,7 +6,7 @@ import { SectionTitle } from "@/components/common/SectionTitle";
 export const metadata: Metadata = {
   title: "Register Team // HACKVERSE '26",
   description:
-    "Register your team for HACKVERSE '26 National Tech Fest & Hackathon. Zero registration fee. Free food and certificates for all qualifiers.",
+    "Register your team for HACKVERSE '26 STATE Tech Fest & Hackathon. Zero registration fee. Free food and certificates for all qualifiers.",
 };
 
 export default function RegisterPage() {

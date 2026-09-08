@@ -16,10 +16,10 @@ export interface ClubMilestone {
 export const ABOUT_DATA = {
   festOverview: {
     title: "ABOUT HACKVERSE '26",
-    tagline: "WHERE KALAHANDI'S COGNITIVE ENERGY MEETS NATIONAL SCALE INNOVATION",
+    tagline: "WHERE KALAHANDI'S COGNITIVE ENERGY MEETS STATE SCALE INNOVATION",
     paragraphs: [
-      "HACKVERSE '26 is the signature national-level annual technology and engineering festival organized by CODEBREAKERS at Government College of Engineering Kalahandi (GCEK), Bhawanipatna, Odisha.",
-      "Conceived as an intense incubator of ideas, the fest aims to demystify complex technologies, bridge academic theory with cut-throat industry execution, and provide ambitious student developers a national platform to ship production-grade solutions.",
+      "HACKVERSE '26 is the signature STATE-level annual technology and engineering festival organized by CODEBREAKERS at Government College of Engineering Kalahandi (GCEK), Bhawanipatna, Odisha.",
+      "Conceived as an intense incubator of ideas, the fest aims to demystify complex technologies, bridge academic theory with cut-throat industry execution, and provide ambitious student developers a STATE platform to ship production-grade solutions.",
       "Over 3 electrifying days, participants experience a curated ecosystem comprising the flagship 36-hour Hack Nova Hackathon, competitive algorithmic problem solving, hands-on masterclasses by industry veterans, and interactive hardware installations.",
     ],
   },
@@ -65,7 +65,7 @@ export const ABOUT_DATA = {
     name: "Government College of Engineering Kalahandi (GCEK)",
     location: "Bhawanipatna, Kalahandi, Odisha - 766002",
     description:
-      "Established as a premier government technical institution in Western Odisha, GCEK is dedicated to nurturing technical talent, fostering scientific inquiry, and driving regional and national technological progress through robust engineering education.",
+      "Established as a premier government technical institution in Western Odisha, GCEK is dedicated to nurturing technical talent, fostering scientific inquiry, and driving regional and STATE technological progress through robust engineering education.",
     portalUrl: "https://www.gcekbpatna.ac.in",
   },
   club: {
@@ -89,12 +89,12 @@ export const ABOUT_DATA = {
       {
         year: "2023",
         event: "HACK NOVA INCEPTION",
-        detail: "Hosted the first edition of Hack Nova with 80+ participating teams and national recognition.",
+        detail: "Hosted the first edition of Hack Nova with 80+ participating teams and STATE recognition.",
       },
       {
         year: "2026",
-        event: "HACKVERSE '26 NATIONAL FEST",
-        detail: "Expanding to a full-scale 3-day multi-track national tech symposium with ₹1,50,000+ prize pool.",
+        event: "HACKVERSE '26 STATE FEST",
+        detail: "Expanding to a full-scale 3-day multi-track STATE tech symposium with ₹1,50,000+ prize pool.",
       },
     ] as ClubMilestone[],
   },

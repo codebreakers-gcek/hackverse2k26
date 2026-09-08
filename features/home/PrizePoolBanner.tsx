@@ -17,7 +17,7 @@ export function PrizePoolBanner() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <SectionTitle
           tag="REWARDS // BOUNTY"
-          title="NATIONAL"
+          title="STATE"
           highlightText="PRIZE POOL"
           subtitle="Compete for a total cash bounty of ₹1,50,000+ along with cloud credits, exclusive developer swag, direct internship referrals, and prestigious winner trophies."
         />
@@ -94,7 +94,7 @@ export function PrizePoolBanner() {
                 SWAG KITS &amp; CERTIFICATES FOR EVERY PARTICIPANT
               </h4>
               <p className="text-sm font-bold text-white/80 mt-1">
-                Every team presenting a functional project receives verified national participation certificates, sticker packs, and food/refreshment passes during the 36-hour sprint.
+                Every team presenting a functional project receives verified STATE participation certificates, sticker packs, and food/refreshment passes during the 36-hour sprint.
               </p>
             </div>
           </div>

@@ -2,9 +2,18 @@
 
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Thuast';
+  src: url('/font/Thuast-Demo.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
   --font-sans: 'Space Grotesk', sans-serif;
   --font-space-grotesk: 'Space Grotesk', sans-serif;
+  --font-thuast: var(--font-thuast, 'Thuast'), 'Thuast', sans-serif;
 
   --color-neo-bg: #FFFDF5;
   --color-neo-secondary: #FFD93D;
@@ -22,6 +31,10 @@
 
 @utility border-3 {
   border-width: 3px;
+}
+
+.font-thuast {
+  font-family: var(--font-thuast, 'Thuast'), 'Thuast', sans-serif;
 }
 
 :root {
@@ -105,21 +118,56 @@ body {
   box-shadow: 12px 12px 0px 0px #000000;
 }
 
-/* Custom Scrollbar for Neo-brutalism */
+/* Clean Scrollbar */
 ::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #FFFDF5;
-  border-left: 3px solid #000000;
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #FFD93D;
-  border: 3px solid #000000;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #FF6B6B;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+/* Continuous Right-to-Left Marquee */
+@keyframes marquee-left {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 26s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-fast {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 16s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee-header {
+  display: flex;
+  width: max-content;
+  animation: marquee-left 32s linear infinite;
+  will-change: transform;
+}
+
+.animate-marquee:hover,
+.animate-marquee-fast:hover,
+.animate-marquee-header:hover {
+  animation-play-state: paused;
 }
 
 /* Reduced Motion */

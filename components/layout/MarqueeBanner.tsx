@@ -7,6 +7,7 @@ export interface MarqueeBannerProps {
   bg?: "secondary" | "accent" | "muted" | "black" | "white";
   speed?: "normal" | "fast";
   direction?: "left" | "right";
+  bended?: boolean;
   className?: string;
 }
 
@@ -23,6 +24,7 @@ export function MarqueeBanner({
   ],
   bg = "secondary",
   speed = "normal",
+  bended = false,
   className,
 }: MarqueeBannerProps) {
   const bgStyles = {
@@ -35,11 +37,12 @@ export function MarqueeBanner({
 
   const animClass = speed === "fast" ? "animate-marquee-fast" : "animate-marquee";
 
-  return (
+  const bannerElement = (
     <div
       className={clsx(
-        "relative w-full overflow-hidden py-3 select-none flex items-center shadow-neo-sm",
+        "relative w-full overflow-hidden py-3.5 select-none flex items-center shadow-neo",
         bgStyles[bg],
+        bended && "rotate-[-2deg] sm:rotate-[-1.5deg] scale-[1.03] my-4 shadow-neo-lg z-20",
         className
       )}
     >
@@ -53,4 +56,14 @@ export function MarqueeBanner({
       </div>
     </div>
   );
+
+  if (bended) {
+    return (
+      <div className="relative w-full overflow-hidden py-3">
+        {bannerElement}
+      </div>
+    );
+  }
+
+  return bannerElement;
 }
