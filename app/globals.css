@@ -1,8 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&display=swap');
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Space Grotesk', sans-serif;
+  --font-space-grotesk: 'Space Grotesk', sans-serif;
+
+  --color-neo-bg: #FFFDF5;
+  --color-neo-secondary: #FFD93D;
+  --color-neo-accent: #FF6B6B;
+  --color-neo-muted: #A8E6CF;
+
+  --shadow-neo: 5px 5px 0px 0px #000000;
+  --shadow-neo-sm: 2px 2px 0px 0px #000000;
+  --shadow-neo-lg: 8px 8px 0px 0px #000000;
+  --shadow-neo-xl: 12px 12px 0px 0px #000000;
+  --shadow-neo-yellow: 6px 6px 0px 0px #FFD93D;
+
+  --border-width-3: 3px;
+}
+
+@utility border-3 {
+  border-width: 3px;
+}
 
 :root {
   --font-space-grotesk: 'Space Grotesk', sans-serif;
