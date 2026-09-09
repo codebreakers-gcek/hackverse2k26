@@ -25,11 +25,12 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.codebreakersgcek.tech"),
   title: {
-    default: "HACKVERSE '26 // Flagship 36H State Tech Fest & Hackathon | CodeBreakers GCEK",
+    default:
+      "HACKVERSE '26 // Flagship 36H State Tech Fest & Hackathon | CodeBreakers GCEK",
     template: "%s | HACKVERSE '26 - CodeBreakers GCEK",
   },
   description:
-    "Official State-Level Flagship 36-Hour Hackathon & Tech Fest organized by CODEBREAKERS, Government College of Engineering Kalahandi (GCEK). ₹1,50,000+ prize pool across AI/ML, Web3, Cyber Security, Cloud, IoT & Open Innovation tracks.",
+    "Official State-Level Flagship 36-Hour Hackathon & Tech Fest organized by CODEBREAKERS, Government College of Engineering Kalahandi (GCEK). ₹35K+ prize pool across AI/ML, Web3, Cyber Security, Cloud, IoT & Open Innovation tracks.",
   keywords: [
     "HACKVERSE 2026",
     "HACKVERSE '26",
@@ -81,7 +82,7 @@ export const metadata: Metadata = {
     siteName: "HACKVERSE '26 // CodeBreakers GCEK",
     title: "HACKVERSE '26 | Flagship 36H State Tech Fest & Hackathon",
     description:
-      "Join Central & Eastern India's most energetic hackathon at GCEK Kalahandi. 36-Hour sprint, ₹1,50,000+ prize pool, industry mentorship, free hostel accommodation & swags.",
+      "Join Central & Eastern India's most energetic hackathon at GCEK Kalahandi. 36-Hour sprint, ₹35K+ prize pool, industry mentorship, free hostel accommodation & swags.",
     images: [
       {
         url: "/cbhack.png",
@@ -97,7 +98,7 @@ export const metadata: Metadata = {
     creator: "@codebreakersgcek",
     title: "HACKVERSE '26 | Flagship 36H State Tech Fest & Hackathon",
     description:
-      "36-Hour Hackathon & Tech Fest at GCEK Kalahandi. ₹1,50,000+ in prizes. Register your squad now!",
+      "36-Hour Hackathon & Tech Fest at GCEK Kalahandi. ₹35K+ in prizes. Register your squad now!",
     images: ["/cbhack.png"],
   },
   alternates: {
@@ -111,54 +112,55 @@ const jsonLd = {
     {
       "@type": "Event",
       "@id": "https://www.codebreakersgcek.tech/#event",
-      "name": "HACKVERSE '26 - 36-Hour Flagship Hackathon",
-      "description": "Official State-Level Flagship 36-Hour Hackathon & Tech Fest organized by CODEBREAKERS at Government College of Engineering Kalahandi.",
-      "url": "https://www.codebreakersgcek.tech",
-      "image": "https://www.codebreakersgcek.tech/cbhack.png",
-      "startDate": "2026-09-18T09:00:00+05:30",
-      "endDate": "2026-09-20T18:00:00+05:30",
-      "eventStatus": "https://schema.org/EventScheduled",
-      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
-      "location": {
+      name: "HACKVERSE '26 - 36-Hour Flagship Hackathon",
+      description:
+        "Official State-Level Flagship 36-Hour Hackathon & Tech Fest organized by CODEBREAKERS at Government College of Engineering Kalahandi.",
+      url: "https://www.codebreakersgcek.tech",
+      image: "https://www.codebreakersgcek.tech/cbhack.png",
+      startDate: "2026-09-18T09:00:00+05:30",
+      endDate: "2026-09-20T18:00:00+05:30",
+      eventStatus: "https://schema.org/EventScheduled",
+      eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+      location: {
         "@type": "Place",
-        "name": "Government College of Engineering Kalahandi (GCEK)",
-        "address": {
+        name: "Government College of Engineering Kalahandi (GCEK)",
+        address: {
           "@type": "PostalAddress",
-          "streetAddress": "Bandhopala, Bhawanipatna",
-          "addressLocality": "Bhawanipatna",
-          "addressRegion": "Odisha",
-          "postalCode": "766002",
-          "addressCountry": "IN"
-        }
+          streetAddress: "Bandhopala, Bhawanipatna",
+          addressLocality: "Bhawanipatna",
+          addressRegion: "Odisha",
+          postalCode: "766002",
+          addressCountry: "IN",
+        },
       },
-      "organizer": {
+      organizer: {
         "@type": "Organization",
-        "name": "CodeBreakers GCEK",
-        "url": "https://www.codebreakersgcek.tech",
-        "logo": "https://www.codebreakersgcek.tech/cbhack.png"
+        name: "CodeBreakers GCEK",
+        url: "https://www.codebreakersgcek.tech",
+        logo: "https://www.codebreakersgcek.tech/cbhack.png",
       },
-      "offers": {
+      offers: {
         "@type": "Offer",
-        "url": "https://www.codebreakersgcek.tech/register",
-        "price": "0",
-        "priceCurrency": "INR",
-        "availability": "https://schema.org/InStock",
-        "validFrom": "2026-08-01T00:00:00+05:30"
-      }
+        url: "https://www.codebreakersgcek.tech/register",
+        price: "0",
+        priceCurrency: "INR",
+        availability: "https://schema.org/InStock",
+        validFrom: "2026-08-01T00:00:00+05:30",
+      },
     },
     {
       "@type": "Organization",
       "@id": "https://www.codebreakersgcek.tech/#organization",
-      "name": "CodeBreakers GCEK",
-      "url": "https://www.codebreakersgcek.tech",
-      "logo": "https://www.codebreakersgcek.tech/cbhack.png",
-      "sameAs": [
+      name: "CodeBreakers GCEK",
+      url: "https://www.codebreakersgcek.tech",
+      logo: "https://www.codebreakersgcek.tech/cbhack.png",
+      sameAs: [
         "https://github.com/codebreakers-gcek",
         "https://www.linkedin.com/company/codebreakers-gcek",
-        "https://instagram.com/codebreakers_gcek"
-      ]
-    }
-  ]
+        "https://instagram.com/codebreakers_gcek",
+      ],
+    },
+  ],
 };
 
 export default function RootLayout({
@@ -170,7 +172,11 @@ export default function RootLayout({
     <html lang="en" data-scroll-behavior="smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&display=swap"
           rel="stylesheet"
@@ -180,7 +186,9 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={`${thuast.variable} bg-neo-bg text-black min-h-screen flex flex-col font-sans selection:bg-neo-secondary selection:text-black relative`}>
+      <body
+        className={`${thuast.variable} bg-neo-bg text-black min-h-screen flex flex-col font-sans selection:bg-neo-secondary selection:text-black relative`}
+      >
         <GsapLoader />
         <SmoothScrollProvider>
           <CustomCursor />

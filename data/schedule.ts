@@ -70,7 +70,7 @@ export const SCHEDULE_DATA: ScheduleData = {
         "Duration: 36 hours of continuous on-site prototyping, code sprint, mentorship check-ins, and jury review.",
         "Three progressive sub-rounds of judging and final live prototype demonstration.",
         "Facilities provided for uninterrupted development, meals, and accommodations.",
-        "Grand Valedictory Ceremony and ₹1,50,000+ Prize Distribution.",
+        "Grand Valedictory Ceremony and ₹35K+ Prize Distribution.",
       ],
     },
   ],

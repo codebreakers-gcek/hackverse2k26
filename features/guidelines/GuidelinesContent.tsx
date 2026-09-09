@@ -2,7 +2,12 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence, useReducedMotion, type Variants } from "framer-motion";
+import {
+  motion,
+  AnimatePresence,
+  useReducedMotion,
+  type Variants,
+} from "framer-motion";
 import {
   HACKATHON_GUIDELINES_DATA,
   STRUCTURED_RULES,
@@ -33,7 +38,13 @@ import {
 } from "lucide-react";
 import clsx from "clsx";
 
-type FilterTab = "all" | "team-eligibility" | "deliverables" | "fair-play" | "jury-eval" | "scoring";
+type FilterTab =
+  | "all"
+  | "team-eligibility"
+  | "deliverables"
+  | "fair-play"
+  | "jury-eval"
+  | "scoring";
 
 export function GuidelinesContent() {
   const shouldReduceMotion = useReducedMotion();
@@ -53,7 +64,10 @@ export function GuidelinesContent() {
   };
 
   const itemVariants: Variants = {
-    hidden: { opacity: shouldReduceMotion ? 1 : 0, y: shouldReduceMotion ? 0 : 16 },
+    hidden: {
+      opacity: shouldReduceMotion ? 1 : 0,
+      y: shouldReduceMotion ? 0 : 16,
+    },
     visible: {
       opacity: 1,
       y: 0,
@@ -120,18 +134,38 @@ export function GuidelinesContent() {
             className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 pt-2"
           >
             {[
-              { label: "SQUAD SIZE", val: "3 - 6 MEMBERS", icon: Users, bg: "bg-neo-secondary" },
-              { label: "SPRINT DURATION", val: "36 HOURS LIVE", icon: Flame, bg: "bg-neo-accent" },
+              {
+                label: "SQUAD SIZE",
+                val: "3 - 6 MEMBERS",
+                icon: Users,
+                bg: "bg-neo-secondary",
+              },
+              {
+                label: "SPRINT DURATION",
+                val: "36 HOURS LIVE",
+                icon: Flame,
+                bg: "bg-neo-accent",
+              },
               { label: "CASH POOL", val: "₹35K+", icon: Award, bg: "bg-white" },
-              { label: "IP OWNERSHIP", val: "100% CREATOR OWNED", icon: ShieldCheck, bg: "bg-emerald-300" },
-              { label: "EVALUATION", val: "5 JUDGING CRITERIA", icon: Scale, bg: "bg-purple-300" },
+              {
+                label: "IP OWNERSHIP",
+                val: "100% CREATOR OWNED",
+                icon: ShieldCheck,
+                bg: "bg-emerald-300",
+              },
+              {
+                label: "EVALUATION",
+                val: "5 JUDGING CRITERIA",
+                icon: Scale,
+                bg: "bg-purple-300",
+              },
             ].map((stat, idx) => (
               <motion.div
                 key={idx}
                 variants={itemVariants}
                 className={clsx(
                   "border-3 border-black p-3.5 shadow-neo-sm flex items-center gap-3 transition-transform hover:-translate-y-0.5",
-                  stat.bg
+                  stat.bg,
                 )}
               >
                 <div className="w-9 h-9 bg-black text-white border-2 border-black flex items-center justify-center shrink-0">
@@ -172,7 +206,11 @@ export function GuidelinesContent() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
             {/* Card 1: Team Composition */}
             <motion.div
-              whileHover={shouldReduceMotion ? {} : { y: -4, boxShadow: "8px 8px 0px 0px #000" }}
+              whileHover={
+                shouldReduceMotion
+                  ? {}
+                  : { y: -4, boxShadow: "8px 8px 0px 0px #000" }
+              }
               transition={{ duration: 0.15 }}
               className="border-4 border-black bg-white p-5 shadow-neo flex flex-col justify-between"
             >
@@ -184,7 +222,12 @@ export function GuidelinesContent() {
                   Squad Composition
                 </h3>
                 <p className="text-sm font-bold text-black/80 leading-snug">
-                  Each squad must comprise <span className="bg-neo-secondary px-1 font-black">3 to 6 members</span>. Enrolled UG, PG, and Diploma students are eligible. Interdisciplinary roles encouraged.
+                  Each squad must comprise{" "}
+                  <span className="bg-neo-secondary px-1 font-black">
+                    3 to 6 members
+                  </span>
+                  . Enrolled UG, PG, and Diploma students are eligible.
+                  Interdisciplinary roles encouraged.
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t-2 border-black/15 font-mono text-[11px] font-black uppercase text-black/70 flex items-center gap-1.5">
@@ -195,7 +238,11 @@ export function GuidelinesContent() {
 
             {/* Card 2: Team Name Restriction (DANGER) */}
             <motion.div
-              whileHover={shouldReduceMotion ? {} : { y: -4, boxShadow: "8px 8px 0px 0px #000" }}
+              whileHover={
+                shouldReduceMotion
+                  ? {}
+                  : { y: -4, boxShadow: "8px 8px 0px 0px #000" }
+              }
               transition={{ duration: 0.15 }}
               className="border-4 border-black bg-rose-50 p-5 shadow-neo border-l-8 border-l-rose-600 flex flex-col justify-between"
             >
@@ -207,7 +254,11 @@ export function GuidelinesContent() {
                   Anonymous Team Name
                 </h3>
                 <p className="text-sm font-bold text-rose-950 leading-snug">
-                  <strong className="font-black underline">STRICT ZERO-TOLERANCE:</strong> Team names <strong className="font-black">CANNOT</strong> contain your college name, acronym, or initials.
+                  <strong className="font-black underline">
+                    STRICT ZERO-TOLERANCE:
+                  </strong>{" "}
+                  Team names <strong className="font-black">CANNOT</strong>{" "}
+                  contain your college name, acronym, or initials.
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t-2 border-rose-300 font-mono text-[11px] font-black uppercase text-rose-900 flex items-center gap-1.5">
@@ -218,7 +269,11 @@ export function GuidelinesContent() {
 
             {/* Card 3: Original Deliverables */}
             <motion.div
-              whileHover={shouldReduceMotion ? {} : { y: -4, boxShadow: "8px 8px 0px 0px #000" }}
+              whileHover={
+                shouldReduceMotion
+                  ? {}
+                  : { y: -4, boxShadow: "8px 8px 0px 0px #000" }
+              }
               transition={{ duration: 0.15 }}
               className="border-4 border-black bg-white p-5 shadow-neo flex flex-col justify-between"
             >
@@ -230,7 +285,9 @@ export function GuidelinesContent() {
                   MVP & Pitch Deck
                 </h3>
                 <p className="text-sm font-bold text-black/80 leading-snug">
-                  All squads must submit a functional working prototype / MVP, technical architecture documentation, and a compelling pitch deck.
+                  All squads must submit a functional working prototype / MVP,
+                  technical architecture documentation, and a compelling pitch
+                  deck.
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t-2 border-black/15 font-mono text-[11px] font-black uppercase text-black/70 flex items-center gap-1.5">
@@ -241,7 +298,11 @@ export function GuidelinesContent() {
 
             {/* Card 4: Jury Decorum */}
             <motion.div
-              whileHover={shouldReduceMotion ? {} : { y: -4, boxShadow: "8px 8px 0px 0px #000" }}
+              whileHover={
+                shouldReduceMotion
+                  ? {}
+                  : { y: -4, boxShadow: "8px 8px 0px 0px #000" }
+              }
               transition={{ duration: 0.15 }}
               className="border-4 border-black bg-white p-5 shadow-neo flex flex-col justify-between"
             >
@@ -253,7 +314,9 @@ export function GuidelinesContent() {
                   Jury Protocol
                 </h3>
                 <p className="text-sm font-bold text-black/80 leading-snug">
-                  Participants must <strong className="font-black">NOT</strong> contact or message jury members before official results. The jury’s decision is final and binding.
+                  Participants must <strong className="font-black">NOT</strong>{" "}
+                  contact or message jury members before official results. The
+                  jury’s decision is final and binding.
                 </p>
               </div>
               <div className="mt-4 pt-3 border-t-2 border-black/15 font-mono text-[11px] font-black uppercase text-black/70 flex items-center gap-1.5">
@@ -276,7 +339,8 @@ export function GuidelinesContent() {
                   OFFICIAL RULEBOOK EXPLORER
                 </h2>
                 <p className="font-mono text-xs font-bold text-black/70 mt-0.5">
-                  Explore all 19 official directives or filter by category & keyword
+                  Explore all 19 official directives or filter by category &
+                  keyword
                 </p>
               </div>
             </div>
@@ -306,10 +370,26 @@ export function GuidelinesContent() {
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
             {[
               { id: "all" as const, label: "ALL RULES (19)", icon: Layers },
-              { id: "team-eligibility" as const, label: "TEAM & ELIGIBILITY", icon: Users },
-              { id: "deliverables" as const, label: "DELIVERABLES", icon: FileCode2 },
-              { id: "fair-play" as const, label: "FAIR PLAY & INTEGRITY", icon: ShieldCheck },
-              { id: "jury-eval" as const, label: "JURY & PROTOCOL", icon: Scale },
+              {
+                id: "team-eligibility" as const,
+                label: "TEAM & ELIGIBILITY",
+                icon: Users,
+              },
+              {
+                id: "deliverables" as const,
+                label: "DELIVERABLES",
+                icon: FileCode2,
+              },
+              {
+                id: "fair-play" as const,
+                label: "FAIR PLAY & INTEGRITY",
+                icon: ShieldCheck,
+              },
+              {
+                id: "jury-eval" as const,
+                label: "JURY & PROTOCOL",
+                icon: Scale,
+              },
               { id: "scoring" as const, label: "SCORE MATRIX", icon: Award },
             ].map((tab) => {
               const isActive = activeTab === tab.id;
@@ -323,7 +403,7 @@ export function GuidelinesContent() {
                     "px-4 py-2.5 font-black text-xs sm:text-sm uppercase tracking-wider border-3 border-black shadow-neo-sm shrink-0 flex items-center gap-2 transition-all active:translate-x-0.5 active:translate-y-0.5",
                     isActive
                       ? "bg-black text-white"
-                      : "bg-white text-black hover:bg-neo-secondary"
+                      : "bg-white text-black hover:bg-neo-secondary",
                   )}
                 >
                   <Icon className="w-4 h-4 stroke-[2.5px]" />
@@ -368,7 +448,7 @@ export function GuidelinesContent() {
                         key={crit.parameter}
                         className={clsx(
                           "border-4 border-black p-6 shadow-neo flex flex-col justify-between transition-transform hover:-translate-y-1",
-                          bg
+                          bg,
                         )}
                       >
                         <div>
@@ -404,8 +484,13 @@ export function GuidelinesContent() {
                             </div>
                             <ul className="space-y-1.5 text-xs font-bold text-black/90">
                               {crit.scoringFocus.map((focus, fIdx) => (
-                                <li key={fIdx} className="flex items-start gap-1.5">
-                                  <span className="text-black font-black">✔</span>
+                                <li
+                                  key={fIdx}
+                                  className="flex items-start gap-1.5"
+                                >
+                                  <span className="text-black font-black">
+                                    ✔
+                                  </span>
                                   <span>{focus}</span>
                                 </li>
                               ))}
@@ -434,7 +519,8 @@ export function GuidelinesContent() {
                     No Directives Matched "{searchQuery}"
                   </h3>
                   <p className="font-bold text-sm text-black/70 max-w-md mx-auto">
-                    Try modifying your search keywords or switch to the "All Rules" tab.
+                    Try modifying your search keywords or switch to the "All
+                    Rules" tab.
                   </p>
                   <button
                     onClick={() => {
@@ -466,8 +552,8 @@ export function GuidelinesContent() {
                           isDanger
                             ? "bg-rose-50/70 border-l-8 border-l-rose-600"
                             : isWarning
-                            ? "bg-amber-50/70 border-l-8 border-l-amber-500"
-                            : "bg-white"
+                              ? "bg-amber-50/70 border-l-8 border-l-amber-500"
+                              : "bg-white",
                         )}
                       >
                         <div className="space-y-3">
@@ -489,8 +575,8 @@ export function GuidelinesContent() {
                                   isDanger
                                     ? "bg-rose-500 text-white"
                                     : isWarning
-                                    ? "bg-amber-300 text-black"
-                                    : "bg-neo-secondary text-black"
+                                      ? "bg-amber-300 text-black"
+                                      : "bg-neo-secondary text-black",
                                 )}
                               >
                                 {rule.tag}
@@ -501,7 +587,7 @@ export function GuidelinesContent() {
                                 onClick={() =>
                                   handleCopyRule(
                                     `HACKVERSE '26 Directive #${rule.number}: ${rule.title} - ${rule.description}`,
-                                    rule.id
+                                    rule.id,
                                   )
                                 }
                                 title="Copy rule text"
@@ -535,8 +621,8 @@ export function GuidelinesContent() {
                               isDanger
                                 ? "bg-rose-100 text-rose-950"
                                 : isWarning
-                                ? "bg-amber-100 text-amber-950"
-                                : "bg-neo-bg text-black"
+                                  ? "bg-amber-100 text-amber-950"
+                                  : "bg-neo-bg text-black",
                             )}
                           >
                             <Terminal className="w-4 h-4 shrink-0 stroke-[2.5px] mt-0.5" />
@@ -609,7 +695,7 @@ export function GuidelinesContent() {
                   key={idx}
                   className={clsx(
                     "border-4 border-black p-6 shadow-neo flex flex-col justify-between hover:-translate-y-1 transition-all duration-150",
-                    del.bg
+                    del.bg,
                   )}
                 >
                   <div className="space-y-3">
@@ -662,7 +748,9 @@ export function GuidelinesContent() {
                 </h3>
               </div>
               <p className="text-sm font-bold text-rose-950 leading-relaxed">
-                Using your college/university name, initials, abbreviation, or identifiable insignia in your squad name is strictly banned to preserve 100% blind jury evaluation.
+                Using your college/university name, initials, abbreviation, or
+                identifiable insignia in your squad name is strictly banned to
+                preserve 100% blind jury evaluation.
               </p>
             </div>
 
@@ -674,7 +762,9 @@ export function GuidelinesContent() {
                 </h3>
               </div>
               <p className="text-sm font-bold text-rose-950 leading-relaxed">
-                Directly or indirectly contacting jury members via LinkedIn, email, or social media prior to official results declaration will lead to immediate squad disqualification.
+                Directly or indirectly contacting jury members via LinkedIn,
+                email, or social media prior to official results declaration
+                will lead to immediate squad disqualification.
               </p>
             </div>
 
@@ -686,7 +776,9 @@ export function GuidelinesContent() {
                 </h3>
               </div>
               <p className="text-sm font-bold text-rose-950 leading-relaxed">
-                Any penetration testing, API tampering, DDoS attempts, or malicious interference against hackathon servers and contestant submissions is strictly forbidden.
+                Any penetration testing, API tampering, DDoS attempts, or
+                malicious interference against hackathon servers and contestant
+                submissions is strictly forbidden.
               </p>
             </div>
           </div>
@@ -714,11 +806,16 @@ export function GuidelinesContent() {
           </div>
 
           <div className="space-y-4 text-xs sm:text-sm font-bold text-amber-950 leading-relaxed">
-            {HACKATHON_GUIDELINES_DATA.disclaimer.paragraphs.map((para, idx) => (
-              <p key={idx} className="bg-amber-100/60 p-4 border-2 border-black">
-                {para}
-              </p>
-            ))}
+            {HACKATHON_GUIDELINES_DATA.disclaimer.paragraphs.map(
+              (para, idx) => (
+                <p
+                  key={idx}
+                  className="bg-amber-100/60 p-4 border-2 border-black"
+                >
+                  {para}
+                </p>
+              ),
+            )}
           </div>
         </section>
 
@@ -732,7 +829,8 @@ export function GuidelinesContent() {
               REGISTER YOUR SQUAD TODAY
             </h3>
             <p className="font-bold text-xs sm:text-sm text-neutral-300 max-w-xl leading-relaxed">
-              Equip your team with an original idea, align with the 36-hour sprint format, and compete for ₹1,50,000+ in prizes.
+              Equip your team with an original idea, align with the 36-hour
+              sprint format, and compete for ₹35K+ in prizes.
             </p>
           </div>
 
