@@ -5,9 +5,26 @@ import { SectionTitle } from "@/components/common/SectionTitle";
 import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 
 export const metadata: Metadata = {
-  title: "Problem Statements // HACKVERSE '26",
+  title: "Official Problem Statements & Technical Tracks",
   description:
-    "Explore the official hackathon problem tracks across AI/ML, Web3 & Cyber, Smart Automation, and Open Innovation.",
+    "Explore the official hackathon problem tracks across AI/ML, Web3 & Decentralized Tech, Cyber Security, Smart Automation & IoT, and Open Innovation for HACKVERSE '26.",
+  alternates: {
+    canonical: "https://www.codebreakersgcek.tech/problem-statements",
+  },
+  openGraph: {
+    title: "Official Problem Statements // HACKVERSE '26",
+    description:
+      "Choose your battle arena: AI/ML, Cyber Security, Web3, Smart Cities, or Open Innovation with ₹1.5L+ in prizes.",
+    url: "https://www.codebreakersgcek.tech/problem-statements",
+    images: [{ url: "/cbhack.png", width: 1200, height: 630, alt: "HACKVERSE '26 Problem Statements" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Official Problem Statements // HACKVERSE '26",
+    description:
+      "Choose your battle arena: AI/ML, Cyber Security, Web3, Smart Cities, or Open Innovation with ₹1.5L+ in prizes.",
+    images: ["/cbhack.png"],
+  },
 };
 
 export default function ProblemStatementsPage() {

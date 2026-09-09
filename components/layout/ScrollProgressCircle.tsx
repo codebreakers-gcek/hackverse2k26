@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 
 export function ScrollProgressCircle() {
+  const pathname = usePathname();
   const { scrollY, scrollYProgress } = useScroll();
   const [percent, setPercent] = useState(0);
   const [visible, setVisible] = useState(false);
@@ -35,6 +37,10 @@ export function ScrollProgressCircle() {
       behavior: "smooth",
     });
   };
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <AnimatePresence>

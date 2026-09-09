@@ -25,22 +25,22 @@ export function SectionTitle({
   };
 
   return (
-    <div className={clsx("flex flex-col mb-12", alignStyles[align], className)}>
+    <div className={clsx("flex flex-col mb-6 sm:mb-12 w-full max-w-full overflow-hidden px-1", alignStyles[align], className)}>
       {tag && (
-        <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-black text-white border-2 border-black shadow-neo-sm mb-3 inline-block">
+        <span className="font-mono text-[10px] sm:text-xs font-black uppercase px-2 sm:px-3 py-1 bg-black text-white border-2 border-black shadow-neo-sm mb-2 sm:mb-3 inline-block max-w-full truncate">
           [{tag}]
         </span>
       )}
-      <h2 className="font-black text-3xl sm:text-5xl lg:text-6xl text-black uppercase tracking-tight leading-tight">
+      <h2 className="font-black text-xl xs:text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-black uppercase tracking-tight leading-tight break-words max-w-full">
         {title}{" "}
         {highlightText && (
-          <span className="inline-block bg-neo-secondary px-2 border-3 border-black shadow-neo-sm rotate-1 text-black">
+          <span className="inline-block bg-neo-secondary px-1.5 sm:px-2 border-2 sm:border-3 border-black shadow-neo-sm rotate-1 text-black mt-1 sm:mt-0">
             {highlightText}
           </span>
         )}
       </h2>
       {subtitle && (
-        <p className="mt-4 max-w-2xl text-base sm:text-lg font-bold text-black/75 leading-relaxed">
+        <p className="mt-2.5 sm:mt-4 max-w-2xl text-xs sm:text-base md:text-lg font-bold text-black/75 leading-relaxed break-words">
           {subtitle}
         </p>
       )}

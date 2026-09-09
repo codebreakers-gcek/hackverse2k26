@@ -1,6 +1,5 @@
 import React from "react";
-import Link from "next/link";
-import { ArrowRight, Eye, Code2 } from "lucide-react";
+import { Eye, Code2, ArrowRight } from "lucide-react";
 import { ProblemStatement } from "@/types/problemStatement";
 
 export interface ProblemStatementCardProps {
@@ -16,7 +15,10 @@ export function ProblemStatementCard({ problem, onOpenDetails }: ProblemStatemen
   };
 
   return (
-    <div className="border-4 border-black bg-white shadow-neo hover:-translate-y-2 hover:shadow-neo-lg transition-all duration-150 flex flex-col justify-between rounded-none">
+    <div
+      onClick={() => onOpenDetails(problem)}
+      className="border-4 border-black bg-white shadow-neo hover:-translate-y-2 hover:shadow-neo-lg transition-all duration-150 flex flex-col justify-between rounded-none group cursor-pointer"
+    >
       {/* Card Header Strip */}
       <div className="bg-neo-bg border-b-4 border-black p-4 flex items-center justify-between gap-2">
         <span className="font-mono text-xs font-black uppercase px-2 py-0.5 bg-black text-white border border-black">
@@ -40,7 +42,7 @@ export function ProblemStatementCard({ problem, onOpenDetails }: ProblemStatemen
           <div className="font-mono text-[11px] font-bold text-black/60 uppercase">
             {problem.domain}
           </div>
-          <h3 className="font-black text-xl text-black uppercase tracking-tight leading-snug mt-1 mb-3 line-clamp-2">
+          <h3 className="font-black text-xl text-black uppercase tracking-tight leading-snug mt-1 mb-3 line-clamp-2 group-hover:text-black">
             {problem.title}
           </h3>
           <p className="text-sm font-bold text-black/80 leading-relaxed line-clamp-3">
@@ -51,7 +53,7 @@ export function ProblemStatementCard({ problem, onOpenDetails }: ProblemStatemen
         {/* Suggested Tech Stack Pills */}
         <div className="pt-3 border-t-2 border-black/15">
           <div className="flex items-center gap-1 font-mono text-[10px] font-black uppercase text-black/60 mb-2">
-            <Code2 className="w-3.5 h-3.5" />
+            <Code2 className="w-3.5 h-3.5 stroke-[2.5px]" />
             <span>TECH STACK:</span>
           </div>
           <div className="flex flex-wrap gap-1.5">
@@ -72,24 +74,20 @@ export function ProblemStatementCard({ problem, onOpenDetails }: ProblemStatemen
         </div>
       </div>
 
-      {/* Card Footer Actions */}
-      <div className="border-t-4 border-black grid grid-cols-2 bg-neo-bg">
+      {/* Card Footer Action: Full Width View Details Button */}
+      <div className="border-t-4 border-black bg-neo-bg">
         <button
           type="button"
-          onClick={() => onOpenDetails(problem)}
-          className="py-3 px-2 text-center font-black text-xs uppercase tracking-wider text-black hover:bg-neutral-200 border-r-2 border-black transition-colors flex items-center justify-center gap-1"
+          onClick={(e) => {
+            e.stopPropagation();
+            onOpenDetails(problem);
+          }}
+          className="w-full py-3.5 px-4 text-center font-black text-xs sm:text-sm uppercase tracking-wider bg-neo-secondary text-black hover:bg-neo-accent transition-all flex items-center justify-center gap-2 group-hover:bg-neo-accent"
         >
-          <Eye className="w-3.5 h-3.5 stroke-[3px]" />
-          <span>DETAILS</span>
+          <Eye className="w-4 h-4 stroke-[3px] group-hover:scale-110 transition-transform" />
+          <span>VIEW FULL DETAILS</span>
+          <ArrowRight className="w-4 h-4 stroke-[3px] group-hover:translate-x-1 transition-transform" />
         </button>
-
-        <Link
-          href={`/register?psId=${encodeURIComponent(problem.id)}`}
-          className="py-3 px-2 text-center font-black text-xs uppercase tracking-wider bg-neo-secondary text-black hover:bg-neo-accent transition-colors flex items-center justify-center gap-1"
-        >
-          <span>SELECT &amp; APPLY</span>
-          <ArrowRight className="w-3.5 h-3.5 stroke-[3px]" />
-        </Link>
       </div>
     </div>
   );

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import Image from "next/image";
 
 export function GsapLoader() {
   const [isRendered, setIsRendered] = useState(true);
@@ -42,7 +43,7 @@ export function GsapLoader() {
       tl.fromTo(
         contentRef.current,
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" }
+        { opacity: 1, y: 0, duration: 0.4, ease: "power3.out" },
       );
 
       // Title smooth initial reveal
@@ -50,7 +51,7 @@ export function GsapLoader() {
         titleRef.current,
         { opacity: 0, x: -30 },
         { opacity: 1, x: 0, duration: 0.5, ease: "power3.out" },
-        "-=0.2"
+        "-=0.2",
       );
 
       // 2. Smooth Counter Animation (0 -> 100) with custom ease
@@ -69,21 +70,26 @@ export function GsapLoader() {
             if (statusTextRef.current) {
               const msgIndex = Math.min(
                 Math.floor((current / 100) * statusMessages.length),
-                statusMessages.length - 1
+                statusMessages.length - 1,
               );
               statusTextRef.current.innerText = `> ${statusMessages[msgIndex]}`;
             }
           },
         },
-        "-=0.3"
+        "-=0.3",
       );
 
       // 3. Progress Bar Fill
       tl.fromTo(
         progressFillRef.current,
         { scaleX: 0 },
-        { scaleX: 1, duration: 1.6, ease: "power2.inOut", transformOrigin: "left center" },
-        "<"
+        {
+          scaleX: 1,
+          duration: 1.6,
+          ease: "power2.inOut",
+          transformOrigin: "left center",
+        },
+        "<",
       );
 
       // 4. Brief hold at 100%
@@ -96,12 +102,13 @@ export function GsapLoader() {
       tl.to(
         titleRef.current,
         {
-          x: () => (typeof window !== "undefined" ? window.innerWidth * 0.65 : "65vw"),
+          x: () =>
+            typeof window !== "undefined" ? window.innerWidth * 0.65 : 500,
           opacity: 0,
           duration: 1.1,
           ease: "power2.inOut",
         },
-        "exit"
+        "exit",
       );
 
       // 6. Smooth Curtain Slide Up: Main Container + Trailing Yellow Wipe
@@ -112,7 +119,7 @@ export function GsapLoader() {
           duration: 0.85,
           ease: "power4.inOut",
         },
-        "exit+=0.8"
+        "exit+=0.8",
       );
 
       tl.to(
@@ -122,7 +129,7 @@ export function GsapLoader() {
           duration: 0.85,
           ease: "power4.inOut",
         },
-        "exit+=0.9"
+        "exit+=0.9",
       );
     });
 
@@ -157,14 +164,27 @@ export function GsapLoader() {
         />
 
         {/* Content Container */}
-        <div ref={contentRef} className="relative z-10 flex flex-col justify-between h-full">
+        <div
+          ref={contentRef}
+          className="relative z-10 flex flex-col justify-between h-full"
+        >
           {/* Top Bar */}
           <div className="flex items-center justify-between border-b-2 border-white/20 pb-4">
-            <div className="flex items-center gap-2.5">
-              <span className="w-3 h-3 bg-emerald-400 border border-black animate-pulse" />
-              <span className="font-mono text-xs sm:text-sm font-black uppercase tracking-wider text-neutral-300">
-                CODEBREAKERS // GCEK PROTOCOL
-              </span>
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 p-0.5 flex items-center justify-center shadow-neo-sm overflow-hidden shrink-0">
+                <Image
+                  src="/cblogo.png"
+                  alt="HACKVERSE '26 Main Logo"
+                  width={36}
+                  height={36}
+                  className="w-full h-full object-contain select-none"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-mono text-xs sm:text-sm font-black uppercase tracking-wider text-neutral-200">
+                  CODEBREAKERS // GCEK PROTOCOL
+                </span>
+              </div>
             </div>
             <div className="font-mono text-[11px] sm:text-xs font-bold text-neutral-400 uppercase tracking-widest hidden sm:block">
               LOC: 19.91°N 83.16°E // BHAWANIPATNA
@@ -214,7 +234,10 @@ export function GsapLoader() {
 
               {/* Status Ticker */}
               <div className="flex items-center justify-between text-xs font-mono font-bold text-neutral-400 pt-1">
-                <div ref={statusTextRef} className="text-emerald-400 tracking-wider">
+                <div
+                  ref={statusTextRef}
+                  className="text-emerald-400 tracking-wider"
+                >
                   &gt; INITIALIZING...
                 </div>
                 <div className="hidden sm:block text-neutral-500 uppercase">
@@ -227,14 +250,11 @@ export function GsapLoader() {
           {/* Bottom Bar Details */}
           <div className="border-t-2 border-white/20 pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-neutral-400 font-mono text-xs">
             <div className="flex items-center gap-4">
-              <span>PRIZE: ₹1,50,000+</span>
+              <span>PRIZE: ₹35K+</span>
               <span className="hidden sm:inline text-white/30">•</span>
               <span>TEAMS: 100+ CODES</span>
               <span className="hidden sm:inline text-white/30">•</span>
               <span>ARENAS: AI, WEB, CYBER, IOT</span>
-            </div>
-            <div className="text-neutral-500 text-[11px] uppercase">
-              POWERED BY GSAP SMOOTH MOTION
             </div>
           </div>
         </div>

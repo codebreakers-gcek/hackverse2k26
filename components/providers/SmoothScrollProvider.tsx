@@ -19,6 +19,11 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       infinite: false,
     });
 
+    if (typeof window !== "undefined") {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).__lenis = lenis;
+    }
+
     let animationFrameId: number;
 
     function raf(time: number) {
@@ -30,6 +35,10 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
 
     return () => {
       cancelAnimationFrame(animationFrameId);
+      if (typeof window !== "undefined") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        delete (window as any).__lenis;
+      }
       lenis.destroy();
     };
   }, []);

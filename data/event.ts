@@ -2,25 +2,26 @@ import { EventInfo } from "@/types/event";
 
 export const EVENT_DATA: EventInfo = {
   name: "HACKVERSE '26",
-  edition: "Tech Feast Hackathon 2026",
+  edition: "Tech Fest Hackathon 2026",
   tagline: "BREAK CODE. FORGE REALITY. ELEVATE TOMORROW.",
   shortDescription:
-    "The flagship annual STATE technology festival and hackathon organized by CODEBREAKERS, Government College of Engineering Kalahandi. 36 hours of intense prototyping, competitive engineering, and breakthrough innovation.",
+    "The flagship annual STATE technology festival and hackathon organized by CODEBREAKERS,an official Coding and Technical club of Government College of Engineering Kalahandi. 36 hours of intense prototyping, competitive engineering, and breakthrough innovation.",
   fullDescription:
-    "HACKVERSE '26 brings together the sharpest student minds, developers, designers, and tech enthusiasts across India. Organized by CodeBreakers—the official coding club of Government College of Engineering Kalahandi (GCEK)—this 3-day tech carnival features high-stakes hackathons, algorithmic code combats, hardware expositions, and direct mentorship from top industry engineers.",
-  startDate: "2026-10-16T09:00:00+05:30",
-  endDate: "2026-10-18T18:00:00+05:30",
-  displayDates: "OCTOBER 16 - 18, 2026",
+    "HACKVERSE '26 brings together the sharpest student minds, developers, designers, and tech enthusiasts across Odisha. Organized by CodeBreakers—the official coding club of Government College of Engineering Kalahandi (GCEK)—this 3-day tech carnival features high-stakes hackathons, algorithmic code combats, hardware expositions, and direct mentorship from top industry engineers.",
+  startDate: "2026-10-08T09:00:00+05:30",
+  endDate: "2026-10-10T18:00:00+05:30",
+  displayDates: "OCTOBER 08 - 10, 2026",
   location: {
     campus: "Government College of Engineering Kalahandi",
     venue: "Main Auditorium & Computing Lab Complex",
     city: "Bhawanipatna",
     state: "Odisha",
     postalCode: "766002",
-    googleMapsUrl: "https://maps.google.com/?q=Government+College+of+Engineering+Kalahandi",
+    googleMapsUrl:
+      "https://maps.google.com/?q=Government+College+of+Engineering+Kalahandi",
   },
-  registrationDeadline: "OCTOBER 10, 2026 // 23:59 IST",
-  totalPrizePool: "₹1,50,000+",
+  registrationDeadline: "SEPTEMBER 25, 2026 // 23:59 IST",
+  totalPrizePool: "₹35K",
   organizer: {
     name: "CodeBreakers GCEK",
     club: "CodeBreakers - The Premier Coding Club of GCEK",
@@ -36,10 +37,10 @@ export const EVENT_DATA: EventInfo = {
     },
   },
   stats: [
-    { label: "PRIZE POOL", value: "₹1,50,000+", change: "CASH & PERKS" },
+    { label: "PRIZE POOL", value: "₹35K+", change: "CASH & PERKS" },
     { label: "HACKATHON HOURS", value: "36 HRS", change: "NON-STOP" },
-    { label: "EXPECTED TEAMS", value: "120+", change: "PAN-INDIA" },
-    { label: "COMMUNITY DEVELOPERS", value: "500+", change: "GCEK ACTIVE" },
+    { label: "EXPECTED TEAMS", value: "60+", change: "PAN-ODISHA" },
+    { label: "COMMUNITY DEVELOPERS", value: "300+", change: "GCEK ACTIVE" },
   ],
   tracks: [
     {
@@ -103,7 +104,7 @@ export const EVENT_DATA: EventInfo = {
   prizes: [
     {
       position: "FIRST PLACE // CHAMPION",
-      amount: "₹60,000",
+      amount: "₹20K",
       perks: [
         "Official Champion Trophy & Gold Medals",
         "Direct Tech Interview Referrals",
@@ -114,7 +115,7 @@ export const EVENT_DATA: EventInfo = {
     },
     {
       position: "RUNNER UP // 2ND PLACE",
-      amount: "₹40,000",
+      amount: "₹10K",
       perks: [
         "Silver Medals & Certificates of Excellence",
         "Mentorship Sprint with Industry Leaders",
@@ -124,22 +125,13 @@ export const EVENT_DATA: EventInfo = {
     },
     {
       position: "THIRD PLACE // 2ND RUNNER UP",
-      amount: "₹25,000",
+      amount: "₹5K",
       perks: [
         "Bronze Medals & Certificates of Excellence",
         "Premium Developer Subscriptions",
         "Exclusive CodeBreakers Merch Kit",
       ],
       color: "muted",
-    },
-    {
-      position: "BEST ALL-WOMEN / SPECIAL TRACKS",
-      amount: "₹25,000",
-      perks: [
-        "Track Winners: Best UI/UX, Best AI/ML Solution, Best Hardware/IoT Prototype",
-        "Commendation Certificates & Swag Bags",
-      ],
-      color: "white",
     },
   ],
 };

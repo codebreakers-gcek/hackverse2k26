@@ -1,10 +1,16 @@
 "use client";
 
 import React from "react";
+import { usePathname } from "next/navigation";
 import { motion, useReducedMotion } from "framer-motion";
 
 export function AmbientCodeShapes() {
+  const pathname = usePathname();
   const shouldReduceMotion = useReducedMotion();
+
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
 
   return (
     <div
@@ -31,7 +37,8 @@ export function AmbientCodeShapes() {
         className="absolute top-28 left-[3%] sm:left-[6%] opacity-35 blur-[1.5px]"
       >
         <div className="font-mono text-xs bg-black/5 p-3 rounded-lg border border-black/15 shadow-sm text-neutral-800">
-          <span className="text-emerald-700 font-bold">$</span> cargo run --release --hackverse
+          <span className="text-emerald-700 font-bold">$</span> cargo run
+          --release --hackverse
         </div>
       </motion.div>
 
@@ -45,12 +52,17 @@ export function AmbientCodeShapes() {
                 rotate: [2, -1, 2],
               }
         }
-        transition={{ duration: 11, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+        transition={{
+          duration: 11,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1,
+        }}
         className="absolute top-72 right-[3%] sm:right-[5%] opacity-30 blur-[2px]"
       >
         <div className="font-mono text-xs bg-neo-secondary/20 p-3 rounded-xl border border-black/10 text-neutral-900">
           <div className="font-bold">&#123; arena: &quot;36h-sprint&quot;,</div>
-          <div className="font-bold pl-4">bountyPool: 150000 &#125;</div>
+          <div className="font-bold pl-4">bountyPool: 35K &#125;</div>
         </div>
       </motion.div>
 
@@ -64,7 +76,12 @@ export function AmbientCodeShapes() {
                 scale: [1, 1.04, 1],
               }
         }
-        transition={{ duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }}
+        transition={{
+          duration: 12,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 2,
+        }}
         className="absolute top-[42%] left-[2%] opacity-15 blur-[2.5px]"
       >
         <div className="font-mono text-7xl sm:text-8xl font-black text-black">
@@ -82,7 +99,12 @@ export function AmbientCodeShapes() {
                 rotate: [-1, 2, -1],
               }
         }
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 0.5,
+        }}
         className="absolute top-[58%] right-[2%] sm:right-[4%] opacity-25 blur-[1.5px]"
       >
         <div className="font-mono text-[11px] bg-neo-accent/15 p-2.5 rounded-lg border border-black/10 tracking-widest text-neutral-900 font-bold">
@@ -102,7 +124,12 @@ export function AmbientCodeShapes() {
                 rotate: [1, -1, 1],
               }
         }
-        transition={{ duration: 8.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+        transition={{
+          duration: 8.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 1.5,
+        }}
         className="absolute top-[75%] left-[4%] opacity-25 blur-[2px]"
       >
         <div className="font-mono text-xs bg-neo-muted/25 p-3 rounded-lg border border-black/10 text-emerald-950 font-bold">
@@ -124,7 +151,12 @@ export function AmbientCodeShapes() {
                 rotate: [2, -2, 2],
               }
         }
-        transition={{ duration: 10.5, repeat: Infinity, ease: "easeInOut", delay: 3 }}
+        transition={{
+          duration: 10.5,
+          repeat: Infinity,
+          ease: "easeInOut",
+          delay: 3,
+        }}
         className="absolute top-[88%] right-[5%] opacity-25 blur-[1.5px]"
       >
         <div className="font-mono text-xs bg-white/40 p-2.5 rounded-md border border-black/10 text-neutral-800 font-bold">

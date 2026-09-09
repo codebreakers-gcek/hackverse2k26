@@ -126,14 +126,6 @@ export function ProblemStatementModal({ problem, isOpen, onClose }: ProblemState
 
         {/* Modal Action CTA */}
         <div className="pt-4 border-t-3 border-black flex flex-col sm:flex-row items-center justify-between gap-4">
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-full sm:w-auto px-6 py-3 font-black text-xs uppercase tracking-wider border-3 border-black bg-white hover:bg-neutral-100 transition-colors"
-          >
-            CLOSE SPEC
-          </button>
-
           <Link
             href={`/register?psId=${encodeURIComponent(problem.id)}`}
             onClick={onClose}

@@ -40,13 +40,25 @@ export function ClubMilestones() {
         {/* Institution / Club Profile Sidebar */}
         <div className="space-y-6">
           <div className="border-4 border-black bg-neo-muted p-6 shadow-neo">
-            <div className="flex items-center gap-2 mb-2">
-              <Terminal className="w-5 h-5 stroke-[3px]" />
-              <span className="font-mono text-xs font-black uppercase">COMMUNITY HUB</span>
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-9 h-9 bg-black border-2 border-black p-0.5 flex items-center justify-center shadow-neo-sm overflow-hidden shrink-0">
+                <img
+                  src="/cblogo.png"
+                  alt="CodeBreakers Logo"
+                  width={32}
+                  height={32}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div>
+                <span className="font-mono text-[10px] font-black uppercase text-black/70 block">
+                  COMMUNITY HUB
+                </span>
+                <h4 className="font-black text-lg text-black uppercase leading-tight">
+                  CODEBREAKERS GCEK
+                </h4>
+              </div>
             </div>
-            <h4 className="font-black text-xl text-black uppercase mb-2">
-              CODEBREAKERS GCEK
-            </h4>
             <p className="text-xs font-bold text-black/80 leading-relaxed mb-4">
               {ABOUT_DATA.club.bio}
             </p>
