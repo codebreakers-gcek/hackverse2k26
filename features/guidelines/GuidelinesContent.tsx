@@ -236,7 +236,7 @@ export function GuidelinesContent() {
               </div>
             </motion.div>
 
-            {/* Card 2: Team Name Restriction (DANGER) */}
+            {/* Card 2: Student Status & Authentic Credentials */}
             <motion.div
               whileHover={
                 shouldReduceMotion
@@ -244,26 +244,23 @@ export function GuidelinesContent() {
                   : { y: -4, boxShadow: "8px 8px 0px 0px #000" }
               }
               transition={{ duration: 0.15 }}
-              className="border-4 border-black bg-rose-50 p-5 shadow-neo border-l-8 border-l-rose-600 flex flex-col justify-between"
+              className="border-4 border-black bg-white p-5 shadow-neo flex flex-col justify-between"
             >
               <div className="space-y-3">
-                <div className="w-12 h-12 bg-rose-500 text-white border-3 border-black shadow-neo-sm flex items-center justify-center">
-                  <AlertOctagon className="w-6 h-6 text-white stroke-[3px]" />
+                <div className="w-12 h-12 bg-amber-400 border-3 border-black shadow-neo-sm flex items-center justify-center">
+                  <ShieldCheck className="w-6 h-6 text-black stroke-[3px]" />
                 </div>
-                <h3 className="font-black text-lg sm:text-xl text-rose-950 uppercase tracking-tight">
-                  Anonymous Team Name
+                <h3 className="font-black text-lg sm:text-xl text-black uppercase tracking-tight">
+                  Verified Enrollment
                 </h3>
-                <p className="text-sm font-bold text-rose-950 leading-snug">
-                  <strong className="font-black underline">
-                    STRICT ZERO-TOLERANCE:
-                  </strong>{" "}
-                  Team names <strong className="font-black">CANNOT</strong>{" "}
-                  contain your college name, acronym, or initials.
+                <p className="text-sm font-bold text-black/80 leading-snug">
+                  All team members must carry valid institutional student ID cards
+                  or proof of enrollment for physical check-in and pass verification.
                 </p>
               </div>
-              <div className="mt-4 pt-3 border-t-2 border-rose-300 font-mono text-[11px] font-black uppercase text-rose-900 flex items-center gap-1.5">
-                <AlertTriangle className="w-4 h-4 text-rose-600 stroke-[3px]" />
-                <span>Instant Disqualification</span>
+              <div className="mt-4 pt-3 border-t-2 border-black/15 font-mono text-[11px] font-black uppercase text-black/70 flex items-center gap-1.5">
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 stroke-[3px]" />
+                <span>Physical ID Required</span>
               </div>
             </motion.div>
 
@@ -339,7 +336,7 @@ export function GuidelinesContent() {
                   OFFICIAL RULEBOOK EXPLORER
                 </h2>
                 <p className="font-mono text-xs font-bold text-black/70 mt-0.5">
-                  Explore all 19 official directives or filter by category &
+                  Explore all 18 official directives or filter by category &
                   keyword
                 </p>
               </div>
@@ -369,7 +366,7 @@ export function GuidelinesContent() {
           {/* Filter Tabs Bar */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
             {[
-              { id: "all" as const, label: "ALL RULES (19)", icon: Layers },
+              { id: "all" as const, label: "ALL RULES (18)", icon: Layers },
               {
                 id: "team-eligibility" as const,
                 label: "TEAM & ELIGIBILITY",
@@ -744,13 +741,13 @@ export function GuidelinesContent() {
               <div className="flex items-center gap-2.5 text-rose-950">
                 <AlertOctagon className="w-6 h-6 text-rose-600 stroke-[3px]" />
                 <h3 className="font-black text-lg uppercase tracking-tight">
-                  Team Name Masking
+                  Plagiarism &amp; Impersonation
                 </h3>
               </div>
               <p className="text-sm font-bold text-rose-950 leading-relaxed">
-                Using your college/university name, initials, abbreviation, or
-                identifiable insignia in your squad name is strictly banned to
-                preserve 100% blind jury evaluation.
+                Copying pre-existing projects without attribution, presenting
+                unauthorized work, or submitting proxy credentials will trigger
+                immediate disqualified status.
               </p>
             </div>
 

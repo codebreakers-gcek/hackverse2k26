@@ -37,7 +37,14 @@ export async function POST(req: NextRequest) {
     const randomSuffix = Math.floor(100000 + Math.random() * 900000);
     const registrationNumber = `HV26-${randomSuffix}`;
 
-    // 3. Save into Supabase PostgreSQL using Prisma
+    // Determine actual fee amount from admin system settings
+    const paymentMode = data.paymentDetails?.paymentMode || "FREE_SPONSORED";
+    const feeAmount =
+      paymentMode === "FREE_SPONSORED"
+        ? 0
+        : Number(settings?.registrationFee ?? (data.paymentDetails as any)?.amount ?? 0);
+
+    // 4. Save into Supabase PostgreSQL using Prisma
     const newRegistration = await prisma.teamRegistration.create({
       data: {
         registrationNumber,
@@ -62,36 +69,39 @@ export async function POST(req: NextRequest) {
         // Members JSON
         members: data.members as any,
 
-        // Payment
-        paymentMode: data.paymentDetails?.paymentMode || "FREE_SPONSORED",
+        // Payment Details with exact admin fee
+        paymentMode: paymentMode,
         transactionId: data.paymentDetails?.transactionId || null,
-        paymentStatus: data.paymentDetails?.paymentMode === "FREE_SPONSORED" ? "FREE_TIER" : "PENDING",
+        paymentStatus: paymentMode === "FREE_SPONSORED" ? "FREE_TIER" : "PENDING",
+        amount: feeAmount,
 
         // Document Uploads
         documents: data.documentUploads as any,
       },
     });
 
-    // 4. Trigger Resend Email in background (Registration Received & Payment Receipt)
-    sendRegistrationSubmissionEmail({
-      registrationNumber: newRegistration.registrationNumber,
-      teamName: newRegistration.teamName,
-      collegeName: newRegistration.collegeName,
-      leaderName: newRegistration.leaderName,
-      leaderEmail: newRegistration.leaderEmail,
-      leaderPhone: newRegistration.leaderPhone,
-      problemStatementId: newRegistration.problemStatementId,
-      members: data.members,
-      paymentDetails: {
-        paymentMode: newRegistration.paymentMode || undefined,
-        transactionId: newRegistration.transactionId,
-        paymentStatus: newRegistration.paymentStatus || undefined,
-        amount: (data.paymentDetails as any)?.amount,
-      },
-      accommodationRequired: Boolean((data as any).accommodationRequired || (data as any).accommodationRequested),
-    }).catch((emailErr) => {
+    // 5. Instantly Dispatch Registration Confirmation Email via Resend
+    try {
+      await sendRegistrationSubmissionEmail({
+        registrationNumber: newRegistration.registrationNumber,
+        teamName: newRegistration.teamName,
+        collegeName: newRegistration.collegeName,
+        leaderName: newRegistration.leaderName,
+        leaderEmail: newRegistration.leaderEmail,
+        leaderPhone: newRegistration.leaderPhone,
+        problemStatementId: newRegistration.problemStatementId,
+        members: data.members,
+        paymentDetails: {
+          paymentMode: newRegistration.paymentMode || undefined,
+          transactionId: newRegistration.transactionId,
+          paymentStatus: newRegistration.paymentStatus || undefined,
+          amount: feeAmount,
+        },
+        accommodationRequired: Boolean((data as any).accommodationRequired || (data as any).accommodationRequested),
+      });
+    } catch (emailErr) {
       console.warn("Could not dispatch registration email:", emailErr);
-    });
+    }
 
     return NextResponse.json(
       {

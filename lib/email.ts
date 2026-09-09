@@ -464,7 +464,7 @@ export async function sendRegistrationApprovedEmail(data: RegistrationEmailData)
     const res = await resend.emails.send({
       from: RESEND_FROM_EMAIL,
       to: recipients,
-      subject: `🎉 [APPROVED] HACKVERSE '26 Entry Pass & Official Invoice: ${data.teamName} (${data.registrationNumber})`,
+      subject: `🎉 HACKVERSE '26 Entry Pass & Official Invoice: ${data.teamName} (${data.registrationNumber})`,
       html,
       attachments: attachments.length > 0 ? attachments : undefined,
     });
