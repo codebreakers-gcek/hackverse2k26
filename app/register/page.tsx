@@ -4,9 +4,26 @@ import { RegistrationForm } from "@/features/registration/RegistrationForm";
 import { SectionTitle } from "@/components/common/SectionTitle";
 
 export const metadata: Metadata = {
-  title: "Register Team // HACKVERSE '26",
+  title: "Squad Registration Portal & Verification Dossier",
   description:
-    "Register your team for HACKVERSE '26 STATE Tech Fest & Hackathon. Zero registration fee. Free food and certificates for all qualifiers.",
+    "Enroll your squad (1-4 members) for HACKVERSE '26 State Hackathon at GCEK Kalahandi. Secure your entry pass, select challenges, and unlock ₹1,50,000+ in rewards.",
+  alternates: {
+    canonical: "https://www.codebreakersgcek.tech/register",
+  },
+  openGraph: {
+    title: "Squad Registration // HACKVERSE '26",
+    description:
+      "Form a team of 1 to 4 members. Submit your team leader details, problem statement preference, and member credentials.",
+    url: "https://www.codebreakersgcek.tech/register",
+    images: [{ url: "/cbhack.png", width: 1200, height: 630, alt: "HACKVERSE '26 Registration" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Squad Registration // HACKVERSE '26",
+    description:
+      "Form a team of 1 to 4 members. Submit your team leader details, problem statement preference, and member credentials.",
+    images: ["/cbhack.png"],
+  },
 };
 
 export default function RegisterPage() {

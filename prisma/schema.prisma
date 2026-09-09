@@ -1,0 +1,157 @@
+// Prisma schema for HACKVERSE '26
+// Database: Supabase PostgreSQL
+// Authentication: Better Auth with Google & GitHub OAuth
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Better Auth Models
+model User {
+  id            String   @id @default(cuid())
+  name          String
+  email         String   @unique
+  emailVerified Boolean  @default(false)
+  image         String?
+  role          String   @default("user") // "user" | "admin" | "judge"
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  sessions      Session[]
+  accounts      Account[]
+  registrations TeamRegistration[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Account {
+  id                    String    @id @default(cuid())
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  idToken               String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([providerId, accountId])
+  @@map("accounts")
+}
+
+model Verification {
+  id         String   @id @default(cuid())
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verifications")
+}
+
+// Hackathon Team Registrations
+model TeamRegistration {
+  id                 String  @id @default(cuid())
+  registrationNumber String  @unique // e.g. "HV26-482910"
+  teamName           String
+  collegeName        String
+  collegeAddress     Json? // street, city, state, pincode
+  problemStatementId String?
+  status             String  @default("PENDING_VERIFICATION") // "CONFIRMED" | "PENDING_VERIFICATION" | "REJECTED"
+
+  // Leader info
+  leaderName         String
+  leaderEmail        String
+  leaderPhone        String
+  leaderWhatsapp     String?
+  leaderDob          String?
+  leaderBranch       String
+  leaderCustomBranch String?
+  leaderYear         String
+  leaderRole         String?
+  leaderGithub       String?
+
+  // Members stored as JSON
+  members Json @default("[]")
+
+  // Payment Details
+  paymentMode   String? @default("FREE_SPONSORED")
+  transactionId String?
+  paymentStatus String? @default("FREE_TIER") // "VERIFIED" | "PENDING" | "REJECTED" | "FREE_TIER"
+  amount        Int?    @default(0)
+
+  // Accommodation Details
+  accommodationRequired Boolean @default(false)
+  accommodationStatus   String  @default("NOT_REQUESTED") // "REQUESTED" | "ALLOCATED" | "REJECTED" | "NOT_REQUESTED"
+  roomNumber            String?
+  hostelBlock           String?
+
+  // Document Uploads
+  documents Json? // collegeIdFileName, synopsisFileName, githubRepoUrl
+
+  // Optional link to logged-in user
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("team_registrations")
+}
+
+model SystemSettings {
+  id                           String  @id @default("default")
+  upiId                        String  @default("codebreakers@upi")
+  payeeName                    String  @default("HACKVERSE 2026 GCEK")
+  registrationFee              Int     @default(0) // 0 for Free Tier or ₹ amount
+  isPaymentMandatory           Boolean @default(false)
+  isRegistrationOpen           Boolean @default(true)
+  isProblemStatementsPublished Boolean @default(true)
+  minSquadSize                 Int     @default(2)
+  maxSquadSize                 Int     @default(4)
+  contactPhone                 String? @default("+91 9876543210")
+  contactEmail                 String? @default("hackverse26@codebreakersgcek.tech")
+
+  // Google Drive Cloud Storage Settings (OAuth & Service Account)
+  googleDriveEnabled            Boolean @default(false)
+  googleDriveAuthType           String? @default("oauth") // "oauth" | "service_account"
+  googleDriveConnectedEmail     String? @default("")
+  googleDriveRefreshToken       String? @default("")
+  googleDriveAccessToken        String? @default("")
+  googleDriveTokenExpiry        BigInt?
+  googleDriveFolderId           String? @default("")
+  googleDriveFolderName         String? @default("HACKVERSE 2026 Team Uploads")
+  googleDriveClientEmail        String? @default("")
+  googleDrivePrivateKey         String? @default("")
+  googleDriveServiceAccountJson String? @default("")
+
+  updatedAt DateTime @updatedAt
+
+  @@map("system_settings")
+}

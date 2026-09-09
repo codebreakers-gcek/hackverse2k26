@@ -22,6 +22,7 @@ export interface ProblemStatement {
   constraints?: string[];
   evaluationFocus: string[];
   sponsorOrMentor?: string;
+  driveUrl?: string; // Google Drive / Document link placeholder
 }
 
 export interface ProblemFilterOptions {

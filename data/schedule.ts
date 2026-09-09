@@ -24,16 +24,16 @@ export const SCHEDULE_DATA: ScheduleData = {
   subtitle:
     "The complete event timeline for CodeBreakers 2026, including registration, mid-level evaluations, and the Grand Finale.",
   metaInfo: {
-    dates: "16th – 18th October 2026",
+    dates: "08th – 10th October 2026",
     venue: "Government College Of Engineering, Kalahandi, Bhawanipatna",
   },
   phases: [
     {
       phase: "Phase 1",
       title: "Launch & Registration",
-      startDate: "2026-09-10",
-      endDate: "2026-10-05",
-      displayDates: "10 Sep 2026 – 05 Oct 2026",
+      startDate: "2026-09-12",
+      endDate: "2026-09-25",
+      displayDates: "12 Sep 2026 – 25 Sep 2026",
       status: "upcoming" as const,
       progressPercentage: 0,
       items: [
@@ -60,9 +60,9 @@ export const SCHEDULE_DATA: ScheduleData = {
     {
       phase: "Phase 3",
       title: "Grand Finale at GCEK Campus",
-      startDate: "2026-10-16",
-      endDate: "2026-10-18",
-      displayDates: "16 Oct 2026 – 18 Oct 2026",
+      startDate: "2026-10-08",
+      endDate: "2026-10-10",
+      displayDates: "08 Oct 2026 – 10 Oct 2026",
       status: "upcoming" as const,
       progressPercentage: 0,
       items: [

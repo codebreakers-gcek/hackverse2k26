@@ -13,14 +13,13 @@ export interface MarqueeBannerProps {
 
 export function MarqueeBanner({
   items = [
-    "HACK NOVA '26",
+    "HACKVERSE '26",
     "36-HOUR SPRINT",
-    "₹1,50,000+ PRIZE POOL",
+    "₹35K+ PRIZE POOL",
     "CODEBREAKERS GCEK",
     "AI / ML TRACK",
     "CYBERSECURITY ARENA",
-    "ZERO REGISTRATION FEE",
-    "BHAVANIPATNA ODISHA",
+    "BHABANIPATNA ODISHA",
   ],
   bg = "secondary",
   speed = "normal",
@@ -40,13 +39,13 @@ export function MarqueeBanner({
   const bannerElement = (
     <div
       className={clsx(
-        "relative w-full overflow-hidden py-3.5 select-none flex items-center shadow-neo",
+        "relative w-full max-w-full overflow-hidden py-3.5 select-none flex items-center shadow-neo",
         bgStyles[bg],
         bended && "rotate-[-2deg] sm:rotate-[-1.5deg] scale-[1.03] my-4 shadow-neo-lg z-20",
         className
       )}
     >
-      <div className={clsx("flex items-center gap-8 whitespace-nowrap will-change-transform", animClass)}>
+      <div className={clsx("flex items-center gap-8 whitespace-nowrap will-change-transform min-w-0", animClass)}>
         {[...items, ...items, ...items, ...items].map((text, i) => (
           <div key={i} className="inline-flex items-center gap-6 font-black text-sm sm:text-base tracking-widest uppercase">
             <span>{text}</span>
@@ -59,7 +58,7 @@ export function MarqueeBanner({
 
   if (bended) {
     return (
-      <div className="relative w-full overflow-hidden py-3">
+      <div className="relative w-full max-w-full overflow-hidden py-3">
         {bannerElement}
       </div>
     );

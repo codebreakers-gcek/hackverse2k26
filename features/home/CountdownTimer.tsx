@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { EVENT_DATA } from "@/data/event";
 
 interface TimeLeft {
@@ -70,25 +70,25 @@ export function CountdownTimer() {
   ];
 
   return (
-    <div className="max-w-xl mx-auto my-6">
-      <div className="flex items-center justify-between font-mono text-xs font-black uppercase tracking-widest text-black mb-2 px-1">
+    <div className="max-w-xl mx-auto my-6 px-1">
+      <div className="flex flex-wrap items-center justify-between gap-1 font-mono text-[10px] xs:text-xs font-black uppercase tracking-wider sm:tracking-widest text-black mb-2">
         <span className="flex items-center gap-1.5">
           <span className="w-2.5 h-2.5 bg-neo-accent inline-block rounded-full border border-black shadow-neo-sm" />
           <span>HACKATHON KICKOFF IN:</span>
         </span>
-        <span>OCTOBER 16, 2026</span>
+        <span className="text-black/75">OCTOBER 8, 2026</span>
       </div>
 
-      <div className="grid grid-cols-4 gap-2 sm:gap-4">
+      <div className="grid grid-cols-4 gap-1.5 sm:gap-4">
         {units.map((unit) => (
           <div
             key={unit.label}
-            className={`border-4 border-black ${unit.color} p-2.5 sm:p-4 text-center shadow-neo-sm hover:-translate-y-0.5 transition-transform`}
+            className={`border-3 sm:border-4 border-black ${unit.color} p-2 sm:p-4 text-center shadow-neo-sm hover:-translate-y-0.5 transition-transform`}
           >
-            <div className="font-black text-2xl sm:text-4xl text-black leading-none font-mono">
+            <div className="font-black text-xl xs:text-2xl sm:text-4xl text-black leading-none font-mono">
               {unit.value}
             </div>
-            <div className="font-mono text-[9px] sm:text-xs font-black text-black tracking-widest uppercase mt-1">
+            <div className="font-mono text-[8px] xs:text-[9px] sm:text-xs font-black text-black tracking-wider uppercase mt-1">
               {unit.label}
             </div>
           </div>

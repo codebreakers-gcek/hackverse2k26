@@ -213,18 +213,18 @@ export function ScheduleContent() {
           variants={itemVariants}
           whileHover={shouldReduceMotion ? {} : { y: -2 }}
           transition={{ duration: 0.15 }}
-          className="border-4 border-black bg-neo-secondary p-8 sm:p-10 shadow-neo text-center space-y-4"
+          className="border-4 border-black bg-neo-secondary p-6 sm:p-10 shadow-neo text-center space-y-4"
         >
-          <div className="inline-flex items-center gap-2 font-mono text-xs font-black uppercase px-3 py-1 bg-black text-white border-2 border-black shadow-neo-sm">
+          <div className="inline-flex items-center gap-2 font-mono text-[10px] sm:text-xs font-black uppercase px-3 py-1 bg-black text-white border-2 border-black shadow-neo-sm">
             <Flame className="w-4 h-4 text-neo-accent" />
             COMPETITION ROADMAP
           </div>
 
-          <h3 className="font-black text-2xl sm:text-4xl text-black uppercase tracking-tight">
+          <h3 className="font-black text-xl xs:text-2xl sm:text-4xl text-black uppercase tracking-tight">
             READY TO START YOUR JOURNEY?
           </h3>
 
-          <p className="font-bold text-sm sm:text-base text-black/85 max-w-xl mx-auto">
+          <p className="font-bold text-xs sm:text-base text-black/85 max-w-xl mx-auto leading-relaxed">
             Join hundreds of collegiate innovators in this epic 36-hour coding adventure. Register your squad before the portal deadline!
           </p>
 
@@ -232,11 +232,11 @@ export function ScheduleContent() {
             <motion.div
               whileHover={shouldReduceMotion ? {} : { scale: 1.03 }}
               whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
-              className="inline-block"
+              className="inline-block w-full sm:w-auto"
             >
               <Link
                 href="/register"
-                className="inline-flex items-center gap-2 px-8 py-3.5 bg-black text-white font-black text-sm uppercase tracking-wider border-3 border-black shadow-neo-sm hover:bg-neutral-900 transition-all"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-black text-white font-black text-sm uppercase tracking-wider border-3 border-black shadow-neo-sm hover:bg-neutral-900 transition-all"
               >
                 <span>REGISTER NOW</span>
                 <ArrowRight className="w-4 h-4 stroke-[3px]" />

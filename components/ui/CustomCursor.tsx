@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { motion, useMotionValue, useSpring } from "framer-motion";
 
 export function CustomCursor() {
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isClicking, setIsClicking] = useState(false);
@@ -63,7 +65,8 @@ export function CustomCursor() {
     };
   }, [mouseX, mouseY, isVisible]);
 
-  if (!mounted || !isVisible) return null;
+  // Do not show custom cursor on admin dashboard or before mounting
+  if (!mounted || !isVisible || pathname?.startsWith("/admin")) return null;
 
   return (
     <div

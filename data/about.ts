@@ -88,7 +88,7 @@ export const ABOUT_DATA = {
       },
       {
         year: "2023",
-        event: "HACK NOVA INCEPTION",
+        event: "HACKVERSE'23 INCEPTION",
         detail: "Hosted the first edition of Hack Nova with 80+ participating teams and STATE recognition.",
       },
       {

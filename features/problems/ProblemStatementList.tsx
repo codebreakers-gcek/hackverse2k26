@@ -5,26 +5,41 @@ import { problemStatementService } from "@/services/problemStatementService";
 import { ProblemStatement, ProblemCategory, DifficultyLevel } from "@/types/problemStatement";
 import { ProblemStatementCard } from "./ProblemStatementCard";
 import { ProblemStatementFilters } from "./ProblemStatementFilters";
-import { ProblemStatementModal } from "./ProblemStatementModal";
+import { ProblemStatementSheet } from "./ProblemStatementSheet";
 import { AlertCircle, RotateCcw } from "lucide-react";
+import Link from "next/link";
 
 export function ProblemStatementList() {
   const [problems, setProblems] = useState<ProblemStatement[]>([]);
   const [loading, setLoading] = useState(true);
+  const [isPublished, setIsPublished] = useState<boolean>(false);
   const [activeCategory, setActiveCategory] = useState<ProblemCategory>("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeDifficulty, setActiveDifficulty] = useState<DifficultyLevel | "All">("All");
   const [selectedProblem, setSelectedProblem] = useState<ProblemStatement | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [sheetOpen, setSheetOpen] = useState(false);
 
   const categories = problemStatementService.getCategories();
 
   useEffect(() => {
     async function loadData() {
       setLoading(true);
-      const data = await problemStatementService.getAll();
-      setProblems(data);
-      setLoading(false);
+      try {
+        const [data, settingsRes] = await Promise.all([
+          problemStatementService.getAll(),
+          fetch("/api/settings", { cache: "no-store" }).then((r) => r.json()).catch(() => null),
+        ]);
+        setProblems(data);
+        if (settingsRes && settingsRes.success && settingsRes.settings) {
+          if (typeof settingsRes.settings.isProblemStatementsPublished === "boolean") {
+            setIsPublished(settingsRes.settings.isProblemStatementsPublished);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to load problem statement data", err);
+      } finally {
+        setLoading(false);
+      }
     }
     loadData();
   }, []);
@@ -58,11 +73,11 @@ export function ProblemStatementList() {
 
   const handleOpenDetails = (problem: ProblemStatement) => {
     setSelectedProblem(problem);
-    setModalOpen(true);
+    setSheetOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
+  const handleCloseSheet = () => {
+    setSheetOpen(false);
     setSelectedProblem(null);
   };
 
@@ -72,6 +87,57 @@ export function ProblemStatementList() {
     setActiveDifficulty("All");
   };
 
+  // When unpublished, show Coming Soon immediately (no loading screen)
+  if (!isPublished) {
+    return (
+      <div className="border-4 border-black bg-white p-8 sm:p-14 shadow-neo max-w-3xl mx-auto text-center space-y-6">
+        <div className="w-16 h-16 border-4 border-black bg-neo-accent flex items-center justify-center mx-auto shadow-neo">
+          <AlertCircle className="w-8 h-8 text-black stroke-[3px]" />
+        </div>
+
+        <div className="space-y-2">
+          <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-black text-white border-2 border-black inline-block shadow-neo-sm">
+            [COMING SOON // EMBARGO ACTIVE]
+          </span>
+          <h3 className="font-black text-2xl sm:text-4xl uppercase tracking-tight text-black">
+            PROBLEM STATEMENTS COMING SOON
+          </h3>
+          <p className="text-sm sm:text-base font-bold text-black/75 max-w-xl mx-auto leading-relaxed">
+            The official battle tracks and technical problem statements for <span className="text-black font-black">HACKVERSE &apos;26</span> are currently under embargo by the academic and technical evaluation committee. They will be revealed here soon!
+          </p>
+        </div>
+
+        <div className="p-4 bg-amber-50 border-3 border-black text-left font-mono text-xs space-y-2 max-w-lg mx-auto shadow-neo-sm">
+          <div className="font-black text-black uppercase flex items-center gap-2">
+            <span>OPERATIONAL NOTICE:</span>
+          </div>
+          <p className="text-black/80 font-bold">
+            • Statements will be officially published across AI/ML, Web Dev, Cyber Security, IoT, and Open Innovation tracks before the hacking phase commences.
+          </p>
+          <p className="text-black/80 font-bold">
+            • Ensure your squad is registered to receive instant notification and immediate track selection rights once statements unlock.
+          </p>
+        </div>
+
+        <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Link
+            href="/register"
+            className="w-full sm:w-auto px-8 py-3.5 bg-neo-secondary hover:bg-neo-accent text-black border-4 border-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-neo hover:shadow-neo-lg hover:-translate-y-0.5 transition-all"
+          >
+            REGISTER / VIEW SQUAD DOSSIER
+          </Link>
+          <Link
+            href="/"
+            className="w-full sm:w-auto px-6 py-3.5 bg-white hover:bg-neutral-100 text-black border-3 border-black font-black text-xs uppercase tracking-wider shadow-neo-sm transition-all"
+          >
+            RETURN HOME
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // 3. Published State: Full Interactive Experience (Filters Bar + Problem Cards)
   return (
     <div>
       {/* Interactive Filters Bar */}
@@ -86,22 +152,7 @@ export function ProblemStatementList() {
         totalCount={filteredProblems.length}
       />
 
-      {/* Loading Skeleton */}
-      {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((idx) => (
-            <div
-              key={idx}
-              className="border-4 border-black bg-white p-6 shadow-neo animate-pulse space-y-4"
-            >
-              <div className="h-6 bg-neutral-200 w-1/3" />
-              <div className="h-8 bg-neutral-200 w-3/4" />
-              <div className="h-16 bg-neutral-200 w-full" />
-              <div className="h-10 bg-neutral-200 w-full" />
-            </div>
-          ))}
-        </div>
-      ) : filteredProblems.length === 0 ? (
+      {filteredProblems.length === 0 ? (
         /* Empty State */
         <div className="border-4 border-black bg-white p-12 text-center shadow-neo space-y-4 max-w-xl mx-auto">
           <AlertCircle className="w-12 h-12 text-neo-accent mx-auto stroke-[3px]" />
@@ -133,11 +184,11 @@ export function ProblemStatementList() {
         </div>
       )}
 
-      {/* Full Problem Spec Modal */}
-      <ProblemStatementModal
+      {/* Full Problem Spec Side Sheet Drawer */}
+      <ProblemStatementSheet
         problem={selectedProblem}
-        isOpen={modalOpen}
-        onClose={handleCloseModal}
+        isOpen={sheetOpen}
+        onClose={handleCloseSheet}
       />
     </div>
   );

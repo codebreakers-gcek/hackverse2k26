@@ -25,6 +25,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     ],
     evaluationFocus: ["Model Accuracy & Latency", "Offline Usability", "Accessibility in Vernacular Dialects"],
     sponsorOrMentor: "CodeBreakers AI Lab // Dept. of CSE, GCEK",
+    driveUrl: "https://drive.google.com/drive/folders/hackverse2026-ps-ai-01-placeholder",
   },
   {
     id: "ps-web-02",
@@ -50,6 +51,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     ],
     evaluationFocus: ["System Scalability", "UX Responsiveness", "State Management & Realtime Sync"],
     sponsorOrMentor: "CodeBreakers Web Team",
+    driveUrl: "https://drive.google.com/drive/folders/hackverse2026-ps-web-02-placeholder",
   },
   {
     id: "ps-sec-03",
@@ -75,6 +77,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     ],
     evaluationFocus: ["Detection Accuracy", "Throughput Benchmark", "Forensics Dashboard Clarity"],
     sponsorOrMentor: "Cyber Defense Wing // GCEK",
+    driveUrl: "https://drive.google.com/drive/folders/hackverse2026-ps-sec-03-placeholder",
   },
   {
     id: "ps-iot-04",
@@ -100,6 +103,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     ],
     evaluationFocus: ["Hardware-Software Integration", "Telemetry Stability", "Practical Campus Utility"],
     sponsorOrMentor: "GCEK IoT & Embedded Systems Group",
+    driveUrl: "https://drive.google.com/drive/folders/hackverse2026-ps-iot-04-placeholder",
   },
   {
     id: "ps-open-05",
@@ -125,6 +129,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     ],
     evaluationFocus: ["User Empathy & Experience", "Accessibility Standards Adherence", "Innovation Quality"],
     sponsorOrMentor: "CodeBreakers Open Source Initiative",
+    driveUrl: "https://drive.google.com/drive/folders/hackverse2026-ps-open-05-placeholder",
   },
   {
     id: "ps-ai-06",
@@ -150,6 +155,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     ],
     evaluationFocus: ["Developer Utility", "AST Parsing Depth", "Visual Graph Interactivity"],
     sponsorOrMentor: "CodeBreakers Dev Core",
+    driveUrl: "https://drive.google.com/drive/folders/hackverse2026-ps-ai-06-placeholder",
   },
   {
     id: "ps-web-07",
@@ -175,6 +181,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     ],
     evaluationFocus: ["Visual Polish", "3D Rendering Performance", "Cultural Respect & Accuracy"],
     sponsorOrMentor: "Dept. of Humanities & Technology // GCEK",
+    driveUrl: "https://drive.google.com/drive/folders/hackverse2026-ps-web-07-placeholder",
   },
   {
     id: "ps-open-08",
@@ -200,5 +207,6 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     ],
     evaluationFocus: ["Protocol Resilience", "Mesh Relay Reliability", "Life-Safety Impact"],
     sponsorOrMentor: "CodeBreakers Social Impact Division",
+    driveUrl: "https://drive.google.com/drive/folders/hackverse2026-ps-open-08-placeholder",
   },
 ];

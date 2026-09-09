@@ -3,17 +3,24 @@ import Link from "next/link";
 import { Terminal, Code, Users, ExternalLink, ArrowRight } from "lucide-react";
 import { ENV } from "@/config/env";
 import { EVENT_DATA } from "@/data/event";
+import Image from "next/image";
 
 export function CodeBreakersSpotlight() {
   return (
-    <section className="py-20 bg-neo-bg border-b-4 border-black">
+    <section className="py-12 sm:py-20 bg-neo-bg border-b-4 border-black">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="border-4 border-black bg-white shadow-neo-lg p-8 sm:p-12 relative overflow-hidden">
+        <div className="border-4 border-black bg-white shadow-neo-lg p-5 sm:p-8 md:p-12 relative overflow-hidden">
           {/* Top Stamp */}
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b-4 border-black pb-6 mb-8">
+          <div className="flex flex-wrap items-center justify-between gap-4 border-b-4 border-black pb-4 sm:pb-6 mb-6 sm:mb-8">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-neo-accent text-black border-3 border-black flex items-center justify-center shadow-neo-sm">
-                <Terminal className="w-7 h-7 stroke-[3px]" />
+              <div className="w-12 h-12  border-3 border-black flex items-center justify-center shadow-neo-sm overflow-hidden p-1 shrink-0">
+                <Image
+                  src="/cblogo.png"
+                  alt="CodeBreakers Logo"
+                  width={44}
+                  height={44}
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div>
                 <span className="font-mono text-xs font-black uppercase text-black/60">

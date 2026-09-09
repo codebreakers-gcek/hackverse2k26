@@ -1,29 +1,76 @@
-export type MemberRole = "Leader" | "Frontend" | "Backend" | "AI/ML" | "Designer" | "Hardware/IoT" | "Full Stack";
+export type MemberRole =
+  | "Leader"
+  | "Frontend"
+  | "Backend"
+  | "AI/ML"
+  | "Designer"
+  | "Hardware/IoT"
+  | "Full Stack";
 
-export interface TeamMember {
+export interface ParticipantDetails {
   fullName: string;
   email: string;
   phone: string;
+  whatsappNumber?: string;
+  sameAsPhone?: boolean;
+  dateOfBirth?: string;
+  branch: string;
+  customBranch?: string;
+  yearOfStudy: string;
   role: MemberRole;
-  rollNumber?: string;
   githubUsername?: string;
 }
 
+export interface TeamMember extends ParticipantDetails {
+  rollNumber?: string;
+}
+
+export interface CollegeAddress {
+  fullAddress: string;
+  city: string;
+  state: string;
+  pincode: string;
+}
+
+export interface PaymentDetails {
+  paymentMode: "FREE_SPONSORED" | "UPI_QR" | "BANK_TRANSFER";
+  transactionId?: string;
+  upiRefNumber?: string;
+  status: "VERIFIED" | "PENDING_VERIFICATION" | "FREE_TIER";
+}
+
+export interface DocumentUploads {
+  collegeIdFileName?: string;
+  collegeIdFileSize?: string;
+  collegeIdDriveUrl?: string;
+  collegeIdDriveFileId?: string;
+  synopsisFileName?: string;
+  synopsisFileSize?: string;
+  synopsisDriveUrl?: string;
+  synopsisDriveFileId?: string;
+  githubRepoUrl?: string;
+  driveFolderUrl?: string;
+}
+
 export interface RegistrationFormData {
+  // Step 1: Squad & College Details
   teamName: string;
   collegeName: string;
-  teamLeader: {
-    fullName: string;
-    email: string;
-    phone: string;
-    branch: string;
-    yearOfStudy: string;
-    githubUsername?: string;
-  };
-  members: TeamMember[]; // Additional 0 to 3 members
-  selectedProblemStatementId: string;
-  projectTitleIdea?: string;
+  collegeAddress: CollegeAddress;
+
+  // Step 2: Leader & Members (Identical Comprehensive Fields)
+  teamLeader: ParticipantDetails;
+  members: TeamMember[];
+
+  // Step 3: Payment
+  paymentDetails: PaymentDetails;
+
+  // Step 4: Documents & Confirmation
+  documentUploads: DocumentUploads;
   agreeToGuidelines: boolean;
+
+  // Optional legacy reference
+  selectedProblemStatementId?: string;
 }
 
 export interface RegistrationSubmissionResult {

@@ -31,10 +31,8 @@ export default function HomePage() {
       {/* 5. Ticker Divider (Bended & Flowing Right to Left) */}
       <MarqueeBanner
         items={[
-          "CHAMPION: ₹60,000 CASH",
-          "RUNNER UP: ₹40,000 CASH",
-          "2ND RUNNER UP: ₹25,000 CASH",
-          "SPECIAL AWARDS: ₹25,000",
+          "CHAMPION: ₹20K CASH",
+          "RUNNER UP: ₹10K CASH",
           "STATE CERTIFICATES",
           "DIRECT INTERVIEW REFERRALS",
         ]}

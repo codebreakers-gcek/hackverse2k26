@@ -1,28 +1,53 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Terminal, ExternalLink, Heart, MapPin, Mail } from "lucide-react";
 import { GithubIcon, LinkedinIcon, InstagramIcon, TwitterIcon } from "@/components/common/SocialIcons";
 import { ENV } from "@/config/env";
 import { EVENT_DATA } from "@/data/event";
 
 export function Footer() {
+  const pathname = usePathname();
+
+  // Do not show footer in dashboard/admin section
+  if (pathname?.startsWith("/admin")) {
+    return null;
+  }
+
   return (
-    <footer className="bg-neo-secondary border-t-8 border-black text-black pt-16 pb-12">
+    <footer id="main-footer" className="bg-neo-secondary border-t-8 border-black text-black pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Col 1: Club & Fest Branding */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-black text-white border-3 border-black flex items-center justify-center shadow-neo-sm">
-                <Terminal className="w-7 h-7 stroke-[3px]" />
+              <div className="w-12 h-12 bg-white border-3 border-black flex items-center justify-center shadow-neo-sm overflow-hidden p-1 shrink-0">
+                <img
+                  src="/cbhack.png"
+                  alt="HACKVERSE '26 Main Logo"
+                  width={44}
+                  height={44}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div className="w-12 h-12 bg-black text-white border-3 border-black flex items-center justify-center shadow-neo-sm overflow-hidden p-1 shrink-0">
+                <img
+                  src="/cblogo.png"
+                  alt="CodeBreakers Logo"
+                  width={44}
+                  height={44}
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div>
                 <h3 className="font-black text-xl tracking-tight leading-tight">
-                  CODEBREAKERS
+                  HACKVERSE &apos;26
                 </h3>
                 <p className="font-mono text-xs font-bold text-black/80">
-                  GCE KALAHANDI // ODISHA
+                  CODEBREAKERS // GCEK
                 </p>
               </div>
             </div>
@@ -64,18 +89,33 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/documents" className="hover:underline flex items-center gap-2">
+                  <span>▸</span> <span>Documents &amp; Templates (SOON)</span>
+                </Link>
+              </li>
+              <li>
                 <Link href="/guidelines" className="hover:underline flex items-center gap-2">
                   <span>▸</span> <span>Guidelines &amp; Regulations</span>
                 </Link>
               </li>
               <li>
-                <Link href="/event-format" className="hover:underline flex items-center gap-2">
-                  <span>▸</span> <span>Event Format &amp; Stages</span>
+                <Link href="/schedule" className="hover:underline flex items-center gap-2">
+                  <span>▸</span> <span>Event Schedule</span>
                 </Link>
               </li>
               <li>
-                <Link href="/schedule" className="hover:underline flex items-center gap-2">
-                  <span>▸</span> <span>Event Schedule</span>
+                <Link href="/faqs" className="hover:underline flex items-center gap-2">
+                  <span>▸</span> <span>Frequently Asked Questions</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/team" className="hover:underline flex items-center gap-2">
+                  <span>▸</span> <span>Organizing Crew &amp; Leads</span>
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:underline flex items-center gap-2">
+                  <span>▸</span> <span>Contact &amp; Dispatch Desk</span>
                 </Link>
               </li>
               <li>
@@ -173,13 +213,13 @@ export function Footer() {
         </div>
 
         {/* Bottom Banner */}
-        <div className="border-t-4 border-black pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs font-bold text-black/90">
+        <div className="border-t-4 border-black pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 font-mono text-[11px] sm:text-xs font-bold text-black/90 text-center sm:text-left">
           <div>
             © {new Date().getFullYear()} CODEBREAKERS GCEK. ALL RIGHTS RESERVED.
           </div>
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 justify-center">
             <span>ENGINEERED WITH</span>
-            <Heart className="w-4 h-4 fill-neo-accent text-neo-accent inline" />
+            <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-neo-accent text-neo-accent inline" />
             <span>BY CODEBREAKERS STUDENT COMMUNITY</span>
           </div>
         </div>
