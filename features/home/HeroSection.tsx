@@ -179,9 +179,7 @@ export function HeroSection() {
           variants={itemVariants}
           className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t-2 border-black/20 flex flex-wrap items-center justify-center gap-4 sm:gap-6 font-mono text-xs sm:text-sm font-bold text-black/70 px-2"
         >
-          <span className="flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-neo-accent shrink-0" /> NO REGISTRATION FEE
-          </span>
+
           <span className="flex items-center gap-1.5">
             <Award className="w-4 h-4 text-neo-secondary shrink-0" /> CERTIFICATES FOR ALL PARTICIPANTS
           </span>

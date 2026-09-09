@@ -4,10 +4,8 @@ import React, { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
 
-const STORAGE_KEY = "hackverse26_intro_seen";
-
 export function GsapLoader() {
-  const [isRendered, setIsRendered] = useState<boolean>(false);
+  const [isRendered, setIsRendered] = useState(true);
   const containerRef = useRef<HTMLDivElement>(null);
   const wipeRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -18,18 +16,6 @@ export function GsapLoader() {
   const statusTextRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Check if user has already seen the intro loader during this session
-    try {
-      if (sessionStorage.getItem(STORAGE_KEY)) {
-        setIsRendered(false);
-        return;
-      }
-    } catch {
-      // Gracefully handle restricted storage
-    }
-
-    setIsRendered(true);
-
     // Lock scroll during initial load
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -40,7 +26,7 @@ export function GsapLoader() {
     const statusMessages = [
       "INIT SYSTEM KERNEL...",
       "LOADING TECH ARENAS (AI // WEB // CYBER // IOT)...",
-      "SYNCING REPOSITORIES & ₹1,50,000+ PRIZE POOL...",
+      "SYNCING REPOSITORIES & ₹35K PRIZE POOL...",
       "CODEBREAKERS GCEK PROTOCOL READY.",
     ];
 
@@ -48,9 +34,6 @@ export function GsapLoader() {
       const tl = gsap.timeline({
         defaults: { ease: "power2.out" },
         onComplete: () => {
-          try {
-            sessionStorage.setItem(STORAGE_KEY, "true");
-          } catch {}
           document.body.style.overflow = originalOverflow;
           setIsRendered(false);
         },
@@ -267,7 +250,7 @@ export function GsapLoader() {
           {/* Bottom Bar Details */}
           <div className="border-t-2 border-white/20 pt-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-neutral-400 font-mono text-xs">
             <div className="flex items-center gap-4">
-              <span>PRIZE: ₹1,50,000+</span>
+              <span>PRIZE: ₹35K+</span>
               <span className="hidden sm:inline text-white/30">•</span>
               <span>TEAMS: 100+ CODES</span>
               <span className="hidden sm:inline text-white/30">•</span>
