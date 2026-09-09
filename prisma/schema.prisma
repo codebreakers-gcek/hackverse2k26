@@ -115,6 +115,9 @@ model TeamRegistration {
   // Document Uploads
   documents Json? // collegeIdFileName, synopsisFileName, githubRepoUrl
 
+  // Edit Limit (Max 3 edits allowed per squad)
+  editCount Int @default(0)
+
   // Optional link to logged-in user
   userId String?
   user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)

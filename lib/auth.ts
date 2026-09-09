@@ -12,18 +12,10 @@ export const auth = betterAuth({
     google: {
       clientId: process.env.AUTH_GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID || "",
       clientSecret: process.env.AUTH_GOOGLE_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET || "",
-      enabled: Boolean(
-        (process.env.AUTH_GOOGLE_CLIENT_ID || process.env.GOOGLE_CLIENT_ID) &&
-        (process.env.AUTH_GOOGLE_CLIENT_SECRET || process.env.GOOGLE_CLIENT_SECRET)
-      ),
     },
     github: {
       clientId: process.env.AUTH_GITHUB_CLIENT_ID || process.env.GITHUB_CLIENT_ID || "",
       clientSecret: process.env.AUTH_GITHUB_CLIENT_SECRET || process.env.GITHUB_CLIENT_SECRET || "",
-      enabled: Boolean(
-        (process.env.AUTH_GITHUB_CLIENT_ID || process.env.GITHUB_CLIENT_ID) &&
-        (process.env.AUTH_GITHUB_CLIENT_SECRET || process.env.GITHUB_CLIENT_SECRET)
-      ),
     },
   },
   user: {

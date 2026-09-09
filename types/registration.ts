@@ -80,5 +80,7 @@ export interface RegistrationSubmissionResult {
   teamName?: string;
   message: string;
   submittedAt?: string;
+  editCount?: number;
+  remainingEdits?: number;
   errors?: Record<string, string>;
 }

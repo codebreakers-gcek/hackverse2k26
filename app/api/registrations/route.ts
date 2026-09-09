@@ -115,3 +115,167 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export async function PUT(req: NextRequest) {
+  try {
+    const { auth } = await import("@/lib/auth");
+    const { headers } = await import("next/headers");
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
+
+    if (!session || !session.user) {
+      return NextResponse.json(
+        { success: false, message: "Unauthorized. Please sign in to edit your registration." },
+        { status: 401 }
+      );
+    }
+
+    const user = session.user;
+    const userEmail = user.email.toLowerCase().trim();
+    const data: RegistrationFormData = await req.json();
+
+    // 1. Locate existing team registration for this user
+    let teamRegistration = await prisma.teamRegistration.findFirst({
+      where: {
+        OR: [
+          { userId: user.id },
+          { leaderEmail: { equals: userEmail, mode: "insensitive" } },
+        ],
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (!teamRegistration) {
+      const allRegistrations = await prisma.teamRegistration.findMany({
+        orderBy: { createdAt: "desc" },
+      });
+
+      for (const reg of allRegistrations) {
+        if (reg.leaderEmail && reg.leaderEmail.toLowerCase().trim() === userEmail) {
+          teamRegistration = reg;
+          break;
+        }
+        const membersList = Array.isArray(reg.members) ? (reg.members as any[]) : [];
+        const foundMember = membersList.find(
+          (m) => m && m.email && m.email.toLowerCase().trim() === userEmail
+        );
+        if (foundMember) {
+          teamRegistration = reg;
+          break;
+        }
+      }
+    }
+
+    if (!teamRegistration) {
+      return NextResponse.json(
+        { success: false, message: "No registered team found to edit." },
+        { status: 404 }
+      );
+    }
+
+    // 2. Enforce Strict Edit Limit: Maximum 3 edits allowed
+    const currentEditCount =
+      (teamRegistration as any).editCount ??
+      ((teamRegistration.documents as any)?.editCount || 0);
+
+    const MAX_EDITS = 3;
+    if (currentEditCount >= MAX_EDITS) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: `Maximum edit limit reached (${MAX_EDITS}/${MAX_EDITS} edits used). You cannot edit your registration form anymore.`,
+          editCount: currentEditCount,
+          remainingEdits: 0,
+        },
+        { status: 403 }
+      );
+    }
+
+    // 3. Validate updated form data
+    const validationErrors = validateRegistrationForm(data);
+    if (Object.keys(validationErrors).length > 0) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Form validation failed. Please correct input errors.",
+          errors: validationErrors,
+        },
+        { status: 400 }
+      );
+    }
+
+    // 4. Update the record and increment editCount
+    const newEditCount = currentEditCount + 1;
+    const existingDocs = (teamRegistration.documents as Record<string, any>) || {};
+    const updatedDocs = {
+      ...existingDocs,
+      ...(data.documentUploads || {}),
+      editCount: newEditCount,
+      lastEditedAt: new Date().toISOString(),
+      lastEditedBy: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+      },
+    };
+
+    const updated = await prisma.teamRegistration.update({
+      where: { id: teamRegistration.id },
+      data: {
+        teamName: data.teamName.trim(),
+        collegeName: data.collegeName.trim(),
+        collegeAddress: data.collegeAddress as any,
+        problemStatementId: data.selectedProblemStatementId || teamRegistration.problemStatementId,
+
+        // Leader details
+        leaderName: data.teamLeader.fullName.trim(),
+        leaderEmail: data.teamLeader.email.trim().toLowerCase(),
+        leaderPhone: data.teamLeader.phone.trim(),
+        leaderWhatsapp: data.teamLeader.whatsappNumber?.trim() || data.teamLeader.phone.trim(),
+        leaderDob: data.teamLeader.dateOfBirth || null,
+        leaderBranch: data.teamLeader.branch || "Computer Science & Engineering",
+        leaderCustomBranch: data.teamLeader.customBranch?.trim() || null,
+        leaderYear: data.teamLeader.yearOfStudy || "3rd Year",
+        leaderRole: data.teamLeader.role || "Leader",
+        leaderGithub: data.teamLeader.githubUsername?.trim() || null,
+
+        // Members
+        members: data.members as any,
+
+        // Documents & Edit count tracking
+        documents: updatedDocs,
+        editCount: newEditCount,
+      },
+    });
+
+    const remainingEdits = Math.max(0, MAX_EDITS - newEditCount);
+
+    return NextResponse.json({
+      success: true,
+      message: `Registration updated successfully! (Edit ${newEditCount} of ${MAX_EDITS} used, ${remainingEdits} edits remaining).`,
+      editCount: newEditCount,
+      remainingEdits,
+      team: {
+        id: updated.id,
+        registrationNumber: updated.registrationNumber,
+        teamName: updated.teamName,
+        collegeName: updated.collegeName,
+        collegeAddress: updated.collegeAddress,
+        status: updated.status,
+        editCount: newEditCount,
+        remainingEdits,
+        documents: updatedDocs,
+      },
+    });
+  } catch (error: any) {
+    console.error("Edit registration error:", error);
+    return NextResponse.json(
+      {
+        success: false,
+        message: error.message || "Failed to update registration.",
+      },
+      { status: 500 }
+    );
+  }
+}

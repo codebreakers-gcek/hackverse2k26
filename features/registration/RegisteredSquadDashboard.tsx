@@ -21,6 +21,8 @@ import {
   QrCode,
   UserCheck,
   PlusCircle,
+  Edit3,
+  Lock,
 } from "lucide-react";
 import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
 import { RegistrationSuccessReceipt } from "./RegistrationSuccessReceipt";
@@ -36,6 +38,7 @@ export interface RegisteredSquadDashboardProps {
     image?: string | null;
   };
   onRegisterNewTeam?: () => void;
+  onEditRegistration?: () => void;
 }
 
 export function RegisteredSquadDashboard({
@@ -43,11 +46,23 @@ export function RegisteredSquadDashboard({
   userRoleInTeam,
   currentUser,
   onRegisterNewTeam,
+  onEditRegistration,
 }: RegisteredSquadDashboardProps) {
   const [showReceiptModal, setShowReceiptModal] = useState(false);
 
   const isLeader = userRoleInTeam === "LEADER";
   const status = teamData.status || "PENDING_VERIFICATION";
+
+  // Edit count tracking (Maximum 3 edits allowed per squad)
+  const MAX_EDITS = 3;
+  const editCount: number =
+    typeof teamData.editCount === "number"
+      ? teamData.editCount
+      : typeof teamData.documents?.editCount === "number"
+      ? teamData.documents.editCount
+      : 0;
+  const remainingEdits: number = Math.max(0, MAX_EDITS - editCount);
+  const canEdit: boolean = remainingEdits > 0;
 
   // Find problem statement objects if selected
   const psIds = Array.isArray(teamData.selectedProblemStatements)
@@ -114,6 +129,24 @@ export function RegisteredSquadDashboard({
               </span>
               <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-neo-muted text-black border-2 border-black shadow-neo-sm">
                 {isLeader ? "★ SQUAD CAPTAIN" : "★ SQUAD CO-HACKER"}
+              </span>
+              <span
+                className={clsx(
+                  "font-mono text-xs font-black uppercase px-3 py-1 border-2 border-black shadow-neo-sm flex items-center gap-1",
+                  canEdit ? "bg-amber-300 text-black" : "bg-rose-300 text-black"
+                )}
+              >
+                {canEdit ? (
+                  <>
+                    <Edit3 className="w-3.5 h-3.5" />
+                    <span>EDITS LEFT: {remainingEdits} / {MAX_EDITS}</span>
+                  </>
+                ) : (
+                  <>
+                    <Lock className="w-3.5 h-3.5" />
+                    <span>EDITS USED: 3/3 (LOCKED)</span>
+                  </>
+                )}
               </span>
             </div>
 
@@ -370,6 +403,37 @@ export function RegisteredSquadDashboard({
         </div>
 
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+          {onEditRegistration && (
+            <button
+              type="button"
+              onClick={canEdit ? onEditRegistration : undefined}
+              disabled={!canEdit}
+              title={
+                canEdit
+                  ? `Edit your squad details (${remainingEdits} of ${MAX_EDITS} edits remaining)`
+                  : "Edit limit reached (3/3 edits used). Contact organizers for further updates."
+              }
+              className={clsx(
+                "px-5 py-3.5 border-3 border-black font-black text-xs sm:text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2",
+                canEdit
+                  ? "bg-amber-400 hover:bg-amber-300 text-black shadow-neo-sm hover:shadow-none cursor-pointer"
+                  : "bg-neutral-300 text-neutral-600 cursor-not-allowed opacity-80"
+              )}
+            >
+              {canEdit ? (
+                <>
+                  <Edit3 className="w-4 h-4 stroke-[3px]" />
+                  <span>EDIT SQUAD ({remainingEdits} LEFT)</span>
+                </>
+              ) : (
+                <>
+                  <Lock className="w-4 h-4 stroke-[3px]" />
+                  <span>EDIT LIMIT EXHAUSTED (3/3)</span>
+                </>
+              )}
+            </button>
+          )}
+
           <button
             type="button"
             onClick={() => setShowReceiptModal(true)}

@@ -42,8 +42,11 @@ import {
   FileText,
   HardDrive,
   ExternalLink,
+  Edit3,
 } from "lucide-react";
 import clsx from "clsx";
+import Image from "next/image";
+import { QRCodeSVG } from "qrcode.react";
 
 const INDIAN_STATES = [
   "Odisha",
@@ -178,11 +181,84 @@ export function RegistrationForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submissionResult, setSubmissionResult] = useState<RegistrationSubmissionResult | null>(null);
 
+  // Form Draft Caching & Auto-Resume System
+  const DRAFT_STORAGE_KEY = "hackverse26_registration_draft";
+  const [hasRestoredDraft, setHasRestoredDraft] = useState<boolean>(false);
+  const [draftRestoredTime, setDraftRestoredTime] = useState<string | null>(null);
+  const isInitialMount = useRef(true);
+
+  // 1. Restore draft on initial mount
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const savedDraft = localStorage.getItem(DRAFT_STORAGE_KEY);
+      if (savedDraft) {
+        const parsed = JSON.parse(savedDraft);
+        if (parsed && parsed.formData) {
+          setFormData((prev) => ({
+            ...prev,
+            ...parsed.formData,
+            members:
+              Array.isArray(parsed.formData.members) && parsed.formData.members.length > 0
+                ? parsed.formData.members
+                : prev.members,
+          }));
+          if (typeof parsed.currentStep === "number" && parsed.currentStep >= 1 && parsed.currentStep <= 4) {
+            setCurrentStep(parsed.currentStep);
+          }
+          setHasRestoredDraft(true);
+          if (parsed.savedAt) {
+            const date = new Date(parsed.savedAt);
+            setDraftRestoredTime(date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
+          }
+        }
+      }
+    } catch (err) {
+      console.error("Failed to load registration draft:", err);
+    }
+  }, []);
+
+  // 2. Auto-save draft on form changes
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
+    if (submissionResult) return;
+
+    try {
+      const draftPayload = {
+        formData,
+        currentStep,
+        savedAt: new Date().toISOString(),
+      };
+      localStorage.setItem(DRAFT_STORAGE_KEY, JSON.stringify(draftPayload));
+    } catch (err) {
+      console.error("Failed to save registration draft:", err);
+    }
+  }, [formData, currentStep, submissionResult]);
+
+  const handleClearDraft = () => {
+    try {
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+      setFormData(initialFormState);
+      setCurrentStep(1);
+      setHasRestoredDraft(false);
+      setDraftRestoredTime(null);
+      setErrors({});
+    } catch (err) {
+      console.error("Failed to clear draft:", err);
+    }
+  };
+
   // Registered Squad State (For Leader OR any registered Member)
   const [existingTeamData, setExistingTeamData] = useState<any>(null);
   const [userRoleInTeam, setUserRoleInTeam] = useState<"LEADER" | "MEMBER">("LEADER");
   const [isCheckingExistingTeam, setIsCheckingExistingTeam] = useState<boolean>(true);
   const [forceNewRegistration, setForceNewRegistration] = useState<boolean>(false);
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
+  const [editSuccessMessage, setEditSuccessMessage] = useState<string | null>(null);
 
   // Dynamic Payment & System Settings from Admin
   const [paymentSettings, setPaymentSettings] = useState<{
@@ -213,35 +289,116 @@ export function RegistrationForm() {
       .catch(() => {});
   }, []);
 
-  // Fetch registered team data for logged-in user (as Leader OR Member)
-  useEffect(() => {
-    async function checkMyTeam() {
-      if (session?.user) {
-        try {
-          setIsCheckingExistingTeam(true);
-          const res = await fetch("/api/team/my-team");
-          const data = await res.json();
-          if (data.success && data.registered && data.team) {
-            setExistingTeamData(data.team);
-            setUserRoleInTeam(data.userRoleInTeam || "LEADER");
-          } else {
-            setExistingTeamData(null);
-          }
-        } catch (err) {
-          console.error("Error checking existing team:", err);
+  const checkMyTeam = async () => {
+    if (session?.user) {
+      try {
+        setIsCheckingExistingTeam(true);
+        const res = await fetch("/api/team/my-team");
+        const data = await res.json();
+        if (data.success && data.registered && data.team) {
+          setExistingTeamData(data.team);
+          setUserRoleInTeam(data.userRoleInTeam || "LEADER");
+        } else {
           setExistingTeamData(null);
-        } finally {
-          setIsCheckingExistingTeam(false);
         }
-      } else {
+      } catch (err) {
+        console.error("Error checking existing team:", err);
+        setExistingTeamData(null);
+      } finally {
         setIsCheckingExistingTeam(false);
       }
+    } else {
+      setIsCheckingExistingTeam(false);
     }
+  };
 
+  // Fetch registered team data for logged-in user (as Leader OR Member)
+  useEffect(() => {
     if (!isAuthPending) {
       checkMyTeam();
     }
   }, [session, isAuthPending]);
+
+  // Start Editing Registered Squad Form (Max 3 Edits Allowed)
+  const handleStartEditRegistration = () => {
+    if (!existingTeamData) return;
+    const currentEdits =
+      typeof existingTeamData.editCount === "number"
+        ? existingTeamData.editCount
+        : typeof existingTeamData.documents?.editCount === "number"
+        ? existingTeamData.documents.editCount
+        : 0;
+
+    const MAX_EDITS = 3;
+    if (currentEdits >= MAX_EDITS) {
+      alert("Edit limit reached (3/3 edits used). You cannot edit your registration form anymore.");
+      return;
+    }
+
+    const leader = existingTeamData.leader || {};
+    const docs = existingTeamData.documents || {};
+    const addr = existingTeamData.collegeAddress || {
+      fullAddress: "",
+      city: "",
+      state: "Odisha",
+      pincode: "",
+    };
+
+    setFormData({
+      teamName: existingTeamData.teamName || "",
+      collegeName: existingTeamData.collegeName || "",
+      collegeAddress: {
+        fullAddress: addr.fullAddress || "",
+        city: addr.city || "",
+        state: addr.state || "Odisha",
+        pincode: addr.pincode || "",
+      },
+      teamLeader: {
+        fullName: leader.name || existingTeamData.leaderName || "",
+        email: leader.email || existingTeamData.leaderEmail || "",
+        phone: leader.phone || existingTeamData.leaderPhone || "",
+        whatsappNumber: leader.whatsapp || existingTeamData.leaderWhatsapp || "",
+        sameAsPhone: true,
+        dateOfBirth: leader.dob || existingTeamData.leaderDob || "",
+        branch: leader.branch || existingTeamData.leaderBranch || "Computer Science & Engineering",
+        customBranch: leader.customBranch || existingTeamData.leaderCustomBranch || "",
+        yearOfStudy: leader.year || existingTeamData.leaderYear || "3rd Year",
+        role: leader.role || existingTeamData.leaderRole || "Leader",
+        githubUsername: leader.github || existingTeamData.leaderGithub || "",
+      },
+      members:
+        Array.isArray(existingTeamData.members) && existingTeamData.members.length > 0
+          ? existingTeamData.members
+          : initialFormState.members,
+      paymentDetails: {
+        paymentMode: existingTeamData.paymentMode || "FREE_SPONSORED",
+        transactionId: existingTeamData.transactionId || "",
+        status: existingTeamData.paymentStatus || "FREE_TIER",
+      },
+      documentUploads: {
+        collegeIdFileName: docs.collegeIdFileName || "",
+        collegeIdFileSize: docs.collegeIdFileSize || "",
+        collegeIdDriveUrl: docs.collegeIdDriveUrl || "",
+        synopsisFileName: docs.synopsisFileName || "",
+        synopsisFileSize: docs.synopsisFileSize || "",
+        synopsisDriveUrl: docs.synopsisDriveUrl || "",
+        githubRepoUrl: docs.githubRepoUrl || "",
+      },
+      agreeToGuidelines: true,
+      selectedProblemStatementId:
+        existingTeamData.problemStatementId || existingTeamData.selectedProblemStatements?.[0] || "",
+    });
+
+    setCurrentStep(1);
+    setErrors({});
+    setIsEditMode(true);
+    setEditSuccessMessage(null);
+  };
+
+  const handleCancelEditRegistration = () => {
+    setIsEditMode(false);
+    setErrors({});
+  };
 
   // File inputs ref & upload states
   const collegeIdInputRef = useRef<HTMLInputElement>(null);
@@ -548,19 +705,58 @@ export function RegistrationForm() {
   // Final Form Submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isUploadingCollegeId || isUploadingSynopsis) {
+      alert("Please wait for your document uploads to finish before submitting.");
+      return;
+    }
+
     const finalErrors = validateStep4(formData);
     if (Object.keys(finalErrors).length > 0) {
       setErrors(finalErrors);
+      window.scrollTo({ top: 120, behavior: "smooth" });
       return;
     }
 
     setIsSubmitting(true);
     setErrors({});
 
+    if (isEditMode) {
+      try {
+        const result = await registrationService.updateRegistration(formData);
+        if (result.success) {
+          try {
+            localStorage.removeItem(DRAFT_STORAGE_KEY);
+          } catch {}
+          setHasRestoredDraft(false);
+          setIsEditMode(false);
+          setEditSuccessMessage(
+            result.message || "Registration details successfully updated!"
+          );
+          await checkMyTeam();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          if (result.errors) {
+            setErrors(result.errors);
+          } else {
+            setErrors({ form: result.message || "Failed to update registration." });
+          }
+        }
+      } catch {
+        setErrors({ form: "Unexpected error while saving edits. Please try again." });
+      } finally {
+        setIsSubmitting(false);
+      }
+      return;
+    }
+
     try {
       const result = await registrationService.submitRegistration(formData);
       if (result.success) {
+        try {
+          localStorage.removeItem(DRAFT_STORAGE_KEY);
+        } catch {}
         setSubmissionResult(result);
+        setHasRestoredDraft(false);
       } else {
         if (result.errors) {
           setErrors(result.errors);
@@ -576,10 +772,14 @@ export function RegistrationForm() {
   };
 
   const handleResetForm = () => {
+    try {
+      localStorage.removeItem(DRAFT_STORAGE_KEY);
+    } catch {}
     setFormData(initialFormState);
     setCurrentStep(1);
     setErrors({});
     setSubmissionResult(null);
+    setHasRestoredDraft(false);
   };
 
   if (submissionResult) {
@@ -631,18 +831,37 @@ export function RegistrationForm() {
         </div>
       )}
 
-      {/* When Squad is ALREADY Registered (Leader or Team Member logged in) */}
-      {isAuthenticated && !isCheckingExistingTeam && existingTeamData && !forceNewRegistration && (
-        <RegisteredSquadDashboard
-          teamData={existingTeamData}
-          userRoleInTeam={userRoleInTeam}
-          currentUser={session?.user || {}}
-          onRegisterNewTeam={() => setForceNewRegistration(true)}
-        />
+      {/* When Squad is ALREADY Registered (Leader or Team Member logged in) and NOT in Edit Mode */}
+      {isAuthenticated && !isCheckingExistingTeam && existingTeamData && !forceNewRegistration && !isEditMode && (
+        <div className="space-y-6">
+          {editSuccessMessage && (
+            <div className="p-4 bg-emerald-100 border-4 border-black shadow-neo flex items-center justify-between gap-3 text-xs sm:text-sm font-black uppercase text-emerald-950 animate-in fade-in-50 duration-200">
+              <div className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-emerald-700 stroke-[3px] shrink-0" />
+                <span>{editSuccessMessage}</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setEditSuccessMessage(null)}
+                className="px-3 py-1 bg-white hover:bg-neutral-100 text-black border-2 border-black font-mono text-[10px] uppercase shadow-neo-xs cursor-pointer"
+              >
+                DISMISS
+              </button>
+            </div>
+          )}
+
+          <RegisteredSquadDashboard
+            teamData={existingTeamData}
+            userRoleInTeam={userRoleInTeam}
+            currentUser={session?.user || {}}
+            onRegisterNewTeam={() => setForceNewRegistration(true)}
+            onEditRegistration={handleStartEditRegistration}
+          />
+        </div>
       )}
 
-      {/* When Registrations are CLOSED and user has no registered squad */}
-      {isAuthenticated && !isCheckingExistingTeam && (!existingTeamData || forceNewRegistration) && paymentSettings && paymentSettings.isRegistrationOpen === false && (
+      {/* When Registrations are CLOSED and user has no registered squad and is not in edit mode */}
+      {isAuthenticated && !isCheckingExistingTeam && (!existingTeamData || forceNewRegistration) && !isEditMode && paymentSettings && paymentSettings.isRegistrationOpen === false && (
         <div className="border-4 border-black bg-rose-200 p-8 shadow-neo text-center space-y-4">
           <div className="w-14 h-14 bg-white border-3 border-black mx-auto flex items-center justify-center shadow-neo-sm">
             <Lock className="w-7 h-7 text-black stroke-[2.5px]" />
@@ -669,11 +888,45 @@ export function RegistrationForm() {
         </div>
       )}
 
-      {/* When user IS authenticated AND either has no team or clicked to register another squad AND registration IS OPEN */}
-      {isAuthenticated && !isCheckingExistingTeam && (!existingTeamData || forceNewRegistration) && (paymentSettings?.isRegistrationOpen !== false) && (
+      {/* When user IS authenticated AND (has no team OR clicked to register another squad OR is in edit mode) */}
+      {isAuthenticated && !isCheckingExistingTeam && (!existingTeamData || forceNewRegistration || isEditMode) && (paymentSettings?.isRegistrationOpen !== false || isEditMode) && (
         <div className="space-y-8">
-          {/* Switch back banner if user was previously registered */}
-          {existingTeamData && forceNewRegistration && (
+          {/* Edit Mode Top Alert Banner with remaining edits indicator */}
+          {isEditMode && existingTeamData && (
+            <div className="border-4 border-black bg-amber-200 p-5 sm:p-6 shadow-neo-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4 animate-in fade-in-50 duration-200">
+              <div className="space-y-1.5">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-black text-white border border-black shadow-neo-xs flex items-center gap-1">
+                    <Edit3 className="w-3.5 h-3.5" />
+                    <span>EDIT MODE ACTIVE</span>
+                  </span>
+                  <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-neo-secondary text-black border border-black shadow-neo-xs">
+                    EDIT ATTEMPT #{(existingTeamData.editCount ?? 0) + 1} OF 3
+                  </span>
+                  <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-white text-black border border-black shadow-neo-xs">
+                    {Math.max(0, 3 - (existingTeamData.editCount ?? 0))} EDITS REMAINING
+                  </span>
+                </div>
+                <h3 className="font-black text-xl sm:text-2xl uppercase text-black tracking-tight">
+                  EDITING SQUAD ENTRY: {existingTeamData.teamName} ({existingTeamData.registrationNumber})
+                </h3>
+                <p className="font-mono text-xs font-bold text-black/80 max-w-2xl leading-relaxed">
+                  You can revise any information across all 4 steps (Squad Info, Leader details, Co-Hackers, Project Synopsis, and Problem Statement choices). Saving updates consumes 1 of your 3 allowed edits.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={handleCancelEditRegistration}
+                className="px-5 py-2.5 bg-white hover:bg-black hover:text-white text-black border-3 border-black font-black text-xs uppercase tracking-wider shadow-neo-sm hover:shadow-none transition-all cursor-pointer shrink-0"
+              >
+                &larr; CANCEL &amp; RETURN
+              </button>
+            </div>
+          )}
+
+          {/* Switch back banner if user was previously registered and chose to register another squad */}
+          {existingTeamData && forceNewRegistration && !isEditMode && (
             <div className="border-3 border-black bg-neo-accent p-3 shadow-neo-sm flex flex-col sm:flex-row items-center justify-between gap-2">
               <span className="font-mono text-xs font-black uppercase text-black">
                 Currently registered as squad: <strong>{existingTeamData.teamName}</strong>
@@ -688,11 +941,30 @@ export function RegistrationForm() {
             </div>
           )}
 
+          {/* Draft Auto-Restore Notification Banner */}
+          {hasRestoredDraft && (
+            <div className="p-3.5 bg-amber-100 border-4 border-black shadow-neo flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-black uppercase">
+              <div className="flex items-center gap-2.5 text-amber-950">
+                <Sparkles className="w-4 h-4 text-amber-700 stroke-[2.5px] shrink-0" />
+                <span>
+                  AUTO-SAVED DRAFT RESTORED {draftRestoredTime ? `(${draftRestoredTime})` : ""} • RESUMED FROM WHERE YOU LEFT OFF (STEP 0{currentStep})
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={handleClearDraft}
+                className="px-3 py-1 bg-white hover:bg-rose-500 hover:text-white border-2 border-black font-mono text-[10px] uppercase shadow-neo-xs transition-colors cursor-pointer shrink-0"
+                title="Discard saved progress and start fresh"
+              >
+                CLEAR DRAFT &amp; RESTART
+              </button>
+            </div>
+          )}
+
           {/* Multi-Step Progress Header Stepper */}
           <div className="border-4 border-black bg-white p-4 sm:p-6 shadow-neo">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
               {stepsList.map((st) => {
-                const Icon = st.icon;
                 const isCurrent = currentStep === st.num;
                 const isPassed = currentStep > st.num;
 
@@ -1247,91 +1519,138 @@ export function RegistrationForm() {
 
                 <div className="space-y-6">
                   {/* Dynamic UPI Payment Card with QR Code */}
-                  <div className="p-6 border-4 border-black bg-neo-bg shadow-neo space-y-6">
-                    <div className="flex flex-col md:flex-row items-center gap-6">
-                      {/* Dynamic UPI QR Code */}
-                      <div className="p-3 bg-white border-3 border-black shadow-neo-sm shrink-0 flex flex-col items-center">
-                        <img
-                          src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
-                            `upi://pay?pa=${paymentSettings.upiId}&pn=${encodeURIComponent(paymentSettings.payeeName)}&am=${paymentSettings.registrationFee || ""}&cu=INR`
-                          )}`}
-                          alt="Official Hackathon UPI QR Code"
-                          className="w-44 h-44 border border-black"
-                        />
-                        <span className="font-mono text-[10px] font-black uppercase tracking-wider text-black/70 mt-2 flex items-center gap-1">
-                          <QrCode className="w-3.5 h-3.5" />
-                          <span>SCAN VIA ANY UPI APP</span>
-                        </span>
-                      </div>
+                  {(() => {
+                    const rawFee = Number(paymentSettings.registrationFee) || 0;
+                    const isPaidTier = rawFee > 0;
+                    const feeAmount = isPaidTier ? rawFee.toFixed(2) : "";
+                    const payeeName = paymentSettings.payeeName || "HACKVERSE 2026 GCEK";
+                    const upiId = paymentSettings.upiId || "codebreakers@upi";
+                    const teamRef = formData.teamName
+                      ? formData.teamName.replace(/[^a-zA-Z0-9]/g, "").slice(0, 16)
+                      : "Squad";
+                    const transactionNote = `HackVerse26-${teamRef}`;
 
-                      {/* Payee and UPI Details */}
-                      <div className="space-y-4 flex-1">
-                        <div className="space-y-1">
-                          <span className="font-mono text-xs font-black uppercase text-black/60">
-                            PAYEE / BENEFICIARY:
-                          </span>
-                          <h4 className="font-black text-lg uppercase text-black">
-                            {paymentSettings.payeeName}
-                          </h4>
-                        </div>
+                    // Standard NPCI UPI URI with mode=02 & exact fixed amount to prevent amount editing in UPI apps
+                    const upiQrUri = isPaidTier
+                      ? `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&am=${feeAmount}&cu=INR&tn=${encodeURIComponent(transactionNote)}&mode=02&orgid=000000`
+                      : `upi://pay?pa=${encodeURIComponent(upiId)}&pn=${encodeURIComponent(payeeName)}&cu=INR&tn=${encodeURIComponent(transactionNote)}`;
 
-                        {/* UPI ID Copy Box */}
-                        <div className="p-3.5 bg-white border-2 border-black flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-                          <div>
-                            <span className="font-mono text-[10px] font-bold text-black/60 uppercase block">
-                              OFFICIAL ADMIN UPI ID:
-                            </span>
-                            <span className="font-mono text-sm font-black text-black select-all">
-                              {paymentSettings.upiId}
-                            </span>
+                    return (
+                      <div className="p-6 border-4 border-black bg-neo-bg shadow-neo space-y-6">
+                        <div className="flex flex-col md:flex-row items-center gap-6">
+                          {/* Dynamic Native Vector UPI QR Code */}
+                          <div className="p-3 bg-white border-3 border-black shadow-neo-sm shrink-0 flex flex-col items-center">
+                            <div className="p-2 bg-white border-2 border-black flex items-center justify-center">
+                              <QRCodeSVG
+                                value={upiQrUri}
+                                size={176}
+                                level="H"
+                                includeMargin={false}
+                              />
+                            </div>
+                            <div className="mt-2.5 flex flex-col items-center gap-1 text-center">
+                              <span className="font-mono text-[10px] font-black uppercase tracking-wider text-black flex items-center gap-1">
+                                <QrCode className="w-3.5 h-3.5" />
+                                <span>SCAN VIA ANY UPI APP</span>
+                              </span>
+                              {isPaidTier && (
+                                <span className="font-mono text-[9px] font-black px-2 py-0.5 bg-emerald-300 text-black border border-black inline-block shadow-neo-xs">
+                                  🔒 FIXED AMOUNT: ₹{rawFee} (LOCKED)
+                                </span>
+                              )}
+                            </div>
                           </div>
 
-                          <button
-                            type="button"
-                            onClick={() => {
-                              navigator.clipboard.writeText(paymentSettings.upiId);
-                              setCopiedUpi(true);
-                              setTimeout(() => setCopiedUpi(false), 2500);
-                            }}
-                            className="px-3 py-1.5 bg-neo-secondary text-black font-black text-xs uppercase border-2 border-black shadow-neo-sm hover:shadow-none flex items-center justify-center gap-1.5 shrink-0"
-                          >
-                            <span>{copiedUpi ? "COPIED TO CLIPBOARD!" : "COPY UPI ID"}</span>
-                          </button>
+                          {/* Payee and UPI Details */}
+                          <div className="space-y-4 flex-1">
+                            <div className="flex flex-wrap items-center justify-between gap-2">
+                              <div className="space-y-0.5">
+                                <span className="font-mono text-xs font-black uppercase text-black/60">
+                                  PAYEE / BENEFICIARY:
+                                </span>
+                                <h4 className="font-black text-lg uppercase text-black">
+                                  {payeeName}
+                                </h4>
+                              </div>
+                              {isPaidTier && (
+                                <div className="px-3 py-1 bg-neo-secondary border-2 border-black font-mono text-xs font-black text-black shadow-neo-xs">
+                                  EXACT PASS FEE: ₹{rawFee}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* UPI ID Copy Box */}
+                            <div className="p-3.5 bg-white border-2 border-black flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                              <div>
+                                <span className="font-mono text-[10px] font-bold text-black/60 uppercase block">
+                                  OFFICIAL ADMIN UPI ID:
+                                </span>
+                                <span className="font-mono text-sm font-black text-black select-all">
+                                  {upiId}
+                                </span>
+                              </div>
+
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  navigator.clipboard.writeText(upiId);
+                                  setCopiedUpi(true);
+                                  setTimeout(() => setCopiedUpi(false), 2500);
+                                }}
+                                className="px-3 py-1.5 bg-neo-secondary text-black font-black text-xs uppercase border-2 border-black shadow-neo-sm hover:shadow-none flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
+                              >
+                                <span>{copiedUpi ? "COPIED TO CLIPBOARD!" : "COPY UPI ID"}</span>
+                              </button>
+                            </div>
+
+                            <p className="font-sans text-xs font-bold text-black/75">
+                              Scan the QR Code using <strong>Google Pay, PhonePe, Paytm, BHIM, or any UPI App</strong>. The amount is automatically locked to <strong>₹{rawFee}</strong>. After successful transfer, copy the <strong>12-digit UTR / Reference Number</strong> from your payment receipt and paste it below.
+                            </p>
+
+                            {/* Mobile Deep Link Button */}
+                            {isPaidTier && (
+                              <div className="pt-1 sm:hidden">
+                                <a
+                                  href={upiQrUri}
+                                  className="w-full py-2.5 px-4 bg-neo-accent hover:bg-neo-secondary text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-neo-sm flex items-center justify-center gap-2 transition-all cursor-pointer"
+                                >
+                                  <span>PAY ₹{rawFee} VIA UPI APP DIRECTLY</span>
+                                  <ExternalLink className="w-3.5 h-3.5 stroke-[2.5px]" />
+                                </a>
+                              </div>
+                            )}
+                          </div>
                         </div>
 
-                        <p className="font-sans text-xs font-bold text-black/75">
-                          Scan the QR Code using <strong>Google Pay, PhonePe, Paytm, BHIM, or any UPI App</strong>. After successful transfer, copy the <strong>12-digit UTR / Reference Number</strong> from your banking SMS or receipt and paste it below.
-                        </p>
+                        {/* UTR Input Section */}
+                        <div className="pt-4 border-t-2 border-black/20 space-y-3">
+                          <Input
+                            label="12-DIGIT TRANSACTION REFERENCE ID / UPI UTR"
+                            required
+                            maxLength={24}
+                            placeholder="e.g. 429108492019 or UPI Ref No"
+                            value={formData.paymentDetails.transactionId || ""}
+                            onChange={(e) => {
+                              setFormData((prev) => ({
+                                ...prev,
+                                paymentDetails: {
+                                  ...prev.paymentDetails,
+                                  paymentMode: "UPI_QR",
+                                  transactionId: e.target.value.trim(),
+                                  status: "PENDING_VERIFICATION",
+                                },
+                              }));
+                              if (errors["paymentDetails.transactionId"]) {
+                                setErrors((prev) => ({ ...prev, "paymentDetails.transactionId": "" }));
+                              }
+                            }}
+                            error={errors["paymentDetails.transactionId"]}
+                            helperText="Mandatory for payment confirmation and receipt verification."
+                          />
+                        </div>
                       </div>
-                    </div>
-
-                    {/* UTR Input Section */}
-                    <div className="pt-4 border-t-2 border-black/20 space-y-3">
-                      <Input
-                        label="12-DIGIT TRANSACTION REFERENCE ID / UPI UTR"
-                        required
-                        maxLength={24}
-                        placeholder="e.g. 429108492019 or UPI Ref No"
-                        value={formData.paymentDetails.transactionId || ""}
-                        onChange={(e) => {
-                          setFormData((prev) => ({
-                            ...prev,
-                            paymentDetails: {
-                              ...prev.paymentDetails,
-                              paymentMode: "UPI_QR",
-                              transactionId: e.target.value.trim(),
-                              status: "PENDING_VERIFICATION",
-                            },
-                          }));
-                          if (errors["paymentDetails.transactionId"]) {
-                            setErrors((prev) => ({ ...prev, "paymentDetails.transactionId": "" }));
-                          }
-                        }}
-                        error={errors["paymentDetails.transactionId"]}
-                        helperText="Mandatory for payment confirmation and receipt verification."
-                      />
-                    </div>
-                  </div>
+                    );
+                  })()}
 
                   {/* Free Tier / Waiver Option (If not mandatory) */}
                   {!paymentSettings.isPaymentMandatory && (
@@ -1422,7 +1741,7 @@ export function RegistrationForm() {
             )}
 
             {/* ========================================================================= */}
-            {/* STEP 4: DOCUMENT UPLOADS & FINAL SUBMISSION                                */}
+            {/* STEP 4: MANDATORY DOCUMENT UPLOADS & FINAL PASS CONFIRMATION               */}
             {/* ========================================================================= */}
             {currentStep === 4 && (
               <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo space-y-6 animate-in fade-in-50 duration-200">
@@ -1432,23 +1751,43 @@ export function RegistrationForm() {
                       04
                     </span>
                     <h3 className="font-black text-xl text-black uppercase tracking-tight">
-                      DOCUMENT UPLOADS &amp; FINAL PASS CONFIRMATION
+                      MANDATORY DOCUMENT UPLOADS &amp; FINAL CONFIRMATION
                     </h3>
                   </div>
-                  <span className="font-mono text-[10px] font-bold bg-neo-secondary px-2 py-1 border-2 border-black uppercase hidden sm:inline">
-                    FINAL STEP 4
+                  <span className="font-mono text-[10px] font-bold bg-rose-500 text-white px-2 py-1 border-2 border-black uppercase hidden sm:inline">
+                    ★ UPLOADS MANDATORY
                   </span>
                 </div>
 
-                {/* Document Upload 1: College ID Card / Bonafide (REQUIRED) */}
+                {/* Mandatory Notice Callout */}
+                <div className="p-4 bg-amber-100 border-3 border-black text-xs font-bold text-amber-950 space-y-1">
+                  <div className="flex items-center gap-2 font-black uppercase text-amber-900">
+                    <AlertCircle className="w-4 h-4 text-amber-800 stroke-[3px] shrink-0" />
+                    <span>MANDATORY VERIFICATION DOCUMENTS REQUIRED</span>
+                  </div>
+                  <p className="leading-relaxed">
+                    Both <strong>(1) Squad College IDs / Institutional Bonafide</strong> and <strong>(2) Project Synopsis Proposal Deck</strong> are strictly mandatory to generate your official tournament pass and seat allocation.
+                  </p>
+                </div>
+
+                {/* Document Upload 1: College ID Card / Bonafide (MANDATORY) */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-black uppercase tracking-wider text-black flex items-center gap-1.5">
                       <FileText className="w-4 h-4 text-black" />
-                      <span>COLLEGE ID CARDS / BONAFIDE CERTIFICATE (PDF / PNG / JPG)</span>
+                      <span>1. COLLEGE ID CARDS / BONAFIDE VERIFICATION (PDF / PNG / JPG)</span>
                     </label>
-                    <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-rose-600 text-white border border-black shadow-neo-sm">
-                      REQUIRED *
+                    <span
+                      className={clsx(
+                        "font-mono text-[10px] font-black uppercase px-2 py-0.5 border border-black shadow-neo-xs",
+                        formData.documentUploads?.collegeIdFileName
+                          ? "bg-emerald-300 text-black"
+                          : "bg-rose-500 text-white animate-pulse"
+                      )}
+                    >
+                      {formData.documentUploads?.collegeIdFileName
+                        ? "✔ ATTACHED"
+                        : "MANDATORY *"}
                     </span>
                   </div>
 
@@ -1463,10 +1802,12 @@ export function RegistrationForm() {
                   <div
                     onClick={() => !isUploadingCollegeId && collegeIdInputRef.current?.click()}
                     className={clsx(
-                      "p-6 border-3 border-dashed transition-all text-center space-y-2 cursor-pointer",
+                      "p-6 border-3 transition-all text-center space-y-2 cursor-pointer",
                       errors["documentUploads.collegeIdFileName"]
-                        ? "border-rose-600 bg-rose-50"
-                        : "border-black bg-neutral-50 hover:bg-neo-bg"
+                        ? "border-rose-600 bg-rose-100 border-dashed ring-2 ring-rose-600"
+                        : formData.documentUploads.collegeIdFileName
+                        ? "border-emerald-700 bg-emerald-50 border-solid"
+                        : "border-black border-dashed bg-neutral-50 hover:bg-neo-bg"
                     )}
                   >
                     {isUploadingCollegeId ? (
@@ -1504,7 +1845,7 @@ export function RegistrationForm() {
                       <div>
                         <UploadCloud className="w-8 h-8 mx-auto text-black/70 stroke-[2px] mb-2" />
                         <p className="font-black text-sm uppercase text-black">
-                          CLICK OR DRAG &amp; DROP COLLEGE ID CARDS
+                          CLICK OR DRAG &amp; DROP COLLEGE ID CARDS <span className="text-rose-600 font-black">*</span>
                         </p>
                         <p className="font-mono text-xs text-black/60">
                           Combined squad PDF or Leader ID card (Max 20MB) • Uploads to Google Drive
@@ -1513,22 +1854,31 @@ export function RegistrationForm() {
                     )}
                   </div>
                   {errors["documentUploads.collegeIdFileName"] && (
-                    <p className="text-xs font-bold text-rose-600 flex items-center gap-1">
-                      <AlertCircle className="w-3.5 h-3.5" />
-                      {errors["documentUploads.collegeIdFileName"]}
+                    <p className="text-xs font-black text-rose-700 bg-rose-50 border border-rose-400 p-2 flex items-center gap-1.5">
+                      <AlertCircle className="w-4 h-4 stroke-[2.5px] shrink-0" />
+                      <span>{errors["documentUploads.collegeIdFileName"]}</span>
                     </p>
                   )}
                 </div>
 
-                {/* Document Upload 2: Project Abstract / Proposal (REQUIRED) */}
-                <div className="space-y-2 pt-2 border-t-2 border-black/15">
+                {/* Document Upload 2: Project Abstract / Proposal (MANDATORY) */}
+                <div className="space-y-2 pt-3 border-t-2 border-black/15">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-black uppercase tracking-wider text-black flex items-center gap-1.5">
                       <Sparkles className="w-4 h-4 text-black" />
-                      <span>PROJECT SYNOPSIS / PROPOSAL DECK (PDF / DOCX / PPTX)</span>
+                      <span>2. PROJECT SYNOPSIS / PROPOSAL DECK (PDF / DOCX / PPTX)</span>
                     </label>
-                    <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-rose-600 text-white border border-black shadow-neo-sm">
-                      REQUIRED *
+                    <span
+                      className={clsx(
+                        "font-mono text-[10px] font-black uppercase px-2 py-0.5 border border-black shadow-neo-xs",
+                        formData.documentUploads?.synopsisFileName
+                          ? "bg-emerald-300 text-black"
+                          : "bg-rose-500 text-white animate-pulse"
+                      )}
+                    >
+                      {formData.documentUploads?.synopsisFileName
+                        ? "✔ ATTACHED"
+                        : "MANDATORY *"}
                     </span>
                   </div>
 
@@ -1543,10 +1893,12 @@ export function RegistrationForm() {
                   <div
                     onClick={() => !isUploadingSynopsis && synopsisInputRef.current?.click()}
                     className={clsx(
-                      "p-6 border-3 border-dashed transition-all text-center space-y-2 cursor-pointer",
+                      "p-6 border-3 transition-all text-center space-y-2 cursor-pointer",
                       errors["documentUploads.synopsisFileName"]
-                        ? "border-rose-600 bg-rose-50"
-                        : "border-black bg-neutral-50 hover:bg-neo-bg"
+                        ? "border-rose-600 bg-rose-100 border-dashed ring-2 ring-rose-600"
+                        : formData.documentUploads.synopsisFileName
+                        ? "border-emerald-700 bg-emerald-50 border-solid"
+                        : "border-black border-dashed bg-neutral-50 hover:bg-neo-bg"
                     )}
                   >
                     {isUploadingSynopsis ? (
@@ -1584,7 +1936,7 @@ export function RegistrationForm() {
                       <div>
                         <FileCheck className="w-8 h-8 mx-auto text-black/70 stroke-[2px] mb-2" />
                         <p className="font-black text-sm uppercase text-black">
-                          ATTACH PROJECT SYNOPSIS / IDEA BRIEF (PDF / DOCX)
+                          CLICK OR DRAG &amp; DROP PROJECT SYNOPSIS DECK <span className="text-rose-600 font-black">*</span>
                         </p>
                         <p className="font-mono text-xs text-black/60">
                           Team proposal synopsis for jury review (Max 20MB) • Uploads to Google Drive
@@ -1593,9 +1945,9 @@ export function RegistrationForm() {
                     )}
                   </div>
                   {errors["documentUploads.synopsisFileName"] && (
-                    <p className="text-xs font-bold text-rose-600 flex items-center gap-1">
-                      <AlertCircle className="w-3.5 h-3.5" />
-                      {errors["documentUploads.synopsisFileName"]}
+                    <p className="text-xs font-black text-rose-700 bg-rose-50 border border-rose-400 p-2 flex items-center gap-1.5">
+                      <AlertCircle className="w-4 h-4 stroke-[2.5px] shrink-0" />
+                      <span>{errors["documentUploads.synopsisFileName"]}</span>
                     </p>
                   )}
                 </div>
@@ -1652,8 +2004,10 @@ export function RegistrationForm() {
                     {isSubmitting ? (
                       <span className="flex items-center gap-2">
                         <Loader2 className="w-5 h-5 animate-spin" />
-                        <span>PROCESSING SQUAD ENTRY...</span>
+                        <span>{isEditMode ? "SAVING SQUAD UPDATES..." : "PROCESSING SQUAD ENTRY..."}</span>
                       </span>
+                    ) : isEditMode ? (
+                      <span>SAVE CHANGES (USES 1 EDIT)</span>
                     ) : (
                       <span>CONFIRM &amp; GENERATE PASS</span>
                     )}

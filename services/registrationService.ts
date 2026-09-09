@@ -205,4 +205,43 @@ export const registrationService = {
       };
     }
   },
+
+  async updateRegistration(data: RegistrationFormData): Promise<RegistrationSubmissionResult> {
+    // 1. Run client-side validation
+    const validationErrors = validateRegistrationForm(data);
+    if (Object.keys(validationErrors).length > 0) {
+      return {
+        success: false,
+        message: "Please correct the highlighted form errors before saving changes.",
+        errors: validationErrors,
+      };
+    }
+
+    try {
+      // 2. Real REST Backend execution: PUT /api/registrations
+      const res = await fetch("/api/registrations", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+      if (!res.ok || !result.success) {
+        return {
+          success: false,
+          message: result.message || "Failed to update registration details.",
+          errors: result.errors,
+        };
+      }
+
+      return result;
+    } catch (err: any) {
+      return {
+        success: false,
+        message: err.message || "Failed to reach registration server to update details.",
+      };
+    }
+  },
 };
