@@ -184,9 +184,23 @@ export function DocumentsContent() {
                     </span>
 
                     {/* Status Badge */}
-                    <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-amber-300 text-black border-2 border-black shadow-neo-xs flex items-center gap-1">
-                      <Lock className="w-3 h-3" />
-                      <span>{doc.isAvailable ? "AVAILABLE NOW" : "RELEASING SOON"}</span>
+                    <span
+                      className={clsx(
+                        "font-mono text-[10px] font-black uppercase px-2 py-0.5 border-2 border-black shadow-neo-xs flex items-center gap-1",
+                        doc.isAvailable ? "bg-emerald-300 text-black" : "bg-amber-300 text-black"
+                      )}
+                    >
+                      {doc.isAvailable ? (
+                        <>
+                          <CheckCircle2 className="w-3 h-3" />
+                          <span>AVAILABLE NOW</span>
+                        </>
+                      ) : (
+                        <>
+                          <Lock className="w-3 h-3" />
+                          <span>RELEASING SOON</span>
+                        </>
+                      )}
                     </span>
                   </div>
 
@@ -228,7 +242,7 @@ export function DocumentsContent() {
                     </ul>
                   </div>
 
-                  {/* Document Preview Frame (Embed or Coming Soon Mockup) */}
+                  {/* Document Preview Frame (Embed or Available Download Card or Coming Soon Mockup) */}
                   <div className="border-3 border-black bg-neutral-100 p-4 sm:p-6 text-center space-y-3 relative overflow-hidden shadow-neo-sm">
                     {doc.isAvailable && doc.embedUrl ? (
                       <div className="aspect-video w-full border-2 border-black">
@@ -238,6 +252,28 @@ export function DocumentsContent() {
                           className="w-full h-full"
                           allowFullScreen
                         />
+                      </div>
+                    ) : doc.isAvailable && doc.downloadUrl ? (
+                      <div className="py-6 flex flex-col items-center justify-center space-y-3 bg-cyan-50 border-2 border-black p-4">
+                        <div className="w-14 h-14 border-3 border-black bg-cyan-300 flex items-center justify-center shadow-neo-sm">
+                          <FileText className="w-7 h-7 stroke-[2.5px] text-black" />
+                        </div>
+                        <div className="space-y-1">
+                          <span className="font-mono text-xs font-black uppercase tracking-wider block text-black">
+                            OFFICIAL TEMPLATE FILE READY
+                          </span>
+                          <span className="font-mono text-[11px] font-bold text-black/70 bg-white border border-black px-2 py-0.5 inline-block">
+                            Authorization_Letter_Head_of_Institute.docx
+                          </span>
+                        </div>
+                        <a
+                          href={doc.downloadUrl}
+                          download="Authorization_Letter_Head_of_Institute.docx"
+                          className="px-4 py-2 bg-black text-white hover:bg-neutral-800 font-black text-xs uppercase tracking-wider border-2 border-black shadow-neo-sm hover:shadow-none transition-all flex items-center gap-1.5 cursor-pointer mt-1"
+                        >
+                          <Download className="w-3.5 h-3.5 stroke-[2.5px]" />
+                          <span>DOWNLOAD TEMPLATE (.DOCX)</span>
+                        </a>
                       </div>
                     ) : (
                       <div className="py-8 flex flex-col items-center justify-center space-y-2.5">
@@ -276,9 +312,8 @@ export function DocumentsContent() {
                   {doc.isAvailable && doc.downloadUrl ? (
                     <a
                       href={doc.downloadUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-5 py-2.5 bg-neo-secondary hover:bg-neo-accent text-black font-black text-xs uppercase tracking-wider border-3 border-black shadow-neo-sm hover:shadow-neo transition-all flex items-center justify-center gap-2"
+                      download="Authorization_Letter_Head_of_Institute.docx"
+                      className="px-5 py-2.5 bg-neo-secondary hover:bg-neo-accent text-black font-black text-xs uppercase tracking-wider border-3 border-black shadow-neo-sm hover:shadow-neo transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <Download className="w-4 h-4 stroke-[2.5px]" />
                       <span>DOWNLOAD {doc.shortTitle}</span>

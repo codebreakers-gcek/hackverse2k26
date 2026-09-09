@@ -47,10 +47,9 @@ export const HACKATHON_DOCUMENTS: HackathonDocument[] = [
     category: "authorization",
     description:
       "Official institutional endorsement and verification letter to be endorsed with seal and signature by the Head of Department (HOD), Dean, or Principal.",
-    isAvailable: false,
-    format: "DOCX / Printable PDF",
-    embedUrl: "",
-    downloadUrl: "",
+    isAvailable: true,
+    format: "DOCX / Printable Template",
+    downloadUrl: "/assets/docs/Authorization_Letter_Head_of_Institute.docx",
     instructions: [
       "Print on official college/university letterhead.",
       "Fill in student details: Names, Roll Numbers, Department, and Team Name.",
@@ -61,7 +60,7 @@ export const HACKATHON_DOCUMENTS: HackathonDocument[] = [
       { label: "DOCUMENT TYPE", value: "Official College NOC & Bonafide Form" },
       { label: "SIGNATORY", value: "Head of Department (HOD) / Dean / Principal" },
       { label: "APPLICABILITY", value: "All Shortlisted Finalist Squads" },
-      { label: "CURRENT STATUS", value: "RELEASING SOON // UNDER EMBARGO" },
+      { label: "CURRENT STATUS", value: "AVAILABLE NOW FOR DOWNLOAD" },
     ],
   },
 ];
