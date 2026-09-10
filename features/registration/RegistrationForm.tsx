@@ -43,6 +43,8 @@ import {
   HardDrive,
   ExternalLink,
   Edit3,
+  Eye,
+  X,
 } from "lucide-react";
 import clsx from "clsx";
 import Image from "next/image";
@@ -166,6 +168,12 @@ export function RegistrationForm() {
     },
     // Step 4
     documentUploads: {
+      paymentProofFileName: "",
+      paymentProofFileSize: "",
+      paymentProofDriveUrl: "",
+      authorizationLetterFileName: "",
+      authorizationLetterFileSize: "",
+      authorizationLetterDriveUrl: "",
       collegeIdFileName: "",
       collegeIdFileSize: "",
       synopsisFileName: "",
@@ -376,12 +384,20 @@ export function RegistrationForm() {
         status: existingTeamData.paymentStatus || "FREE_TIER",
       },
       documentUploads: {
-        collegeIdFileName: docs.collegeIdFileName || "",
-        collegeIdFileSize: docs.collegeIdFileSize || "",
-        collegeIdDriveUrl: docs.collegeIdDriveUrl || "",
-        synopsisFileName: docs.synopsisFileName || "",
-        synopsisFileSize: docs.synopsisFileSize || "",
-        synopsisDriveUrl: docs.synopsisDriveUrl || "",
+        paymentProofFileName: docs.paymentProofFileName || docs.collegeIdFileName || "",
+        paymentProofFileSize: docs.paymentProofFileSize || docs.collegeIdFileSize || "",
+        paymentProofDriveUrl: docs.paymentProofDriveUrl || docs.collegeIdDriveUrl || "",
+        paymentProofDriveFileId: docs.paymentProofDriveFileId || docs.collegeIdDriveFileId || "",
+        authorizationLetterFileName: docs.authorizationLetterFileName || docs.synopsisFileName || "",
+        authorizationLetterFileSize: docs.authorizationLetterFileSize || docs.synopsisFileSize || "",
+        authorizationLetterDriveUrl: docs.authorizationLetterDriveUrl || docs.synopsisDriveUrl || "",
+        authorizationLetterDriveFileId: docs.authorizationLetterDriveFileId || docs.synopsisDriveFileId || "",
+        collegeIdFileName: docs.collegeIdFileName || docs.paymentProofFileName || "",
+        collegeIdFileSize: docs.collegeIdFileSize || docs.paymentProofFileSize || "",
+        collegeIdDriveUrl: docs.collegeIdDriveUrl || docs.paymentProofDriveUrl || "",
+        synopsisFileName: docs.synopsisFileName || docs.authorizationLetterFileName || "",
+        synopsisFileSize: docs.synopsisFileSize || docs.authorizationLetterFileSize || "",
+        synopsisDriveUrl: docs.synopsisDriveUrl || docs.authorizationLetterDriveUrl || "",
         githubRepoUrl: docs.githubRepoUrl || "",
       },
       agreeToGuidelines: true,
@@ -400,11 +416,25 @@ export function RegistrationForm() {
     setErrors({});
   };
 
-  // File inputs ref & upload states
-  const collegeIdInputRef = useRef<HTMLInputElement>(null);
-  const synopsisInputRef = useRef<HTMLInputElement>(null);
-  const [isUploadingCollegeId, setIsUploadingCollegeId] = useState(false);
-  const [isUploadingSynopsis, setIsUploadingSynopsis] = useState(false);
+  // Local File instances for zero-lag client holding & smooth submit-time Drive upload
+  const [paymentProofFile, setPaymentProofFile] = useState<File | null>(null);
+  const [authLetterFile, setAuthLetterFile] = useState<File | null>(null);
+
+  // File preview dialog state
+  const [previewModal, setPreviewModal] = useState<{
+    isOpen: boolean;
+    title: string;
+    url: string;
+    type: "image" | "pdf" | "other";
+  } | null>(null);
+
+  // File inputs ref
+  const paymentProofInputRef = useRef<HTMLInputElement>(null);
+  const authLetterInputRef = useRef<HTMLInputElement>(null);
+  const collegeIdInputRef = paymentProofInputRef;
+  const synopsisInputRef = authLetterInputRef;
+  const [isUploadingCollegeId] = useState(false);
+  const [isUploadingSynopsis] = useState(false);
 
   // Pre-fill user data from OAuth
   useEffect(() => {
@@ -564,112 +594,189 @@ export function RegistrationForm() {
     }
   };
 
-  // Step 4: File Upload Handlers (Direct Google Drive upload)
-  const handleCollegeIdFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  // Step 4: Instant Local File Handlers (Keeps file locally in browser, zero blocking)
+  const handlePaymentProofFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const sizeStr = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+    setPaymentProofFile(file);
     setFormData((prev) => ({
       ...prev,
       documentUploads: {
         ...prev.documentUploads,
+        paymentProofFileName: file.name,
+        paymentProofFileSize: sizeStr,
         collegeIdFileName: file.name,
         collegeIdFileSize: sizeStr,
       },
     }));
 
-    if (errors["documentUploads.collegeIdFileName"]) {
+    if (errors["documentUploads.paymentProofFileName"] || errors["documentUploads.collegeIdFileName"]) {
       setErrors((prev) => {
         const next = { ...prev };
+        delete next["documentUploads.paymentProofFileName"];
         delete next["documentUploads.collegeIdFileName"];
         return next;
       });
     }
-
-    // Direct Google Drive upload
-    setIsUploadingCollegeId(true);
-    try {
-      const uploadData = new FormData();
-      uploadData.append("file", file);
-      uploadData.append("teamName", formData.teamName || "Squad");
-      uploadData.append("category", "college_id");
-
-      const res = await fetch("/api/upload/drive", {
-        method: "POST",
-        body: uploadData,
-      });
-      const result = await res.json();
-      if (result.success && result.data) {
-        setFormData((prev) => ({
-          ...prev,
-          documentUploads: {
-            ...prev.documentUploads,
-            collegeIdFileName: file.name,
-            collegeIdFileSize: sizeStr,
-            collegeIdDriveUrl: result.data.webViewLink,
-            collegeIdDriveFileId: result.data.fileId,
-          },
-        }));
-      }
-    } catch (err) {
-      console.warn("Drive upload error, keeping local reference:", err);
-    } finally {
-      setIsUploadingCollegeId(false);
-    }
   };
 
-  const handleSynopsisFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAuthLetterFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
     const sizeStr = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
+    setAuthLetterFile(file);
     setFormData((prev) => ({
       ...prev,
       documentUploads: {
         ...prev.documentUploads,
+        authorizationLetterFileName: file.name,
+        authorizationLetterFileSize: sizeStr,
         synopsisFileName: file.name,
         synopsisFileSize: sizeStr,
       },
     }));
 
-    if (errors["documentUploads.synopsisFileName"]) {
+    if (errors["documentUploads.authorizationLetterFileName"] || errors["documentUploads.synopsisFileName"]) {
       setErrors((prev) => {
         const next = { ...prev };
+        delete next["documentUploads.authorizationLetterFileName"];
         delete next["documentUploads.synopsisFileName"];
         return next;
       });
     }
+  };
 
-    // Direct Google Drive upload
-    setIsUploadingSynopsis(true);
-    try {
-      const uploadData = new FormData();
-      uploadData.append("file", file);
-      uploadData.append("teamName", formData.teamName || "Squad");
-      uploadData.append("category", "synopsis");
+  const handleCollegeIdFile = handlePaymentProofFile;
+  const handleSynopsisFile = handleAuthLetterFile;
 
-      const res = await fetch("/api/upload/drive", {
-        method: "POST",
-        body: uploadData,
-      });
-      const result = await res.json();
-      if (result.success && result.data) {
-        setFormData((prev) => ({
-          ...prev,
-          documentUploads: {
-            ...prev.documentUploads,
-            synopsisFileName: file.name,
-            synopsisFileSize: sizeStr,
-            synopsisDriveUrl: result.data.webViewLink,
-            synopsisDriveFileId: result.data.fileId,
-          },
-        }));
+  // Delete Handlers
+  const handleDeletePaymentProof = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setPaymentProofFile(null);
+    if (paymentProofInputRef.current) {
+      paymentProofInputRef.current.value = "";
+    }
+    setFormData((prev) => ({
+      ...prev,
+      documentUploads: {
+        ...prev.documentUploads,
+        paymentProofFileName: "",
+        paymentProofFileSize: "",
+        paymentProofDriveUrl: "",
+        paymentProofDriveFileId: "",
+        collegeIdFileName: "",
+        collegeIdFileSize: "",
+        collegeIdDriveUrl: "",
+        collegeIdDriveFileId: "",
+      },
+    }));
+  };
+
+  const handleDeleteAuthLetter = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setAuthLetterFile(null);
+    if (authLetterInputRef.current) {
+      authLetterInputRef.current.value = "";
+    }
+    setFormData((prev) => ({
+      ...prev,
+      documentUploads: {
+        ...prev.documentUploads,
+        authorizationLetterFileName: "",
+        authorizationLetterFileSize: "",
+        authorizationLetterDriveUrl: "",
+        authorizationLetterDriveFileId: "",
+        synopsisFileName: "",
+        synopsisFileSize: "",
+        synopsisDriveUrl: "",
+        synopsisDriveFileId: "",
+      },
+    }));
+  };
+
+  // Helper to get embeddable preview URL (Google Drive /preview player)
+  const toEmbedUrl = (rawUrl: string): string => {
+    if (!rawUrl) return rawUrl;
+    if (rawUrl.includes("drive.google.com/file/d/")) {
+      const match = rawUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+      if (match && match[1]) {
+        return `https://drive.google.com/file/d/${match[1]}/preview`;
       }
-    } catch (err) {
-      console.warn("Drive upload error, keeping local reference:", err);
-    } finally {
-      setIsUploadingSynopsis(false);
+    }
+    return rawUrl;
+  };
+
+  // Preview Handlers (Opens File in Dialog)
+  const handlePreviewPaymentProof = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    let url = "";
+    let type: "image" | "pdf" | "other" = "other";
+
+    if (paymentProofFile) {
+      url = URL.createObjectURL(paymentProofFile);
+      if (paymentProofFile.type.startsWith("image/") || /\.(png|jpe?g|webp|gif)$/i.test(paymentProofFile.name)) {
+        type = "image";
+      } else if (paymentProofFile.type === "application/pdf" || /\.pdf$/i.test(paymentProofFile.name)) {
+        type = "pdf";
+      }
+    } else if (formData.documentUploads?.paymentProofDriveUrl || formData.documentUploads?.collegeIdDriveUrl) {
+      const rawUrl = formData.documentUploads?.paymentProofDriveUrl || formData.documentUploads?.collegeIdDriveUrl || "";
+      url = toEmbedUrl(rawUrl);
+      const name = formData.documentUploads?.paymentProofFileName || formData.documentUploads?.collegeIdFileName || "";
+      if (rawUrl.includes("drive.google.com")) {
+        type = "pdf"; // Google Drive /preview is universal iframe player
+      } else if (/\.(png|jpe?g|webp|gif)$/i.test(name)) {
+        type = "image";
+      } else {
+        type = "pdf";
+      }
+    }
+
+    if (url) {
+      setPreviewModal({
+        isOpen: true,
+        title: formData.documentUploads?.paymentProofFileName || formData.documentUploads?.collegeIdFileName || "Payment Proof",
+        url,
+        type,
+      });
+    }
+  };
+
+  const handlePreviewAuthLetter = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    let url = "";
+    let type: "image" | "pdf" | "other" = "other";
+
+    if (authLetterFile) {
+      url = URL.createObjectURL(authLetterFile);
+      if (authLetterFile.type.startsWith("image/") || /\.(png|jpe?g|webp|gif)$/i.test(authLetterFile.name)) {
+        type = "image";
+      } else if (authLetterFile.type === "application/pdf" || /\.pdf$/i.test(authLetterFile.name)) {
+        type = "pdf";
+      }
+    } else if (formData.documentUploads?.authorizationLetterDriveUrl || formData.documentUploads?.synopsisDriveUrl) {
+      const rawUrl = formData.documentUploads?.authorizationLetterDriveUrl || formData.documentUploads?.synopsisDriveUrl || "";
+      url = toEmbedUrl(rawUrl);
+      const name = formData.documentUploads?.authorizationLetterFileName || formData.documentUploads?.synopsisFileName || "";
+      if (rawUrl.includes("drive.google.com")) {
+        type = "pdf"; // Google Drive /preview is universal iframe player
+      } else if (/\.(png|jpe?g|webp|gif)$/i.test(name)) {
+        type = "image";
+      } else {
+        type = "pdf";
+      }
+    }
+
+    if (url) {
+      setPreviewModal({
+        isOpen: true,
+        title: formData.documentUploads?.authorizationLetterFileName || formData.documentUploads?.synopsisFileName || "Institutional Authorization Letter",
+        url,
+        type,
+      });
     }
   };
 
@@ -702,13 +809,9 @@ export function RegistrationForm() {
     window.scrollTo({ top: 120, behavior: "smooth" });
   };
 
-  // Final Form Submission
+  // Final Form Submission (Uploads held files to Google Drive in backend smoothly upon confirmation)
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isUploadingCollegeId || isUploadingSynopsis) {
-      alert("Please wait for your document uploads to finish before submitting.");
-      return;
-    }
 
     const finalErrors = validateStep4(formData);
     if (Object.keys(finalErrors).length > 0) {
@@ -720,9 +823,71 @@ export function RegistrationForm() {
     setIsSubmitting(true);
     setErrors({});
 
+    // Smooth background Drive upload for any locally attached files
+    const updatedDocumentUploads = { ...formData.documentUploads };
+
+    try {
+      const uploadTasks: Promise<any>[] = [];
+
+      // 1. Upload payment proof to Drive if local file was chosen
+      if (paymentProofFile && !updatedDocumentUploads.paymentProofDriveUrl) {
+        const pData = new FormData();
+        pData.append("file", paymentProofFile);
+        pData.append("teamName", formData.teamName || "Squad");
+        pData.append("category", "payment_proof");
+
+        uploadTasks.push(
+          fetch("/api/upload/drive", { method: "POST", body: pData })
+            .then((r) => r.json())
+            .then((res) => {
+              if (res.success && res.data) {
+                updatedDocumentUploads.paymentProofDriveUrl = res.data.webViewLink;
+                updatedDocumentUploads.paymentProofDriveFileId = res.data.fileId;
+                updatedDocumentUploads.collegeIdDriveUrl = res.data.webViewLink;
+                updatedDocumentUploads.collegeIdDriveFileId = res.data.fileId;
+              }
+            })
+            .catch((err) => console.warn("Payment proof Drive upload notice:", err))
+        );
+      }
+
+      // 2. Upload authorization letter to Drive if local file was chosen
+      if (authLetterFile && !updatedDocumentUploads.authorizationLetterDriveUrl) {
+        const aData = new FormData();
+        aData.append("file", authLetterFile);
+        aData.append("teamName", formData.teamName || "Squad");
+        aData.append("category", "authorization_letter");
+
+        uploadTasks.push(
+          fetch("/api/upload/drive", { method: "POST", body: aData })
+            .then((r) => r.json())
+            .then((res) => {
+              if (res.success && res.data) {
+                updatedDocumentUploads.authorizationLetterDriveUrl = res.data.webViewLink;
+                updatedDocumentUploads.authorizationLetterDriveFileId = res.data.fileId;
+                updatedDocumentUploads.synopsisDriveUrl = res.data.webViewLink;
+                updatedDocumentUploads.synopsisDriveFileId = res.data.fileId;
+              }
+            })
+            .catch((err) => console.warn("Authorization letter Drive upload notice:", err))
+        );
+      }
+
+      if (uploadTasks.length > 0) {
+        await Promise.allSettled(uploadTasks);
+      }
+    } catch (uploadErr) {
+      console.warn("Background upload completed with notice:", uploadErr);
+    }
+
+    const payloadToSubmit: RegistrationFormData = {
+      ...formData,
+      documentUploads: updatedDocumentUploads,
+    };
+
     if (isEditMode) {
       try {
-        const result = await registrationService.updateRegistration(formData);
+        const result = await registrationService.updateRegistration(payloadToSubmit);
         if (result.success) {
           try {
             localStorage.removeItem(DRAFT_STORAGE_KEY);
@@ -750,7 +915,7 @@ export function RegistrationForm() {
     }
 
     try {
-      const result = await registrationService.submitRegistration(formData);
+      const result = await registrationService.submitRegistration(payloadToSubmit);
       if (result.success) {
         try {
           localStorage.removeItem(DRAFT_STORAGE_KEY);
@@ -1701,10 +1866,6 @@ export function RegistrationForm() {
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="text-emerald-600 font-black">✔</span>
-                        <span>High-Speed 1Gbps Dedicated Wi-Fi &amp; Ports</span>
-                      </div>
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-emerald-600 font-black">✔</span>
                         <span>Complimentary Meals &amp; Energy Refreshments</span>
                       </div>
                       <div className="flex items-center gap-1.5">
@@ -1766,26 +1927,26 @@ export function RegistrationForm() {
                     <span>MANDATORY VERIFICATION DOCUMENTS REQUIRED</span>
                   </div>
                   <p className="leading-relaxed">
-                    Both <strong>(1) Squad College IDs / Institutional Bonafide</strong> and <strong>(2) Project Synopsis Proposal Deck</strong> are strictly mandatory to generate your official tournament pass and seat allocation.
+                    Both <strong>(1) Payment Proof / Transaction Screenshot</strong> and <strong>(2) Institutional Authorization Letter &amp; NOC / Bonafide</strong> are strictly mandatory to generate your official tournament pass and seat allocation. Selected files are held locally and uploaded securely to Google Drive upon final confirmation.
                   </p>
                 </div>
 
-                {/* Document Upload 1: College ID Card / Bonafide (MANDATORY) */}
+                {/* Document Upload 1: Payment Proof / Transaction Screenshot (MANDATORY) */}
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <label className="text-xs font-black uppercase tracking-wider text-black flex items-center gap-1.5">
-                      <FileText className="w-4 h-4 text-black" />
-                      <span>1. COLLEGE ID CARDS / BONAFIDE VERIFICATION (PDF / PNG / JPG)</span>
+                      <CreditCard className="w-4 h-4 text-black" />
+                      <span>1. PAYMENT PROOF / TRANSACTION SCREENSHOT (PDF / PNG / JPG)</span>
                     </label>
                     <span
                       className={clsx(
                         "font-mono text-[10px] font-black uppercase px-2 py-0.5 border border-black shadow-neo-xs",
-                        formData.documentUploads?.collegeIdFileName
+                        formData.documentUploads?.paymentProofFileName || formData.documentUploads?.collegeIdFileName
                           ? "bg-emerald-300 text-black"
                           : "bg-rose-500 text-white animate-pulse"
                       )}
                     >
-                      {formData.documentUploads?.collegeIdFileName
+                      {formData.documentUploads?.paymentProofFileName || formData.documentUploads?.collegeIdFileName
                         ? "✔ ATTACHED"
                         : "MANDATORY *"}
                     </span>
@@ -1793,161 +1954,172 @@ export function RegistrationForm() {
 
                   <input
                     type="file"
-                    ref={collegeIdInputRef}
-                    onChange={handleCollegeIdFile}
+                    ref={paymentProofInputRef}
+                    onChange={handlePaymentProofFile}
                     accept=".pdf,.png,.jpg,.jpeg"
                     className="hidden"
                   />
 
                   <div
-                    onClick={() => !isUploadingCollegeId && collegeIdInputRef.current?.click()}
+                    onClick={() => paymentProofInputRef.current?.click()}
                     className={clsx(
                       "p-6 border-3 transition-all text-center space-y-2 cursor-pointer",
-                      errors["documentUploads.collegeIdFileName"]
+                      errors["documentUploads.paymentProofFileName"] || errors["documentUploads.collegeIdFileName"]
                         ? "border-rose-600 bg-rose-100 border-dashed ring-2 ring-rose-600"
-                        : formData.documentUploads.collegeIdFileName
+                        : (formData.documentUploads?.paymentProofFileName || formData.documentUploads?.collegeIdFileName)
                         ? "border-emerald-700 bg-emerald-50 border-solid"
                         : "border-black border-dashed bg-neutral-50 hover:bg-neo-bg"
                     )}
                   >
-                    {isUploadingCollegeId ? (
-                      <div className="space-y-2 py-2">
-                        <Loader2 className="w-8 h-8 mx-auto animate-spin text-black" />
-                        <p className="font-mono text-xs font-black uppercase text-black">
-                          Uploading College ID to Google Drive...
-                        </p>
-                      </div>
-                    ) : formData.documentUploads.collegeIdFileName ? (
-                      <div className="space-y-2">
+                    {formData.documentUploads?.paymentProofFileName || formData.documentUploads?.collegeIdFileName ? (
+                      <div className="space-y-3">
                         <div className="font-mono text-xs font-black text-emerald-800 flex items-center justify-center gap-1.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                          <span>ATTACHED: {formData.documentUploads.collegeIdFileName}</span>
+                          <span>
+                            ATTACHED: {formData.documentUploads?.paymentProofFileName || formData.documentUploads?.collegeIdFileName}
+                          </span>
                         </div>
-                        <div className="flex flex-wrap items-center justify-center gap-2 text-[10px] font-mono">
-                          <span className="text-black/60">{formData.documentUploads.collegeIdFileSize}</span>
-                          {formData.documentUploads.collegeIdDriveUrl && (
-                            <a
-                              href={formData.documentUploads.collegeIdDriveUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-100 text-blue-900 border border-blue-800 font-bold hover:bg-blue-200"
-                            >
-                              <HardDrive className="w-3 h-3" />
-                              <span>View in Google Drive</span>
-                              <ExternalLink className="w-2.5 h-2.5" />
-                            </a>
-                          )}
-                          <span className="text-black/60 underline">• Click to replace file</span>
+                        <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-mono">
+                          <span className="text-black/60 font-bold">
+                            {formData.documentUploads?.paymentProofFileSize || formData.documentUploads?.collegeIdFileSize}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={handlePreviewPaymentProof}
+                            className="inline-flex items-center gap-1 px-3 py-1 bg-neo-accent text-black border-2 border-black font-black uppercase text-[11px] shadow-neo-xs hover:bg-black hover:text-white transition-all cursor-pointer"
+                          >
+                            <Eye className="w-3.5 h-3.5 stroke-[2.5px]" />
+                            <span>VIEW FILE</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleDeletePaymentProof}
+                            className="inline-flex items-center gap-1 px-3 py-1 bg-rose-100 text-rose-800 border-2 border-rose-700 font-black uppercase text-[11px] shadow-neo-xs hover:bg-rose-600 hover:text-white transition-all cursor-pointer"
+                          >
+                            <Trash2 className="w-3.5 h-3.5 stroke-[2.5px]" />
+                            <span>DELETE</span>
+                          </button>
+                          <span className="text-black/60 text-[10px] underline ml-1">• Click area to replace</span>
                         </div>
                       </div>
                     ) : (
                       <div>
                         <UploadCloud className="w-8 h-8 mx-auto text-black/70 stroke-[2px] mb-2" />
                         <p className="font-black text-sm uppercase text-black">
-                          CLICK OR DRAG &amp; DROP COLLEGE ID CARDS <span className="text-rose-600 font-black">*</span>
+                          CLICK OR DRAG &amp; DROP PAYMENT PROOF <span className="text-rose-600 font-black">*</span>
                         </p>
                         <p className="font-mono text-xs text-black/60">
-                          Combined squad PDF or Leader ID card (Max 20MB) • Uploads to Google Drive
+                          UPI transfer screenshot or payment receipt (Max 15MB) • Uploads automatically upon confirmation
                         </p>
                       </div>
                     )}
                   </div>
-                  {errors["documentUploads.collegeIdFileName"] && (
+                  {(errors["documentUploads.paymentProofFileName"] || errors["documentUploads.collegeIdFileName"]) && (
                     <p className="text-xs font-black text-rose-700 bg-rose-50 border border-rose-400 p-2 flex items-center gap-1.5">
                       <AlertCircle className="w-4 h-4 stroke-[2.5px] shrink-0" />
-                      <span>{errors["documentUploads.collegeIdFileName"]}</span>
+                      <span>{errors["documentUploads.paymentProofFileName"] || errors["documentUploads.collegeIdFileName"]}</span>
                     </p>
                   )}
                 </div>
 
-                {/* Document Upload 2: Project Abstract / Proposal (MANDATORY) */}
+                {/* Document Upload 2: Institutional Authorization Letter & NOC (MANDATORY) */}
                 <div className="space-y-2 pt-3 border-t-2 border-black/15">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5">
                     <label className="text-xs font-black uppercase tracking-wider text-black flex items-center gap-1.5">
-                      <Sparkles className="w-4 h-4 text-black" />
-                      <span>2. PROJECT SYNOPSIS / PROPOSAL DECK (PDF / DOCX / PPTX)</span>
+                      <FileText className="w-4 h-4 text-black" />
+                      <span>2. INSTITUTIONAL AUTHORIZATION LETTER &amp; NOC / BONAFIDE (PDF / DOCX / JPG)</span>
                     </label>
-                    <span
-                      className={clsx(
-                        "font-mono text-[10px] font-black uppercase px-2 py-0.5 border border-black shadow-neo-xs",
-                        formData.documentUploads?.synopsisFileName
-                          ? "bg-emerald-300 text-black"
-                          : "bg-rose-500 text-white animate-pulse"
-                      )}
-                    >
-                      {formData.documentUploads?.synopsisFileName
-                        ? "✔ ATTACHED"
-                        : "MANDATORY *"}
-                    </span>
+                    <div className="flex items-center gap-2">
+                      <a
+                        href="/documents"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-[11px] font-mono font-black text-blue-700 underline uppercase hover:text-blue-900"
+                      >
+                        <span>Download Format</span>
+                        <ExternalLink className="w-3 h-3" />
+                      </a>
+                      <span
+                        className={clsx(
+                          "font-mono text-[10px] font-black uppercase px-2 py-0.5 border border-black shadow-neo-xs",
+                          formData.documentUploads?.authorizationLetterFileName || formData.documentUploads?.synopsisFileName
+                            ? "bg-emerald-300 text-black"
+                            : "bg-rose-500 text-white animate-pulse"
+                        )}
+                      >
+                        {formData.documentUploads?.authorizationLetterFileName || formData.documentUploads?.synopsisFileName
+                          ? "✔ ATTACHED"
+                          : "MANDATORY *"}
+                      </span>
+                    </div>
                   </div>
 
                   <input
                     type="file"
-                    ref={synopsisInputRef}
-                    onChange={handleSynopsisFile}
-                    accept=".pdf,.docx,.pptx,.ppt"
+                    ref={authLetterInputRef}
+                    onChange={handleAuthLetterFile}
+                    accept=".pdf,.docx,.doc,.png,.jpg,.jpeg"
                     className="hidden"
                   />
 
                   <div
-                    onClick={() => !isUploadingSynopsis && synopsisInputRef.current?.click()}
+                    onClick={() => authLetterInputRef.current?.click()}
                     className={clsx(
                       "p-6 border-3 transition-all text-center space-y-2 cursor-pointer",
-                      errors["documentUploads.synopsisFileName"]
+                      errors["documentUploads.authorizationLetterFileName"] || errors["documentUploads.synopsisFileName"]
                         ? "border-rose-600 bg-rose-100 border-dashed ring-2 ring-rose-600"
-                        : formData.documentUploads.synopsisFileName
+                        : (formData.documentUploads?.authorizationLetterFileName || formData.documentUploads?.synopsisFileName)
                         ? "border-emerald-700 bg-emerald-50 border-solid"
                         : "border-black border-dashed bg-neutral-50 hover:bg-neo-bg"
                     )}
                   >
-                    {isUploadingSynopsis ? (
-                      <div className="space-y-2 py-2">
-                        <Loader2 className="w-8 h-8 mx-auto animate-spin text-black" />
-                        <p className="font-mono text-xs font-black uppercase text-black">
-                          Uploading Synopsis Deck to Google Drive...
-                        </p>
-                      </div>
-                    ) : formData.documentUploads.synopsisFileName ? (
-                      <div className="space-y-2">
+                    {formData.documentUploads?.authorizationLetterFileName || formData.documentUploads?.synopsisFileName ? (
+                      <div className="space-y-3">
                         <div className="font-mono text-xs font-black text-emerald-800 flex items-center justify-center gap-1.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                          <span>ATTACHED: {formData.documentUploads.synopsisFileName}</span>
+                          <span>
+                            ATTACHED: {formData.documentUploads?.authorizationLetterFileName || formData.documentUploads?.synopsisFileName}
+                          </span>
                         </div>
-                        <div className="flex flex-wrap items-center justify-center gap-2 text-[10px] font-mono">
-                          <span className="text-black/60">{formData.documentUploads.synopsisFileSize}</span>
-                          {formData.documentUploads.synopsisDriveUrl && (
-                            <a
-                              href={formData.documentUploads.synopsisDriveUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="inline-flex items-center gap-1 px-2 py-0.5 bg-blue-100 text-blue-900 border border-blue-800 font-bold hover:bg-blue-200"
-                            >
-                              <HardDrive className="w-3 h-3" />
-                              <span>View in Google Drive</span>
-                              <ExternalLink className="w-2.5 h-2.5" />
-                            </a>
-                          )}
-                          <span className="text-black/60 underline">• Click to replace file</span>
+                        <div className="flex flex-wrap items-center justify-center gap-2 text-xs font-mono">
+                          <span className="text-black/60 font-bold">
+                            {formData.documentUploads?.authorizationLetterFileSize || formData.documentUploads?.synopsisFileSize}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={handlePreviewAuthLetter}
+                            className="inline-flex items-center gap-1 px-3 py-1 bg-neo-accent text-black border-2 border-black font-black uppercase text-[11px] shadow-neo-xs hover:bg-black hover:text-white transition-all cursor-pointer"
+                          >
+                            <Eye className="w-3.5 h-3.5 stroke-[2.5px]" />
+                            <span>VIEW FILE</span>
+                          </button>
+                          <button
+                            type="button"
+                            onClick={handleDeleteAuthLetter}
+                            className="inline-flex items-center gap-1 px-3 py-1 bg-rose-100 text-rose-800 border-2 border-rose-700 font-black uppercase text-[11px] shadow-neo-xs hover:bg-rose-600 hover:text-white transition-all cursor-pointer"
+                          >
+                            <Trash2 className="w-3.5 h-3.5 stroke-[2.5px]" />
+                            <span>DELETE</span>
+                          </button>
+                          <span className="text-black/60 text-[10px] underline ml-1">• Click area to replace</span>
                         </div>
                       </div>
                     ) : (
                       <div>
                         <FileCheck className="w-8 h-8 mx-auto text-black/70 stroke-[2px] mb-2" />
                         <p className="font-black text-sm uppercase text-black">
-                          CLICK OR DRAG &amp; DROP PROJECT SYNOPSIS DECK <span className="text-rose-600 font-black">*</span>
+                          CLICK OR DRAG &amp; DROP AUTHORIZATION LETTER &amp; NOC <span className="text-rose-600 font-black">*</span>
                         </p>
                         <p className="font-mono text-xs text-black/60">
-                          Team proposal synopsis for jury review (Max 20MB) • Uploads to Google Drive
+                          Signed college NOC / Bonafide authorization (Max 20MB) • Uploads automatically upon confirmation
                         </p>
                       </div>
                     )}
                   </div>
-                  {errors["documentUploads.synopsisFileName"] && (
+                  {(errors["documentUploads.authorizationLetterFileName"] || errors["documentUploads.synopsisFileName"]) && (
                     <p className="text-xs font-black text-rose-700 bg-rose-50 border border-rose-400 p-2 flex items-center gap-1.5">
                       <AlertCircle className="w-4 h-4 stroke-[2.5px] shrink-0" />
-                      <span>{errors["documentUploads.synopsisFileName"]}</span>
+                      <span>{errors["documentUploads.authorizationLetterFileName"] || errors["documentUploads.synopsisFileName"]}</span>
                     </p>
                   )}
                 </div>
@@ -2016,6 +2188,87 @@ export function RegistrationForm() {
               </div>
             )}
           </form>
+        </div>
+      )}
+
+      {/* Document Preview Modal Dialog */}
+      {previewModal?.isOpen && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-6 animate-in fade-in-50 duration-200"
+          onClick={() => setPreviewModal(null)}
+        >
+          <div
+            className="relative w-full max-w-4xl max-h-[92vh] bg-white border-4 border-black shadow-neo-lg flex flex-col overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Dialog Header */}
+            <div className="flex items-center justify-between px-4 py-3 bg-neo-accent border-b-4 border-black">
+              <div className="flex items-center gap-2 overflow-hidden">
+                <Eye className="w-5 h-5 text-black shrink-0 stroke-[2.5px]" />
+                <h4 className="font-black text-sm sm:text-base uppercase text-black truncate tracking-tight">
+                  PREVIEW: {previewModal.title}
+                </h4>
+              </div>
+              <button
+                type="button"
+                onClick={() => setPreviewModal(null)}
+                className="px-3 py-1 bg-black text-white hover:bg-rose-600 border-2 border-black font-mono text-xs font-black uppercase shadow-neo-xs transition-all flex items-center gap-1 cursor-pointer shrink-0"
+              >
+                <X className="w-4 h-4" />
+                <span>CLOSE</span>
+              </button>
+            </div>
+
+            {/* Dialog Body */}
+            <div className="p-4 sm:p-6 flex-1 overflow-auto bg-neutral-100 flex items-center justify-center min-h-[350px]">
+              {previewModal.type === "image" ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={previewModal.url}
+                  alt={previewModal.title}
+                  className="max-h-[72vh] max-w-full object-contain border-3 border-black bg-white shadow-neo-sm"
+                />
+              ) : previewModal.type === "pdf" ? (
+                <iframe
+                  src={previewModal.url}
+                  title={previewModal.title}
+                  className="w-full h-[72vh] border-3 border-black bg-white shadow-neo-sm"
+                />
+              ) : (
+                <div className="p-8 text-center space-y-4 bg-white border-3 border-black shadow-neo max-w-md mx-auto">
+                  <FileText className="w-16 h-16 mx-auto text-black" />
+                  <div className="space-y-1">
+                    <p className="font-black text-sm uppercase text-black">FILE ATTACHED</p>
+                    <p className="font-mono text-xs text-black/70 truncate">{previewModal.title}</p>
+                  </div>
+                  <a
+                    href={previewModal.url}
+                    download={previewModal.title}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 px-5 py-2.5 bg-black text-white font-mono text-xs font-bold uppercase border-2 border-black shadow-neo-sm hover:bg-neutral-800"
+                  >
+                    <span>Open in New Tab</span>
+                    <ExternalLink className="w-4 h-4" />
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* Dialog Footer */}
+            <div className="px-4 py-2.5 bg-white border-t-3 border-black flex items-center justify-between text-xs font-mono">
+              <span className="text-black/70 font-bold truncate">Document: {previewModal.title}</span>
+              <button
+                type="button"
+                onClick={() => setPreviewModal(null)}
+                className="px-4 py-1 bg-white hover:bg-neutral-100 text-black border-2 border-black font-black uppercase text-[11px] shadow-neo-xs cursor-pointer"
+              >
+                DISMISS
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

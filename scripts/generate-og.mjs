@@ -5,6 +5,10 @@ import path from "path";
 const fontPath = path.resolve("public/font/Thuast-Demo.otf");
 const fontBuffer = fs.readFileSync(fontPath);
 
+const logoPath = path.resolve("public/cblogo.png");
+const logoBase64 = fs.readFileSync(logoPath).toString("base64");
+const logoDataUri = `data:image/png;base64,${logoBase64}`;
+
 const svg = `
 <svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
   <!-- Background -->
@@ -15,9 +19,10 @@ const svg = `
 
   <!-- Top Badges Row -->
   <g transform="translate(60, 56)">
-    <!-- Brand Box -->
-    <rect x="0" y="0" width="340" height="50" fill="#000000" />
-    <text x="170" y="33" fill="#FFD93D" font-family="Arial, sans-serif" font-weight="900" font-size="20" text-anchor="middle" letter-spacing="2">
+    <!-- Brand Box with Logo -->
+    <rect x="0" y="0" width="375" height="50" fill="#000000" />
+    <image href="${logoDataUri}" x="12" y="8" width="34" height="34" />
+    <text x="58" y="33" fill="#FFD93D" font-family="Arial, sans-serif" font-weight="900" font-size="19" letter-spacing="1.5">
       CODEBREAKERS // GCEK
     </text>
   </g>
@@ -30,16 +35,19 @@ const svg = `
     </text>
   </g>
 
-  <!-- Main Hero Title using Thuast font -->
-  <g transform="translate(60, 235)">
-    <!-- Drop Shadow -->
-    <text x="5" y="5" fill="#000000" fill-opacity="0.25" font-family="'Thuast Demo', 'Thuast', Impact, sans-serif" font-weight="900" font-size="115" letter-spacing="2">
-      HACKVERSE &apos;26
-    </text>
-    <!-- Foreground -->
-    <text x="0" y="0" fill="#000000" font-family="'Thuast Demo', 'Thuast', Impact, sans-serif" font-weight="900" font-size="115" letter-spacing="2">
-      HACKVERSE &apos;26
-    </text>
+  <!-- Main Hero Title using Thuast font (matches website hero exactly) -->
+  <g transform="translate(60, 248)">
+    <!-- Slanted + Extended Cyber Styling matching website -->
+    <g transform="skewX(-13) scale(1.2, 1)">
+      <!-- Drop Shadow -->
+      <text x="5" y="5" fill="#000000" fill-opacity="0.25" stroke="#000000" stroke-width="4" stroke-opacity="0.25" font-family="Thuast Demo" font-size="88" letter-spacing="2" style="paint-order: stroke fill;">
+        HACKVERSE <tspan fill="#FF6B6B" stroke="#FF6B6B" stroke-width="4" fill-opacity="0.25" stroke-opacity="0.25">&apos;26</tspan>
+      </text>
+      <!-- Foreground -->
+      <text x="0" y="0" fill="#000000" stroke="#000000" stroke-width="4" font-family="Thuast Demo" font-size="88" letter-spacing="2" style="paint-order: stroke fill;">
+        HACKVERSE <tspan fill="#FF6B6B" stroke="#FF6B6B" stroke-width="4">&apos;26</tspan>
+      </text>
+    </g>
   </g>
 
   <!-- Subtitle -->
@@ -96,7 +104,7 @@ const svg = `
       REGISTER: HACKVERSE.CODEBREAKERSGCEK.TECH
     </text>
     <text x="1080" y="0" fill="#000000" font-family="Arial, sans-serif" font-weight="900" font-size="18" text-anchor="end" letter-spacing="1">
-      SEP 18-20, 2026
+      SEP 18-26, 2026
     </text>
   </g>
 </svg>

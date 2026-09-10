@@ -40,6 +40,19 @@ export interface PaymentDetails {
 }
 
 export interface DocumentUploads {
+  // 1. Payment Proof / Transaction Screenshot
+  paymentProofFileName?: string;
+  paymentProofFileSize?: string;
+  paymentProofDriveUrl?: string;
+  paymentProofDriveFileId?: string;
+
+  // 2. Institutional Authorization Letter & NOC
+  authorizationLetterFileName?: string;
+  authorizationLetterFileSize?: string;
+  authorizationLetterDriveUrl?: string;
+  authorizationLetterDriveFileId?: string;
+
+  // Legacy / backward-compatibility aliases
   collegeIdFileName?: string;
   collegeIdFileSize?: string;
   collegeIdDriveUrl?: string;

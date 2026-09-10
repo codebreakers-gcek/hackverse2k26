@@ -87,7 +87,7 @@ export function CodeBreakersSpotlight() {
                 GOVERNMENT COLLEGE OF ENGINEERING KALAHANDI
               </div>
               <p className="text-xs font-bold text-black/80">
-                Bandopala, Bhawanipatna, Kalahandi, Odisha - 766002
+                Kandha Bandhopala, Bhawanipatna, Kalahandi, Odisha - 766002
               </p>
 
               <div className="pt-2 flex flex-col gap-2">

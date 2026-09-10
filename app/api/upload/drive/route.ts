@@ -1,14 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { uploadDocumentToDrive, getDriveConfig } from "@/lib/googleDrive";
-import fs from "fs";
-import path from "path";
 
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File | null;
     const teamName = (formData.get("teamName") as string) || "Squad";
-    const category = (formData.get("category") as "college_id" | "synopsis" | "other") || "other";
+    const category =
+      (formData.get("category") as "payment_proof" | "authorization_letter" | "college_id" | "synopsis" | "other") ||
+      "other";
     const registrationNumber = (formData.get("registrationNumber") as string) || undefined;
 
     if (!file) {
@@ -30,26 +30,7 @@ export async function POST(req: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    let localUrl = "";
-    const sanitizedTeam = teamName.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 20);
-    const sanitizedOriginal = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-    const uniqueFileName = `${Date.now()}_${sanitizedTeam}_${sanitizedOriginal}`;
-
-    // 1. Safely attempt local filesystem caching (only works in non-serverless local environments)
-    try {
-      const uploadsDir = path.join(process.cwd(), "public", "uploads");
-      if (!fs.existsSync(uploadsDir)) {
-        fs.mkdirSync(uploadsDir, { recursive: true });
-      }
-      const localFilePath = path.join(uploadsDir, uniqueFileName);
-      fs.writeFileSync(localFilePath, buffer);
-      localUrl = `/uploads/${uniqueFileName}`;
-    } catch (fsErr: any) {
-      // In serverless / read-only environments (Vercel / AWS Lambda), ignore local filesystem write error
-      console.warn("Local filesystem write skipped (serverless read-only mode):", fsErr?.message || fsErr);
-    }
-
-    // 2. If Google Drive is enabled, upload directly from buffer to Google Drive
+    // Upload directly from memory buffer to Google Drive
     try {
       const driveConfig = await getDriveConfig();
       if (driveConfig.enabled) {
@@ -67,9 +48,8 @@ export async function POST(req: NextRequest) {
           message: "Document successfully uploaded to Google Drive.",
           data: {
             ...driveResult,
-            localUrl: localUrl || driveResult.webViewLink,
-            webViewLink: driveResult.webViewLink || localUrl,
-            downloadUrl: driveResult.webContentLink || localUrl,
+            webViewLink: driveResult.webViewLink,
+            downloadUrl: driveResult.webContentLink,
           },
         });
       }
@@ -77,7 +57,7 @@ export async function POST(req: NextRequest) {
       console.warn("Google Drive upload error:", driveErr?.message || driveErr);
     }
 
-    // 3. Fallback: Return successful attachment metadata so user registration is not blocked
+    // Fallback: Return successful attachment metadata so user registration is not blocked
     return NextResponse.json({
       success: true,
       message: "Document successfully attached.",
@@ -86,9 +66,6 @@ export async function POST(req: NextRequest) {
         name: file.name,
         mimeType: file.type || "application/octet-stream",
         size: file.size,
-        webViewLink: localUrl || undefined,
-        downloadUrl: localUrl || undefined,
-        localUrl: localUrl || undefined,
       },
     });
   } catch (error: any) {

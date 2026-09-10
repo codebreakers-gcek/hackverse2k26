@@ -56,7 +56,7 @@ export default function HomePage() {
         <section className="py-20 bg-neo-muted border-b-4 border-black text-center relative overflow-hidden">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-black text-white border-2 border-black shadow-neo-sm inline-block">
-              REGISTRATION DEADLINE // OCTOBER 10, 2026
+              REGISTRATION DEADLINE // SEPTEMBER 26, 2026
             </span>
 
             <h2 className="font-black text-4xl sm:text-6xl text-black uppercase tracking-tight leading-tight">

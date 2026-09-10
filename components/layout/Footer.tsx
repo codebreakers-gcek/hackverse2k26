@@ -90,7 +90,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/documents" className="hover:underline flex items-center gap-2">
-                  <span>▸</span> <span>Documents &amp; Templates (SOON)</span>
+                  <span>▸</span> <span>Documents</span>
                 </Link>
               </li>
               <li>
@@ -101,16 +101,6 @@ export function Footer() {
               <li>
                 <Link href="/schedule" className="hover:underline flex items-center gap-2">
                   <span>▸</span> <span>Event Schedule</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/faqs" className="hover:underline flex items-center gap-2">
-                  <span>▸</span> <span>Frequently Asked Questions</span>
-                </Link>
-              </li>
-              <li>
-                <Link href="/team" className="hover:underline flex items-center gap-2">
-                  <span>▸</span> <span>Organizing Crew &amp; Leads</span>
                 </Link>
               </li>
               <li>
@@ -151,7 +141,7 @@ export function Footer() {
 
               <div className="bg-white border-3 border-black p-3 shadow-neo-sm text-xs">
                 <div className="font-black uppercase mb-1">EMERGENCY HELPLINE:</div>
-                <div className="font-mono font-bold">+91 9438-CODE-GCEK</div>
+                <div className="font-mono font-bold">+91 8895220675</div>
               </div>
             </div>
           </div>

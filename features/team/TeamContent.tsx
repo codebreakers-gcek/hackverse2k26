@@ -311,7 +311,7 @@ export function TeamContent() {
           "CODEBREAKERS GCEK CREW",
           "HACKVERSE '26 ARCHITECTS",
           "STUDENT-LED INNOVATION",
-          "BHABANIPATNA ODISHA",
+          "BHAWANIPATNA ODISHA",
           "BREAK CODE • FORGE REALITY",
         ]}
         bg="secondary"

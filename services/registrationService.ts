@@ -139,12 +139,20 @@ export function validateStep3(data: RegistrationFormData): Record<string, string
 export function validateStep4(data: RegistrationFormData): Record<string, string> {
   const errors: Record<string, string> = {};
 
-  if (!data.documentUploads?.collegeIdFileName || data.documentUploads.collegeIdFileName.trim().length === 0) {
-    errors["documentUploads.collegeIdFileName"] = "College ID cards or bonafide verification document is required.";
+  const hasPaymentProof =
+    (data.documentUploads?.paymentProofFileName && data.documentUploads.paymentProofFileName.trim().length > 0) ||
+    (data.documentUploads?.collegeIdFileName && data.documentUploads.collegeIdFileName.trim().length > 0);
+
+  const hasAuthLetter =
+    (data.documentUploads?.authorizationLetterFileName && data.documentUploads.authorizationLetterFileName.trim().length > 0) ||
+    (data.documentUploads?.synopsisFileName && data.documentUploads.synopsisFileName.trim().length > 0);
+
+  if (!hasPaymentProof) {
+    errors["documentUploads.paymentProofFileName"] = "Payment proof / transaction screenshot is required.";
   }
 
-  if (!data.documentUploads?.synopsisFileName || data.documentUploads.synopsisFileName.trim().length === 0) {
-    errors["documentUploads.synopsisFileName"] = "Project synopsis / idea proposal deck is required.";
+  if (!hasAuthLetter) {
+    errors["documentUploads.authorizationLetterFileName"] = "Institutional authorization letter / NOC format is required.";
   }
 
   if (!data.agreeToGuidelines) {

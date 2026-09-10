@@ -112,11 +112,11 @@ export const STRUCTURED_RULES = [
     category: "team-eligibility",
     categoryLabel: "Squad Composition",
     title: "Final Team Roster Lock",
-    description: "Teams must register with their final members (3 to 6 members). No addition, removal, or substitution of members will be allowed after registration, except when specifically approved in advance by the organizing committee.",
+    description: "Teams must register with their final members (3 to 4 members). No addition, removal, or substitution of members will be allowed after registration, except when specifically approved in advance by the organizing committee.",
     tag: "ROSTER LOCKED",
     tagType: "warning" as const,
     severity: "warning" as const,
-    keyTakeaway: "Lock your 3-6 squad members before final submission.",
+    keyTakeaway: "Lock your 3-4 squad members before final submission.",
   },
   {
     id: "rule-04",
