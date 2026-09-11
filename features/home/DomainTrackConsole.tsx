@@ -47,7 +47,7 @@ export function DomainTrackConsole() {
       {/* Minecraft Background Layer */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
         <Image
-          src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/wallpaper.png"
+          src="/minecraft/wallpaper.webp"
           alt="Choose Your Battleground Minecraft Background"
           fill
           priority

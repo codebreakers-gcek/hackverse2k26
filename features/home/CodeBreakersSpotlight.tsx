@@ -11,7 +11,7 @@ export function CodeBreakersSpotlight() {
       {/* Minecraft Background Layer */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
         <Image
-          src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/minecraft_2.jpg"
+          src="/minecraft/minecraft_2.webp"
           alt="CodeBreakers Spotlight Minecraft Background"
           fill
           priority
@@ -30,7 +30,7 @@ export function CodeBreakersSpotlight() {
             <div className="flex items-center gap-3">
               <div className="w-12 h-12 bg-white/80 backdrop-blur-sm border-3 border-black flex items-center justify-center shadow-neo-sm overflow-hidden p-1 shrink-0">
                 <Image
-                  src="/cblogo.png"
+                  src="/cblogo.webp"
                   alt="CodeBreakers Logo"
                   width={44}
                   height={44}

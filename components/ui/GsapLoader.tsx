@@ -262,7 +262,7 @@ export function GsapLoader() {
             <div className="flex items-center justify-center gap-2 sm:gap-2.5 mb-2 sm:mb-3 select-none">
               <div className="w-5 h-5 sm:w-6 sm:h-6 p-0.5 shrink-0 flex items-center justify-center">
                 <Image
-                  src="/cblogo.png"
+                  src="/cblogo.webp"
                   alt="CodeBreakers Logo"
                   width={24}
                   height={24}

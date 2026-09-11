@@ -62,7 +62,7 @@ export function PrizePoolBanner() {
       {/* Minecraft Natural Landscape Background Layer */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
         <Image
-          src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/minecraft_natural.png"
+          src="/minecraft/minecraft_natural.webp"
           alt="Minecraft Natural Overworld Landscape"
           fill
           priority
