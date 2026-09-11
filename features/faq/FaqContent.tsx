@@ -16,11 +16,12 @@ import {
   Phone,
   Building2,
   ArrowRight,
-  ExternalLink,
   Flame,
   Check,
   Share2,
 } from "lucide-react";
+import {WhatsappIcon } from "@/components/common/SocialIcons";
+import { SOCIAL_CHANNELS } from "@/data/contactData";
 import clsx from "clsx";
 
 export function FaqContent() {
@@ -259,98 +260,111 @@ export function FaqContent() {
         {/* ========================================================================= */}
         <motion.div variants={itemVariants}>
           <div className="bg-[#1B1B1B]/95 backdrop-blur-md border-4 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] p-6 sm:p-8 shadow-[8px_8px_0px_#000] space-y-6 relative overflow-hidden">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b-3 border-[#333333] pb-6 relative z-10">
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
+            {/* Top Row: Mascot, Title & Action Buttons */}
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 border-b-3 border-[#333333] pb-6 relative z-10">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 flex-1 min-w-0">
                 {/* Friendly Minecraft Helper Mascot */}
-                <div className="relative w-28 h-32 sm:w-36 sm:h-40 md:w-44 md:h-48 shrink-0 drop-shadow-[4px_4px_0px_#000] select-none">
+                <div className="relative w-24 h-28 sm:w-32 sm:h-36 md:w-36 md:h-40 shrink-0 drop-shadow-[4px_4px_0px_#000] select-none">
                   <Image
                     src="/minecraft/hey.png"
                     alt="Friendly Minecraft Support Mascot"
                     fill
                     className="object-contain"
                   />
-                  <div className="absolute -top-2 -right-1 sm:-right-2 bg-[#FFAA00] text-black font-mono text-[10px] sm:text-xs font-black px-2 py-0.5 border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[2px_2px_0px_#000] rotate-6">
+                  <div className="absolute -top-1.5 -right-1 bg-[#FFAA00] text-black font-mono text-[10px] sm:text-xs font-black px-2 py-0.5 border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[2px_2px_0px_#000] rotate-6">
                     HEY HACKER!
                   </div>
                 </div>
 
-                <div className="space-y-2">
+                <div className="space-y-2 flex-1 min-w-0">
                   <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000] inline-block">
                     ★ 24/7 DIRECT MENTOR DESK ★
                   </span>
-                  <h3 className="font-mono font-black text-2xl sm:text-3xl text-white uppercase tracking-tight [text-shadow:_2px_2px_0_#000]">
+                  <h3 className="font-mono font-black text-xl sm:text-2xl md:text-3xl text-white uppercase tracking-tight [text-shadow:_2px_2px_0_#000] leading-tight">
                     STILL GOT UNANSWERED QUERIES?
                   </h3>
                   <p className="font-mono text-xs sm:text-sm font-bold text-[#CCCCCC] max-w-xl leading-relaxed">
-                    Our organizing committee and technical mentors are available 24/7 on Discord
-                    and official support channels to assist your squad.
+                    Our organizing committee and technical mentors are available 24/7 on WhatsApp and official support channels to assist your squad.
                   </p>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto shrink-0">
+              {/* Action Buttons: Contact Desk & WhatsApp Group */}
+              <div className="flex flex-row flex-wrap sm:flex-nowrap items-center gap-3 w-full lg:w-auto shrink-0">
                 <Link
                   href="/contact"
-                  className="px-5 sm:px-6 py-3 bg-[#5B8731] hover:bg-[#689B37] text-white font-mono font-black text-xs sm:text-sm uppercase tracking-wider border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 [text-shadow:_2px_2px_0_#000]"
+                  className="flex-1 sm:flex-initial px-4 sm:px-6 py-3 bg-[#5B8731] hover:bg-[#689B37] text-white font-mono font-black text-xs sm:text-sm uppercase tracking-wider border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 [text-shadow:_2px_2px_0_#000] text-center"
                 >
                   <MessageSquare className="w-4 h-4 stroke-[3px]" />
                   <span>CONTACT SUPPORT DESK</span>
                 </Link>
                 <a
-                  href={FAQ_SUPPORT_INFO.discordUrl}
+                  href={SOCIAL_CHANNELS.whatsappGroup}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-5 sm:px-6 py-3 bg-[#5865F2] hover:bg-[#4752C4] text-white font-mono font-black text-xs sm:text-sm uppercase tracking-wider border-4 border-t-[#7983F5] border-l-[#7983F5] border-r-[#2D3480] border-b-[#2D3480] shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 [text-shadow:_1px_1px_0_#000]"
+                  className="flex-1 sm:flex-initial px-4 sm:px-6 py-3 bg-[#1EBE5D] hover:bg-[#1DA851] text-white font-mono font-black text-xs sm:text-sm uppercase tracking-wider border-4 border-t-[#45E882] border-l-[#45E882] border-r-[#0F6E33] border-b-[#0F6E33] shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 [text-shadow:_1px_1px_0_#000] text-center"
                 >
-                  <ExternalLink className="w-4 h-4 stroke-[3px]" />
-                  <span>JOIN DISCORD SERVER</span>
+                  <WhatsappIcon className="w-4 h-4 fill-current text-white" />
+                  <span>JOIN WHATSAPP GROUP</span>
                 </a>
               </div>
             </div>
 
-            {/* Quick Contact Grid (Minecraft Dark Inset Slots) */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2 relative z-10">
-              <div className="p-4 bg-[#2B2B2B] border-3 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] flex items-center gap-3 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.6)]">
-                <div className="w-10 h-10 bg-[#1B1B1B] border-2 border-t-[#0D0D0D] border-l-[#0D0D0D] border-r-[#383838] border-b-[#383838] flex items-center justify-center shrink-0 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.8)]">
-                  <Mail className="w-5 h-5 stroke-[2.5px] text-[#55FF55]" />
+            {/* Bottom Row: Unified Minecraft Inset Slots in a Single Row */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 pt-1 relative z-10">
+              {/* Card 1: Email */}
+              <a
+                href={`mailto:${FAQ_SUPPORT_INFO.email}`}
+                className="p-3 sm:p-3.5 bg-[#2B2B2B] hover:bg-[#333333] border-3 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] flex items-center gap-3 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.6)] transition-colors group cursor-pointer"
+              >
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-[#1B1B1B] border-2 border-t-[#0D0D0D] border-l-[#0D0D0D] border-r-[#383838] border-b-[#383838] flex items-center justify-center shrink-0 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.8)]">
+                  <Mail className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5px] text-[#55FF55] group-hover:scale-110 transition-transform" />
                 </div>
-                <div className="min-w-0">
-                  <div className="font-mono text-[10px] font-black uppercase text-[#FFAA00] [text-shadow:_1px_1px_0_#000]">
+                <div className="min-w-0 flex-1">
+                  <div className="font-mono text-[9px] sm:text-[10px] font-black uppercase text-[#FFAA00] [text-shadow:_1px_1px_0_#000] tracking-wide">
                     EMAIL INQUIRIES
                   </div>
                   <div className="font-mono font-bold text-xs text-white truncate [text-shadow:_1px_1px_0_#000]">
                     {FAQ_SUPPORT_INFO.email}
                   </div>
                 </div>
-              </div>
+              </a>
 
-              <div className="p-4 bg-[#2B2B2B] border-3 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] flex items-center gap-3 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.6)]">
-                <div className="w-10 h-10 bg-[#1B1B1B] border-2 border-t-[#0D0D0D] border-l-[#0D0D0D] border-r-[#383838] border-b-[#383838] flex items-center justify-center shrink-0 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.8)]">
-                  <Phone className="w-5 h-5 stroke-[2.5px] text-[#55FF55]" />
+              {/* Card 2: Phone */}
+              <a
+                href={`tel:${FAQ_SUPPORT_INFO.phone.replace(/\s+/g, "")}`}
+                className="p-3 sm:p-3.5 bg-[#2B2B2B] hover:bg-[#333333] border-3 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] flex items-center gap-3 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.6)] transition-colors group cursor-pointer"
+              >
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-[#1B1B1B] border-2 border-t-[#0D0D0D] border-l-[#0D0D0D] border-r-[#383838] border-b-[#383838] flex items-center justify-center shrink-0 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.8)]">
+                  <Phone className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5px] text-[#55FF55] group-hover:scale-110 transition-transform" />
                 </div>
-                <div className="min-w-0">
-                  <div className="font-mono text-[10px] font-black uppercase text-[#FFAA00] [text-shadow:_1px_1px_0_#000]">
+                <div className="min-w-0 flex-1">
+                  <div className="font-mono text-[9px] sm:text-[10px] font-black uppercase text-[#FFAA00] [text-shadow:_1px_1px_0_#000] tracking-wide">
                     HELPLINE PHONE
                   </div>
                   <div className="font-mono font-bold text-xs text-white truncate [text-shadow:_1px_1px_0_#000]">
                     {FAQ_SUPPORT_INFO.phone}
                   </div>
                 </div>
-              </div>
+              </a>
 
-              <div className="p-4 bg-[#2B2B2B] border-3 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] flex items-center gap-3 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.6)]">
-                <div className="w-10 h-10 bg-[#1B1B1B] border-2 border-t-[#0D0D0D] border-l-[#0D0D0D] border-r-[#383838] border-b-[#383838] flex items-center justify-center shrink-0 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.8)]">
-                  <Building2 className="w-5 h-5 stroke-[2.5px] text-[#55FF55]" />
+              {/* Card 3: Campus Venue */}
+              <Link
+                href="/contact"
+                className="p-3 sm:p-3.5 bg-[#2B2B2B] hover:bg-[#333333] border-3 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] flex items-center gap-3 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.6)] transition-colors group cursor-pointer"
+              >
+                <div className="w-9 h-9 sm:w-10 sm:h-10 bg-[#1B1B1B] border-2 border-t-[#0D0D0D] border-l-[#0D0D0D] border-r-[#383838] border-b-[#383838] flex items-center justify-center shrink-0 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.8)]">
+                  <Building2 className="w-4 h-4 sm:w-5 sm:h-5 stroke-[2.5px] text-[#55FF55] group-hover:scale-110 transition-transform" />
                 </div>
-                <div className="min-w-0">
-                  <div className="font-mono text-[10px] font-black uppercase text-[#FFAA00] [text-shadow:_1px_1px_0_#000]">
+                <div className="min-w-0 flex-1">
+                  <div className="font-mono text-[9px] sm:text-[10px] font-black uppercase text-[#FFAA00] [text-shadow:_1px_1px_0_#000] tracking-wide">
                     CAMPUS VENUE
                   </div>
                   <div className="font-mono font-bold text-xs text-white truncate [text-shadow:_1px_1px_0_#000]">
                     GCEK, Bhawanipatna
                   </div>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
         </motion.div>
@@ -374,3 +388,4 @@ export function FaqContent() {
     </div>
   );
 }
+
