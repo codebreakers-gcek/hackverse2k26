@@ -25,7 +25,8 @@ import { SectionTitle } from "@/components/common/SectionTitle";
 
 export function DomainTrackConsole() {
   const [selectedTrackIndex, setSelectedTrackIndex] = useState(0);
-  const [isProblemStatementsPublished, setIsProblemStatementsPublished] = useState<boolean>(false);
+  const [isProblemStatementsPublished, setIsProblemStatementsPublished] =
+    useState<boolean>(false);
   const [loadingSettings, setLoadingSettings] = useState<boolean>(true);
 
   useEffect(() => {
@@ -35,7 +36,9 @@ export function DomainTrackConsole() {
         const data = await res.json();
         if (data.success && data.settings) {
           if (typeof data.settings.isProblemStatementsPublished === "boolean") {
-            setIsProblemStatementsPublished(data.settings.isProblemStatementsPublished);
+            setIsProblemStatementsPublished(
+              data.settings.isProblemStatementsPublished,
+            );
           }
         }
       } catch (err) {
@@ -91,7 +94,11 @@ export function DomainTrackConsole() {
               href="/problem-statements"
               className="font-mono text-xs font-black uppercase text-black hover:underline flex items-center gap-1"
             >
-              <span>{isProblemStatementsPublished ? "EXPLORE ALL STATEMENTS" : "CHECK RELEASE STATUS"}</span>
+              <span>
+                {isProblemStatementsPublished
+                  ? "EXPLORE ALL STATEMENTS"
+                  : "CHECK RELEASE STATUS"}
+              </span>
               <ArrowRight className="w-3.5 h-3.5 stroke-[3px]" />
             </Link>
           </div>
@@ -111,7 +118,12 @@ export function DomainTrackConsole() {
                   PROBLEM STATEMENTS COMING SOON
                 </h3>
                 <p className="text-xs sm:text-sm font-bold text-black/75 max-w-xl mx-auto leading-relaxed">
-                  The official problem statements and real-world engineering challenge specs for <span className="text-black font-black">HACKVERSE &apos;26</span> are currently under embargo and will be published live soon.
+                  The official problem statements and real-world engineering
+                  challenge specs for{" "}
+                  <span className="text-black font-black">
+                    HACKVERSE &apos;26
+                  </span>{" "}
+                  are currently under embargo and will be published live soon.
                 </p>
               </div>
 
@@ -134,59 +146,62 @@ export function DomainTrackConsole() {
           ) : (
             /* Marquee Ticker: Continuous Left Flow of Problem Statements when Published */
             <div className="relative w-full overflow-hidden py-5 bg-neo-bg/60 select-none">
-            <div className="animate-marquee flex items-center gap-6 will-change-transform">
-              {[...PROBLEM_STATEMENTS_DATA, ...PROBLEM_STATEMENTS_DATA].map((ps, idx) => (
-                <Link
-                  key={`${ps.id}-${idx}`}
-                  href={`/problem-statements#${ps.id}`}
-                  className="group shrink-0 w-72 xs:w-80 sm:w-96 border-3 border-black bg-white p-3.5 sm:p-4 shadow-neo-sm hover:shadow-neo hover:-translate-y-1 transition-all duration-150 flex flex-col justify-between"
-                >
-                  <div className="space-y-2">
-                    {/* Top Badges */}
-                    <div className="flex items-center justify-between gap-2 border-b-2 border-black/15 pb-2">
-                      <span className="font-mono text-xs font-black bg-black text-white px-2 py-0.5 border border-black">
-                        {ps.code}
-                      </span>
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neo-muted border border-black">
-                          {ps.category}
+              <div className="animate-marquee flex items-center gap-6 will-change-transform">
+                {[...PROBLEM_STATEMENTS_DATA, ...PROBLEM_STATEMENTS_DATA].map(
+                  (ps, idx) => (
+                    <Link
+                      key={`${ps.id}-${idx}`}
+                      href={`/problem-statements#${ps.id}`}
+                      className="group shrink-0 w-72 xs:w-80 sm:w-96 border-3 border-black bg-white p-3.5 sm:p-4 shadow-neo-sm hover:shadow-neo hover:-translate-y-1 transition-all duration-150 flex flex-col justify-between"
+                    >
+                      <div className="space-y-2">
+                        {/* Top Badges */}
+                        <div className="flex items-center justify-between gap-2 border-b-2 border-black/15 pb-2">
+                          <span className="font-mono text-xs font-black bg-black text-white px-2 py-0.5 border border-black">
+                            {ps.code}
+                          </span>
+                          <div className="flex items-center gap-1.5">
+                            <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neo-muted border border-black">
+                              {ps.category}
+                            </span>
+                            <span
+                              className={clsx(
+                                "font-mono text-[10px] font-black uppercase px-2 py-0.5 border",
+                                difficultyStyles[ps.difficulty] ||
+                                  "bg-white text-black border-black",
+                              )}
+                            >
+                              {ps.difficulty}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Title */}
+                        <h4 className="font-black text-sm text-black uppercase tracking-tight line-clamp-1 group-hover:text-neo-accent transition-colors">
+                          {ps.title}
+                        </h4>
+
+                        {/* Short Description */}
+                        <p className="text-xs font-bold text-black/75 line-clamp-2 leading-relaxed">
+                          {ps.shortDescription}
+                        </p>
+                      </div>
+
+                      {/* Footer CTA */}
+                      <div className="mt-3 pt-2 border-t-2 border-black/15 flex items-center justify-between text-xs font-black text-black">
+                        <span className="font-mono text-[10px] text-black/60 uppercase">
+                          {ps.suggestedStack.slice(0, 2).join(" • ")}
                         </span>
-                        <span
-                          className={clsx(
-                            "font-mono text-[10px] font-black uppercase px-2 py-0.5 border",
-                            difficultyStyles[ps.difficulty] || "bg-white text-black border-black"
-                          )}
-                        >
-                          {ps.difficulty}
+                        <span className="flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                          <span>VIEW PS</span>
+                          <ArrowRight className="w-3.5 h-3.5 stroke-[3px]" />
                         </span>
                       </div>
-                    </div>
-
-                    {/* Title */}
-                    <h4 className="font-black text-sm text-black uppercase tracking-tight line-clamp-1 group-hover:text-neo-accent transition-colors">
-                      {ps.title}
-                    </h4>
-
-                    {/* Short Description */}
-                    <p className="text-xs font-bold text-black/75 line-clamp-2 leading-relaxed">
-                      {ps.shortDescription}
-                    </p>
-                  </div>
-
-                  {/* Footer CTA */}
-                  <div className="mt-3 pt-2 border-t-2 border-black/15 flex items-center justify-between text-xs font-black text-black">
-                    <span className="font-mono text-[10px] text-black/60 uppercase">
-                      {ps.suggestedStack.slice(0, 2).join(" • ")}
-                    </span>
-                    <span className="flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                      <span>VIEW PS</span>
-                      <ArrowRight className="w-3.5 h-3.5 stroke-[3px]" />
-                    </span>
-                  </div>
-                </Link>
-              ))}
+                    </Link>
+                  ),
+                )}
+              </div>
             </div>
-          </div>
           )}
         </div>
       </div>

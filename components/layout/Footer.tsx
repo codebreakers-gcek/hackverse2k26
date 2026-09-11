@@ -4,7 +4,12 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Terminal, ExternalLink, Heart, MapPin, Mail } from "lucide-react";
-import { GithubIcon, LinkedinIcon, InstagramIcon, TwitterIcon } from "@/components/common/SocialIcons";
+import {
+  GithubIcon,
+  LinkedinIcon,
+  InstagramIcon,
+  TwitterIcon,
+} from "@/components/common/SocialIcons";
 import { ENV } from "@/config/env";
 import { EVENT_DATA } from "@/data/event";
 
@@ -17,7 +22,10 @@ export function Footer() {
   }
 
   return (
-    <footer id="main-footer" className="bg-neo-secondary border-t-8 border-black text-black pt-16 pb-12">
+    <footer
+      id="main-footer"
+      className="bg-neo-secondary border-t-8 border-black text-black pt-16 pb-12"
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
@@ -53,7 +61,9 @@ export function Footer() {
             </div>
 
             <p className="text-sm font-bold leading-relaxed">
-              The premier coding and technical society of Government College of Engineering Kalahandi. Fostering hackathon culture, competitive programming, and engineering excellence since 2019.
+              The premier coding and technical society of Government College of
+              Engineering Kalahandi. Fostering hackathon culture, competitive
+              programming, and engineering excellence since 2019.
             </p>
 
             <a
@@ -74,42 +84,66 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 font-bold text-sm">
               <li>
-                <Link href="/" className="hover:underline flex items-center gap-2">
+                <Link
+                  href="/"
+                  className="hover:underline flex items-center gap-2"
+                >
                   <span>▸</span> <span>Home</span>
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:underline flex items-center gap-2">
+                <Link
+                  href="/about"
+                  className="hover:underline flex items-center gap-2"
+                >
                   <span>▸</span> <span>About HACKVERSE &amp; GCEK</span>
                 </Link>
               </li>
               <li>
-                <Link href="/problem-statements" className="hover:underline flex items-center gap-2">
+                <Link
+                  href="/problem-statements"
+                  className="hover:underline flex items-center gap-2"
+                >
                   <span>▸</span> <span>Problem Statements</span>
                 </Link>
               </li>
               <li>
-                <Link href="/documents" className="hover:underline flex items-center gap-2">
+                <Link
+                  href="/documents"
+                  className="hover:underline flex items-center gap-2"
+                >
                   <span>▸</span> <span>Documents</span>
                 </Link>
               </li>
               <li>
-                <Link href="/guidelines" className="hover:underline flex items-center gap-2">
+                <Link
+                  href="/guidelines"
+                  className="hover:underline flex items-center gap-2"
+                >
                   <span>▸</span> <span>Guidelines &amp; Regulations</span>
                 </Link>
               </li>
               <li>
-                <Link href="/schedule" className="hover:underline flex items-center gap-2">
+                <Link
+                  href="/schedule"
+                  className="hover:underline flex items-center gap-2"
+                >
                   <span>▸</span> <span>Event Schedule</span>
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:underline flex items-center gap-2">
+                <Link
+                  href="/contact"
+                  className="hover:underline flex items-center gap-2"
+                >
                   <span>▸</span> <span>Contact &amp; Dispatch Desk</span>
                 </Link>
               </li>
               <li>
-                <Link href="/register" className="hover:underline flex items-center gap-2">
+                <Link
+                  href="/register"
+                  className="hover:underline flex items-center gap-2"
+                >
                   <span>▸</span> <span>Registration Pass</span>
                 </Link>
               </li>
@@ -125,7 +159,9 @@ export function Footer() {
               <div className="flex items-start gap-2.5">
                 <MapPin className="w-5 h-5 shrink-0 stroke-[3px] mt-0.5" />
                 <p className="leading-snug">
-                  {EVENT_DATA.location.campus}, {EVENT_DATA.location.venue}, {EVENT_DATA.location.city}, {EVENT_DATA.location.state} - {EVENT_DATA.location.postalCode}
+                  {EVENT_DATA.location.campus}, {EVENT_DATA.location.venue},{" "}
+                  {EVENT_DATA.location.city}, {EVENT_DATA.location.state} -{" "}
+                  {EVENT_DATA.location.postalCode}
                 </p>
               </div>
 
@@ -140,7 +176,9 @@ export function Footer() {
               </div>
 
               <div className="bg-white border-3 border-black p-3 shadow-neo-sm text-xs">
-                <div className="font-black uppercase mb-1">EMERGENCY HELPLINE:</div>
+                <div className="font-black uppercase mb-1">
+                  EMERGENCY HELPLINE:
+                </div>
                 <div className="font-mono font-bold">+91 8895220675</div>
               </div>
             </div>
@@ -152,7 +190,8 @@ export function Footer() {
               COMMUNITY RADAR
             </h4>
             <p className="text-sm font-bold leading-relaxed">
-              Connect with 500+ active student builders and alumni mentors across our official channels.
+              Connect with 500+ active student builders and alumni mentors
+              across our official channels.
             </p>
 
             <div className="flex flex-wrap gap-2 pt-2">

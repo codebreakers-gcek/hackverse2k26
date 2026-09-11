@@ -67,7 +67,9 @@ export default function HomePage() {
             </h2>
 
             <p className="text-base sm:text-xl font-bold text-black/80 max-w-2xl mx-auto leading-relaxed">
-              Free participation, real-time mentorship, computing infrastructure, and a STATE stage at Government College of Engineering Kalahandi.
+              Free participation, real-time mentorship, computing
+              infrastructure, and a STATE stage at Government College of
+              Engineering Kalahandi.
             </p>
 
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">

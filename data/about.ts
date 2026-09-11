@@ -20,7 +20,7 @@ export const ABOUT_DATA = {
     paragraphs: [
       "HACKVERSE '26 is the signature STATE-level annual technology and engineering festival organized by CODEBREAKERS at Government College of Engineering Kalahandi (GCEK), Bhawanipatna, Odisha.",
       "Conceived as an intense incubator of ideas, the fest aims to demystify complex technologies, bridge academic theory with cut-throat industry execution, and provide ambitious student developers a STATE platform to ship production-grade solutions.",
-      "Over 3 electrifying days, participants experience a curated ecosystem comprising the flagship 36-hour Hack Nova Hackathon, competitive algorithmic problem solving, hands-on masterclasses by industry veterans, and interactive hardware installations.",
+      "Over 3 electrifying days, participants experience a curated ecosystem comprising the flagship 24-hour Hack Nova Hackathon, competitive algorithmic problem solving, hands-on masterclasses by industry veterans, and interactive hardware installations.",
     ],
   },
   pillars: [

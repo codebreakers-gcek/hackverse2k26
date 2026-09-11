@@ -5,7 +5,7 @@ export const EVENT_DATA: EventInfo = {
   edition: "Tech Fest Hackathon 2026",
   tagline: "BREAK CODE. FORGE REALITY. ELEVATE TOMORROW.",
   shortDescription:
-    "The flagship annual STATE technology festival and hackathon organized by CODEBREAKERS,an official Coding and Technical club of Government College of Engineering Kalahandi. 36 hours of intense prototyping, competitive engineering, and breakthrough innovation.",
+    "The flagship annual STATE technology festival and hackathon organized by CODEBREAKERS,an official Coding and Technical club of Government College of Engineering Kalahandi. 24 hours of intense prototyping, competitive engineering, and breakthrough innovation.",
   fullDescription:
     "HACKVERSE '26 brings together the sharpest student minds, developers, designers, and tech enthusiasts across Odisha. Organized by CodeBreakers—the official coding club of Government College of Engineering Kalahandi (GCEK)—this 3-day tech carnival features high-stakes hackathons, algorithmic code combats, hardware expositions, and direct mentorship from top industry engineers.",
   startDate: "2026-10-08T09:00:00+05:30",
@@ -38,7 +38,7 @@ export const EVENT_DATA: EventInfo = {
   },
   stats: [
     { label: "PRIZE POOL", value: "₹35K+", change: "CASH & PERKS" },
-    { label: "HACKATHON HOURS", value: "36 HRS", change: "NON-STOP" },
+    { label: "HACKATHON HOURS", value: "24 HRS", change: "NON-STOP" },
     { label: "EXPECTED TEAMS", value: "60+", change: "PAN-ODISHA" },
     { label: "COMMUNITY DEVELOPERS", value: "300+", change: "GCEK ACTIVE" },
   ],
@@ -47,11 +47,11 @@ export const EVENT_DATA: EventInfo = {
       id: "hackathons",
       code: "TRK-01",
       name: "HACK NOVA (HACKATHON)",
-      tagline: "36-Hour STATE Software & Hardware Sprint",
+      tagline: "24-Hour STATE Software & Hardware Sprint",
       description:
         "Engineers and builders collaborate under pressure to solve real-world industry and societal problem statements.",
       highlights: [
-        "Flagship 36-hour sprint",
+        "Flagship 24-hour sprint",
         "1-on-1 industry mentorship",
         "Direct fast-track interview perks",
       ],

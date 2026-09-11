@@ -33,9 +33,12 @@ export function Navbar() {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const user = session?.user as { name?: string; email?: string; image?: string; role?: string } | undefined;
+  const user = session?.user as
+    | { name?: string; email?: string; image?: string; role?: string }
+    | undefined;
   const isAdmin = user?.role === "admin";
-  const [isProblemStatementsPublished, setIsProblemStatementsPublished] = useState<boolean>(false);
+  const [isProblemStatementsPublished, setIsProblemStatementsPublished] =
+    useState<boolean>(false);
 
   // Fetch live system settings
   useEffect(() => {
@@ -45,7 +48,9 @@ export function Navbar() {
         const data = await res.json();
         if (data.success && data.settings) {
           if (typeof data.settings.isProblemStatementsPublished === "boolean") {
-            setIsProblemStatementsPublished(data.settings.isProblemStatementsPublished);
+            setIsProblemStatementsPublished(
+              data.settings.isProblemStatementsPublished,
+            );
           }
         }
       } catch (err) {
@@ -83,7 +88,10 @@ export function Navbar() {
   // Click outside to close user dropdown
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setUserDropdownOpen(false);
       }
     };
@@ -144,7 +152,9 @@ export function Navbar() {
         return;
       }
 
-      const footer = document.getElementById("main-footer") || document.querySelector("footer");
+      const footer =
+        document.getElementById("main-footer") ||
+        document.querySelector("footer");
       if (!footer || !headerRef.current) return;
 
       const footerRect = footer.getBoundingClientRect();
@@ -158,8 +168,12 @@ export function Navbar() {
       }
     };
 
-    window.addEventListener("scroll", handleFooterIntersection, { passive: true });
-    window.addEventListener("resize", handleFooterIntersection, { passive: true });
+    window.addEventListener("scroll", handleFooterIntersection, {
+      passive: true,
+    });
+    window.addEventListener("resize", handleFooterIntersection, {
+      passive: true,
+    });
 
     if (typeof window !== "undefined" && (window as any).__lenis) {
       (window as any).__lenis.on("scroll", handleFooterIntersection);
@@ -213,7 +227,9 @@ export function Navbar() {
         ref={headerRef}
         className={clsx(
           "fixed top-0 left-0 right-0 z-50 w-full max-w-full bg-neo-bg border-b-4 border-black shadow-neo-sm transition-transform duration-300 ease-in-out",
-          hideOnMobile && !mobileMenuOpen && "-translate-y-full lg:translate-y-0 opacity-0 pointer-events-none lg:opacity-100 lg:pointer-events-auto"
+          hideOnMobile &&
+            !mobileMenuOpen &&
+            "-translate-y-full lg:translate-y-0 opacity-0 pointer-events-none lg:opacity-100 lg:pointer-events-auto",
         )}
       >
         {/* Top Header Marquee: Live Updates */}
@@ -280,7 +296,7 @@ export function Navbar() {
                     "px-2 xl:px-2.5 py-1.5 font-black text-[11px] xl:text-xs uppercase tracking-wider transition-colors duration-100 border-2 inline-flex items-center gap-1.5 whitespace-nowrap shrink-0",
                     isActive
                       ? "bg-neo-secondary border-black text-black shadow-neo-sm"
-                      : "border-transparent text-black hover:border-black hover:bg-white hover:shadow-neo-sm"
+                      : "border-transparent text-black hover:border-black hover:bg-white hover:shadow-neo-sm",
                   )}
                   aria-current={isActive ? "page" : undefined}
                 >
@@ -305,7 +321,7 @@ export function Navbar() {
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
                   className={clsx(
                     "h-12 px-3.5 bg-white text-black border-3 border-black shadow-neo-sm hover:bg-neo-secondary transition-all flex items-center gap-2.5 focus:outline-none focus:ring-2 focus:ring-black",
-                    userDropdownOpen && "bg-neo-secondary shadow-inner"
+                    userDropdownOpen && "bg-neo-secondary shadow-inner",
                   )}
                   aria-expanded={userDropdownOpen}
                   aria-haspopup="true"
@@ -321,7 +337,9 @@ export function Navbar() {
                     />
                   ) : (
                     <div className="w-8 h-8 bg-neo-secondary border-2 border-black flex items-center justify-center font-mono font-black text-xs">
-                      {(user.name || user.email || "U").slice(0, 2).toUpperCase()}
+                      {(user.name || user.email || "U")
+                        .slice(0, 2)
+                        .toUpperCase()}
                     </div>
                   )}
                   <div className="flex flex-col text-left">
@@ -335,7 +353,7 @@ export function Navbar() {
                   <ChevronDown
                     className={clsx(
                       "w-4 h-4 stroke-[3px] transition-transform duration-200",
-                      userDropdownOpen && "rotate-180"
+                      userDropdownOpen && "rotate-180",
                     )}
                   />
                 </button>
@@ -364,7 +382,9 @@ export function Navbar() {
                             />
                           ) : (
                             <div className="w-10 h-10 bg-neo-secondary border-2 border-black flex items-center justify-center font-mono font-black text-sm shrink-0">
-                              {(user.name || user.email || "U").slice(0, 2).toUpperCase()}
+                              {(user.name || user.email || "U")
+                                .slice(0, 2)
+                                .toUpperCase()}
                             </div>
                           )}
                           <div className="overflow-hidden">
@@ -377,7 +397,9 @@ export function Navbar() {
                             <span
                               className={clsx(
                                 "inline-block font-mono text-[9px] font-black uppercase px-1.5 py-0.5 border border-black mt-1",
-                                isAdmin ? "bg-rose-500 text-white" : "bg-neo-secondary text-black"
+                                isAdmin
+                                  ? "bg-rose-500 text-white"
+                                  : "bg-neo-secondary text-black",
                               )}
                             >
                               {isAdmin ? "ORGANIZER ADMIN" : "VERIFIED SQUAD"}
@@ -419,7 +441,9 @@ export function Navbar() {
                               <FileCode2 className="w-4 h-4 stroke-[2.5px] text-amber-700" />
                               <div className="flex flex-col text-left">
                                 <span>SELECT 2 PROBLEM STATEMENTS</span>
-                                <span className="text-[9px] font-mono font-bold text-black/60">PREFERENCE 1 &amp; PREFERENCE 2</span>
+                                <span className="text-[9px] font-mono font-bold text-black/60">
+                                  PREFERENCE 1 &amp; PREFERENCE 2
+                                </span>
                               </div>
                             </Link>
 
@@ -442,9 +466,13 @@ export function Navbar() {
                             <div className="flex flex-col text-left">
                               <span className="flex items-center gap-1.5">
                                 <span>PROBLEM STATEMENTS</span>
-                                <span className="bg-amber-300 text-black text-[9px] font-mono font-black px-1.5 py-0.2 border border-black">COMING SOON</span>
+                                <span className="bg-amber-300 text-black text-[9px] font-mono font-black px-1.5 py-0.2 border border-black">
+                                  COMING SOON
+                                </span>
                               </span>
-                              <span className="text-[9px] font-mono font-bold text-black/60">UNDER EMBARGO • RELEASING SOON</span>
+                              <span className="text-[9px] font-mono font-bold text-black/60">
+                                UNDER EMBARGO • RELEASING SOON
+                              </span>
                             </div>
                           </Link>
                         )}
@@ -492,7 +520,9 @@ export function Navbar() {
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-nav-menu"
-              aria-label={mobileMenuOpen ? "Close menu" : "Open navigation menu"}
+              aria-label={
+                mobileMenuOpen ? "Close menu" : "Open navigation menu"
+              }
               className="w-11 h-11 bg-white border-3 border-black shadow-neo-sm flex items-center justify-center text-black active:translate-x-0.5 active:translate-y-0.5 transition-all focus:outline-none focus:bg-neo-secondary cursor-pointer"
             >
               {mobileMenuOpen ? (
@@ -534,7 +564,9 @@ export function Navbar() {
                         />
                       ) : (
                         <div className="w-10 h-10 bg-neo-secondary border-2 border-black flex items-center justify-center font-mono font-black text-sm shrink-0">
-                          {(user.name || user.email || "U").slice(0, 2).toUpperCase()}
+                          {(user.name || user.email || "U")
+                            .slice(0, 2)
+                            .toUpperCase()}
                         </div>
                       )}
                       <div className="overflow-hidden">
@@ -547,7 +579,9 @@ export function Navbar() {
                         <span
                           className={clsx(
                             "inline-block font-mono text-[9px] font-black uppercase px-1.5 py-0.2 border border-black mt-0.5",
-                            isAdmin ? "bg-rose-500 text-white" : "bg-neo-secondary text-black"
+                            isAdmin
+                              ? "bg-rose-500 text-white"
+                              : "bg-neo-secondary text-black",
                           )}
                         >
                           {isAdmin ? "ORGANIZER ADMIN" : "LOGGED IN USER"}
@@ -576,8 +610,12 @@ export function Navbar() {
                       <div className="flex items-center gap-2">
                         <FileCode2 className="w-4 h-4 text-amber-950 stroke-[2.5px] shrink-0" />
                         <div className="flex flex-col text-left">
-                          <span className="leading-tight">SELECT 2 PROBLEM STATEMENTS</span>
-                          <span className="font-mono text-[9px] font-bold text-black/60">CHOICE #1 &amp; #2</span>
+                          <span className="leading-tight">
+                            SELECT 2 PROBLEM STATEMENTS
+                          </span>
+                          <span className="font-mono text-[9px] font-bold text-black/60">
+                            CHOICE #1 &amp; #2
+                          </span>
                         </div>
                       </div>
                       <ArrowRight className="w-4 h-4 stroke-[3px] shrink-0" />
@@ -593,9 +631,13 @@ export function Navbar() {
                         <div className="flex flex-col text-left">
                           <span className="leading-tight flex items-center gap-1.5">
                             <span>PROBLEM STATEMENTS</span>
-                            <span className="bg-black text-white text-[8px] font-mono px-1 py-0.2">SOON</span>
+                            <span className="bg-black text-white text-[8px] font-mono px-1 py-0.2">
+                              SOON
+                            </span>
                           </span>
-                          <span className="font-mono text-[9px] font-bold text-black/60">COMING SOON // EMBARGO</span>
+                          <span className="font-mono text-[9px] font-bold text-black/60">
+                            COMING SOON // EMBARGO
+                          </span>
                         </div>
                       </div>
                       <ArrowRight className="w-4 h-4 stroke-[3px] shrink-0" />
@@ -632,7 +674,7 @@ export function Navbar() {
                       "px-3.5 py-2.5 border-2 border-black font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-between transition-all",
                       isActive
                         ? "bg-neo-secondary shadow-neo-sm text-black"
-                        : "bg-neo-bg hover:bg-neutral-100 text-black"
+                        : "bg-neo-bg hover:bg-neutral-100 text-black",
                     )}
                     aria-current={isActive ? "page" : undefined}
                   >
@@ -667,7 +709,9 @@ export function Navbar() {
                     onClick={() => setMobileMenuOpen(false)}
                     className="w-full h-12 bg-neo-accent text-black font-black text-xs sm:text-sm uppercase tracking-wider border-3 border-black shadow-neo flex items-center justify-center gap-2 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all"
                   >
-                    <span>{user ? "MANAGE SQUAD ENTRY" : "REGISTER SQUAD NOW"}</span>
+                    <span>
+                      {user ? "MANAGE SQUAD ENTRY" : "REGISTER SQUAD NOW"}
+                    </span>
                     <ArrowRight className="w-4 h-4 stroke-[3px]" />
                   </Link>
                 )}
@@ -678,7 +722,10 @@ export function Navbar() {
       </header>
 
       {/* Spacer so page content below fixed navbar starts at the exact correct vertical offset */}
-      <div className="h-[104px] sm:h-[112px] w-full shrink-0" aria-hidden="true" />
+      <div
+        className="h-[104px] sm:h-[112px] w-full shrink-0"
+        aria-hidden="true"
+      />
     </>
   );
 }

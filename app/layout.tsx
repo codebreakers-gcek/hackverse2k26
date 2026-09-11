@@ -28,11 +28,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
     default:
-      "HACKVERSE '26 // Flagship 36H State Tech Fest & Hackathon | CodeBreakers GCEK",
+      "HACKVERSE '26 // Flagship 24H State Tech Fest & Hackathon | CodeBreakers GCEK",
     template: "%s | HACKVERSE '26 - CodeBreakers GCEK",
   },
   description:
-    "Official State-Level Flagship 36-Hour Hackathon & Tech Fest organized by CODEBREAKERS, Government College of Engineering Kalahandi (GCEK). ₹35K+ prize pool across AI/ML, Web3, Cyber Security, Cloud, IoT & Open Innovation tracks.",
+    "Official State-Level Flagship 24-Hour Hackathon & Tech Fest organized by CODEBREAKERS, Government College of Engineering Kalahandi (GCEK). ₹35K+ prize pool across AI/ML, Web3, Cyber Security, Cloud, IoT & Open Innovation tracks.",
   keywords: [
     "HACKVERSE 2026",
     "HACKVERSE '26",
@@ -82,9 +82,9 @@ export const metadata: Metadata = {
     locale: "en_IN",
     url: BASE_URL,
     siteName: "HACKVERSE '26 // CodeBreakers GCEK",
-    title: "HACKVERSE '26 | Flagship 36H State Tech Fest & Hackathon",
+    title: "HACKVERSE '26 | Flagship 24H State Tech Fest & Hackathon",
     description:
-      "Join Central & Eastern India's most energetic hackathon at GCEK Kalahandi. 36-Hour sprint, ₹35K+ prize pool, industry mentorship, free hostel accommodation & swags.",
+      "Join Central & Eastern India's most energetic hackathon at GCEK Kalahandi. 24-Hour sprint, ₹35K+ prize pool, industry mentorship, free hostel accommodation & swags.",
     images: [
       {
         url: `${BASE_URL}/og-image.png`,
@@ -99,9 +99,9 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@codebreakersgcek",
     creator: "@codebreakersgcek",
-    title: "HACKVERSE '26 | Flagship 36H State Tech Fest & Hackathon",
+    title: "HACKVERSE '26 | Flagship 24H State Tech Fest & Hackathon",
     description:
-      "36-Hour Hackathon & Tech Fest at GCEK Kalahandi. ₹35K+ in prizes. Register your squad now!",
+      "24-Hour Hackathon & Tech Fest at GCEK Kalahandi. ₹35K+ in prizes. Register your squad now!",
     images: [`${BASE_URL}/og-image.png`],
   },
   alternates: {
@@ -115,9 +115,9 @@ const jsonLd = {
     {
       "@type": "Event",
       "@id": "https://hackverse.codebreakersgcek.tech/#event",
-      name: "HACKVERSE '26 - 36-Hour Flagship Hackathon",
+      name: "HACKVERSE '26 - 24-Hour Flagship Hackathon",
       description:
-        "Official State-Level Flagship 36-Hour Hackathon & Tech Fest organized by CODEBREAKERS at Government College of Engineering Kalahandi.",
+        "Official State-Level Flagship 24-Hour Hackathon & Tech Fest organized by CODEBREAKERS at Government College of Engineering Kalahandi.",
       url: "https://hackverse.codebreakersgcek.tech",
       image: "https://hackverse.codebreakersgcek.tech/og-image.png",
       startDate: "2026-09-18T09:00:00+05:30",

@@ -53,7 +53,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "gen-1",
     question: "WHAT IS HACKVERSE '26?",
     answer:
-      "HACKVERSE '26 is the flagship national-level 36-hour offline hackathon organized by the CodeBreakers Club at Government College of Engineering, Kalahandi (GCEK), Bhawanipatna, Odisha. It brings together brilliant developers, designers, and innovators to solve pressing real-world engineering challenges across AI/ML, Web3, Cybersecurity, IoT, and Open Innovation.",
+      "HACKVERSE '26 is the flagship national-level 24-hour offline hackathon organized by the CodeBreakers Club at Government College of Engineering, Kalahandi (GCEK), Bhawanipatna, Odisha. It brings together brilliant developers, designers, and innovators to solve pressing real-world engineering challenges across AI/ML, Web3, Cybersecurity, IoT, and Open Innovation.",
     category: "general",
     categoryLabel: "General & About",
     tags: ["hackverse", "overview", "gcek", "what is"],
@@ -77,7 +77,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "gen-3",
     question: "IS HACKVERSE AN ONLINE OR OFFLINE HACKATHON?",
     answer:
-      "HACKVERSE '26 follows a hybrid 2-tier format: Round 1 (Idea & Prototype Submission) is 100% online. Shortlisted finalist squads are invited to the physical 36-hour Grand Finale hackathon at the GCEK Campus in Bhawanipatna.",
+      "HACKVERSE '26 follows a hybrid 2-tier format: Round 1 (Idea & Prototype Submission) is 100% online. Shortlisted finalist squads are invited to the physical 24-hour Grand Finale hackathon at the GCEK Campus in Bhawanipatna.",
     category: "general",
     categoryLabel: "General & About",
     tags: ["hybrid", "online", "offline", "format"],
@@ -177,7 +177,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "log-1",
     question: "WILL ACCOMMODATION AND FOOD BE PROVIDED DURING THE OFFLINE EVENT?",
     answer:
-      "YES! All shortlisted participants attending the Grand Finale at GCEK Campus will receive complimentary hostel/guest accommodation, 24/7 snacks & energy drinks, breakfast, lunch, and dinner throughout the 36-hour sprint.",
+      "YES! All shortlisted participants attending the Grand Finale at GCEK Campus will receive complimentary hostel/guest accommodation, 24/7 snacks & energy drinks, breakfast, lunch, and dinner throughout the 24-hour sprint.",
     category: "logistics",
     categoryLabel: "Venue & Accommodation",
     tags: ["food", "hostel", "accommodation", "stay", "meals"],
@@ -232,7 +232,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "sub-3",
     question: "CAN WE USE PRE-EXISTING CODE OR LIBRARIES?",
     answer:
-      "Open-source libraries, frameworks, APIs, and boilerplate templates are completely acceptable. However, the core business logic, feature implementation, and user interface must be engineered during the 36-hour hackathon window. Pre-built complete projects are strictly prohibited and will lead to immediate disqualification.",
+      "Open-source libraries, frameworks, APIs, and boilerplate templates are completely acceptable. However, the core business logic, feature implementation, and user interface must be engineered during the 24-hour hackathon window. Pre-built complete projects are strictly prohibited and will lead to immediate disqualification.",
     category: "submissions",
     categoryLabel: "Problems & Submissions",
     tags: ["pre-existing code", "open source", "plagiarism", "rules"],

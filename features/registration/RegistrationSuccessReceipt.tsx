@@ -165,7 +165,7 @@ export function RegistrationSuccessReceipt({
                   {EVENT_DATA.displayDates || "OCTOBER 08 - 10, 2026"}
                 </div>
                 <div className="font-mono text-[10px] text-neutral-600 font-medium">
-                  36-Hour Continuous Hackathon
+                  24-Hour Continuous Hackathon
                 </div>
               </div>
             </div>
@@ -193,7 +193,7 @@ export function RegistrationSuccessReceipt({
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
               <span className="text-[11px] sm:text-xs">
-                Includes 36h Arena Access, &amp; Certifications.
+                Includes 24h Arena Access, &amp; Certifications.
               </span>
             </div>
             <span className="font-mono text-[10px] text-neutral-500 font-bold shrink-0 hidden sm:inline">

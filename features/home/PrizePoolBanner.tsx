@@ -65,7 +65,9 @@ export function PrizePoolBanner() {
                     <ul className="space-y-2 text-xs sm:text-sm font-bold text-black/90">
                       {prize.perks.map((perk, pIdx) => (
                         <li key={pIdx} className="flex items-start gap-2">
-                          <span className="text-black font-black text-sm">▸</span>
+                          <span className="text-black font-black text-sm">
+                            ▸
+                          </span>
                           <span className="leading-snug">{perk}</span>
                         </li>
                       ))}
@@ -94,7 +96,9 @@ export function PrizePoolBanner() {
                 SWAG KITS &amp; CERTIFICATES FOR EVERY PARTICIPANT
               </h4>
               <p className="text-xs sm:text-sm font-bold text-white/80 mt-1 leading-relaxed">
-                Every team presenting a functional project receives verified STATE participation certificates, sticker packs, and food/refreshment passes during the 36-hour sprint.
+                Every team presenting a functional project receives verified
+                STATE participation certificates, sticker packs, and
+                food/refreshment passes during the 24-hour sprint.
               </p>
             </div>
           </div>

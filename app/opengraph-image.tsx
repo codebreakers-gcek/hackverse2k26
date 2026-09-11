@@ -3,7 +3,7 @@ import { ImageResponse } from "next/og";
 export const runtime = "edge";
 
 export const alt =
-  "HACKVERSE '26 - Flagship 36H State Tech Fest & Hackathon | CodeBreakers GCEK";
+  "HACKVERSE '26 - Flagship 24H State Tech Fest & Hackathon | CodeBreakers GCEK";
 export const size = {
   width: 1200,
   height: 630,
@@ -82,7 +82,7 @@ export default async function OpenGraphImage() {
             fontSize: "17px",
           }}
         >
-          <span>⚡ 36-HOUR NON-STOP SPRINT</span>
+          <span>⚡ 24-HOUR NON-STOP SPRINT</span>
         </div>
       </div>
 

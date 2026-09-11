@@ -48,13 +48,20 @@ export function CodeBreakersSpotlight() {
                 FOSTERING TECHNICAL EXCELLENCE &amp; HACKATHON CULTURE IN ODISHA
               </h4>
               <p className="text-base font-bold text-black/80 leading-relaxed">
-                CodeBreakers is the premier student-led technical body of Government College of Engineering Kalahandi. As builders who develop and deploy the institute&apos;s digital infrastructure and manage flagship college events like INSPRANO and UDAAN, we created HACKVERSE &apos;26 to give developers nationwide a pure, non-stop platform to build real software.
+                CodeBreakers is the premier student-led technical body of
+                Government College of Engineering Kalahandi. As builders who
+                develop and deploy the institute&apos;s digital infrastructure
+                and manage flagship college events like INSPRANO and UDAAN, we
+                created HACKVERSE &apos;26 to give developers nationwide a pure,
+                non-stop platform to build real software.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
                 <div className="border-3 border-black bg-neo-bg p-4 shadow-neo-sm">
                   <Code className="w-6 h-6 text-black stroke-[3px] mb-2" />
-                  <div className="font-black text-sm uppercase">COMPETITIVE CODING</div>
+                  <div className="font-black text-sm uppercase">
+                    COMPETITIVE CODING
+                  </div>
                   <p className="font-mono text-xs text-black/70 mt-1">
                     Regular 9-Lock and CodeChef contests.
                   </p>
@@ -62,7 +69,9 @@ export function CodeBreakersSpotlight() {
 
                 <div className="border-3 border-black bg-neo-bg p-4 shadow-neo-sm">
                   <Terminal className="w-6 h-6 text-black stroke-[3px] mb-2" />
-                  <div className="font-black text-sm uppercase">REAL-WORLD APPS</div>
+                  <div className="font-black text-sm uppercase">
+                    REAL-WORLD APPS
+                  </div>
                   <p className="font-mono text-xs text-black/70 mt-1">
                     Production systems shipped for 5000+ users.
                   </p>
@@ -70,7 +79,9 @@ export function CodeBreakersSpotlight() {
 
                 <div className="border-3 border-black bg-neo-bg p-4 shadow-neo-sm">
                   <Users className="w-6 h-6 text-black stroke-[3px] mb-2" />
-                  <div className="font-black text-sm uppercase">PEER MENTORSHIP</div>
+                  <div className="font-black text-sm uppercase">
+                    PEER MENTORSHIP
+                  </div>
                   <p className="font-mono text-xs text-black/70 mt-1">
                     Seniors &amp; alumni guiding juniors daily.
                   </p>

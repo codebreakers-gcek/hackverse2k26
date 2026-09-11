@@ -63,10 +63,26 @@ export function CountdownTimer() {
   }
 
   const units = [
-    { label: "DAYS", value: String(timeLeft.days).padStart(2, "0"), color: "bg-neo-secondary" },
-    { label: "HOURS", value: String(timeLeft.hours).padStart(2, "0"), color: "bg-white" },
-    { label: "MINS", value: String(timeLeft.minutes).padStart(2, "0"), color: "bg-neo-muted" },
-    { label: "SECS", value: String(timeLeft.seconds).padStart(2, "0"), color: "bg-neo-accent" },
+    {
+      label: "DAYS",
+      value: String(timeLeft.days).padStart(2, "0"),
+      color: "bg-neo-secondary",
+    },
+    {
+      label: "HOURS",
+      value: String(timeLeft.hours).padStart(2, "0"),
+      color: "bg-white",
+    },
+    {
+      label: "MINS",
+      value: String(timeLeft.minutes).padStart(2, "0"),
+      color: "bg-neo-muted",
+    },
+    {
+      label: "SECS",
+      value: String(timeLeft.seconds).padStart(2, "0"),
+      color: "bg-neo-accent",
+    },
   ];
 
   return (

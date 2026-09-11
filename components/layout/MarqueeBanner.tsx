@@ -14,7 +14,7 @@ export interface MarqueeBannerProps {
 export function MarqueeBanner({
   items = [
     "HACKVERSE '26",
-    "36-HOUR SPRINT",
+    "24-HOUR SPRINT",
     "₹35K+ PRIZE POOL",
     "CODEBREAKERS GCEK",
     "AI / ML TRACK",

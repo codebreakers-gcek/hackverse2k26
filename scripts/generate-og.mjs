@@ -31,7 +31,7 @@ const svg = `
     <!-- Sprint Box -->
     <rect x="0" y="0" width="380" height="50" fill="#FF6B6B" stroke="#000000" stroke-width="4" />
     <text x="190" y="33" fill="#000000" font-family="Arial, sans-serif" font-weight="900" font-size="19" text-anchor="middle" letter-spacing="1">
-      ⚡ 36-HOUR STATE HACKATHON
+      ⚡ 24-HOUR STATE HACKATHON
     </text>
   </g>
 

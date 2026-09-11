@@ -112,7 +112,7 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
         <text x="23" y="32" text-anchor="middle" font-size="22">📅</text>
         <text x="60" y="12" font-family="'Courier New', Courier, monospace" font-size="10" font-weight="800" fill="#71717A" letter-spacing="1">EVENT DATES</text>
         <text x="60" y="29" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="900" fill="#000000">${dates}</text>
-        <text x="60" y="44" font-family="'Courier New', Courier, monospace" font-size="11" font-weight="600" fill="#52525B">36-Hour Continuous Hackathon</text>
+        <text x="60" y="44" font-family="'Courier New', Courier, monospace" font-size="11" font-weight="600" fill="#52525B">24-Hour Continuous Hackathon</text>
 
         <!-- Venue Box -->
         <g transform="translate(305, 0)">
@@ -131,7 +131,7 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
       <g transform="translate(0, 210)">
         <rect width="600" height="44" rx="3" fill="#F0FDF4" stroke="#000000" stroke-width="2.5" />
         <text x="20" y="28" font-size="16">🛡️</text>
-        <text x="48" y="27" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="800" fill="#000000">Includes 36h Arena Access, &amp; Certifications.</text>
+        <text x="48" y="27" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="800" fill="#000000">Includes 24h Arena Access, &amp; Certifications.</text>
         <text x="580" y="27" text-anchor="end" font-family="'Courier New', Courier, monospace" font-size="11" font-weight="800" fill="#71717A">SECURE #HV26</text>
       </g>
 

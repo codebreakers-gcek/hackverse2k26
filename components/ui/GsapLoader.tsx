@@ -205,7 +205,7 @@ export function GsapLoader() {
                   ref={subtitleRef}
                   className="font-mono text-xs sm:text-sm font-bold text-neutral-400 mt-2 uppercase tracking-wide"
                 >
-                  STATE TECH FEST // 36-HOUR INNOVATION SPRINT
+                  STATE TECH FEST // 24-HOUR INNOVATION SPRINT
                 </p>
               </div>
 

@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { SCHEDULE_DATA } from "@/data/schedule";
+import { SCHEDULE_DATA, calculatePhaseProgress } from "@/data/schedule";
 import { SectionTitle } from "@/components/common/SectionTitle";
 import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 import {
@@ -18,6 +18,15 @@ import {
 export function ScheduleContent() {
   const data = SCHEDULE_DATA;
   const shouldReduceMotion = useReducedMotion();
+  const [currentDate, setCurrentDate] = useState<Date>(() => new Date());
+
+  useEffect(() => {
+    setCurrentDate(new Date());
+    const timer = setInterval(() => {
+      setCurrentDate(new Date());
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
 
   const containerVariants: Variants = {
     hidden: { opacity: shouldReduceMotion ? 1 : 0 },
@@ -101,8 +110,16 @@ export function ScheduleContent() {
         {/* Phase Timeline Cards */}
         <div className="space-y-6">
           {data.phases.map((phase, idx) => {
-            const isCompleted = phase.status === "completed";
-            const isOngoing = phase.status === "ongoing";
+            const dynamicProgress = calculatePhaseProgress(
+              phase.startDate,
+              phase.endDate,
+              currentDate
+            );
+            const status = dynamicProgress.status;
+            const progressPercentage = dynamicProgress.progressPercentage;
+
+            const isCompleted = status === "completed";
+            const isOngoing = status === "ongoing";
 
             const statusBadge = isCompleted ? (
               <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-neutral-200 text-black border-2 border-black">
@@ -180,19 +197,28 @@ export function ScheduleContent() {
                   {/* Progress Indicator */}
                   <div className="pt-3">
                     <div className="flex items-center justify-between font-mono text-[11px] font-black text-black/70 mb-1">
-                      <span>PHASE PROGRESS</span>
-                      <span>{phase.progressPercentage}%</span>
+                      <span className="flex items-center gap-1.5">
+                        PHASE PROGRESS
+                        {isOngoing && (
+                          <span className="text-[10px] text-emerald-800 bg-emerald-100 px-1.5 py-0.2 border border-emerald-400 font-mono">
+                            LIVE
+                          </span>
+                        )}
+                      </span>
+                      <span>{progressPercentage}%</span>
                     </div>
-                    <div className="w-full h-3 border-2 border-black bg-neutral-100 overflow-hidden">
+                    <div className="w-full h-3 border-2 border-black bg-neutral-100 overflow-hidden relative">
                       <motion.div
                         initial={{ width: 0 }}
-                        animate={{ width: `${phase.progressPercentage}%` }}
+                        animate={{ width: `${progressPercentage}%` }}
                         transition={{
                           duration: 0.8,
                           delay: 0.2 + idx * 0.1,
                           ease: [0.22, 1, 0.36, 1] as const,
                         }}
-                        className={`h-full border-r-2 border-black ${
+                        className={`h-full ${
+                          progressPercentage > 0 ? "border-r-2 border-black" : ""
+                        } ${
                           isCompleted
                             ? "bg-neutral-400"
                             : isOngoing
@@ -225,7 +251,7 @@ export function ScheduleContent() {
           </h3>
 
           <p className="font-bold text-xs sm:text-base text-black/85 max-w-xl mx-auto leading-relaxed">
-            Join hundreds of collegiate innovators in this epic 36-hour coding adventure. Register your squad before the portal deadline!
+            Join hundreds of collegiate innovators in this epic 24-hour coding adventure. Register your squad before the portal deadline!
           </p>
 
           <div className="pt-2">

@@ -3,16 +3,16 @@ import type { Metadata } from "next";
 import { ScheduleContent } from "@/features/schedule/ScheduleContent";
 
 export const metadata: Metadata = {
-  title: "Event Timeline & 36-Hour Hackathon Schedule",
+  title: "Event Timeline & 24-Hour Hackathon Schedule",
   description:
-    "Explore the complete 3-day competition schedule for HACKVERSE '26: Check-in, opening ceremony, 36-hour non-stop hacking sprint, mentoring checkpoints, evaluation rounds, and Grand Finale at GCEK Campus.",
+    "Explore the complete 3-day competition schedule for HACKVERSE '26: Check-in, opening ceremony, 24-hour non-stop hacking sprint, mentoring checkpoints, evaluation rounds, and Grand Finale at GCEK Campus.",
   alternates: {
     canonical: "https://www.codebreakersgcek.tech/schedule",
   },
   openGraph: {
     title: "Event Schedule & Timeline // HACKVERSE '26",
     description:
-      "36 hours of non-stop hacking, mentoring sessions, tech talks, and prize ceremonies at GCEK Kalahandi.",
+      "24 hours of non-stop hacking, mentoring sessions, tech talks, and prize ceremonies at GCEK Kalahandi.",
     url: "https://www.codebreakersgcek.tech/schedule",
     images: [{ url: "/cbhack.png", width: 1200, height: 630, alt: "HACKVERSE '26 Schedule" }],
   },
@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Event Schedule & Timeline // HACKVERSE '26",
     description:
-      "36 hours of non-stop hacking, mentoring sessions, tech talks, and prize ceremonies at GCEK Kalahandi.",
+      "24 hours of non-stop hacking, mentoring sessions, tech talks, and prize ceremonies at GCEK Kalahandi.",
     images: ["/cbhack.png"],
   },
 };

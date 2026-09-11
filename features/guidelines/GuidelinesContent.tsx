@@ -142,7 +142,7 @@ export function GuidelinesContent() {
               },
               {
                 label: "SPRINT DURATION",
-                val: "36 HOURS LIVE",
+                val: "24 HOURS LIVE",
                 icon: Flame,
                 bg: "bg-neo-accent",
               },
@@ -826,7 +826,7 @@ export function GuidelinesContent() {
               REGISTER YOUR SQUAD TODAY
             </h3>
             <p className="font-bold text-xs sm:text-sm text-neutral-300 max-w-xl leading-relaxed">
-              Equip your team with an original idea, align with the 36-hour
+              Equip your team with an original idea, align with the 24-hour
               sprint format, and compete for ₹35K+ in prizes.
             </p>
           </div>
