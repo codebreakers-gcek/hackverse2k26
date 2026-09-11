@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Volume2, VolumeX, Play, Pause, Disc, Music } from "lucide-react";
+import { Volume2, VolumeX, Play, Pause, Disc, Music, SlidersHorizontal, X } from "lucide-react";
 import clsx from "clsx";
 
 export function MinecraftAudioPlayer() {
@@ -71,7 +71,7 @@ export function MinecraftAudioPlayer() {
     if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
     toastTimeoutRef.current = setTimeout(() => {
       setShowToast(false);
-    }, 6000);
+    }, 4000);
   };
 
   const togglePlay = (e?: React.MouseEvent) => {
@@ -121,148 +121,138 @@ export function MinecraftAudioPlayer() {
   };
 
   return (
-    <div className="fixed bottom-4 left-4 sm:bottom-6 sm:left-6 z-50 select-none font-mono">
+    <div className="fixed bottom-3 left-3 sm:bottom-4 sm:left-4 z-50 select-none font-mono">
       {/* Toast Notification when Track Starts */}
       {showToast && (
-        <div className="mb-2 bg-[#1B1B1B]/95 border-3 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-3.5 py-2 shadow-[4px_4px_0px_#000] flex items-center gap-2.5 animate-bounce-short">
-          <Disc className="w-4 h-4 text-[#55FF55] animate-spin" style={{ animationDuration: "3s" }} />
-          <div className="text-[11px] font-bold text-white [text-shadow:_1px_1px_0_#000]">
-            <span className="text-[#FFAA00]">NOW PLAYING:</span> C418 - Sweden (OST)
-          </div>
+        <div className="mb-1.5 bg-[#1B1B1B]/90 backdrop-blur-xs border-2 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-2.5 py-1 shadow-[2px_2px_0px_#000] flex items-center gap-1.5 animate-bounce-short max-w-xs">
+          <Disc className="w-3 h-3 text-[#55FF55] animate-spin shrink-0" style={{ animationDuration: "3s" }} />
+          <span className="text-[10px] font-bold text-white truncate [text-shadow:_1px_1px_0_#000]">
+            <span className="text-[#FFAA00]">OST:</span> C418 - Sweden
+          </span>
         </div>
       )}
 
       {/* Main Minecraft Jukebox Widget */}
       <div
         className={clsx(
-          "bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[6px_6px_0px_#000] transition-all duration-200 overflow-hidden",
-          isExpanded ? "p-3 sm:p-4 w-72 sm:w-80" : "p-2 sm:p-2.5"
+          "bg-[#C6C6C6] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[3px_3px_0px_#000] transition-all duration-150 overflow-hidden",
+          isExpanded ? "p-2.5 w-60 sm:w-64" : "p-1 sm:p-1.5"
         )}
       >
         {!isExpanded ? (
-          /* Compact Jukebox Button */
-          <div className="flex items-center gap-2">
+          /* Mini Minimal Pill / Jukebox Button */
+          <div className="flex items-center gap-1.5">
+            {/* Play/Pause Direct Button */}
             <button
               type="button"
               onClick={togglePlay}
               className={clsx(
-                "p-2 border-3 flex items-center justify-center cursor-pointer transition-transform active:translate-y-0.5 shadow-[2px_2px_0px_#000]",
+                "h-7 w-7 sm:h-8 sm:w-8 border-2 flex items-center justify-center cursor-pointer transition-transform active:translate-y-0.5 shadow-[1px_1px_0px_#000]",
                 isPlaying
                   ? "bg-[#5B8731] hover:bg-[#689B37] text-white border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813]"
                   : "bg-[#707070] hover:bg-[#808080] text-white border-t-[#9E9E9E] border-l-[#9E9E9E] border-r-[#383838] border-b-[#383838]"
               )}
-              title={isPlaying ? "Pause Theme Song" : "Play Minecraft Theme Song (Sweden)"}
+              title={isPlaying ? "Pause Theme Music" : "Play Minecraft Theme (Sweden)"}
               aria-label="Toggle Theme Music"
             >
               {isPlaying ? (
-                <Disc className="w-5 h-5 animate-spin" style={{ animationDuration: "4s" }} />
+                <Disc className="w-3.5 h-3.5 sm:w-4 sm:h-4 animate-spin" style={{ animationDuration: "3s" }} />
               ) : (
-                <Music className="w-5 h-5" />
+                <Music className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               )}
             </button>
 
-            {/* Equalizer animation & Title button to expand */}
+            {/* Clickable Track Pill to Open Controls */}
             <button
               type="button"
               onClick={() => setIsExpanded(true)}
-              className="flex items-center gap-2 px-2.5 py-1 bg-[#8B8B8B] hover:bg-[#999999] border-2 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] text-left cursor-pointer shadow-[inset_1px_1px_2px_rgba(0,0,0,0.5)]"
-              title="Expand Music Player"
+              className="h-7 sm:h-8 flex items-center gap-1.5 px-2 bg-[#8B8B8B] hover:bg-[#999999] border-2 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] text-left cursor-pointer shadow-[inset_1px_1px_1px_rgba(0,0,0,0.5)]"
+              title="Open Sound Settings"
             >
               {isPlaying ? (
-                <div className="flex items-end gap-0.5 h-4 w-4">
-                  <span className="w-1 bg-[#55FF55] h-3 animate-pulse" />
-                  <span className="w-1 bg-[#55FFFF] h-4 animate-pulse" style={{ animationDelay: "0.2s" }} />
-                  <span className="w-1 bg-[#FFAA00] h-2 animate-pulse" style={{ animationDelay: "0.4s" }} />
+                <div className="flex items-end gap-0.5 h-3 w-3">
+                  <span className="w-0.5 bg-[#55FF55] h-2.5 animate-pulse" />
+                  <span className="w-0.5 bg-[#55FFFF] h-3 animate-pulse" style={{ animationDelay: "0.2s" }} />
+                  <span className="w-0.5 bg-[#FFAA00] h-1.5 animate-pulse" style={{ animationDelay: "0.4s" }} />
                 </div>
               ) : (
-                <span className="w-2 h-2 bg-[#FF5555] rounded-none border border-black" />
+                <span className="w-1.5 h-1.5 bg-[#FF5555] rounded-none border border-black shrink-0" />
               )}
-              <span className="text-[11px] font-black text-white [text-shadow:_1px_1px_0_#000] truncate max-w-[100px] sm:max-w-[120px]">
-                {isPlaying ? "SWEDEN" : "MUSIC OFF"}
+              <span className="text-[10px] font-black text-white [text-shadow:_1px_1px_0_#000] truncate max-w-[70px] sm:max-w-[85px]">
+                {isPlaying ? "SWEDEN" : "MUSIC"}
               </span>
+              <SlidersHorizontal className="w-2.5 h-2.5 text-white/80 shrink-0 ml-0.5" />
             </button>
           </div>
         ) : (
-          /* Expanded HUD Controller */
-          <div className="space-y-3">
+          /* Minimal Expanded HUD Controller */
+          <div className="space-y-2">
             {/* Header */}
-            <div className="flex items-center justify-between border-b-2 border-[#8B8B8B] pb-2">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between border-b border-[#8B8B8B] pb-1.5">
+              <div className="flex items-center gap-1.5">
                 <Disc
                   className={clsx(
-                    "w-4 h-4 text-[#55FF55]",
+                    "w-3 h-3 text-[#55FF55]",
                     isPlaying && "animate-spin"
                   )}
                   style={{ animationDuration: "3s" }}
                 />
-                <span className="font-black text-xs text-black uppercase">
-                  MINECRAFT JUKEBOX
+                <span className="font-black text-[10px] sm:text-[11px] text-black uppercase tracking-tight">
+                  JUKEBOX: SWEDEN
                 </span>
               </div>
               <button
                 type="button"
                 onClick={() => setIsExpanded(false)}
-                className="text-xs font-black text-[#333333] hover:text-black px-1.5 py-0.5 bg-[#8B8B8B] border border-[#555555] cursor-pointer"
+                className="w-4 h-4 text-[10px] font-black text-[#333333] hover:text-black flex items-center justify-center bg-[#8B8B8B] border border-[#555555] cursor-pointer"
                 title="Minimize player"
               >
-                ✕
+                <X className="w-2.5 h-2.5 stroke-[3px]" />
               </button>
             </div>
 
-            {/* Track Info Box */}
-            <div className="p-2.5 bg-[#8B8B8B] border-2 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] shadow-[inset_2px_2px_4px_rgba(0,0,0,0.5)]">
-              <div className="text-[10px] font-black text-[#55FFFF] uppercase [text-shadow:_1px_1px_0_#000]">
-                PROJECT THEME SONG
-              </div>
-              <div className="text-xs font-black text-white truncate [text-shadow:_1px_1px_0_#000]">
-                C418 - Sweden (Minecraft OST)
-              </div>
-            </div>
-
             {/* Controls Row */}
-            <div className="flex items-center justify-between gap-2 pt-1">
-              <div className="flex items-center gap-2">
-                {/* Play / Pause 3D Button */}
-                <button
-                  type="button"
-                  onClick={togglePlay}
-                  className={clsx(
-                    "px-3 py-1.5 border-3 font-black text-xs uppercase flex items-center gap-1.5 shadow-[2px_2px_0px_#000] cursor-pointer active:translate-y-0.5 transition-all",
-                    isPlaying
-                      ? "bg-[#5B8731] hover:bg-[#689B37] text-white border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] [text-shadow:_1px_1px_0_#000]"
-                      : "bg-[#707070] hover:bg-[#808080] text-white border-t-[#9E9E9E] border-l-[#9E9E9E] border-r-[#383838] border-b-[#383838] [text-shadow:_1px_1px_0_#000]"
-                  )}
-                >
-                  {isPlaying ? (
-                    <>
-                      <Pause className="w-3.5 h-3.5 fill-current" />
-                      <span>PAUSE</span>
-                    </>
-                  ) : (
-                    <>
-                      <Play className="w-3.5 h-3.5 fill-current" />
-                      <span>PLAY</span>
-                    </>
-                  )}
-                </button>
+            <div className="flex items-center justify-between gap-1.5 pt-0.5">
+              {/* Play / Pause Button */}
+              <button
+                type="button"
+                onClick={togglePlay}
+                className={clsx(
+                  "px-2 py-1 border-2 font-black text-[10px] uppercase flex items-center gap-1 shadow-[1px_1px_0px_#000] cursor-pointer active:translate-y-0.5 transition-all",
+                  isPlaying
+                    ? "bg-[#5B8731] hover:bg-[#689B37] text-white border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] [text-shadow:_1px_1px_0_#000]"
+                    : "bg-[#707070] hover:bg-[#808080] text-white border-t-[#9E9E9E] border-l-[#9E9E9E] border-r-[#383838] border-b-[#383838] [text-shadow:_1px_1px_0_#000]"
+                )}
+              >
+                {isPlaying ? (
+                  <>
+                    <Pause className="w-2.5 h-2.5 fill-current" />
+                    <span>PAUSE</span>
+                  </>
+                ) : (
+                  <>
+                    <Play className="w-2.5 h-2.5 fill-current" />
+                    <span>PLAY</span>
+                  </>
+                )}
+              </button>
 
-                {/* Mute Button */}
-                <button
-                  type="button"
-                  onClick={toggleMute}
-                  className="p-1.5 bg-[#707070] hover:bg-[#808080] text-white border-3 border-t-[#9E9E9E] border-l-[#9E9E9E] border-r-[#383838] border-b-[#383838] shadow-[2px_2px_0px_#000] cursor-pointer active:translate-y-0.5"
-                  title={isMuted ? "Unmute" : "Mute"}
-                >
-                  {isMuted ? (
-                    <VolumeX className="w-4 h-4 text-[#FF5555]" />
-                  ) : (
-                    <Volume2 className="w-4 h-4 text-[#55FF55]" />
-                  )}
-                </button>
-              </div>
+              {/* Mute Button */}
+              <button
+                type="button"
+                onClick={toggleMute}
+                className="p-1 bg-[#707070] hover:bg-[#808080] text-white border-2 border-t-[#9E9E9E] border-l-[#9E9E9E] border-r-[#383838] border-b-[#383838] shadow-[1px_1px_0px_#000] cursor-pointer active:translate-y-0.5"
+                title={isMuted ? "Unmute" : "Mute"}
+              >
+                {isMuted ? (
+                  <VolumeX className="w-3 h-3 text-[#FF5555]" />
+                ) : (
+                  <Volume2 className="w-3 h-3 text-[#55FF55]" />
+                )}
+              </button>
 
               {/* Volume Slider */}
-              <div className="flex items-center gap-1.5 flex-1 max-w-[90px] sm:max-w-[100px]">
+              <div className="flex items-center gap-1 flex-1 max-w-[70px] sm:max-w-[80px]">
                 <input
                   type="range"
                   min="0"
@@ -270,7 +260,7 @@ export function MinecraftAudioPlayer() {
                   step="0.05"
                   value={isMuted ? 0 : volume}
                   onChange={handleVolumeChange}
-                  className="w-full h-2 bg-[#8B8B8B] rounded-none accent-[#5B8731] cursor-pointer border border-black"
+                  className="w-full h-1.5 bg-[#8B8B8B] rounded-none accent-[#5B8731] cursor-pointer border border-black"
                   title={`Volume: ${Math.round(volume * 100)}%`}
                 />
               </div>

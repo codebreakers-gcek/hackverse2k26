@@ -14,14 +14,14 @@ export const metadata: Metadata = {
     description:
       "Official hackathon rules, squad composition, evaluation rubrics, and submission protocols.",
     url: "https://www.codebreakersgcek.tech/guidelines",
-    images: [{ url: "/cbhack.png", width: 1200, height: 630, alt: "HACKVERSE '26 Guidelines" }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "HACKVERSE '26 Guidelines" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Rulebook & Guidelines // HACKVERSE '26",
+    title: "Official Tournament Rules & Protocols // HACKVERSE '26",
     description:
-      "Official hackathon rules, squad composition, evaluation rubrics, and submission protocols.",
-    images: ["/cbhack.png"],
+      "Review the hackathon code of conduct, IP rights, submission rules, and judging criteria.",
+    images: ["/og-image.jpg"],
   },
 };
 

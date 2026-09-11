@@ -203,10 +203,17 @@ export function DocumentsContent() {
                   </div>
 
                   {/* Status Badge */}
-                  <span className="font-mono text-[10px] font-black uppercase px-2.5 py-1 bg-black text-[#FFAA00] border-2 border-[#FFAA00] shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000] flex items-center gap-1.5">
-                    <Lock className="w-3 h-3 text-[#FFAA00]" />
-                    <span>{doc.isAvailable ? "AVAILABLE NOW" : "RELEASING SOON"}</span>
-                  </span>
+                  {doc.isAvailable ? (
+                    <span className="font-mono text-[10px] font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000] flex items-center gap-1.5">
+                      <CheckCircle2 className="w-3 h-3 text-[#55FF55]" />
+                      <span>AVAILABLE NOW</span>
+                    </span>
+                  ) : (
+                    <span className="font-mono text-[10px] font-black uppercase px-2.5 py-1 bg-black text-[#FFAA00] border-2 border-[#FFAA00] shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000] flex items-center gap-1.5">
+                      <Lock className="w-3 h-3 text-[#FFAA00]" />
+                      <span>RELEASING SOON</span>
+                    </span>
+                  )}
                 </div>
 
                 <div className="space-y-5 pt-1">
@@ -261,6 +268,20 @@ export function DocumentsContent() {
                           allowFullScreen
                         />
                       </div>
+                    ) : doc.isAvailable && doc.downloadUrl ? (
+                      <div className="py-6 flex flex-col items-center justify-center space-y-3">
+                        <div className="w-16 h-16 bg-[#2B2B2B] border-4 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] mx-auto flex items-center justify-center shadow-[4px_4px_0px_#000]">
+                          <FileText className="w-8 h-8 text-[#55FF55] stroke-[2.5px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
+                        </div>
+                        <div className="space-y-1.5">
+                          <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] inline-block shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+                            ★ OFFICIAL TEMPLATE READY FOR DOWNLOAD ★
+                          </span>
+                          <p className="text-xs font-bold text-black/90 max-w-sm mx-auto font-mono">
+                            Download the official {doc.shortTitle} (.docx) to print on your college letterhead and obtain institutional endorsement.
+                          </p>
+                        </div>
+                      </div>
                     ) : (
                       <div className="py-6 flex flex-col items-center justify-center space-y-3">
                         <div className="w-16 h-16 bg-[#2B2B2B] border-4 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] mx-auto flex items-center justify-center shadow-[4px_4px_0px_#000]">
@@ -293,8 +314,7 @@ export function DocumentsContent() {
                   {doc.isAvailable && doc.downloadUrl ? (
                     <a
                       href={doc.downloadUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      download="Authorization_Letter_Head_of_Institute.docx"
                       className="bg-[#5B8731] hover:bg-[#689B37] text-white font-mono font-black text-xs uppercase tracking-wider border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] active:border-t-[#2C4813] active:border-l-[#2C4813] active:border-r-[#85B745] active:border-b-[#85B745] px-6 py-2.5 shadow-[3px_3px_0px_#000] [text-shadow:_2px_2px_0_#000] flex items-center justify-center gap-2 transition-colors"
                     >
                       <Download className="w-4 h-4 stroke-[2.5px]" />

@@ -105,7 +105,7 @@ export function ProblemSelectionContent() {
         return prev.filter((id) => id !== psId);
       }
       if (prev.length < 2) {
-        // Add as 1st or 2nd
+        // Add as 1st (mandatory) or 2nd (optional)
         return [...prev, psId];
       }
       // If 2 already selected, replace the 2nd preference
@@ -116,8 +116,8 @@ export function ProblemSelectionContent() {
 
   // Submit choices to API
   const handleConfirmSubmit = async () => {
-    if (selectedPsIds.length !== 2) {
-      setFeedbackMessage("Please select exactly TWO (2) problem statements before submitting.");
+    if (selectedPsIds.length < 1 || selectedPsIds.length > 2) {
+      setFeedbackMessage("Please select at least ONE (1) mandatory problem statement before submitting.");
       setShowConfirmModal(false);
       return;
     }
@@ -335,7 +335,7 @@ export function ProblemSelectionContent() {
             tag="HACKATHON PROTOCOL // PS SELECTION"
             title="SELECT PROBLEM"
             highlightText="STATEMENTS"
-            subtitle="Select your squad's exactly TWO (2) preferred problem statements (Preference 1 & Preference 2). Review full deliverables and confirm your submission."
+            subtitle="Select your squad's primary problem statement (Preference 1 is Mandatory, Preference 2 is Optional). Review specifications and submit your choice."
           />
 
           {/* TEAM DETAILS DOSSIER CARD */}
@@ -395,11 +395,16 @@ export function ProblemSelectionContent() {
             {/* Current PS Status Banner */}
             <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-mono font-bold">
               <div className="flex items-center gap-2">
-                <span className="w-3 h-3 rounded-full bg-emerald-500 border border-black animate-pulse" />
+                <span
+                  className={clsx(
+                    "w-3 h-3 rounded-full border border-black animate-pulse",
+                    selectedPsIds.length >= 1 ? "bg-emerald-500" : "bg-amber-500"
+                  )}
+                />
                 <span>
                   SELECTED CHOICES:{" "}
                   <strong className="text-black font-black font-mono">
-                    {selectedPsIds.length} / 2 STATEMENTS
+                    {selectedPsIds.length} / 2 TRACKS {selectedPsIds.length >= 1 ? "(MANDATORY MET)" : "(SELECTION REQUIRED)"}
                   </strong>
                 </span>
                 {teamData.psSubmittedAt && (
@@ -410,7 +415,7 @@ export function ProblemSelectionContent() {
               </div>
 
               <div className="text-black/70 font-mono text-[11px]">
-                RULE: EXACTLY TWO (2) DISTINCT PREFERENCES REQUIRED
+                RULE: PREFERENCE 1 (MANDATORY) • PREFERENCE 2 (OPTIONAL)
               </div>
             </div>
           </div>
@@ -496,12 +501,12 @@ export function ProblemSelectionContent() {
                     {/* Selection Badges */}
                     {isPref1 && (
                       <span className="font-mono text-[11px] sm:text-xs font-black uppercase px-2.5 sm:px-3 py-1 bg-neo-secondary text-black border-2 border-black shadow-neo-sm animate-bounce">
-                        ★ PREF 1 (PRIMARY)
+                        ★ PREF 1 (PRIMARY - MANDATORY)
                       </span>
                     )}
                     {isPref2 && (
                       <span className="font-mono text-[11px] sm:text-xs font-black uppercase px-2.5 sm:px-3 py-1 bg-neo-accent text-black border-2 border-black shadow-neo-sm">
-                        ★ PREF 2 (SECONDARY)
+                        ★ PREF 2 (SECONDARY - OPTIONAL)
                       </span>
                     )}
                   </div>
@@ -560,12 +565,16 @@ export function ProblemSelectionContent() {
                     {isSelected ? (
                       <>
                         <Check className="w-4 h-4 stroke-[3px] shrink-0" />
-                        <span>{isPref1 ? "PREF #1" : "PREF #2"} (CHANGE)</span>
+                        <span>{isPref1 ? "PREF #1 (REMOVE)" : "PREF #2 (REMOVE)"}</span>
                       </>
                     ) : (
                       <>
                         <Sparkles className="w-4 h-4 stroke-[3px] shrink-0" />
-                        <span>SELECT THIS TRACK</span>
+                        <span>
+                          {selectedPsIds.length === 0
+                            ? "SELECT AS PREF 1 (MANDATORY)"
+                            : "SELECT AS PREF 2 (OPTIONAL)"}
+                        </span>
                       </>
                     )}
                   </button>
@@ -587,23 +596,29 @@ export function ProblemSelectionContent() {
 
               <div className="space-y-1 text-xs font-bold text-black min-w-0 flex-1">
                 <div className="truncate">
-                  <span className="font-mono font-black text-amber-700 uppercase">PREF 1:</span>{" "}
+                  <span className="font-mono font-black text-amber-700 uppercase">
+                    PREF 1 (MANDATORY):
+                  </span>{" "}
                   {pref1Obj ? (
                     <strong className="font-black text-black">
                       [{pref1Obj.code}] {pref1Obj.title}
                     </strong>
                   ) : (
-                    <span className="text-black/50 italic">None selected yet</span>
+                    <span className="text-rose-600 font-black italic">
+                      Selection required (Mandatory)
+                    </span>
                   )}
                 </div>
                 <div className="truncate">
-                  <span className="font-mono font-black text-rose-700 uppercase">PREF 2:</span>{" "}
+                  <span className="font-mono font-black text-rose-700 uppercase">
+                    PREF 2 (OPTIONAL):
+                  </span>{" "}
                   {pref2Obj ? (
                     <strong className="font-black text-black">
                       [{pref2Obj.code}] {pref2Obj.title}
                     </strong>
                   ) : (
-                    <span className="text-black/50 italic">None selected yet</span>
+                    <span className="text-black/50 italic">None selected (Optional)</span>
                   )}
                 </div>
               </div>
@@ -612,20 +627,22 @@ export function ProblemSelectionContent() {
             <div className="flex items-center gap-3 w-full lg:w-auto justify-end">
               <button
                 type="button"
-                disabled={selectedPsIds.length !== 2}
+                disabled={selectedPsIds.length < 1}
                 onClick={() => setShowConfirmModal(true)}
                 className={clsx(
                   "w-full sm:w-auto px-6 sm:px-8 py-3.5 sm:py-4 font-black text-xs sm:text-sm uppercase tracking-wider border-4 border-black shadow-neo transition-all flex items-center justify-center gap-2",
-                  selectedPsIds.length === 2
+                  selectedPsIds.length >= 1
                     ? "bg-neo-secondary hover:bg-neo-accent hover:shadow-neo-lg hover:-translate-y-0.5 text-black cursor-pointer"
                     : "bg-neutral-200 text-black/40 border-black/50 cursor-not-allowed shadow-none"
                 )}
               >
                 <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3px]" />
                 <span>
-                  {selectedPsIds.length === 2
-                    ? "SUBMIT & LOCK 2 STATEMENTS"
-                    : `SELECT ${2 - selectedPsIds.length} MORE TO SUBMIT`}
+                  {selectedPsIds.length === 1
+                    ? "SUBMIT PREFERENCES (1 TRACK SELECTED)"
+                    : selectedPsIds.length === 2
+                    ? "SUBMIT & LOCK 2 PREFERENCES"
+                    : "SELECT AT LEAST 1 TRACK TO SUBMIT"}
                 </span>
                 <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3px]" />
               </button>
@@ -655,7 +672,7 @@ export function ProblemSelectionContent() {
                 </div>
                 <button
                   onClick={() => setShowConfirmModal(false)}
-                  className="p-1 hover:bg-neutral-100 border border-black font-black"
+                  className="p-1 hover:bg-neutral-100 border border-black font-black cursor-pointer"
                 >
                   <X className="w-5 h-5 stroke-[3px]" />
                 </button>
@@ -663,7 +680,9 @@ export function ProblemSelectionContent() {
 
               <div className="space-y-4">
                 <p className="text-xs sm:text-sm font-bold text-black/85 leading-relaxed">
-                  Please confirm that you want to submit and lock the following two problem statements for your squad:
+                  Please confirm that you want to submit and lock the following{" "}
+                  {selectedPsIds.length === 1 ? "problem statement" : "two problem statements"}{" "}
+                  for your squad:
                 </p>
 
                 {/* Team Info Box */}
@@ -674,7 +693,8 @@ export function ProblemSelectionContent() {
                   </div>
                   <div>
                     <span className="text-black/60 uppercase">LEADER:</span>{" "}
-                    <strong className="text-black font-black">{teamData.leader?.name}</strong> ({teamData.leader?.email})
+                    <strong className="text-black font-black">{teamData.leader?.name}</strong> (
+                    {teamData.leader?.email})
                   </div>
                 </div>
 
@@ -682,7 +702,7 @@ export function ProblemSelectionContent() {
                 <div className="space-y-3">
                   <div className="p-4 bg-amber-50 border-3 border-black shadow-neo-sm space-y-1">
                     <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neo-secondary text-black border border-black inline-block">
-                      ★ CHOICE #1 (PRIMARY PREFERENCE)
+                      ★ CHOICE #1 (PRIMARY PREFERENCE - MANDATORY)
                     </span>
                     <div className="font-black text-sm uppercase text-black pt-1">
                       [{pref1Obj?.code}] {pref1Obj?.title}
@@ -692,17 +712,23 @@ export function ProblemSelectionContent() {
                     </div>
                   </div>
 
-                  <div className="p-4 bg-rose-50 border-3 border-black shadow-neo-sm space-y-1">
-                    <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neo-accent text-black border border-black inline-block">
-                      ★ CHOICE #2 (SECONDARY PREFERENCE)
-                    </span>
-                    <div className="font-black text-sm uppercase text-black pt-1">
-                      [{pref2Obj?.code}] {pref2Obj?.title}
+                  {pref2Obj ? (
+                    <div className="p-4 bg-rose-50 border-3 border-black shadow-neo-sm space-y-1">
+                      <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neo-accent text-black border border-black inline-block">
+                        ★ CHOICE #2 (SECONDARY PREFERENCE - OPTIONAL)
+                      </span>
+                      <div className="font-black text-sm uppercase text-black pt-1">
+                        [{pref2Obj?.code}] {pref2Obj?.title}
+                      </div>
+                      <div className="font-mono text-xs text-black/70">
+                        Domain: {pref2Obj?.domain}
+                      </div>
                     </div>
-                    <div className="font-mono text-xs text-black/70">
-                      Domain: {pref2Obj?.domain}
+                  ) : (
+                    <div className="p-3 bg-neutral-100 border-2 border-dashed border-black/50 font-mono text-xs text-neutral-600">
+                      Choice #2 (Secondary): None selected (Optional track omitted)
                     </div>
-                  </div>
+                  )}
                 </div>
 
                 <div className="p-3 bg-amber-100 border-2 border-black text-xs font-bold text-amber-950 flex items-start gap-2">
@@ -757,7 +783,7 @@ export function ProblemSelectionContent() {
       <MarqueeBanner
         items={[
           "HACKVERSE '26 PROBLEM STATEMENTS",
-          "CHOOSE 2 PREFERENCES",
+          "PREF 1 MANDATORY • PREF 2 OPTIONAL",
           "AI • WEB • CYBER • IOT • OPEN",
           "GCEK BHAWANIPATNA",
         ]}

@@ -14,14 +14,14 @@ export const metadata: Metadata = {
     description:
       "Got questions about HACKVERSE '26? Read our comprehensive FAQ regarding eligibility, travel, lodging, prizes, and submissions.",
     url: "https://www.codebreakersgcek.tech/faqs",
-    images: [{ url: "/cbhack.png", width: 1200, height: 630, alt: "HACKVERSE '26 FAQs" }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "HACKVERSE '26 FAQs" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Frequently Asked Questions // HACKVERSE '26",
     description:
-      "Got questions about HACKVERSE '26? Read our comprehensive FAQ regarding eligibility, travel, lodging, prizes, and submissions.",
-    images: ["/cbhack.png"],
+      "Clear answers on squad sizes, free accommodation, food, timeline, hardware access, and judging.",
+    images: ["/og-image.jpg"],
   },
 };
 

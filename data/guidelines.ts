@@ -15,12 +15,14 @@ export interface CalloutBox {
 export const HACKATHON_GUIDELINES_DATA = {
   pageTitle: "Hackathon Guidelines",
   noticeHeader: {
-    title: "Please read the guidelines carefully before participating in the hackathon.",
-    subtitle: "Make sure to follow all the rules and regulations to ensure a smooth and fair experience for all teams.",
+    title:
+      "Please read the guidelines carefully before participating in the hackathon.",
+    subtitle:
+      "Make sure to follow all the rules and regulations to ensure a smooth and fair experience for all teams.",
   },
   teamComposition: {
     title: "Team Composition and Eligibility",
-    teamSize: "Minimum 3, Maximum 6 members",
+    teamSize: "Minimum 3, Maximum 4 members",
     eligibilityList: [
       "All team members must be enrolled undergraduate, postgraduate, or diploma students from recognized engineering colleges and universities.",
       "Interdisciplinary participation is strongly encouraged (technical, management, design, etc.).",
@@ -30,12 +32,14 @@ export const HACKATHON_GUIDELINES_DATA = {
       {
         type: "note" as const,
         title: "Note:",
-        content: "Teams must register with their final composition; no changes will be allowed post-registration.",
+        content:
+          "Teams must register with their final composition; no changes will be allowed post-registration.",
       },
       {
         type: "important" as const,
         title: "Important:",
-        content: "A participant cannot be a member of more than one team. Violation will lead to immediate disqualification.",
+        content:
+          "A participant cannot be a member of more than one team. Violation will lead to immediate disqualification.",
       },
     ],
   },
@@ -88,7 +92,8 @@ export const STRUCTURED_RULES = [
     category: "jury-eval",
     categoryLabel: "Timeline & IP",
     title: "Timeline Adherence & Intellectual Property",
-    description: "Adherence to the hackathon timeline and format is mandatory. Intellectual property rights of original solutions remain fully with the teams.",
+    description:
+      "Adherence to the hackathon timeline and format is mandatory. Intellectual property rights of original solutions remain fully with the teams.",
     tag: "MANDATORY",
     tagType: "neutral" as const,
     severity: "standard" as const,
@@ -100,11 +105,13 @@ export const STRUCTURED_RULES = [
     category: "team-eligibility",
     categoryLabel: "Registration",
     title: "Single Team Membership Constraint",
-    description: "A participant can be registered in only one team. Participation in multiple teams is strictly prohibited across all hackathon tracks.",
+    description:
+      "A participant can be registered in only one team. Participation in multiple teams is strictly prohibited across all hackathon tracks.",
     tag: "ONE SQUAD ONLY",
     tagType: "danger" as const,
     severity: "danger" as const,
-    keyTakeaway: "Participants found in >1 squad will have both squads disqualified.",
+    keyTakeaway:
+      "Participants found in >1 squad will have both squads disqualified.",
   },
   {
     id: "rule-03",
@@ -112,11 +119,12 @@ export const STRUCTURED_RULES = [
     category: "team-eligibility",
     categoryLabel: "Squad Composition",
     title: "Final Team Roster Lock",
-    description: "Teams must register with their final members (3 to 6 members). No addition, removal, or substitution of members will be allowed after registration, except when specifically approved in advance by the organizing committee.",
+    description:
+      "Teams must register with their final members (3 to 4 members). No addition, removal, or substitution of members will be allowed after registration, except when specifically approved in advance by the organizing committee.",
     tag: "ROSTER LOCKED",
     tagType: "warning" as const,
     severity: "warning" as const,
-    keyTakeaway: "Lock your 3-6 squad members before final submission.",
+    keyTakeaway: "Lock your 3-4 squad members before final submission.",
   },
   {
     id: "rule-04",
@@ -124,11 +132,13 @@ export const STRUCTURED_RULES = [
     category: "fair-play",
     categoryLabel: "Verification",
     title: "Authentic Credentials & Student Status",
-    description: "All participant, mentor, college, and contact details must be accurate and authentic. False, forged, or misleading information may result in immediate disqualification.",
+    description:
+      "All participant, mentor, college, and contact details must be accurate and authentic. False, forged, or misleading information may result in immediate disqualification.",
     tag: "VERIFIED IDs",
     tagType: "warning" as const,
     severity: "warning" as const,
-    keyTakeaway: "Valid college ID cards or proof of enrollment required upon check-in.",
+    keyTakeaway:
+      "Valid college ID cards or proof of enrollment required upon check-in.",
   },
   {
     id: "rule-05",
@@ -136,11 +146,13 @@ export const STRUCTURED_RULES = [
     category: "fair-play",
     categoryLabel: "Originality",
     title: "Plagiarism & Open-Source Attribution Policy",
-    description: "Plagiarism, copying existing projects/solutions, or presenting someone else's work as your own is strictly prohibited. Permitted open-source tools, libraries, APIs, and datasets may be used in accordance with their licenses.",
+    description:
+      "Plagiarism, copying existing projects/solutions, or presenting someone else's work as your own is strictly prohibited. Permitted open-source tools, libraries, APIs, and datasets may be used in accordance with their licenses.",
     tag: "ORIGINAL CODE",
     tagType: "danger" as const,
     severity: "danger" as const,
-    keyTakeaway: "Build fresh during sprint. Open-source libraries permitted with proper license.",
+    keyTakeaway:
+      "Build fresh during sprint. Open-source libraries permitted with proper license.",
   },
   {
     id: "rule-06",
@@ -148,7 +160,8 @@ export const STRUCTURED_RULES = [
     category: "deliverables",
     categoryLabel: "Track Selection",
     title: "Problem Statement Selection Lock",
-    description: "Select your problem statement carefully. Changes to problem statements or themes after final registration will not be permitted without committee clearance.",
+    description:
+      "Select your problem statement carefully. Changes to problem statements or themes after final registration will not be permitted without committee clearance.",
     tag: "LOCK CHOICE",
     tagType: "neutral" as const,
     severity: "standard" as const,
@@ -160,7 +173,8 @@ export const STRUCTURED_RULES = [
     category: "fair-play",
     categoryLabel: "Registration Integrity",
     title: "No Duplicate Registrations or Proxy Accounts",
-    description: "Duplicate registrations, use of another person's identity/details, or attempts to bypass registration restrictions and team caps are strictly prohibited.",
+    description:
+      "Duplicate registrations, use of another person's identity/details, or attempts to bypass registration restrictions and team caps are strictly prohibited.",
     tag: "ZERO PROXY",
     tagType: "danger" as const,
     severity: "danger" as const,
@@ -172,11 +186,13 @@ export const STRUCTURED_RULES = [
     category: "fair-play",
     categoryLabel: "Ethics",
     title: "Anti-Cheating & Fair Play Directives",
-    description: "Cheating, impersonation, unauthorized assistance, score manipulation, fraudulent activity, or any other unfair practice is strictly prohibited at all stages of the hackathon.",
+    description:
+      "Cheating, impersonation, unauthorized assistance, score manipulation, fraudulent activity, or any other unfair practice is strictly prohibited at all stages of the hackathon.",
     tag: "INTEGRITY",
     tagType: "danger" as const,
     severity: "danger" as const,
-    keyTakeaway: "Fair play is actively monitored by mentors and jury supervisors.",
+    keyTakeaway:
+      "Fair play is actively monitored by mentors and jury supervisors.",
   },
   {
     id: "rule-09",
@@ -184,7 +200,8 @@ export const STRUCTURED_RULES = [
     category: "fair-play",
     categoryLabel: "Cyber Safety",
     title: "Infrastructure & Platform Security Protocol",
-    description: "Any attempt to exploit vulnerabilities, bypass validations, manipulate data, gain unauthorized access, disrupt services, or misuse the hackathon website, APIs, servers, databases, or related systems is strictly prohibited.",
+    description:
+      "Any attempt to exploit vulnerabilities, bypass validations, manipulate data, gain unauthorized access, disrupt services, or misuse the hackathon website, APIs, servers, databases, or related systems is strictly prohibited.",
     tag: "NO ATTACKS",
     tagType: "danger" as const,
     severity: "danger" as const,
@@ -196,7 +213,8 @@ export const STRUCTURED_RULES = [
     category: "team-eligibility",
     categoryLabel: "Confirmation",
     title: "Registration Screening & Verification",
-    description: "Registration does not guarantee final participation. All submitted details may be verified by the organizing committee before participation credentials and slots are confirmed.",
+    description:
+      "Registration does not guarantee final participation. All submitted details may be verified by the organizing committee before participation credentials and slots are confirmed.",
     tag: "COMMITTEE REVIEW",
     tagType: "neutral" as const,
     severity: "standard" as const,
@@ -208,11 +226,13 @@ export const STRUCTURED_RULES = [
     category: "jury-eval",
     categoryLabel: "Communication",
     title: "Official Communication Channels",
-    description: "Teams must provide valid contact details (email and mobile) and regularly check official hackathon communications, discord announcements, and website bulletins.",
+    description:
+      "Teams must provide valid contact details (email and mobile) and regularly check official hackathon communications, discord announcements, and website bulletins.",
     tag: "STAY TUNED",
     tagType: "neutral" as const,
     severity: "standard" as const,
-    keyTakeaway: "All time-sensitive notifications will flow via official channels.",
+    keyTakeaway:
+      "All time-sensitive notifications will flow via official channels.",
   },
   {
     id: "rule-12",
@@ -220,7 +240,8 @@ export const STRUCTURED_RULES = [
     category: "jury-eval",
     categoryLabel: "Jury Protocol",
     title: "Strict No-Jury-Contact Protocol",
-    description: "Participants must not contact or attempt to contact jury members regarding the hackathon until its official conclusion, including through LinkedIn, email, phone, messaging platforms, or social media. Any communication concerning evaluation, scoring, results, requests, or influence may result in immediate disqualification of the entire team.",
+    description:
+      "Participants must not contact or attempt to contact jury members regarding the hackathon until its official conclusion, including through LinkedIn, email, phone, messaging platforms, or social media. Any communication concerning evaluation, scoring, results, requests, or influence may result in immediate disqualification of the entire team.",
     tag: "NO LOBBYING",
     tagType: "danger" as const,
     severity: "danger" as const,
@@ -232,7 +253,8 @@ export const STRUCTURED_RULES = [
     category: "fair-play",
     categoryLabel: "Public Conduct",
     title: "Defamation & Misinformation Policy",
-    description: "Participants must not create or spread false, misleading, defamatory, or unverified information about the hackathon, organizers, jury, teams, evaluation, or results through any channel. Violations may result in disqualification and appropriate disciplinary or legal action.",
+    description:
+      "Participants must not create or spread false, misleading, defamatory, or unverified information about the hackathon, organizers, jury, teams, evaluation, or results through any channel. Violations may result in disqualification and appropriate disciplinary or legal action.",
     tag: "RESPECTFUL CONDUCT",
     tagType: "warning" as const,
     severity: "warning" as const,
@@ -244,7 +266,8 @@ export const STRUCTURED_RULES = [
     category: "fair-play",
     categoryLabel: "Confidentiality",
     title: "Non-Disclosure of Internal Hackathon Data",
-    description: "Participants must not disclose or share any non-public or confidential hackathon information, including internal communications, unpublished results, evaluation details, jury discussions, participant/project data, or credentials. Unauthorized disclosure may result in disqualification.",
+    description:
+      "Participants must not disclose or share any non-public or confidential hackathon information, including internal communications, unpublished results, evaluation details, jury discussions, participant/project data, or credentials. Unauthorized disclosure may result in disqualification.",
     tag: "CONFIDENTIALITY",
     tagType: "warning" as const,
     severity: "warning" as const,
@@ -256,7 +279,8 @@ export const STRUCTURED_RULES = [
     category: "fair-play",
     categoryLabel: "Professionalism",
     title: "Professionalism & Ethical Conduct",
-    description: "Teams are expected to maintain the highest levels of professionalism, collaborative spirit, and ethical conduct throughout the 24-hour sprint.",
+    description:
+      "Teams are expected to maintain the highest levels of professionalism, collaborative spirit, and ethical conduct throughout the 24-hour sprint.",
     tag: "PROFESSIONALISM",
     tagType: "neutral" as const,
     severity: "standard" as const,
@@ -268,11 +292,13 @@ export const STRUCTURED_RULES = [
     category: "jury-eval",
     categoryLabel: "Decorum",
     title: "Jury Presentation Decorum",
-    description: "Teams are expected to maintain utmost decorum, respect, and technical conciseness during all evaluations, mentoring reviews, and Q&A interactions with the jury.",
+    description:
+      "Teams are expected to maintain utmost decorum, respect, and technical conciseness during all evaluations, mentoring reviews, and Q&A interactions with the jury.",
     tag: "PITCH PROTOCOL",
     tagType: "neutral" as const,
     severity: "standard" as const,
-    keyTakeaway: "Present clearly, be honest with tech boundaries, respect time limits.",
+    keyTakeaway:
+      "Present clearly, be honest with tech boundaries, respect time limits.",
   },
   {
     id: "rule-17",
@@ -280,7 +306,8 @@ export const STRUCTURED_RULES = [
     category: "jury-eval",
     categoryLabel: "Final Verdict",
     title: "Finality & Binding Nature of Jury Decisions",
-    description: "The jury's decision regarding project evaluation, scoring, prize distribution, and rank assignment is final and binding on all participating squads.",
+    description:
+      "The jury's decision regarding project evaluation, scoring, prize distribution, and rank assignment is final and binding on all participating squads.",
     tag: "FINAL & BINDING",
     tagType: "warning" as const,
     severity: "warning" as const,
@@ -292,7 +319,8 @@ export const STRUCTURED_RULES = [
     category: "jury-eval",
     categoryLabel: "Governance",
     title: "Organizing Committee Discretionary Authority",
-    description: "The organizing committee reserves the right to verify registrations, investigate violations, reject/disqualify teams, and take necessary corrective action to maintain fairness. Its decision regarding eligibility and rule violations shall be absolute and final.",
+    description:
+      "The organizing committee reserves the right to verify registrations, investigate violations, reject/disqualify teams, and take necessary corrective action to maintain fairness. Its decision regarding eligibility and rule violations shall be absolute and final.",
     tag: "APEX AUTHORITY",
     tagType: "neutral" as const,
     severity: "standard" as const,
@@ -304,14 +332,15 @@ export const GUIDELINES_CATEGORIES: GuidelineCategory[] = [
   {
     id: "team-composition",
     title: "TEAM COMPOSITION & ELIGIBILITY",
-    shortDescription: "Size constraints, institutional affiliation, and registration rules.",
+    shortDescription:
+      "Size constraints, institutional affiliation, and registration rules.",
     icon: "Users",
     rules: [
       {
         id: "tc-1",
         number: "01",
         heading: "Team Size Requirements",
-        content: "Minimum 3, Maximum 6 members per registered squad.",
+        content: "Minimum 3, Maximum 4 members per registered squad.",
         importantNotes: [
           "Teams must register with their final composition; no changes will be allowed post-registration.",
           "A participant cannot be a member of more than one team. Violation will lead to immediate disqualification.",
@@ -321,30 +350,32 @@ export const GUIDELINES_CATEGORIES: GuidelineCategory[] = [
         id: "tc-2",
         number: "02",
         heading: "Institutional Affiliation",
-        content: "Open to enrolled engineering, diploma, and technical college students across India. Interdisciplinary participation is strongly encouraged (technical, management, design, etc.).",
-        importantNotes: [
-          "Faculty mentors may accompany the teams (optional).",
-        ],
+        content:
+          "Open to enrolled engineering, diploma, and technical college students across India. Interdisciplinary participation is strongly encouraged (technical, management, design, etc.).",
+        importantNotes: ["Faculty mentors may accompany the teams (optional)."],
       },
     ],
   },
   {
     id: "deliverables",
     title: "EXPECTED DELIVERABLES & OUTCOMES",
-    shortDescription: "Prototypes, pitch decks, documentation, and demo videos.",
+    shortDescription:
+      "Prototypes, pitch decks, documentation, and demo videos.",
     icon: "FileText",
     rules: [
       {
         id: "del-1",
         number: "01",
         heading: "Working Prototype / MVP",
-        content: "Teams must develop and demonstrate a functioning Minimum Viable Product or prototype during the hackathon window.",
+        content:
+          "Teams must develop and demonstrate a functioning Minimum Viable Product or prototype during the hackathon window.",
       },
       {
         id: "del-2",
         number: "02",
         heading: "Pitch Deck & Architecture",
-        content: "Pitch deck explaining the problem, solution, impact, and future scalability. Technical documentation with architecture and design flow.",
+        content:
+          "Pitch deck explaining the problem, solution, impact, and future scalability. Technical documentation with architecture and design flow.",
         importantNotes: ["Demo video showcasing the solution (optional)."],
       },
     ],
@@ -352,20 +383,23 @@ export const GUIDELINES_CATEGORIES: GuidelineCategory[] = [
   {
     id: "regulations",
     title: "OFFICIAL REGULATIONS & CONDUCT",
-    shortDescription: "Ethics, intellectual property, academic integrity, and jury decorum.",
+    shortDescription:
+      "Ethics, intellectual property, academic integrity, and jury decorum.",
     icon: "ShieldCheck",
     rules: [
       {
         id: "reg-1",
         number: "01",
         heading: "Timeline & Format Adherence",
-        content: "Adherence to the timeline and format is mandatory. Intellectual property rights of original solutions remain with the teams.",
+        content:
+          "Adherence to the timeline and format is mandatory. Intellectual property rights of original solutions remain with the teams.",
       },
       {
         id: "reg-2",
         number: "02",
         heading: "Anti-Plagiarism & Authentic Credentials",
-        content: "Plagiarism, copying existing projects, or presenting someone else's work as your own is strictly prohibited. Permitted open-source tools and libraries may be used in accordance with their licenses.",
+        content:
+          "Plagiarism, copying existing projects, or presenting someone else's work as your own is strictly prohibited. Permitted open-source tools and libraries may be used in accordance with their licenses.",
         importantNotes: [
           "All participant, mentor, college, and contact details must be accurate and authentic.",
         ],
@@ -374,7 +408,8 @@ export const GUIDELINES_CATEGORIES: GuidelineCategory[] = [
         id: "reg-3",
         number: "03",
         heading: "Jury Protocol & Confidentiality",
-        content: "Participants must not contact or attempt to contact jury members regarding the hackathon until its official conclusion. The jury's decision will be final and binding.",
+        content:
+          "Participants must not contact or attempt to contact jury members regarding the hackathon until its official conclusion. The jury's decision will be final and binding.",
       },
     ],
   },
@@ -384,7 +419,8 @@ export const EVALUATION_CRITERIA_MATRIX: EvaluationCriterion[] = [
   {
     parameter: "Innovation & Originality",
     weightage: 25,
-    description: "Novelty of the concept, breakthrough approach, and creative problem solving.",
+    description:
+      "Novelty of the concept, breakthrough approach, and creative problem solving.",
     scoringFocus: [
       "Uniqueness of the solution",
       "Creative application of modern tech stacks",
@@ -394,7 +430,8 @@ export const EVALUATION_CRITERIA_MATRIX: EvaluationCriterion[] = [
   {
     parameter: "Technical Complexity & Architecture",
     weightage: 25,
-    description: "Engineering depth, prototype stability, API integration, and architectural scalability.",
+    description:
+      "Engineering depth, prototype stability, API integration, and architectural scalability.",
     scoringFocus: [
       "Code modularity and cleanliness",
       "Robust data flow and security validations",
@@ -404,7 +441,8 @@ export const EVALUATION_CRITERIA_MATRIX: EvaluationCriterion[] = [
   {
     parameter: "Real-World Impact & Feasibility",
     weightage: 20,
-    description: "Practical viability, user value proposition, and operational deployability.",
+    description:
+      "Practical viability, user value proposition, and operational deployability.",
     scoringFocus: [
       "Relevance to industry problem statements",
       "Feasibility within institutional and market constraints",
@@ -414,7 +452,8 @@ export const EVALUATION_CRITERIA_MATRIX: EvaluationCriterion[] = [
   {
     parameter: "UI / UX Design & Experience",
     weightage: 15,
-    description: "Intuitive workflows, accessibility, design responsiveness, and user experience.",
+    description:
+      "Intuitive workflows, accessibility, design responsiveness, and user experience.",
     scoringFocus: [
       "Interface clarity and aesthetics",
       "Responsive performance across devices",
@@ -424,7 +463,8 @@ export const EVALUATION_CRITERIA_MATRIX: EvaluationCriterion[] = [
   {
     parameter: "Presentation & Demonstration Quality",
     weightage: 15,
-    description: "Clarity of the pitch deck, live demo execution, and defense during jury Q&A.",
+    description:
+      "Clarity of the pitch deck, live demo execution, and defense during jury Q&A.",
     scoringFocus: [
       "Persuasive articulation of problem & solution",
       "Smooth live prototype demonstration",

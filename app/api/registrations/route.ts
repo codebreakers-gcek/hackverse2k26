@@ -67,6 +67,10 @@ export async function POST(req: NextRequest) {
         transactionId: data.paymentDetails?.transactionId || null,
         paymentStatus: data.paymentDetails?.paymentMode === "FREE_SPONSORED" ? "FREE_TIER" : "PENDING",
 
+        // Accommodation
+        accommodationRequired: Boolean(data.accommodationRequired || (data as any).accommodationRequested),
+        accommodationStatus: Boolean(data.accommodationRequired || (data as any).accommodationRequested) ? "REQUESTED" : "NOT_REQUESTED",
+
         // Document Uploads
         documents: data.documentUploads as any,
       },

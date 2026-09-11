@@ -18,14 +18,13 @@ export const metadata: Metadata = {
     description:
       "Explore the mission, student builder community, and state-level legacy behind HACKVERSE '26 at GCEK Bhawanipatna.",
     url: "https://www.codebreakersgcek.tech/about",
-    images: [{ url: "/cbhack.png", width: 1200, height: 630, alt: "About HACKVERSE '26" }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "About HACKVERSE '26" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "About HACKVERSE '26 & CodeBreakers GCEK",
-    description:
-      "Explore the mission, student builder community, and state-level legacy behind HACKVERSE '26.",
-    images: ["/cbhack.png"],
+    title: "About HACKVERSE '26 // CodeBreakers GCEK",
+    description: "Learn about the mission, organizers, and legacy behind HACKVERSE '26.",
+    images: ["/og-image.jpg"],
   },
 };
 

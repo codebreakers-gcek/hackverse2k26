@@ -67,6 +67,7 @@ export interface RegistrationFormData {
 
   // Step 4: Documents & Confirmation
   documentUploads: DocumentUploads;
+  accommodationRequired?: boolean;
   agreeToGuidelines: boolean;
 
   // Optional legacy reference

@@ -62,10 +62,16 @@ export function CodeBreakersSpotlight() {
             <div className="lg:col-span-8 flex flex-col justify-between space-y-6">
               <div className="space-y-4">
                 <h4 className="font-black text-xl sm:text-2xl text-black uppercase tracking-tight">
-                  FOSTERING TECHNICAL EXCELLENCE &amp; HACKATHON CULTURE IN ODISHA
+                  FOSTERING TECHNICAL EXCELLENCE &amp; HACKATHON CULTURE IN
+                  ODISHA
                 </h4>
                 <p className="text-base font-bold text-black/90 leading-relaxed">
-                  CodeBreakers is the premier student-led technical body of Government College of Engineering Kalahandi. As builders who develop and deploy the institute&apos;s digital infrastructure and manage flagship college events like INSPRANO and UDAAN, we created HACKVERSE &apos;26 to give developers nationwide a pure, non-stop platform to build real software.
+                  CodeBreakers is the premier student-led technical body of
+                  Government College of Engineering Kalahandi. As builders who
+                  develop and deploy the institute&apos;s digital infrastructure
+                  and manage flagship college events like INSPRANO and UDAAN, we
+                  created HACKVERSE &apos;26 to give developers nationwide a
+                  pure, non-stop platform to build real software.
                 </p>
               </div>
 
@@ -73,7 +79,9 @@ export function CodeBreakersSpotlight() {
                 <div className="border-3 border-black bg-white/40 backdrop-blur-md p-4 shadow-neo-sm hover:bg-white/70 transition-all flex flex-col justify-between">
                   <div>
                     <Code className="w-6 h-6 text-black stroke-[3px] mb-2" />
-                    <div className="font-black text-sm uppercase">COMPETITIVE CODING</div>
+                    <div className="font-black text-sm uppercase">
+                      COMPETITIVE CODING
+                    </div>
                   </div>
                   <p className="font-mono text-xs text-black/80 mt-2">
                     Regular 9-Lock and CodeChef contests.
@@ -83,7 +91,9 @@ export function CodeBreakersSpotlight() {
                 <div className="border-3 border-black bg-white/40 backdrop-blur-md p-4 shadow-neo-sm hover:bg-white/70 transition-all flex flex-col justify-between">
                   <div>
                     <Terminal className="w-6 h-6 text-black stroke-[3px] mb-2" />
-                    <div className="font-black text-sm uppercase">REAL-WORLD APPS</div>
+                    <div className="font-black text-sm uppercase">
+                      REAL-WORLD APPS
+                    </div>
                   </div>
                   <p className="font-mono text-xs text-black/80 mt-2">
                     Production systems shipped for 5000+ users.
@@ -93,7 +103,9 @@ export function CodeBreakersSpotlight() {
                 <div className="border-3 border-black bg-white/40 backdrop-blur-md p-4 shadow-neo-sm hover:bg-white/70 transition-all flex flex-col justify-between">
                   <div>
                     <Users className="w-6 h-6 text-black stroke-[3px] mb-2" />
-                    <div className="font-black text-sm uppercase">PEER MENTORSHIP</div>
+                    <div className="font-black text-sm uppercase">
+                      PEER MENTORSHIP
+                    </div>
                   </div>
                   <p className="font-mono text-xs text-black/80 mt-2">
                     Seniors &amp; alumni guiding juniors daily.
@@ -112,7 +124,7 @@ export function CodeBreakersSpotlight() {
                   GOVERNMENT COLLEGE OF ENGINEERING KALAHANDI
                 </div>
                 <p className="text-xs sm:text-sm font-bold text-black/80">
-                  Bandopala, Bhawanipatna, Kalahandi, Odisha - 766002
+                  Kandha Bando Pala, Bhawanipatna, Kalahandi, Odisha - 766002
                 </p>
               </div>
 

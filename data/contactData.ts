@@ -5,7 +5,8 @@ export const OFFICIAL_EMAILS: OfficialEmail[] = [
     id: "email-club",
     email: "cse.codebreaker@gcekbpatna.ac.in",
     label: "INSTITUTIONAL & CLUB OFFICIAL DESK",
-    description: "Official institutional correspondence, administrative approvals, college permissions, and faculty inquiries.",
+    description:
+      "Official institutional correspondence, administrative approvals, college permissions, and faculty inquiries.",
     badge: "INSTITUTIONAL",
     primary: true,
   },
@@ -13,7 +14,8 @@ export const OFFICIAL_EMAILS: OfficialEmail[] = [
     id: "email-hackverse-tech",
     email: "hackverse26@codebreakersgcek.tech",
     label: "HACKVERSE '26 OPERATIONS & SPONSORSHIPS",
-    description: "Hackathon registrations, team queries, partnership proposals, brand sponsorships, and press relations.",
+    description:
+      "Hackathon registrations, team queries, partnership proposals, brand sponsorships, and press relations.",
     badge: "FEST HEADQUARTERS",
     primary: true,
   },
@@ -21,7 +23,8 @@ export const OFFICIAL_EMAILS: OfficialEmail[] = [
     id: "email-cbgcek-dev",
     email: "hackverse26@cbgcek.dev",
     label: "TECHNICAL DEVELOPERS & PORTAL SUPPORT",
-    description: "Portal bug reports, submission API issues, payment UTR verification escalations, and platform feedback.",
+    description:
+      "Portal bug reports, submission API issues, payment UTR verification escalations, and platform feedback.",
     badge: "DEV & SYSTEMS",
     primary: false,
   },
@@ -115,8 +118,6 @@ export const MANAGEMENT_TEAM: ContactPerson[] = [
   },
 ];
 
-
-
 export const ALL_CONTACTS: ContactPerson[] = [
   ...TECHNICAL_TEAM,
   ...MANAGEMENT_TEAM,
@@ -126,11 +127,12 @@ export const VENUE_DETAILS: VenueInfo = {
   institution: "Government College of Engineering Kalahandi (GCEK)",
   department: "Dept. of Computer Science & Engineering // CodeBreakers Lab",
   campus: "Academic Block 2 & Central Computing Complex",
-  address: "Bandopala, Po: Risigaon, Bhawanipatna",
+  address: "Kandha Bando Pala, Po: Risigaon, Bhawanipatna",
   city: "Bhawanipatna",
   state: "Odisha",
   pincode: "766003",
-  googleMapsUrl: "https://maps.google.com/?q=Government+College+of+Engineering+Kalahandi+Bhawanipatna",
+  googleMapsUrl:
+    "https://maps.google.com/?q=Government+College+of+Engineering+Kalahandi+Bhawanipatna",
   railwayStations: [
     "Bhawanipatna Railway Station (BWIP) — 7 km",
     "Kesinga Junction (KSNG) — 35 km (College shuttles available)",

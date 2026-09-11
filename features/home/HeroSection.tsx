@@ -36,7 +36,7 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden min-h-screen flex flex-col justify-between items-center pt-12 pb-0 sm:pt-16 sm:pb-0 border-b-4 border-black">
+    <section className="relative overflow-hidden min-h-[100dvh] sm:min-h-[calc(100dvh-5rem)] flex flex-col justify-between items-center pt-10 pb-0 sm:pt-16 sm:pb-0 border-b-4 border-black touch-pan-y">
       {/* Minecraft Theme Responsive Background Layer (Full Viewport Height) */}
       <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden">
         <Image

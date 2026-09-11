@@ -85,10 +85,10 @@ export const metadata: Metadata = {
       "Join Central & Eastern India's most energetic hackathon at GCEK Kalahandi. 24-Hour sprint, ₹1,50,000+ prize pool, industry mentorship, free hostel accommodation & swags.",
     images: [
       {
-        url: "/cbhack.png",
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "HACKVERSE '26 Official Logo - CodeBreakers GCEK",
+        alt: "HACKVERSE '26 - 24H State Hackathon // CodeBreakers GCEK (Minecraft Edition)",
       },
     ],
   },
@@ -99,7 +99,7 @@ export const metadata: Metadata = {
     title: "HACKVERSE '26 | Flagship 24H State Tech Fest & Hackathon",
     description:
       "24-Hour Hackathon & Tech Fest at GCEK Kalahandi. ₹1,50,000+ in prizes. Register your squad now!",
-    images: ["/cbhack.png"],
+    images: ["/og-image.jpg"],
   },
   alternates: {
     canonical: "https://www.codebreakersgcek.tech",
@@ -125,7 +125,7 @@ const jsonLd = {
         "name": "Government College of Engineering Kalahandi (GCEK)",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Bandhopala, Bhawanipatna",
+          "streetAddress": "Kandho Bandhopala, Bhawanipatna",
           "addressLocality": "Bhawanipatna",
           "addressRegion": "Odisha",
           "postalCode": "766002",

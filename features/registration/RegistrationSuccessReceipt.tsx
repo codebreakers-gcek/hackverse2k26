@@ -186,7 +186,7 @@ export function RegistrationSuccessReceipt({
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
               <span className="text-[11px] sm:text-xs">
-                Includes 24h Arena Access, 1Gbps Dedicated Ports, Meals &amp; Certifications.
+                Includes 24h Arena Access, Snacks &amp; Certifications.
               </span>
             </div>
             <span className="font-mono text-[10px] text-neutral-500 font-bold shrink-0 hidden sm:inline">
@@ -269,25 +269,7 @@ export function RegistrationSuccessReceipt({
               </>
             )}
           </button>
-
-          {/* Secondary Action: Print via Browser Dialog */}
-          <button
-            type="button"
-            onClick={handlePrint}
-            className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-white text-black font-black text-xs uppercase tracking-wider border-3 border-black shadow-neo-sm hover:bg-neutral-100 hover:shadow-none transition-all cursor-pointer"
-          >
-            <Printer className="w-4 h-4 stroke-[2.5px]" />
-            <span>PRINT</span>
-          </button>
         </div>
-
-        <button
-          type="button"
-          onClick={onReset}
-          className="px-4 py-2 text-xs font-black uppercase text-black hover:text-rose-700 underline decoration-2 transition-colors text-center cursor-pointer"
-        >
-          REGISTER ANOTHER TEAM
-        </button>
       </div>
 
       {/* Return Link */}

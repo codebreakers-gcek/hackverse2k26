@@ -14,14 +14,14 @@ export const metadata: Metadata = {
     description:
       "Have queries regarding participation, lodging, or sponsorship? Contact the CodeBreakers GCEK team.",
     url: "https://www.codebreakersgcek.tech/contact",
-    images: [{ url: "/cbhack.png", width: 1200, height: 630, alt: "HACKVERSE '26 Contact" }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "HACKVERSE '26 Contact" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Contact & Support // HACKVERSE '26",
+    title: "Official Operations Support & Inquiries // HACKVERSE '26",
     description:
-      "Have queries regarding participation, lodging, or sponsorship? Contact the CodeBreakers GCEK team.",
-    images: ["/cbhack.png"],
+      "Reach out to CodeBreakers GCEK student convenors, faculty coordinators, and sponsorship leads.",
+    images: ["/og-image.jpg"],
   },
 };
 

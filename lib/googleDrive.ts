@@ -49,6 +49,7 @@ export function getDriveAuthUrl(origin: string) {
     prompt: "consent",
     scope: [
       "https://www.googleapis.com/auth/drive.file",
+      "https://www.googleapis.com/auth/drive",
       "https://www.googleapis.com/auth/userinfo.email",
       "https://www.googleapis.com/auth/userinfo.profile",
     ],
@@ -181,6 +182,34 @@ export function createDriveClient(config: GoogleDriveConfig) {
 }
 
 /**
+ * Extracts a Google Drive file ID from a raw ID or any standard Google Drive URL
+ */
+export function extractDriveFileId(input?: string | null): string | null {
+  if (!input || typeof input !== "string") return null;
+  const trimmed = input.trim();
+  if (!trimmed) return null;
+
+  // If already a clean alphanumeric ID without slashes or colons
+  if (/^[a-zA-Z0-9_-]{15,}$/.test(trimmed)) {
+    return trimmed;
+  }
+
+  // Match /file/d/{id} or /d/{id}
+  const matchD = trimmed.match(/\/d\/([a-zA-Z0-9_-]{15,})/i);
+  if (matchD && matchD[1]) return matchD[1];
+
+  // Match id={id}
+  const matchParam = trimmed.match(/[?&]id=([a-zA-Z0-9_-]{15,})/i);
+  if (matchParam && matchParam[1]) return matchParam[1];
+
+  // Match /open?id={id}
+  const matchOpen = trimmed.match(/open\?id=([a-zA-Z0-9_-]{15,})/i);
+  if (matchOpen && matchOpen[1]) return matchOpen[1];
+
+  return null;
+}
+
+/**
  * Test the Google Drive connection and folder permissions
  */
 export async function testDriveConnection(overrideConfig?: GoogleDriveConfig) {
@@ -264,7 +293,24 @@ export async function getOrCreateTeamFolder(
     supportsAllDrives: true,
   });
 
-  return createRes.data.id!;
+  const folderId = createRes.data.id!;
+
+  // Set reader permission on subfolder
+  try {
+    await drive.permissions.create({
+      fileId: folderId,
+      requestBody: {
+        role: "reader",
+        type: "anyone",
+        allowFileDiscovery: false,
+      },
+      supportsAllDrives: true,
+    });
+  } catch (e) {
+    // ignore
+  }
+
+  return folderId;
 }
 
 export interface UploadOptions {
@@ -329,18 +375,37 @@ export async function uploadDocumentToDrive(options: UploadOptions) {
   const fileId = uploadRes.data.id!;
   const webViewLink = uploadRes.data.webViewLink || `https://drive.google.com/file/d/${fileId}/view`;
 
-  // Make the file readable with link
+  // Make the file readable with link to anyone
   try {
     await drive.permissions.create({
       fileId,
       requestBody: {
         role: "reader",
         type: "anyone",
+        allowFileDiscovery: false,
       },
       supportsAllDrives: true,
     });
-  } catch (permErr) {
-    console.warn("Could not set public permission on uploaded file:", permErr);
+  } catch (permErr: any) {
+    console.warn("Could not set public permission on uploaded file:", permErr?.message || permErr);
+  }
+
+  // Explicitly share with connected admin email if available
+  if (config.connectedEmail) {
+    try {
+      await drive.permissions.create({
+        fileId,
+        requestBody: {
+          role: "reader",
+          type: "user",
+          emailAddress: config.connectedEmail,
+        },
+        supportsAllDrives: true,
+        sendNotificationEmail: false,
+      });
+    } catch {
+      // ignore
+    }
   }
 
   return {
@@ -351,5 +416,152 @@ export async function uploadDocumentToDrive(options: UploadOptions) {
     webContentLink: uploadRes.data.webContentLink || webViewLink,
     fileSize: uploadRes.data.size,
     mimeType: uploadRes.data.mimeType,
+  };
+}
+
+/**
+ * Fetches and streams a file from Google Drive
+ */
+export async function getDriveFileStream(fileIdOrUrl: string) {
+  const fileId = extractDriveFileId(fileIdOrUrl);
+  if (!fileId) {
+    throw new Error("Invalid file ID or Google Drive URL provided.");
+  }
+
+  const config = await getDriveConfig();
+  const drive = createDriveClient(config);
+
+  // Fetch metadata
+  const metaRes = await drive.files.get({
+    fileId,
+    fields: "id, name, mimeType, size, webViewLink, webContentLink",
+    supportsAllDrives: true,
+  });
+
+  // Fetch content stream
+  const mediaRes = await drive.files.get(
+    {
+      fileId,
+      alt: "media",
+      supportsAllDrives: true,
+    },
+    { responseType: "stream" }
+  );
+
+  return {
+    stream: mediaRes.data as any,
+    metadata: metaRes.data,
+  };
+}
+
+/**
+ * Synchronize and make all uploaded team files accessible to anyone with the link
+ */
+export async function syncAllDrivePermissions() {
+  const config = await getDriveConfig();
+  const drive = createDriveClient(config);
+
+  const registrations = await prisma.teamRegistration.findMany({
+    select: {
+      id: true,
+      teamName: true,
+      documents: true,
+    },
+  });
+
+  const fileIds = new Set<string>();
+
+  for (const reg of registrations) {
+    const docs = reg.documents as any;
+    if (!docs) continue;
+
+    if (docs.collegeIdDriveFileId) {
+      const id = extractDriveFileId(docs.collegeIdDriveFileId);
+      if (id) fileIds.add(id);
+    }
+    if (docs.collegeIdDriveUrl) {
+      const id = extractDriveFileId(docs.collegeIdDriveUrl);
+      if (id) fileIds.add(id);
+    }
+    if (docs.synopsisDriveFileId) {
+      const id = extractDriveFileId(docs.synopsisDriveFileId);
+      if (id) fileIds.add(id);
+    }
+    if (docs.synopsisDriveUrl) {
+      const id = extractDriveFileId(docs.synopsisDriveUrl);
+      if (id) fileIds.add(id);
+    }
+  }
+
+  // Also include files inside configured root folder
+  if (config.folderId) {
+    try {
+      await drive.permissions.create({
+        fileId: config.folderId,
+        requestBody: {
+          role: "reader",
+          type: "anyone",
+          allowFileDiscovery: false,
+        },
+        supportsAllDrives: true,
+      }).catch(() => {});
+
+      const listRes = await drive.files.list({
+        q: `'${config.folderId}' in parents and trashed = false`,
+        fields: "files(id, name, mimeType)",
+        supportsAllDrives: true,
+        includeItemsFromAllDrives: true,
+        pageSize: 100,
+      });
+
+      if (listRes.data.files) {
+        for (const f of listRes.data.files) {
+          if (f.id) fileIds.add(f.id);
+        }
+      }
+    } catch (e) {
+      console.warn("Error listing files in root folder for sync:", e);
+    }
+  }
+
+  let updatedCount = 0;
+  let errorCount = 0;
+
+  for (const fileId of fileIds) {
+    try {
+      await drive.permissions.create({
+        fileId,
+        requestBody: {
+          role: "reader",
+          type: "anyone",
+          allowFileDiscovery: false,
+        },
+        supportsAllDrives: true,
+      });
+
+      if (config.connectedEmail) {
+        await drive.permissions.create({
+          fileId,
+          requestBody: {
+            role: "reader",
+            type: "user",
+            emailAddress: config.connectedEmail,
+          },
+          supportsAllDrives: true,
+          sendNotificationEmail: false,
+        }).catch(() => {});
+      }
+
+      updatedCount++;
+    } catch (err) {
+      console.warn(`Could not set permission for file ${fileId}:`, err);
+      errorCount++;
+    }
+  }
+
+  return {
+    totalFiles: fileIds.size,
+    updatedCount,
+    errorCount,
   };
 }

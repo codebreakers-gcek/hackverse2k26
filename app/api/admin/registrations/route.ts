@@ -23,7 +23,15 @@ export async function GET(req: NextRequest) {
     }
 
     if (accommodation && accommodation !== "ALL") {
-      where.accommodationStatus = accommodation;
+      if (accommodation === "REQUESTED") {
+        where.accommodationRequired = true;
+      } else if (accommodation === "ALLOCATED") {
+        where.accommodationStatus = "ALLOCATED";
+      } else if (accommodation === "NOT_REQUESTED") {
+        where.accommodationRequired = false;
+      } else {
+        where.accommodationStatus = accommodation;
+      }
     }
 
     if (payment && payment !== "ALL") {
@@ -65,7 +73,7 @@ export async function PATCH(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { id, status, accommodationStatus, roomNumber, hostelBlock, paymentStatus, transactionId } = body;
+    const { id, status, accommodationStatus, accommodationRequired, roomNumber, hostelBlock, paymentStatus, transactionId } = body;
 
     if (!id) {
       return NextResponse.json({ error: "Registration ID is required" }, { status: 400 });
@@ -73,7 +81,17 @@ export async function PATCH(req: NextRequest) {
 
     const updateData: any = {};
     if (status !== undefined) updateData.status = status;
-    if (accommodationStatus !== undefined) updateData.accommodationStatus = accommodationStatus;
+    if (accommodationStatus !== undefined) {
+      updateData.accommodationStatus = accommodationStatus;
+      if (accommodationStatus === "ALLOCATED" || accommodationStatus === "REQUESTED") {
+        updateData.accommodationRequired = true;
+      } else if (accommodationStatus === "NOT_REQUESTED") {
+        updateData.accommodationRequired = false;
+      }
+    }
+    if (accommodationRequired !== undefined) {
+      updateData.accommodationRequired = Boolean(accommodationRequired);
+    }
     if (roomNumber !== undefined) updateData.roomNumber = roomNumber;
     if (hostelBlock !== undefined) updateData.hostelBlock = hostelBlock;
     if (paymentStatus !== undefined) {

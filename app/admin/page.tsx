@@ -199,8 +199,9 @@ export default function AdminDashboardPage() {
   const [isSendingEmail, setIsSendingEmail] = useState(false);
   const [isDisconnectingDrive, setIsDisconnectingDrive] = useState(false);
 
-  // Google Drive Connection Testing State
+  // Google Drive Connection & Permissions State
   const [isTestingDrive, setIsTestingDrive] = useState(false);
+  const [isSyncingPermissions, setIsSyncingPermissions] = useState(false);
   const [driveTestResult, setDriveTestResult] = useState<{
     success: boolean;
     message: string;
@@ -637,6 +638,30 @@ export default function AdminDashboardPage() {
       toast.error("Network error during Drive test.");
     } finally {
       setIsTestingDrive(false);
+    }
+  };
+
+  // Sync and make all uploaded Google Drive documents accessible to anyone with the link
+  const handleSyncPermissions = async () => {
+    setIsSyncingPermissions(true);
+    try {
+      const res = await fetch("/api/admin/drive/sync-permissions", {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setDriveTestResult({
+          success: true,
+          message: data.message || "All uploaded files in Google Drive are now publicly viewable!",
+        });
+        toast.success(data.message || "Drive permissions successfully synchronized!");
+      } else {
+        toast.error(data.error || "Failed to synchronize Drive permissions.");
+      }
+    } catch {
+      toast.error("Network error while syncing Drive permissions.");
+    } finally {
+      setIsSyncingPermissions(false);
     }
   };
 
@@ -1213,13 +1238,23 @@ export default function AdminDashboardPage() {
                         className="p-3.5 bg-neutral-50 hover:bg-amber-50 border-2 border-black flex items-center justify-between gap-4 cursor-pointer transition-colors"
                       >
                         <div className="space-y-0.5 min-w-0">
-                          <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2 flex-wrap">
                             <span className="font-mono font-black text-xs text-amber-700 bg-amber-100 px-1.5 py-0.5 border border-black">
                               {squad.registrationNumber}
                             </span>
                             <span className="font-black text-sm uppercase truncate">
                               {squad.teamName}
                             </span>
+                            {squad.accommodationRequired && (
+                              <span className={`font-mono text-[9px] font-black uppercase px-1.5 py-0.5 border border-black inline-flex items-center gap-1 ${
+                                squad.accommodationStatus === "ALLOCATED"
+                                  ? "bg-emerald-200 text-emerald-950"
+                                  : "bg-purple-200 text-purple-950"
+                              }`}>
+                                <BedDouble className="w-2.5 h-2.5" />
+                                {squad.accommodationStatus === "ALLOCATED" ? "HOSTEL ALLOCATED" : "HOSTEL REQ"}
+                              </span>
+                            )}
                           </div>
                           <div className="font-mono text-[11px] text-neutral-600 truncate">
                             {squad.collegeName} &bull; Leader:{" "}
@@ -1358,8 +1393,31 @@ export default function AdminDashboardPage() {
                             <div className="font-black text-sm uppercase text-black">
                               {squad.teamName}
                             </div>
-                            <div className="font-mono text-[10px] text-neutral-500">
-                              {1 + (squad.members?.length || 0)} Members Roster
+                            <div className="flex items-center gap-2 flex-wrap mt-1">
+                              <span className="font-mono text-[10px] text-neutral-600 font-bold">
+                                {1 + (squad.members?.length || 0)} Members
+                              </span>
+                              {squad.accommodationRequired && (
+                                <span
+                                  className={`font-mono text-[9px] font-black uppercase px-1.5 py-0.5 border border-black inline-flex items-center gap-1 ${
+                                    squad.accommodationStatus === "ALLOCATED"
+                                      ? "bg-emerald-200 text-emerald-950"
+                                      : "bg-purple-200 text-purple-950"
+                                  }`}
+                                  title={
+                                    squad.accommodationStatus === "ALLOCATED"
+                                      ? `Hostel Allocated: Block ${squad.hostelBlock || "-"}, Room ${squad.roomNumber || "-"}`
+                                      : "On-Campus Hostel Accommodation Requested"
+                                  }
+                                >
+                                  <BedDouble className="w-2.5 h-2.5 shrink-0" />
+                                  <span>
+                                    {squad.accommodationStatus === "ALLOCATED"
+                                      ? `${squad.hostelBlock || "ALLOCATED"} • Rm ${squad.roomNumber || "-"}`
+                                      : "HOSTEL: REQ"}
+                                  </span>
+                                </span>
+                              )}
                             </div>
                           </td>
 
@@ -1385,33 +1443,47 @@ export default function AdminDashboardPage() {
                           </td>
 
                           <td className="p-3.5">
-                            <div className="flex flex-col gap-1">
-                              {squad.documents?.collegeIdDriveUrl ? (
-                                <a
-                                  href={squad.documents.collegeIdDriveUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 font-mono text-[10px] font-bold text-blue-700 hover:underline"
+                            <div className="flex flex-col gap-1.5">
+                              {squad.documents?.collegeIdDriveUrl ||
+                              squad.documents?.collegeIdUrl ||
+                              squad.documents?.collegeIdFileName ? (
+                                <button
+                                  onClick={() => {
+                                    setSelectedPaymentSquad(squad);
+                                    setActiveProofTab("collegeId");
+                                    setIsPaymentProofModalOpen(true);
+                                  }}
+                                  className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold text-blue-700 hover:text-blue-900 hover:underline cursor-pointer text-left"
+                                  title="Instant authenticated preview"
                                 >
-                                  <HardDrive className="w-3 h-3" />
-                                  <span>College ID</span>
-                                </a>
+                                  <HardDrive className="w-3.5 h-3.5 shrink-0" />
+                                  <span className="truncate max-w-[130px]">
+                                    {squad.documents?.collegeIdFileName || "Student ID"}
+                                  </span>
+                                </button>
                               ) : (
                                 <span className="font-mono text-[10px] text-neutral-400">
                                   No ID File
                                 </span>
                               )}
 
-                              {squad.documents?.synopsisDriveUrl ? (
-                                <a
-                                  href={squad.documents.synopsisDriveUrl}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="inline-flex items-center gap-1 font-mono text-[10px] font-bold text-emerald-700 hover:underline"
+                              {squad.documents?.synopsisDriveUrl ||
+                              squad.documents?.synopsisUrl ||
+                              squad.documents?.synopsisFileName ? (
+                                <button
+                                  onClick={() => {
+                                    setSelectedPaymentSquad(squad);
+                                    setActiveProofTab("synopsis");
+                                    setIsPaymentProofModalOpen(true);
+                                  }}
+                                  className="inline-flex items-center gap-1.5 font-mono text-[10px] font-bold text-emerald-700 hover:text-emerald-900 hover:underline cursor-pointer text-left"
+                                  title="Instant authenticated preview"
                                 >
-                                  <FileText className="w-3 h-3" />
-                                  <span>Synopsis</span>
-                                </a>
+                                  <FileText className="w-3.5 h-3.5 shrink-0" />
+                                  <span className="truncate max-w-[130px]">
+                                    {squad.documents?.synopsisFileName || "Synopsis"}
+                                  </span>
+                                </button>
                               ) : null}
                             </div>
                           </td>
@@ -2074,7 +2146,7 @@ export default function AdminDashboardPage() {
                       </button>
                     </div>
 
-                    <div className="pt-2 border-t border-black/10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 font-mono text-xs">
+                    <div className="pt-2 border-t border-black/10 flex flex-wrap items-center justify-between gap-2 font-mono text-xs">
                       <div>
                         Target Folder:{" "}
                         <strong>
@@ -2082,17 +2154,34 @@ export default function AdminDashboardPage() {
                             "HACKVERSE 2026 Team Uploads"}
                         </strong>
                       </div>
-                      <button
-                        type="button"
-                        onClick={handleTestDriveConnection}
-                        disabled={isTestingDrive}
-                        className="px-4 py-2 bg-black text-white font-black text-xs uppercase border-2 border-black shadow-neo-sm hover:bg-neutral-800 transition-all cursor-pointer flex items-center gap-2"
-                      >
-                        {isTestingDrive && (
-                          <Loader2 className="w-3.5 h-3.5 animate-spin" />
-                        )}
-                        <span>TEST DRIVE PERMISSIONS</span>
-                      </button>
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={handleSyncPermissions}
+                          disabled={isSyncingPermissions}
+                          className="px-3.5 py-2 bg-emerald-400 hover:bg-emerald-500 text-black font-black text-xs uppercase border-2 border-black shadow-neo-sm transition-all cursor-pointer flex items-center gap-1.5 disabled:opacity-50"
+                          title="Ensure all participant files in Drive are readable with link"
+                        >
+                          {isSyncingPermissions ? (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          ) : (
+                            <RefreshCw className="w-3.5 h-3.5" />
+                          )}
+                          <span>SYNC &amp; FIX FILE PERMISSIONS</span>
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={handleTestDriveConnection}
+                          disabled={isTestingDrive}
+                          className="px-4 py-2 bg-black text-white font-black text-xs uppercase border-2 border-black shadow-neo-sm hover:bg-neutral-800 transition-all cursor-pointer flex items-center gap-2 disabled:opacity-50"
+                        >
+                          {isTestingDrive && (
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                          )}
+                          <span>TEST CONNECTION</span>
+                        </button>
+                      </div>
                     </div>
 
                     {driveTestResult && (
@@ -2384,48 +2473,179 @@ export default function AdminDashboardPage() {
                   )}
                 </div>
 
-                {/* Uploaded Documents */}
+                {/* Event Accommodation Preference & Hostel Room Status */}
                 <div className="border-3 border-black p-4 space-y-3 bg-neutral-50 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-                  <div className="font-mono text-xs font-black uppercase text-neutral-600">
-                    VERIFICATION DOCUMENTS
-                  </div>
-                  <div className="space-y-2">
-                    {selectedSquad.documents?.collegeIdDriveUrl ? (
-                      <a
-                        href={selectedSquad.documents.collegeIdDriveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-3 bg-white border-2 border-black flex items-center justify-between hover:bg-amber-50 cursor-pointer"
+                  {/* <div className="font-mono text-xs font-black uppercase text-neutral-600 flex items-center justify-between">
+                    <div className="flex items-center gap-1.5">
+                      <BedDouble className="w-4 h-4 text-purple-700" />
+                      <span>EVENT ACCOMMODATION PREFERENCE</span>
+                    </div>
+                    <span
+                      className={`font-mono text-[10px] font-black uppercase px-2 py-0.5 border border-black ${
+                        selectedSquad.accommodationRequired
+                          ? selectedSquad.accommodationStatus === "ALLOCATED"
+                            ? "bg-emerald-300 text-emerald-950"
+                            : "bg-purple-200 text-purple-950"
+                          : "bg-neutral-200 text-neutral-700"
+                      }`}
+                    >
+                      {selectedSquad.accommodationRequired
+                        ? selectedSquad.accommodationStatus === "ALLOCATED"
+                          ? "ALLOCATED"
+                          : "REQUESTED"
+                        : "NOT REQUESTED"}
+                    </span>
+                  </div> */}
+
+                  <div className="p-3 bg-white border-2 border-black space-y-2">
+                    <div className="flex items-center justify-between text-xs font-mono">
+                      <span className="font-bold text-neutral-600">Hostel Stay:</span>
+                      <span
+                        className={`font-black uppercase ${
+                          selectedSquad.accommodationRequired
+                            ? "text-emerald-700"
+                            : "text-neutral-500"
+                        }`}
                       >
-                        <div className="flex items-center gap-2">
-                          <HardDrive className="w-4 h-4 text-blue-700" />
-                          <span className="font-black text-xs uppercase">
-                            College Student ID
+                        {selectedSquad.accommodationRequired
+                          ? "✓ YES (On-Campus Stay Requested)"
+                          : "✕ NO (Local / Day Scholar)"}
+                      </span>
+                    </div>
+
+                    {selectedSquad.accommodationRequired && (
+                      <>
+                        <div className="flex items-center justify-between text-xs font-mono pt-1.5 border-t border-black/10">
+                          <span className="font-bold text-neutral-600">Hostel Block:</span>
+                          <span className="font-black text-black">
+                            {selectedSquad.hostelBlock || "Not Assigned Yet"}
                           </span>
                         </div>
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
+                        <div className="flex items-center justify-between text-xs font-mono pt-1.5 border-t border-black/10">
+                          <span className="font-bold text-neutral-600">Room / Bed:</span>
+                          <span className="font-black text-black">
+                            {selectedSquad.roomNumber || "Not Assigned Yet"}
+                          </span>
+                        </div>
+                        <div className="pt-2">
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setSelectedAccomSquad(selectedSquad);
+                              setHostelBlockInput(selectedSquad.hostelBlock || "BH-1");
+                              setRoomNumberInput(selectedSquad.roomNumber || "101");
+                              setIsAccomSheetOpen(true);
+                            }}
+                            className="w-full py-2 bg-purple-300 hover:bg-purple-400 text-black border-2 border-black font-black text-xs uppercase flex items-center justify-center gap-2 cursor-pointer shadow-neo-sm"
+                          >
+                            <BedDouble className="w-4 h-4 stroke-[2.5px]" />
+                            <span>ASSIGN / EDIT HOSTEL ROOM</span>
+                          </button>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </div>
+
+                {/* Uploaded Documents */}
+                <div className="border-3 border-black p-4 space-y-3 bg-neutral-50 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                  <div className="font-mono text-xs font-black uppercase text-neutral-600 flex items-center justify-between">
+                    <span>VERIFICATION DOCUMENTS</span>
+                    <span className="text-[10px] bg-amber-200 px-1.5 py-0.5 border border-black">
+                      DRIVE &amp; LOCAL
+                    </span>
+                  </div>
+                  <div className="space-y-2">
+                    {selectedSquad.documents?.collegeIdDriveUrl ||
+                    selectedSquad.documents?.collegeIdUrl ||
+                    selectedSquad.documents?.collegeIdFileName ? (
+                      <div className="p-3 bg-white border-2 border-black flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <HardDrive className="w-4 h-4 text-blue-700 shrink-0" />
+                          <div className="min-w-0">
+                            <div className="font-black text-xs uppercase truncate">
+                              {selectedSquad.documents.collegeIdFileName ||
+                                "College Student ID"}
+                            </div>
+                            <div className="font-mono text-[10px] text-neutral-500">
+                              {selectedSquad.documents.collegeIdFileSize ||
+                                "Student Photo Verification"}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <button
+                            onClick={() => {
+                              setSelectedPaymentSquad(selectedSquad);
+                              setActiveProofTab("collegeId");
+                              setIsPaymentProofModalOpen(true);
+                            }}
+                            className="px-2.5 py-1 bg-amber-300 hover:bg-amber-400 border border-black font-mono font-bold text-[10px] uppercase shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer flex items-center gap-1"
+                          >
+                            <Eye className="w-3 h-3" />
+                            <span>PREVIEW</span>
+                          </button>
+                          {selectedSquad.documents.collegeIdDriveUrl && (
+                            <a
+                              href={selectedSquad.documents.collegeIdDriveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-1 hover:bg-neutral-100 border border-black text-black"
+                              title="Open directly in Google Drive"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
                     ) : (
                       <div className="p-2.5 bg-neutral-100 border border-neutral-300 font-mono text-xs text-neutral-500">
                         No College ID Uploaded
                       </div>
                     )}
 
-                    {selectedSquad.documents?.synopsisDriveUrl ? (
-                      <a
-                        href={selectedSquad.documents.synopsisDriveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-3 bg-white border-2 border-black flex items-center justify-between hover:bg-emerald-50 cursor-pointer"
-                      >
-                        <div className="flex items-center gap-2">
-                          <FileText className="w-4 h-4 text-emerald-700" />
-                          <span className="font-black text-xs uppercase">
-                            Project Synopsis Deck
-                          </span>
+                    {selectedSquad.documents?.synopsisDriveUrl ||
+                    selectedSquad.documents?.synopsisUrl ||
+                    selectedSquad.documents?.synopsisFileName ? (
+                      <div className="p-3 bg-white border-2 border-black flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <FileText className="w-4 h-4 text-emerald-700 shrink-0" />
+                          <div className="min-w-0">
+                            <div className="font-black text-xs uppercase truncate">
+                              {selectedSquad.documents.synopsisFileName ||
+                                "Project Synopsis Deck"}
+                            </div>
+                            <div className="font-mono text-[10px] text-neutral-500">
+                              {selectedSquad.documents.synopsisFileSize ||
+                                "Idea Presentation / PDF"}
+                            </div>
+                          </div>
                         </div>
-                        <ExternalLink className="w-4 h-4" />
-                      </a>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <button
+                            onClick={() => {
+                              setSelectedPaymentSquad(selectedSquad);
+                              setActiveProofTab("synopsis");
+                              setIsPaymentProofModalOpen(true);
+                            }}
+                            className="px-2.5 py-1 bg-emerald-300 hover:bg-emerald-400 border border-black font-mono font-bold text-[10px] uppercase shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer flex items-center gap-1"
+                          >
+                            <Eye className="w-3 h-3" />
+                            <span>PREVIEW</span>
+                          </button>
+                          {selectedSquad.documents.synopsisDriveUrl && (
+                            <a
+                              href={selectedSquad.documents.synopsisDriveUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="p-1 hover:bg-neutral-100 border border-black text-black"
+                              title="Open directly in Google Drive"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
                     ) : null}
                   </div>
                 </div>
@@ -2514,11 +2734,15 @@ export default function AdminDashboardPage() {
         selectedPaymentSquad &&
         (() => {
           const isSynopsisTab = activeProofTab === "synopsis";
-          const docUrl = isSynopsisTab
+          const rawDocUrl = isSynopsisTab
             ? selectedPaymentSquad.documents?.synopsisDriveUrl ||
               selectedPaymentSquad.documents?.synopsisUrl
             : selectedPaymentSquad.documents?.collegeIdDriveUrl ||
               selectedPaymentSquad.documents?.collegeIdUrl;
+
+          const docFileId = isSynopsisTab
+            ? selectedPaymentSquad.documents?.synopsisDriveFileId
+            : selectedPaymentSquad.documents?.collegeIdDriveFileId;
 
           const docName = isSynopsisTab
             ? selectedPaymentSquad.documents?.synopsisFileName
@@ -2528,18 +2752,31 @@ export default function AdminDashboardPage() {
             ? selectedPaymentSquad.documents?.synopsisFileSize
             : selectedPaymentSquad.documents?.collegeIdFileSize;
 
-          const hasDoc = Boolean(docUrl || docName);
+          const hasDoc = Boolean(rawDocUrl || docName || docFileId);
+
+          // Authenticated streaming preview URL (bypasses Google Drive permission / account roadblocks)
+          const previewUrl = docFileId
+            ? `/api/admin/drive/preview?fileId=${encodeURIComponent(docFileId)}`
+            : rawDocUrl
+              ? `/api/admin/drive/preview?url=${encodeURIComponent(rawDocUrl)}`
+              : null;
+
+          const downloadUrl = docFileId
+            ? `/api/admin/drive/preview?fileId=${encodeURIComponent(docFileId)}&download=1`
+            : rawDocUrl
+              ? `/api/admin/drive/preview?url=${encodeURIComponent(rawDocUrl)}&download=1`
+              : null;
 
           const isImage = Boolean(
             docName?.match(/\.(png|jpe?g|webp|gif|svg)$/i) ||
-            docUrl?.match(/\.(png|jpe?g|webp|gif|svg)$/i) ||
-            docUrl?.startsWith("data:image/"),
+            rawDocUrl?.match(/\.(png|jpe?g|webp|gif|svg)$/i) ||
+            rawDocUrl?.startsWith("data:image/"),
           );
 
           const isPdf = Boolean(
             docName?.match(/\.pdf$/i) ||
-            docUrl?.match(/\.pdf$/i) ||
-            docUrl?.includes("application/pdf"),
+            rawDocUrl?.match(/\.pdf$/i) ||
+            rawDocUrl?.includes("application/pdf"),
           );
 
           const formatLabel = !hasDoc
@@ -2557,7 +2794,7 @@ export default function AdminDashboardPage() {
             >
               <div
                 onClick={(e) => e.stopPropagation()}
-                className="relative w-full max-w-2xl bg-[#141417] text-white border-2 border-neutral-700 rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in zoom-in-95 duration-150"
+                className="relative w-full max-w-3xl bg-[#141417] text-white border-2 border-neutral-700 rounded-xl shadow-2xl overflow-hidden flex flex-col max-h-[92vh] animate-in zoom-in-95 duration-150"
               >
                 {/* Modal Header */}
                 <div className="px-5 py-4 border-b border-neutral-800 flex items-center justify-between gap-3">
@@ -2622,22 +2859,27 @@ export default function AdminDashboardPage() {
                   </button>
                 </div>
 
-                {/* Modal Body: High Resolution Media Container or Clean No Document state */}
-                <div className="p-4 sm:p-6 overflow-y-auto flex-1 flex flex-col items-center justify-center min-h-[340px] max-h-[480px] bg-[#0c0c0e]">
-                  {docUrl && isImage ? (
+                {/* Modal Body: High Resolution Media Container */}
+                <div className="p-4 sm:p-6 overflow-y-auto flex-1 flex flex-col items-center justify-center min-h-[380px] max-h-[520px] bg-[#0c0c0e]">
+                  {previewUrl && isImage ? (
                     <div className="w-full flex flex-col items-center justify-center gap-2">
                       <img
-                        src={docUrl}
+                        src={previewUrl}
                         alt={docName || "Uploaded Document"}
-                        className="max-h-[380px] max-w-full object-contain rounded-md border border-neutral-800 shadow-2xl"
+                        className="max-h-[420px] max-w-full object-contain rounded-md border border-neutral-800 shadow-2xl"
+                        onError={(e) => {
+                          if (rawDocUrl && !e.currentTarget.src.includes(rawDocUrl)) {
+                            e.currentTarget.src = rawDocUrl;
+                          }
+                        }}
                       />
                     </div>
-                  ) : docUrl && (isPdf || !isImage) ? (
-                    <div className="w-full h-full min-h-[340px] flex flex-col items-center justify-center gap-2">
+                  ) : previewUrl && (isPdf || !isImage) ? (
+                    <div className="w-full h-full min-h-[380px] flex flex-col items-center justify-center gap-2">
                       <iframe
-                        src={docUrl}
+                        src={previewUrl}
                         title="Document Preview"
-                        className="w-full h-[360px] rounded-lg border border-neutral-700 bg-neutral-900"
+                        className="w-full h-[400px] rounded-lg border border-neutral-700 bg-neutral-900"
                       />
                     </div>
                   ) : (
@@ -2672,17 +2914,46 @@ export default function AdminDashboardPage() {
                     </span>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    {/* Open in New Tab or Google Drive if URL exists */}
-                    {docUrl && (
+                  <div className="flex flex-wrap items-center gap-2">
+                    {/* Instant Fullscreen Preview */}
+                    {previewUrl && (
                       <a
-                        href={docUrl}
+                        href={previewUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded border border-neutral-700 flex items-center gap-1.5 transition-colors cursor-pointer"
+                        title="Open document in a dedicated browser tab"
                       >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        <span>Open File</span>
+                        <Eye className="w-3.5 h-3.5 text-amber-300" />
+                        <span>Fullscreen Preview</span>
+                      </a>
+                    )}
+
+                    {/* Direct Download */}
+                    {downloadUrl && (
+                      <a
+                        href={downloadUrl}
+                        download
+                        className="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded border border-neutral-700 flex items-center gap-1.5 transition-colors cursor-pointer"
+                        title="Directly download document file"
+                      >
+                        <Download className="w-3.5 h-3.5 text-cyan-300" />
+                        <span>Download</span>
+                      </a>
+                    )}
+
+                    {/* Open in Google Drive */}
+                    {rawDocUrl && !rawDocUrl.startsWith("/uploads") && (
+                      <a
+                        href={rawDocUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 bg-neutral-800 hover:bg-neutral-700 text-neutral-200 rounded border border-neutral-700 flex items-center gap-1.5 transition-colors cursor-pointer"
+                        title="Open file directly in Google Drive"
+                      >
+                        <HardDrive className="w-3.5 h-3.5 text-blue-400" />
+                        <span>Google Drive</span>
+                        <ExternalLink className="w-3 h-3 opacity-60" />
                       </a>
                     )}
 

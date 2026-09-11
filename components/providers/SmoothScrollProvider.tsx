@@ -22,11 +22,24 @@ export function SmoothScrollProvider({ children }: { children: React.ReactNode }
       return;
     }
 
+    // On mobile, tablet, and touch screens, use 100% native momentum scrolling
+    // Intercepting touch events with JS causes sticky, laggy touch friction
+    const isTouchDevice =
+      window.matchMedia("(pointer: coarse)").matches ||
+      "ontouchstart" in window ||
+      (navigator.maxTouchPoints && navigator.maxTouchPoints > 0) ||
+      window.innerWidth < 1024;
+
+    if (isTouchDevice) {
+      return;
+    }
+
     const lenis = new Lenis({
       duration: 1.1,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // smooth exponential decay
       smoothWheel: true,
-      touchMultiplier: 1.5,
+      syncTouch: false,
+      touchMultiplier: 0,
       infinite: false,
     });
 

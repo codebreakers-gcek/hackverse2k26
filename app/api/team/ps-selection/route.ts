@@ -32,28 +32,34 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { selectedProblemStatements } = body;
 
-    // 1. Validation: Exactly 2 problem statements must be selected
-    if (!Array.isArray(selectedProblemStatements) || selectedProblemStatements.length !== 2) {
+    // 1. Validation: 1 problem statement is mandatory, 2nd is optional
+    if (
+      !Array.isArray(selectedProblemStatements) ||
+      selectedProblemStatements.length < 1 ||
+      selectedProblemStatements.length > 2
+    ) {
       return NextResponse.json(
         {
           success: false,
-          message: "You must select exactly TWO (2) problem statements (Preference 1 & Preference 2).",
+          message: "Please select at least ONE (1) mandatory problem statement (and optionally a 2nd preference).",
         },
         { status: 400 }
       );
     }
 
-    const [ps1, ps2] = selectedProblemStatements;
-    if (ps1 === ps2) {
+    const ps1 = selectedProblemStatements[0];
+    const ps2 = selectedProblemStatements.length === 2 ? selectedProblemStatements[1] : null;
+
+    if (ps2 && ps1 === ps2) {
       return NextResponse.json(
         { success: false, message: "Preference 1 and Preference 2 must be different problem statements." },
         { status: 400 }
       );
     }
 
-    // 2. Validate that both statements exist in the official dataset
+    // 2. Validate that selected statements exist in the official dataset
     const validPsIds = new Set(PROBLEM_STATEMENTS_DATA.map((p) => p.id));
-    if (!validPsIds.has(ps1) || !validPsIds.has(ps2)) {
+    if (!validPsIds.has(ps1) || (ps2 && !validPsIds.has(ps2))) {
       return NextResponse.json(
         { success: false, message: "One or more selected problem statements are invalid." },
         { status: 400 }
@@ -106,13 +112,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 4. Update the team registration with the 2 choices
+    // 4. Update the team registration with the 1 or 2 choices
     const currentDocs = (teamRegistration.documents as Record<string, any>) || {};
+    const finalSelectedList = [ps1, ...(ps2 ? [ps2] : [])];
     const updatedDocuments = {
       ...currentDocs,
-      selectedProblemStatements: [ps1, ps2],
+      selectedProblemStatements: finalSelectedList,
       problemStatement1: ps1,
-      problemStatement2: ps2,
+      problemStatement2: ps2 || null,
       psSubmittedAt: new Date().toISOString(),
       psSubmittedBy: {
         userId: user.id,
@@ -124,22 +131,24 @@ export async function POST(req: NextRequest) {
     const updatedTeam = await prisma.teamRegistration.update({
       where: { id: teamRegistration.id },
       data: {
-        problemStatementId: ps1, // Set primary preference
+        problemStatementId: ps1, // Set primary mandatory preference
         documents: updatedDocuments,
       },
     });
 
     return NextResponse.json({
       success: true,
-      message: "Problem statements successfully submitted and locked for your squad!",
+      message: ps2
+        ? "Primary and secondary problem statements successfully submitted and locked for your squad!"
+        : "Primary problem statement successfully submitted and locked for your squad!",
       team: {
         id: updatedTeam.id,
         registrationNumber: updatedTeam.registrationNumber,
         teamName: updatedTeam.teamName,
         problemStatementId: updatedTeam.problemStatementId,
-        selectedProblemStatements: [ps1, ps2],
+        selectedProblemStatements: finalSelectedList,
         problemStatement1: ps1,
-        problemStatement2: ps2,
+        problemStatement2: ps2 || null,
         psSubmittedAt: updatedDocuments.psSubmittedAt,
       },
     });

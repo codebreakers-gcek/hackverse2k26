@@ -4,44 +4,50 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Terminal, ExternalLink, Heart, MapPin, Mail } from "lucide-react";
-import { GithubIcon, LinkedinIcon, InstagramIcon, TwitterIcon } from "@/components/common/SocialIcons";
+import {
+  GithubIcon,
+  LinkedinIcon,
+  InstagramIcon,
+  TwitterIcon,
+} from "@/components/common/SocialIcons";
 import { ENV } from "@/config/env";
 import { EVENT_DATA } from "@/data/event";
 
 export function Footer() {
   const pathname = usePathname();
 
-  // Do not show footer in dashboard/admin section  
+  // Do not show footer in dashboard/admin section
   if (pathname?.startsWith("/admin")) {
     return null;
   }
 
   return (
-    <footer id="main-footer" className="relative z-20 bg-gradient-to-b from-[#1e1327] via-[#110a19] to-[#07040b] text-white pt-16 pb-10 border-t-4 border-black overflow-hidden">
+    <footer
+      id="main-footer"
+      className="relative z-20 bg-gradient-to-b from-[#1e1327] via-[#110a19] to-[#07040b] text-white pt-16 pb-10 border-t-4 border-black overflow-hidden"
+    >
       {/* Outer Container with Mobs Individually on Left and Right */}
       <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col min-[1025px]:flex-row items-end justify-between gap-8 xl:gap-12">
-
+        <div className="flex flex-col 2xl:flex-row items-end justify-between gap-8 xl:gap-10">
           {/* ========================================================================= */}
           {/* LEFT: Hostile Mobs (Enderman, Spider, Zombie, Creeper, Skeleton)          */}
           {/* ========================================================================= */}
-          <div className="hidden min-[1025px]:flex shrink-0 w-[220px] xl:w-[270px] 2xl:w-[310px] self-end justify-start pointer-events-none select-none">
+          <div className="hidden 2xl:flex shrink-0 w-[180px] 3xl:w-[240px] self-end justify-start pointer-events-none select-none">
             <img
               src="/minecraft/minecraft_hostile_mob.webp"
               alt="Minecraft Hostile Mobs"
-              className="w-full h-auto object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.85)] [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]"
+              className="w-full h-auto object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.85)] [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)]"
               loading="lazy"
             />
           </div>
 
           {/* ========================================================================= */}
-          {/* CENTER: Clean Content Layout (No Div Box Cards, Pure Typography)          */}
+          {/* CENTER: Clean Content Layout (Responsive 4-Column Grid)                  */}
           {/* ========================================================================= */}
-          <div className="flex-1 w-full max-w-7xl mx-auto py-2">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-12 gap-8 lg:gap-10">
-
-              {/* Col 1: Club & Fest Branding (Wider Column) */}
-              <div className="space-y-4 xl:col-span-4">
+          <div className="flex-1 w-full max-w-7xl mx-auto py-2 min-w-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8 xl:gap-10">
+              {/* Col 1: Club & Fest Branding */}
+              <div className="space-y-4 sm:col-span-2 lg:col-span-5 xl:col-span-4 min-w-0">
                 <div className="space-y-3.5">
                   {/* Row 1: Hackverse & Logo */}
                   <Link
@@ -49,7 +55,7 @@ export function Footer() {
                     className="flex items-center gap-3.5 group focus:outline-none"
                     aria-label="HACKVERSE '26 Home"
                   >
-                    <div className="w-12 h-12 bg-white/5 border border-white/15 rounded-md p-1.5 flex items-center justify-center shrink-0 group-hover:border-white/30 group-hover:bg-white/10 transition-colors">
+                    <div className="w-11 h-11 sm:w-12 sm:h-12 bg-white/5 border border-white/15 rounded-md p-1.5 flex items-center justify-center shrink-0 group-hover:border-white/30 group-hover:bg-white/10 transition-colors">
                       <img
                         src="/cbhack.webp"
                         alt="HACKVERSE '26 Main Logo"
@@ -59,10 +65,10 @@ export function Footer() {
                       />
                     </div>
                     <div className="min-w-0">
-                      <h3 className="font-black text-xl sm:text-2xl tracking-tight text-white leading-tight group-hover:text-amber-400 transition-colors whitespace-nowrap">
+                      <h3 className="font-black text-lg sm:text-xl md:text-2xl tracking-tight text-white leading-tight group-hover:text-amber-400 transition-colors">
                         HACKVERSE &apos;26
                       </h3>
-                      <p className="font-mono text-[11px] sm:text-xs font-semibold text-neutral-400 tracking-wide whitespace-nowrap">
+                      <p className="font-mono text-[10px] sm:text-xs font-semibold text-neutral-400 tracking-wide">
                         FLAGSHIP TECH FEST &amp; HACKATHON
                       </p>
                     </div>
@@ -76,7 +82,7 @@ export function Footer() {
                     className="flex items-center gap-3.5 group focus:outline-none"
                     aria-label="CodeBreakers Official Society"
                   >
-                    <div className="w-12 h-12 bg-white/5 border border-white/15 rounded-md p-1.5 flex items-center justify-center shrink-0 group-hover:border-white/30 group-hover:bg-white/10 transition-colors">
+                    <div className="w-11 h-11 sm:w-12 sm:h-12 bg-white/5 border border-white/15 rounded-md p-1.5 flex items-center justify-center shrink-0 group-hover:border-white/30 group-hover:bg-white/10 transition-colors">
                       <img
                         src="/cblogo.png"
                         alt="CodeBreakers GCEK Logo"
@@ -86,10 +92,10 @@ export function Footer() {
                       />
                     </div>
                     <div className="min-w-0">
-                      <h4 className="font-black text-base sm:text-lg tracking-tight text-white leading-tight group-hover:text-emerald-400 transition-colors whitespace-nowrap">
+                      <h4 className="font-black text-base sm:text-lg tracking-tight text-white leading-tight group-hover:text-emerald-400 transition-colors">
                         CODEBREAKERS // GCEK
                       </h4>
-                      <p className="font-mono text-[11px] sm:text-xs font-semibold text-neutral-400 tracking-wide whitespace-nowrap">
+                      <p className="font-mono text-[10px] sm:text-xs font-semibold text-neutral-400 tracking-wide">
                         OFFICIAL TECHNICAL SOCIETY
                       </p>
                     </div>
@@ -97,7 +103,10 @@ export function Footer() {
                 </div>
 
                 <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed font-normal">
-                  The premier coding and technical society of Government College of Engineering Kalahandi. Fostering hackathon culture, competitive programming, and engineering excellence since 2019.
+                  The premier coding and technical society of Government College
+                  of Engineering Kalahandi. Fostering hackathon culture,
+                  competitive programming, and engineering excellence since
+                  2019.
                 </p>
 
                 <div>
@@ -113,8 +122,8 @@ export function Footer() {
                 </div>
               </div>
 
-              {/* Col 2: Navigation Links (Single Column) */}
-              <div className="space-y-3 xl:col-span-2">
+              {/* Col 2: Navigation Links */}
+              <div className="space-y-3 sm:col-span-1 lg:col-span-3 xl:col-span-2 min-w-0">
                 <h4 className="font-mono font-bold text-xs uppercase tracking-widest text-neutral-300 border-b border-white/10 pb-2">
                   NAVIGATION
                 </h4>
@@ -134,9 +143,9 @@ export function Footer() {
                     <li key={idx}>
                       <Link
                         href={link.href}
-                        className="hover:text-white transition-colors flex items-center gap-1.5 whitespace-nowrap"
+                        className="hover:text-white transition-colors flex items-center gap-1.5 group"
                       >
-                        <span className="text-neutral-600 text-[10px]">▸</span>
+                        <span className="text-neutral-600 group-hover:text-amber-400 transition-colors text-[10px]">▸</span>
                         <span>{link.label}</span>
                       </Link>
                     </li>
@@ -145,7 +154,7 @@ export function Footer() {
               </div>
 
               {/* Col 3: Event Venue & Contact */}
-              <div className="space-y-3 xl:col-span-3">
+              <div className="space-y-3 sm:col-span-1 lg:col-span-4 xl:col-span-3 min-w-0">
                 <h4 className="font-mono font-bold text-xs uppercase tracking-widest text-neutral-300 border-b border-white/10 pb-2">
                   VENUE &amp; DISPATCH
                 </h4>
@@ -153,7 +162,9 @@ export function Footer() {
                   <div className="flex items-start gap-2.5">
                     <MapPin className="w-4 h-4 shrink-0 text-neutral-300 mt-0.5" />
                     <p className="leading-snug">
-                      {EVENT_DATA.location.campus}, {EVENT_DATA.location.venue}, {EVENT_DATA.location.city}, {EVENT_DATA.location.state} - {EVENT_DATA.location.postalCode}
+                      {EVENT_DATA.location.campus}, {EVENT_DATA.location.venue},{" "}
+                      {EVENT_DATA.location.city}, {EVENT_DATA.location.state} -{" "}
+                      {EVENT_DATA.location.postalCode}
                     </p>
                   </div>
 
@@ -172,19 +183,20 @@ export function Footer() {
                       EMERGENCY HELPLINE:
                     </div>
                     <div className="font-mono text-xs font-bold text-white tracking-wider">
-                      +91 9438-CODE-GCEK
+                      +91 8895220675
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Col 4: Community & Socials */}
-              <div className="space-y-3 xl:col-span-3">
+              <div className="space-y-3 sm:col-span-2 lg:col-span-12 xl:col-span-3 min-w-0">
                 <h4 className="font-mono font-bold text-xs uppercase tracking-widest text-neutral-300 border-b border-white/10 pb-2">
                   COMMUNITY RADAR
                 </h4>
                 <p className="text-xs text-neutral-400 leading-relaxed">
-                  Connect with 500+ active student builders and alumni mentors across our official channels.
+                  Connect with 500+ active student builders and alumni mentors
+                  across our official channels.
                 </p>
 
                 <div className="flex flex-wrap gap-2 pt-1">
@@ -226,22 +238,20 @@ export function Footer() {
                   </a>
                 </div>
               </div>
-
             </div>
           </div>
 
           {/* ========================================================================= */}
           {/* RIGHT: Hero Squad (Steve, Alex, Friendly Animals, Companion Creeper)      */}
           {/* ========================================================================= */}
-          <div className="hidden min-[1025px]:flex shrink-0 w-[240px] xl:w-[290px] 2xl:w-[330px] self-end justify-end pointer-events-none select-none">
+          <div className="hidden 2xl:flex shrink-0 w-[190px] 3xl:w-[260px] self-end justify-end pointer-events-none select-none">
             <img
               src="/minecraft/minecraft_group_mob.webp"
               alt="Minecraft Survivor Squad"
-              className="w-full h-auto object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.85)] [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]"
+              className="w-full h-auto object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.85)] [mask-image:linear-gradient(to_bottom,black_85%,transparent_100%)]"
               loading="lazy"
             />
           </div>
-
         </div>
 
         {/* Bottom Banner */}

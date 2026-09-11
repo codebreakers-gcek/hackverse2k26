@@ -99,7 +99,7 @@ export async function generateInvoicePdfBuffer(
         pageMargin,
         currentY + 16,
       );
-      doc.text("Bandhopala, Bhawanipatna", pageMargin, currentY + 30);
+      doc.text("Kandho Bandhopala, Bhawanipatna", pageMargin, currentY + 30);
       doc.text("Kalahandi, Odisha 766002", pageMargin, currentY + 44);
       doc.text("India", pageMargin, currentY + 58);
       doc

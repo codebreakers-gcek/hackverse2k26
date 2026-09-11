@@ -112,6 +112,9 @@ export function validateStep2(data: RegistrationFormData): Record<string, string
     } else if (member.branch === "Other" && (!member.customBranch || member.customBranch.trim().length < 2)) {
       errors[`members.${index}.customBranch`] = `Specify branch for Member ${index + 2}.`;
     }
+    if (member.role === "Leader") {
+      errors[`members.${index}.role`] = `Member ${index + 2} cannot be assigned the Leader role. Only the squad captain is the team leader.`;
+    }
     if (!member.yearOfStudy) {
       errors[`members.${index}.yearOfStudy`] = `Member ${index + 2} year of study is required.`;
     }
@@ -126,8 +129,13 @@ export function validateStep2(data: RegistrationFormData): Record<string, string
 export function validateStep3(data: RegistrationFormData): Record<string, string> {
   const errors: Record<string, string> = {};
   if (data.paymentDetails.paymentMode !== "FREE_SPONSORED") {
-    if (!data.paymentDetails.transactionId || data.paymentDetails.transactionId.trim().length < 4) {
-      errors["paymentDetails.transactionId"] = "Please enter your transaction reference ID / UTR.";
+    const rawTx = data.paymentDetails.transactionId?.trim() || "";
+    if (!rawTx) {
+      errors["paymentDetails.transactionId"] = "Please enter your numeric transaction reference ID / UTR.";
+    } else if (!/^\d+$/.test(rawTx)) {
+      errors["paymentDetails.transactionId"] = "Transaction ID must contain numbers only (no alphabets or symbols).";
+    } else if (rawTx.length < 6) {
+      errors["paymentDetails.transactionId"] = "Transaction reference / UTR number must be at least 6 digits.";
     }
   }
   return errors;
@@ -140,11 +148,11 @@ export function validateStep4(data: RegistrationFormData): Record<string, string
   const errors: Record<string, string> = {};
 
   if (!data.documentUploads?.collegeIdFileName || data.documentUploads.collegeIdFileName.trim().length === 0) {
-    errors["documentUploads.collegeIdFileName"] = "College ID cards or bonafide verification document is required.";
+    errors["documentUploads.collegeIdFileName"] = "College Authorization Letter is required.";
   }
 
   if (!data.documentUploads?.synopsisFileName || data.documentUploads.synopsisFileName.trim().length === 0) {
-    errors["documentUploads.synopsisFileName"] = "Project synopsis / idea proposal deck is required.";
+    errors["documentUploads.synopsisFileName"] = "Payment proof / transaction receipt is required.";
   }
 
   if (!data.agreeToGuidelines) {

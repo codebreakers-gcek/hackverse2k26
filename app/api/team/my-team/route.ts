@@ -93,6 +93,11 @@ export async function GET(req: NextRequest) {
       docs.selectedProblemStatements ||
       (teamRegistration.problemStatementId ? [teamRegistration.problemStatementId] : []);
 
+    const editCount = typeof docs.editCount === "number" ? docs.editCount : 0;
+    const maxEdits = 3;
+    const remainingEdits = Math.max(0, maxEdits - editCount);
+    const canEdit = userRoleInTeam === "LEADER" && remainingEdits > 0;
+
     return NextResponse.json({
       success: true,
       authenticated: true,
@@ -135,6 +140,11 @@ export async function GET(req: NextRequest) {
         problemStatement1: docs.problemStatement1 || teamRegistration.problemStatementId || null,
         problemStatement2: docs.problemStatement2 || null,
         psSubmittedAt: docs.psSubmittedAt || null,
+        editCount,
+        maxEdits,
+        remainingEdits,
+        canEdit,
+        lastEditedAt: docs.lastEditedAt || null,
         createdAt: teamRegistration.createdAt,
         updatedAt: teamRegistration.updatedAt,
       },

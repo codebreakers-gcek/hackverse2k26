@@ -14,14 +14,13 @@ export const metadata: Metadata = {
     description:
       "24 hours of non-stop hacking, mentoring sessions, tech talks, and prize ceremonies at GCEK Kalahandi.",
     url: "https://www.codebreakersgcek.tech/schedule",
-    images: [{ url: "/cbhack.png", width: 1200, height: 630, alt: "HACKVERSE '26 Schedule" }],
+    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "HACKVERSE '26 Schedule" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Event Schedule & Timeline // HACKVERSE '26",
-    description:
-      "24 hours of non-stop hacking, mentoring sessions, tech talks, and prize ceremonies at GCEK Kalahandi.",
-    images: ["/cbhack.png"],
+    title: "24-Hour Timeline & Milestones // HACKVERSE '26",
+    description: "From check-in and opening keynotes to 3 judging rounds and grand award ceremonies.",
+    images: ["/og-image.jpg"],
   },
 };
 

@@ -11,37 +11,43 @@ export const FAQ_CATEGORIES: FaqCategoryConfig[] = [
     id: "general",
     label: "GENERAL & ABOUT",
     iconName: "Sparkles",
-    description: "What is HACKVERSE, venue location, dates, and event overview.",
+    description:
+      "What is HACKVERSE, venue location, dates, and event overview.",
   },
   {
     id: "registration",
     label: "REGISTRATION & FEES",
     iconName: "CreditCard",
-    description: "How to register, entry fees, payment verification, and deadlines.",
+    description:
+      "How to register, entry fees, payment verification, and deadlines.",
   },
   {
     id: "teams",
     label: "TEAMS & ELIGIBILITY",
     iconName: "Users",
-    description: "Team sizing, cross-college squads, solo participation, and eligibility.",
+    description:
+      "Team sizing, cross-college squads, solo participation, and eligibility.",
   },
   {
     id: "logistics",
     label: "VENUE & ACCOMMODATION",
     iconName: "Building2",
-    description: "Hostel stay, food, Wi-Fi, travel, and campus facilities at GCEK.",
+    description:
+      "Hostel stay, food, Wi-Fi, travel, and campus facilities at GCEK.",
   },
   {
     id: "submissions",
     label: "PROBLEMS & SUBMISSIONS",
     iconName: "Code2",
-    description: "Problem statement tracks, code repository guidelines, and demo rules.",
+    description:
+      "Problem statement tracks, code repository guidelines, and demo rules.",
   },
   {
     id: "prizes",
     label: "EVALUATION & PRIZES",
     iconName: "Award",
-    description: "Judging rubrics, prize pool distribution, certificates, and goodies.",
+    description:
+      "Judging rubrics, prize pool distribution, certificates, and goodies.",
   },
 ];
 
@@ -63,7 +69,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "gen-2",
     question: "WHEN AND WHERE WILL HACKVERSE '26 TAKE PLACE?",
     answer:
-      "The Grand Finale will take place on October 8-10, 2026, in an immersive offline mode at the Government College of Engineering Kalahandi (GCEK) Campus, Bandopala, Bhawanipatna, Odisha - 766003. Round 1 online evaluations precede the offline round.",
+      "The Grand Finale will take place on October 8-10, 2026, in an immersive offline mode at the Government College of Engineering Kalahandi (GCEK) Campus, Kandha Bando Pala, Bhawanipatna, Odisha - 766003. Round 1 online evaluations precede the offline round.",
     category: "general",
     categoryLabel: "General & About",
     tags: ["venue", "dates", "location", "offline"],
@@ -149,7 +155,12 @@ export const FAQ_ITEMS: FaqItem[] = [
       "NO. Cross-college teams are not permitted. All members of a squad must belong to the same college/institution. However, cross-department and cross-year teams from the same college are fully permitted and welcomed.",
     category: "teams",
     categoryLabel: "Teams & Eligibility",
-    tags: ["same college", "cross college not allowed", "eligibility", "branches"],
+    tags: [
+      "same college",
+      "cross college not allowed",
+      "eligibility",
+      "branches",
+    ],
   },
   {
     id: "team-3",
@@ -175,7 +186,8 @@ export const FAQ_ITEMS: FaqItem[] = [
   // ==========================================
   {
     id: "log-1",
-    question: "WILL ACCOMMODATION AND FOOD BE PROVIDED DURING THE OFFLINE EVENT?",
+    question:
+      "WILL ACCOMMODATION AND FOOD BE PROVIDED DURING THE OFFLINE EVENT?",
     answer:
       "YES! All shortlisted participants attending the Grand Finale at GCEK Campus will receive complimentary hostel/guest accommodation, 24/7 snacks & energy drinks, breakfast, lunch, and dinner throughout the 24-hour sprint.",
     category: "logistics",
@@ -221,7 +233,8 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
   {
     id: "sub-2",
-    question: "CAN WE CHOOSE AN OPEN INNOVATION THEME INSTEAD OF A PRESET PROBLEM?",
+    question:
+      "CAN WE CHOOSE AN OPEN INNOVATION THEME INSTEAD OF A PRESET PROBLEM?",
     answer:
       "YES! Track CB-OPEN-08 is dedicated to Open Innovation. If you have an original breakthrough idea in Fintech, EdTech, Healthcare, GreenTech, or Smart Governance that doesn't fit standard categories, you are welcome to pitch and build it under Open Innovation.",
     category: "submissions",
@@ -239,7 +252,8 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
   {
     id: "sub-4",
-    question: "WHAT ARE THE SUBMISSION REQUIREMENTS AT THE END OF THE HACKATHON?",
+    question:
+      "WHAT ARE THE SUBMISSION REQUIREMENTS AT THE END OF THE HACKATHON?",
     answer:
       "Teams must submit: 1) A public GitHub / GitLab repository containing cleanly documented source code and a descriptive README.md, 2) A live deployment URL (or video demo for hardware projects), and 3) A 5-slide pitch deck summarizing problem, architecture, tech stack, and impact.",
     category: "submissions",
@@ -289,5 +303,5 @@ export const FAQ_SUPPORT_INFO = {
   email: "hackverse@gcekbpatna.ac.in",
   phone: "+91 98765 43210",
   venueName: "Govt. College of Engineering Kalahandi (GCEK)",
-  venueAddress: "Bandopala, Bhawanipatna, Kalahandi, Odisha - 766003",
+  venueAddress: "Kandha Bando Pala, Bhawanipatna, Kalahandi, Odisha - 766003",
 };
