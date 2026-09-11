@@ -261,6 +261,17 @@ main {
   color: transparent;
 }
 
+.text-outline-white {
+  -webkit-text-stroke: 2.5px #FFFFFF;
+  paint-order: stroke fill;
+}
+
+@media (min-width: 640px) {
+  .text-outline-white {
+    -webkit-text-stroke: 4.5px #FFFFFF;
+  }
+}
+
 /* Mechanical Button Press */
 .btn-neo-press {
   transition: transform 100ms ease, box-shadow 100ms ease;

@@ -12,11 +12,13 @@ import { ArrowRight, Terminal } from "lucide-react";
 export default function HomePage() {
   return (
     <div className="flex flex-col">
-      {/* 1. Hero Section */}
+      {/* 1. Hero Section (Full Viewport Height Image) */}
       <HeroSection />
 
-      {/* 2. Scrolling Ticker Marquee (Bended & Flowing Right to Left) */}
-      <MarqueeBanner bg="secondary" speed="normal" bended />
+      {/* 2. Scrolling Ticker Marquee (Overlaying over the hero bottom edge) */}
+      <div className="relative -mt-8 sm:-mt-10 z-20 overflow-hidden">
+        <MarqueeBanner bg="secondary" speed="normal" bended />
+      </div>
 
       {/* 3. Event High-Impact Numbers */}
       <ScrollReveal>

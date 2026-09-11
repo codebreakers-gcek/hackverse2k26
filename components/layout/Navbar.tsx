@@ -212,12 +212,20 @@ export function Navbar() {
       <header
         ref={headerRef}
         className={clsx(
-          "fixed top-0 left-0 right-0 z-50 w-full max-w-full bg-neo-bg border-b-4 border-black shadow-neo-sm transition-transform duration-300 ease-in-out",
+          "fixed top-0 left-0 right-0 z-50 w-full max-w-full border-b-4 border-black shadow-neo-sm transition-all duration-300 ease-in-out",
+          mobileMenuOpen
+            ? "bg-[#FFFDF5] backdrop-blur-none"
+            : "bg-[#FFFDF5]/75 backdrop-blur-md supports-[backdrop-filter]:bg-[#FFFDF5]/70",
           hideOnMobile && !mobileMenuOpen && "-translate-y-full lg:translate-y-0 opacity-0 pointer-events-none lg:opacity-100 lg:pointer-events-auto"
         )}
       >
         {/* Top Header Marquee: Live Updates */}
-        <div className="w-full max-w-full bg-black text-white border-b-2 border-black flex items-center text-[11px] sm:text-xs font-mono font-bold tracking-wider uppercase overflow-hidden h-8 select-none">
+        <div
+          className={clsx(
+            "w-full max-w-full border-b-2 border-black flex items-center text-[11px] sm:text-xs font-mono font-bold tracking-wider uppercase overflow-hidden h-8 select-none transition-colors duration-300",
+            mobileMenuOpen ? "bg-black text-white" : "bg-black/90 backdrop-blur-md text-white"
+          )}
+        >
           <div className="shrink-0 bg-neo-secondary text-black px-2.5 sm:px-3 h-full flex items-center gap-1.5 font-black z-10 border-r-2 border-black shadow-neo-sm text-[10px] sm:text-xs">
             <span className="w-2 h-2 rounded-full bg-red-600 inline-block" />
             <span>LIVE UPDATES</span>
