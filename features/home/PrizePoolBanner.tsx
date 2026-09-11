@@ -1,182 +1,220 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
-import { Trophy, Gift, ArrowRight } from "lucide-react";
+import Image from "next/image";
+import { Trophy, Award, Sparkles, Gift, ArrowRight, ShieldCheck, Coins } from "lucide-react";
 import { EVENT_DATA } from "@/data/event";
+import { ElectricGrid } from "@/components/ui/ElectricGrid";
 
 export function PrizePoolBanner() {
+  // Minecraft tier-specific styling configurations
   const tierConfigs = [
     {
+      // 1st Place - Diamond / Netherite Tier
+      borderClass: "border-t-[#55FFFF] border-l-[#55FFFF] border-r-[#008888] border-b-[#008888]",
       badgeText: "★ DIAMOND CHAMPION ★",
-      badgeClass:
-        "bg-[#00AAAA] text-white border-2 border-t-[#55FFFF] border-l-[#55FFFF] border-r-[#004f52] border-b-[#004f52]",
-      amountColor: "text-[#55FFFF]",
-      bulletColor: "text-[#008888]",
-    },
-    {
-      badgeText: "★ GOLD VANGUARD ★",
-      badgeClass:
-        "bg-[#FFAA00] text-black border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500]",
+      badgeClass: "bg-black text-[#55FFFF] border-2 border-[#55FFFF]",
+      rankBadge: "OVERWORLD WINNER",
+      rankTextClass: "text-[#55FFFF]",
       amountColor: "text-[#FFAA00]",
-      bulletColor: "text-[#B87700]",
+      bountyTag: "GOLD + DIAMOND",
+      bountyTagClass: "bg-[#55FFFF]/20 text-[#55FFFF] border-[#55FFFF]/40",
+      bulletColor: "text-[#55FFFF]",
+      footerStatus: "⚡ INSTANT CHEST DISBURSAL",
+      footerColor: "text-[#55FF55]",
+      icon: <Trophy className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2.5px] text-[#FFAA00] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />,
     },
     {
+      // 2nd Place - Gold / Emerald Tier
+      borderClass: "border-t-[#FFAA00] border-l-[#FFAA00] border-r-[#8F5500] border-b-[#8F5500]",
+      badgeText: "★ GOLD VANGUARD ★",
+      badgeClass: "bg-black text-[#FFAA00] border-2 border-[#FFAA00]",
+      rankBadge: "ELITE RUNNER UP",
+      rankTextClass: "text-[#FFAA00]",
+      amountColor: "text-[#FFFFFF]",
+      bountyTag: "SILVER BOUNTY",
+      bountyTagClass: "bg-[#FFAA00]/20 text-[#FFAA00] border-[#FFAA00]/40",
+      bulletColor: "text-[#FFAA00]",
+      footerStatus: "⚡ VERIFIED CASH DISBURSAL",
+      footerColor: "text-[#FFAA00]",
+      icon: <Award className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2.5px] text-[#FFAA00] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />,
+    },
+    {
+      // 3rd Place - Redstone / Iron Tier
+      borderClass: "border-t-[#FF7755] border-l-[#FF7755] border-r-[#882200] border-b-[#882200]",
       badgeText: "★ REDSTONE FORGER ★",
-      badgeClass:
-        "bg-[#FF5555] text-white border-2 border-t-[#FFAAAA] border-l-[#FFAAAA] border-r-[#8F1A1A] border-b-[#8F1A1A]",
-      amountColor: "text-[#FF5555]",
-      bulletColor: "text-[#D93838]",
+      badgeClass: "bg-black text-[#FF7755] border-2 border-[#FF7755]",
+      rankBadge: "TECH APPRENTICE",
+      rankTextClass: "text-[#FF7755]",
+      amountColor: "text-[#FF7755]",
+      bountyTag: "BRONZE BOUNTY",
+      bountyTagClass: "bg-[#FF7755]/20 text-[#FF7755] border-[#FF7755]/40",
+      bulletColor: "text-[#FF7755]",
+      footerStatus: "⚡ VERIFIED CASH DISBURSAL",
+      footerColor: "text-[#FF7755]",
+      icon: <Sparkles className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2.5px] text-[#FF7755] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />,
     },
   ];
 
   return (
-    <section className="relative py-12 sm:py-16 border-b-4 border-black overflow-hidden bg-neo-bg bg-grid-paper select-none">
-      {/* Minecraft Font Definition */}
-      <style
-        dangerouslySetInnerHTML={{
-          __html: `
-            @font-face {
-              font-family: 'Minecraft';
-              src: url('/font/Minecraft.ttf') format('truetype');
-              font-weight: normal;
-              font-style: normal;
-              font-display: swap;
-            }
-            .mc-font {
-              font-family: 'Minecraft', 'IBM Plex Mono', monospace;
-            }
-          `,
-        }}
-      />
+    <section className="relative py-16 sm:py-24 border-b-4 border-black overflow-hidden bg-neutral-900 select-none">
+      {/* Minecraft Natural Landscape Background Layer */}
+      <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
+        <Image
+          src="/minecraft/minecraft natural.png"
+          alt="Minecraft Natural Overworld Landscape"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center scale-105"
+        />
+        {/* Dark atmospheric overlay: keeps landscape visible while ensuring cards & text pop */}
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/85" />
+      </div>
 
-      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Minecraft GUI Box (Exact Reference Style) */}
-        <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[6px_6px_0px_#000] overflow-hidden">
-          {/* Minecraft Header Bar: Grass Block Green */}
-          <div className="bg-[#5B8731] border-b-4 border-black border-t-2 border-t-[#85B745] px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-white">
-            <div className="flex items-center gap-2.5">
-              <div className="w-6 h-6 bg-[#2B2B2B] text-[#55FF55] mc-font text-xs font-black flex items-center justify-center border-2 border-black shadow-[2px_2px_0px_#000]">
-                ⚔
-              </div>
-              <span className="mc-font text-xs sm:text-sm font-black uppercase tracking-wider text-white [text-shadow:_2px_2px_0_#000]">
-                OFFICIAL BOUNTY CHEST // ₹35,000+ CASH POOL
-              </span>
-            </div>
+      {/* Animated Electric Grid with Moving Current Lines */}
+      <ElectricGrid gridSize={32} beamCount={14} className="opacity-60" />
 
-            <Link
-              href="/register"
-              className="mc-font text-xs font-black uppercase text-[#FFE655] hover:text-white [text-shadow:_1px_1px_0_#000] flex items-center gap-1.5 transition-colors"
-            >
-              <span>CLAIM SQUAD SLOT</span>
-              <ArrowRight className="w-3.5 h-3.5 stroke-[3px]" />
-            </Link>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
+        {/* Minecraft Themed Section Header */}
+        <div className="flex flex-col items-center text-center space-y-3 sm:space-y-4">
+          <span className="font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#FFAA00] border-2 border-[#FFAA00] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000] inline-block">
+            ★ BOUNTY CHEST // STATE REWARDS ★
+          </span>
+
+          <h2 className="font-black text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white uppercase tracking-tight leading-none [text-shadow:_3px_3px_0_#000,_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000]">
+            STATE{" "}
+            <span className="inline-block bg-[#FFAA00] text-black px-2.5 sm:px-3 py-0.5 border-4 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[4px_4px_0px_#000] -rotate-1">
+              PRIZE POOL
+            </span>
+          </h2>
+
+          <div className="bg-[#1B1B1B]/90 backdrop-blur-sm border-3 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-4 sm:px-6 py-2.5 shadow-[4px_4px_0px_#000] max-w-2xl mx-auto">
+            <p className="text-xs sm:text-sm md:text-base font-bold text-[#EAEAEA] font-mono leading-relaxed">
+              Compete for a total cash bounty of ₹35K+ along with server compute credits, exclusive developer swag, direct internship referrals, and prestigious winner trophies.
+            </p>
           </div>
+        </div>
 
-          {/* Minecraft Inset Slot (Matching DomainTrackConsole Reference) */}
-          <div className="p-4 sm:p-6 bg-[#C6C6C6]">
-            <div className="bg-[#8B8B8B] border-4 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] p-6 sm:p-8 text-center space-y-6">
-              {/* Loot Chest / Trophy Box */}
-              <div className="w-16 h-16 bg-[#2B2B2B] border-4 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] mx-auto flex items-center justify-center shadow-[4px_4px_0px_#000]">
-                <Trophy className="w-8 h-8 text-[#FFAA00] stroke-[2.5px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
-              </div>
+        {/* 3 Minecraft Beveled Prize Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+          {EVENT_DATA.prizes.map((prize, idx) => {
+            const config = tierConfigs[idx] || tierConfigs[0];
 
-              {/* Title & Tag */}
-              <div className="space-y-2">
-                <span className="mc-font text-xs font-black uppercase px-3 py-1 bg-black text-[#FFAA00] border-2 border-[#FFAA00] inline-block shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
-                  [BOUNTY VAULT ACTIVE // ₹35,000+ CASH]
-                </span>
-                <h3 className="mc-font font-black text-2xl sm:text-4xl uppercase tracking-wider text-black">
-                  STATE PRIZE POOL
-                </h3>
-                <p className="text-xs sm:text-sm font-bold text-black/85 max-w-xl mx-auto leading-relaxed mc-font">
-                  Compete for cash bounties, trophies, server compute credits, direct interview referrals, and exclusive developer swag.
-                </p>
-              </div>
+            return (
+              <div
+                key={prize.position}
+                className={`bg-[#222222] border-4 ${config.borderClass} p-5 sm:p-7 shadow-[6px_6px_0px_#000] hover:-translate-y-2 hover:shadow-[10px_10px_0px_#000] transition-all duration-200 flex flex-col justify-between relative group`}
+              >
+                {/* Top Corner Floating Tier Badge */}
+                <div
+                  className={`absolute -top-4 -right-2 sm:-right-3 ${config.badgeClass} font-mono text-[10px] sm:text-[11px] font-black uppercase px-3 py-1 rotate-2 shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000] z-10`}
+                >
+                  {config.badgeText}
+                </div>
 
-              {/* 3 Streamlined Prize Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1 text-left">
-                {EVENT_DATA.prizes.map((prize, idx) => {
-                  const config = tierConfigs[idx] || tierConfigs[0];
-                  return (
-                    <div
-                      key={prize.position}
-                      className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-4 shadow-[4px_4px_0px_#000] flex flex-col justify-between"
-                    >
+                <div>
+                  {/* Top Rank / Icon Row */}
+                  <div className="flex items-center justify-between gap-3 mb-4 pb-3 border-b-2 border-neutral-700">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-12 h-12 bg-[#171717] border-3 border-t-[#0D0D0D] border-l-[#0D0D0D] border-r-[#383838] border-b-[#383838] flex items-center justify-center shadow-[2px_2px_0px_#000] shrink-0">
+                        {config.icon}
+                      </div>
                       <div>
-                        {/* Header Badge */}
-                        <div className="flex items-center justify-between gap-2 mb-2">
-                          <span
-                            className={`mc-font text-[10px] font-black uppercase px-2 py-0.5 ${config.badgeClass} shadow-[1px_1px_0_#000] [text-shadow:_1px_1px_0_#000]`}
-                          >
-                            {config.badgeText}
-                          </span>
-                          <span className="mc-font text-[9px] font-black text-black/60 uppercase">
-                            RANK 0{idx + 1}
-                          </span>
-                        </div>
-
-                        {/* Cash Bounty Inset Slot */}
-                        <div className="bg-[#2B2B2B] border-4 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] p-3 my-2.5 flex items-baseline justify-between shadow-inner">
-                          <span className="mc-font text-[10px] font-black text-[#A0A0A0] uppercase">
-                            CASH BOUNTY
-                          </span>
-                          <span
-                            className={`mc-font font-black text-2xl sm:text-3xl ${config.amountColor} [text-shadow:_2px_2px_0_#000]`}
-                          >
-                            {prize.amount}
-                          </span>
-                        </div>
-
-                        {/* Perk Bullet Points */}
-                        <ul className="space-y-1.5 mc-font text-xs font-bold text-black/90 mt-2">
-                          {prize.perks.slice(0, 3).map((perk, pIdx) => (
-                            <li key={pIdx} className="flex items-start gap-1.5">
-                              <span
-                                className={`${config.bulletColor} font-black text-xs shrink-0 leading-tight`}
-                              >
-                                ◆
-                              </span>
-                              <span className="leading-snug text-black/85 text-[11px] sm:text-xs">
-                                {perk}
-                              </span>
-                            </li>
-                          ))}
-                        </ul>
+                        <span className={`font-mono text-xs font-black uppercase tracking-wider ${config.rankTextClass} block`}>
+                          RANK 0{idx + 1}
+                        </span>
+                        <span className="font-mono text-[10px] font-bold text-neutral-400 uppercase">
+                          {config.rankBadge}
+                        </span>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
 
-              {/* Universal Rewards Mini Hotbar */}
-              <div className="bg-[#2B2B2B] border-4 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] p-3 max-w-2xl mx-auto flex items-center justify-center gap-2 text-white mc-font text-[11px] sm:text-xs font-bold shadow-inner">
-                <Gift className="w-4 h-4 text-[#FFAA00] shrink-0" />
-                <span className="text-[#E0E0E0]">
-                  <strong className="text-[#55FF55]">UNIVERSAL PARTICIPANT DROPS:</strong> Verified STATE Certificates • Hacker Swag Kits • Cloud Server Credits • Food Passes
+                    <div className={`font-mono text-[10px] font-black uppercase px-2 py-0.5 border ${config.bountyTagClass}`}>
+                      {config.bountyTag}
+                    </div>
+                  </div>
+
+                  {/* Position Title */}
+                  <h3 className="font-mono font-black text-lg sm:text-xl text-white uppercase tracking-wider leading-snug mb-2 [text-shadow:_2px_2px_0_#000]">
+                    {prize.position}
+                  </h3>
+
+                  {/* Minecraft Inset Slot: Cash Bounty Amount */}
+                  <div className="bg-[#121212] border-4 border-t-[#050505] border-l-[#050505] border-r-[#2E2E2E] border-b-[#2E2E2E] p-4 my-4 flex items-baseline justify-between shadow-inner">
+                    <span className="font-mono text-xs font-black text-neutral-400 uppercase">
+                      CASH BOUNTY
+                    </span>
+                    <span className={`font-mono font-black text-4xl sm:text-5xl ${config.amountColor} [text-shadow:_2px_2px_0_#000] tracking-tight`}>
+                      {prize.amount}
+                    </span>
+                  </div>
+
+                  {/* Included Perks */}
+                  <div className="space-y-3 mt-5">
+                    <div className="flex items-center gap-2 font-mono text-xs font-black uppercase text-neutral-300 tracking-wider">
+                      <Coins className="w-3.5 h-3.5 text-[#FFAA00]" />
+                      <span>UNLOCKED BOUNTIES &amp; PERKS:</span>
+                    </div>
+                    <ul className="space-y-2.5 font-mono text-xs sm:text-sm font-bold text-neutral-200">
+                      {prize.perks.map((perk, pIdx) => (
+                        <li key={pIdx} className="flex items-start gap-2.5">
+                          <span className={`${config.bulletColor} font-black text-sm shrink-0 leading-tight`}>
+                            ◆
+                          </span>
+                          <span className="leading-snug text-[#E0E0E0]">{perk}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+
+                {/* Bottom Card Footer */}
+                <div className="mt-8 pt-3 border-t-2 border-neutral-700">
+                  <div className="bg-[#141414] border-2 border-t-[#050505] border-l-[#050505] border-r-[#2A2A2A] border-b-[#2A2A2A] py-2 px-3 text-center">
+                    <span className={`font-mono text-[11px] font-black uppercase tracking-widest ${config.footerColor} [text-shadow:_1px_1px_0_#000] block`}>
+                      {config.footerStatus}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Bottom Minecraft Loot Chest Banner */}
+        <div className="bg-[#2B2B2B] border-4 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#111111] border-b-[#111111] shadow-[6px_6px_0px_#000] p-5 sm:p-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="w-14 h-14 bg-[#171717] border-4 border-t-[#0B0B0B] border-l-[#0B0B0B] border-r-[#3E3E3E] border-b-[#3E3E3E] flex items-center justify-center shrink-0 shadow-[3px_3px_0px_#000]">
+              <Gift className="w-8 h-8 text-[#FFAA00] stroke-[2.5px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[#55FF55]" />
+                <span className="font-mono text-[11px] font-black uppercase tracking-wider text-[#55FF55] [text-shadow:_1px_1px_0_#000]">
+                  UNIVERSAL PARTICIPANT REWARDS
                 </span>
               </div>
-
-              {/* Minecraft 3D Beveled Buttons (Exact from Reference Screenshot) */}
-              <div className="pt-2 flex flex-wrap items-center justify-center gap-3 sm:gap-4">
-                <Link
-                  href="/register"
-                  className="bg-[#5B8731] hover:bg-[#689B37] text-white mc-font font-black text-xs uppercase tracking-wider border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] active:border-t-[#2C4813] active:border-l-[#2C4813] active:border-r-[#85B745] active:border-b-[#85B745] px-6 py-3 shadow-[3px_3px_0px_#000] [text-shadow:_2px_2px_0_#000] flex items-center gap-2 transition-colors"
-                >
-                  <span>REGISTER SQUAD ON STANDBY</span>
-                  <ArrowRight className="w-4 h-4 stroke-[3px]" />
-                </Link>
-                <Link
-                  href="/problem-statements"
-                  className="bg-[#707070] hover:bg-[#808080] text-white mc-font font-black text-xs uppercase tracking-wider border-4 border-t-[#9e9e9e] border-l-[#9e9e9e] border-r-[#383838] border-b-[#383838] active:border-t-[#383838] active:border-l-[#383838] active:border-r-[#9e9e9e] active:border-b-[#9e9e9e] px-6 py-3 shadow-[3px_3px_0px_#000] [text-shadow:_2px_2px_0_#000] transition-colors"
-                >
-                  VIEW CHALLENGE TRACKS
-                </Link>
-              </div>
+              <h4 className="font-mono font-black text-lg sm:text-2xl uppercase tracking-wider text-white [text-shadow:_2px_2px_0_#000] mt-0.5">
+                SWAG KITS &amp; VERIFIED STATE CERTIFICATES
+              </h4>
+              <p className="font-mono text-xs sm:text-sm font-bold text-[#CCCCCC] mt-1 leading-relaxed max-w-2xl">
+                Every team presenting a functional project receives verified STATE participation certificates, custom pixel sticker packs, cloud computing infrastructure credits, and food passes.
+              </p>
             </div>
           </div>
+
+          <Link
+            href="/register"
+            className="w-full md:w-auto bg-[#5B8731] hover:bg-[#689B37] text-white font-mono font-black text-xs sm:text-sm uppercase tracking-wider border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] active:border-t-[#2C4813] active:border-l-[#2C4813] active:border-r-[#85B745] active:border-b-[#85B745] px-7 py-3.5 shadow-[4px_4px_0px_#000] [text-shadow:_2px_2px_0_#000] transition-colors flex items-center justify-center gap-2 shrink-0"
+          >
+            <span>CLAIM SQUAD SLOT</span>
+            <ArrowRight className="w-4 h-4 stroke-[3px]" />
+          </Link>
         </div>
       </div>
     </section>
   );
 }
-
-

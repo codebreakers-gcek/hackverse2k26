@@ -342,6 +342,21 @@ main {
   animation-play-state: paused;
 }
 
+@keyframes float-particle {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+    opacity: 0.95;
+  }
+}
+
+.animate-float-particle {
+  animation: float-particle 7s ease-in-out infinite;
+}
+
 /* Reduced Motion */
 @media (prefers-reduced-motion: reduce) {
   *,

@@ -60,7 +60,20 @@ export function DomainTrackConsole() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
         {/* Minecraft Themed Section Header */}
-        <div className="flex flex-col items-center text-center space-y-3 sm:space-y-4">
+        <div className="flex flex-col items-center text-center space-y-3 sm:space-y-4 relative">
+          {/* Minecraft Mobs Horde Dynamic Stampede */}
+          {/* <div className="hidden lg:block absolute -top-8 -right-2 xl:right-4 2xl:right-8 w-56 lg:w-68 xl:w-80 h-68 lg:h-80 xl:h-96 pointer-events-none select-none z-20 drop-shadow-[0_10px_20px_rgba(0,0,0,0.85)]">
+            <div className="relative w-full h-full">
+              <Image
+                src="/minecraft/mobs.png"
+                alt="Minecraft Mobs Battleground Rush"
+                fill
+                className="object-contain object-top"
+                priority
+              />
+            </div>
+          </div> */}
+
           <span className="font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000] inline-block">
             ★ BIOMES &amp; REALMS // QUEST TRACKS ★
           </span>
