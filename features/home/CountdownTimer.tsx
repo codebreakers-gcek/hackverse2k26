@@ -71,12 +71,14 @@ export function CountdownTimer() {
 
   return (
     <div className="max-w-xl mx-auto my-6 px-1">
-      <div className="flex flex-wrap items-center justify-between gap-1 font-mono text-[10px] xs:text-xs font-black uppercase tracking-wider sm:tracking-widest text-black mb-2">
-        <span className="flex items-center gap-1.5">
-          <span className="w-2.5 h-2.5 bg-neo-accent inline-block rounded-full border border-black shadow-neo-sm" />
+      <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] xs:text-xs font-black uppercase tracking-wider mb-2">
+        <span className="inline-flex items-center gap-1.5 bg-black text-white px-2.5 py-1 border-2 border-black shadow-neo-sm">
+          <span className="w-2 h-2 bg-neo-accent inline-block rounded-full animate-pulse" />
           <span>HACKATHON KICKOFF IN:</span>
         </span>
-        <span className="text-black/75">OCTOBER 8, 2026</span>
+        <span className="inline-block bg-white text-black px-2.5 py-1 border-2 border-black shadow-neo-sm font-black">
+          OCTOBER 8, 2026
+        </span>
       </div>
 
       <div className="grid grid-cols-4 gap-1.5 sm:gap-4">

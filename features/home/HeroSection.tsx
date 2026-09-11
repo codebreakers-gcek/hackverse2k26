@@ -7,7 +7,6 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowRight, Calendar, MapPin, Sparkles, Terminal, Award } from "lucide-react";
 import { EVENT_DATA } from "@/data/event";
 import { CountdownTimer } from "./CountdownTimer";
-import { AnimeCharacters } from "./AnimeCharacters";
 
 export function HeroSection() {
   const shouldReduceMotion = useReducedMotion();
@@ -36,9 +35,21 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden pt-12 pb-20 sm:pt-16 sm:pb-28 border-b-4 border-black bg-grid-paper">
-      {/* Anime Characters: Gojo (Left) & Sukuna (Right). Remove/comment this line anytime if not needed */}
-      <AnimeCharacters />
+    <section className="relative overflow-hidden min-h-screen min-h-[100svh] flex flex-col justify-center items-center pt-14 pb-16 sm:pt-20 sm:pb-20 border-b-4 border-black">
+      {/* Minecraft Theme Responsive Background Layer (Full Viewport Height) */}
+      <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden">
+        <Image
+          src="/minecraft/1.png"
+          alt="HackVerse Minecraft Background"
+          fill
+          priority
+          quality={100}
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        {/* Backdrop Filter Layer */}
+        <div className="absolute inset-0 backdrop-blur-xs sm:backdrop-blur-sm bg-black/10" />
+      </div>
 
       {/* Decorative Floating Stickers */}
       <motion.div
@@ -48,7 +59,7 @@ export function HeroSection() {
         className="absolute top-6 left-4 sm:left-12 hidden lg:block select-none pointer-events-none"
       >
         <div className="bg-neo-accent text-black font-black text-xs uppercase px-3 py-1.5 border-3 border-black shadow-neo-sm">
-          ★ FLAGSHIP 36H HACKATHON
+          ★ FLAGSHIP 24H HACKATHON
         </div>
       </motion.div>
 
@@ -67,7 +78,7 @@ export function HeroSection() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
+        className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
       >
         {/* Top Identification Badge */}
         <motion.div variants={itemVariants} className="w-full flex items-center justify-center mb-6">
@@ -91,32 +102,33 @@ export function HeroSection() {
         </motion.div>
 
         {/* Massive Headline */}
-        <motion.div variants={itemVariants} className="relative inline-block mb-4 max-w-full">
-          <h1 className="text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-black uppercase leading-none break-words">
+        <motion.div variants={itemVariants} className="relative inline-block mb-3 max-w-full">
+          <h1 className="text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-black uppercase leading-none break-words text-outline-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.45)]">
             <span className="font-thuast tracking-wider">HACKVERSE</span>{" "}
             <span className="font-thuast tracking-tighter text-neo-accent">&apos;26</span>
           </h1>
         </motion.div>
 
         {/* Tagline sticker */}
-        <motion.div variants={itemVariants} className="max-w-3xl mx-auto my-3 sm:my-4 px-2">
+        <motion.div variants={itemVariants} className="max-w-3xl mx-auto my-2 sm:my-3 px-2 flex flex-col items-center gap-2">
           <div className="inline-block bg-neo-muted border-3 border-black px-3 sm:px-4 py-1.5 sm:py-2 shadow-neo -rotate-1 max-w-full">
             <p className="font-black text-sm xs:text-base sm:text-xl md:text-2xl text-black uppercase tracking-tight break-words">
               &ldquo;{EVENT_DATA.tagline}&rdquo;
             </p>
           </div>
-          <div className="mt-2 font-mono text-xs sm:text-base md:text-lg font-black tracking-[0.15em] sm:tracking-[0.25em] text-black/80 uppercase">
+          <div className="inline-block bg-black text-white font-mono text-xs sm:text-sm font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase px-3 py-1 border-2 border-black shadow-neo-sm">
             {EVENT_DATA.edition}
           </div>
         </motion.div>
 
         {/* Introduction */}
-        <motion.p
-          variants={itemVariants}
-          className="max-w-2xl mx-auto text-sm sm:text-base md:text-lg font-bold text-black/80 leading-relaxed mt-3 sm:mt-4 mb-5 sm:mb-6 px-2"
-        >
-          {EVENT_DATA.shortDescription}
-        </motion.p>
+        <motion.div variants={itemVariants} className="max-w-3xl mx-auto my-3 px-2">
+          <div className="bg-white/95 backdrop-blur-sm border-3 border-black p-3.5 sm:p-4 shadow-neo text-center">
+            <p className="text-xs sm:text-sm md:text-base font-bold text-black leading-relaxed">
+              {EVENT_DATA.shortDescription}
+            </p>
+          </div>
+        </motion.div>
 
         {/* Event Date & Location Chips */}
         <motion.div
@@ -177,16 +189,16 @@ export function HeroSection() {
         {/* Trust Badges */}
         <motion.div
           variants={itemVariants}
-          className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t-2 border-black/20 flex flex-wrap items-center justify-center gap-4 sm:gap-6 font-mono text-xs sm:text-sm font-bold text-black/70 px-2"
+          className="mt-8 sm:mt-10 pt-4 flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 font-mono text-xs sm:text-sm font-black px-2"
         >
-          <span className="flex items-center gap-1.5">
-            <Sparkles className="w-4 h-4 text-neo-accent shrink-0" /> NO REGISTRATION FEE
+          <span className="inline-flex items-center gap-1.5 bg-white text-black border-2 border-black px-3 py-1.5 shadow-neo-sm">
+            <Sparkles className="w-4 h-4 text-neo-accent stroke-[3px] shrink-0" /> NO REGISTRATION FEE
           </span>
-          <span className="flex items-center gap-1.5">
-            <Award className="w-4 h-4 text-neo-secondary shrink-0" /> CERTIFICATES FOR ALL PARTICIPANTS
+          <span className="inline-flex items-center gap-1.5 bg-white text-black border-2 border-black px-3 py-1.5 shadow-neo-sm">
+            <Award className="w-4 h-4 text-neo-secondary stroke-[3px] shrink-0" /> CERTIFICATES FOR ALL PARTICIPANTS
           </span>
-          <span className="flex items-center gap-1.5">
-            <Terminal className="w-4 h-4 text-neo-muted shrink-0" /> HARDWARE &amp; AI TRACKS
+          <span className="inline-flex items-center gap-1.5 bg-white text-black border-2 border-black px-3 py-1.5 shadow-neo-sm">
+            <Terminal className="w-4 h-4 text-neo-muted stroke-[3px] shrink-0" /> HARDWARE &amp; AI TRACKS
           </span>
         </motion.div>
       </motion.div>

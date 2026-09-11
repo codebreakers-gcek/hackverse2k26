@@ -29,7 +29,7 @@ export function AnimeCharacters() {
       {/* Gojo Satoru - Left Side */}
       <motion.div
         aria-hidden="true"
-        className="absolute left-0 xl:left-2 2xl:left-6 bottom-0 z-0 pointer-events-none select-none hidden lg:block"
+        className="absolute left-0 xl:left-2 2xl:left-6 bottom-0 z-[1] pointer-events-none select-none hidden lg:block"
         initial={shouldReduceMotion ? { opacity: 0.95 } : { opacity: 0, x: -30 }}
         animate={shouldReduceMotion ? { opacity: 0.95 } : { opacity: 0.95, x: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
@@ -63,7 +63,7 @@ export function AnimeCharacters() {
       {/* Ryomen Sukuna - Right Side */}
       <motion.div
         aria-hidden="true"
-        className="absolute right-0 xl:right-2 2xl:right-6 bottom-0 z-0 pointer-events-none select-none hidden lg:block"
+        className="absolute right-0 xl:right-2 2xl:right-6 bottom-0 z-[1] pointer-events-none select-none hidden lg:block"
         initial={shouldReduceMotion ? { opacity: 0.95 } : { opacity: 0, x: 30 }}
         animate={shouldReduceMotion ? { opacity: 0.95 } : { opacity: 0.95, x: 0 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const, delay: 0.1 }}
