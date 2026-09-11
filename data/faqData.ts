@@ -63,7 +63,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "gen-2",
     question: "WHEN AND WHERE WILL HACKVERSE '26 TAKE PLACE?",
     answer:
-      "The Grand Finale will take place on March 28-30, 2026, in an immersive offline mode at the Government College of Engineering Kalahandi (GCEK) Campus, Bandopala, Bhawanipatna, Odisha - 766003. Round 1 online evaluations precede the offline round.",
+      "The Grand Finale will take place on October 8-10, 2026, in an immersive offline mode at the Government College of Engineering Kalahandi (GCEK) Campus, Bandopala, Bhawanipatna, Odisha - 766003. Round 1 online evaluations precede the offline round.",
     category: "general",
     categoryLabel: "General & About",
     tags: ["venue", "dates", "location", "offline"],
@@ -114,7 +114,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "reg-3",
     question: "WHAT IS THE DEADLINE TO REGISTER?",
     answer:
-      "Online squad registrations and Phase 1 abstract submissions close on March 15, 2026 at 23:59 IST. We strongly recommend completing registration early to receive mentorship updates and problem statement document packs.",
+      "Online squad registrations and Phase 1 abstract submissions close on September 26, 2026 at 23:59 IST. We strongly recommend completing registration early to receive mentorship updates and problem statement document packs.",
     category: "registration",
     categoryLabel: "Registration & Fees",
     tags: ["deadline", "last date", "closing time"],
