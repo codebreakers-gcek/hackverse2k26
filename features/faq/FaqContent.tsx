@@ -258,52 +258,34 @@ export function FaqContent() {
         {/* STILL HAVE QUESTIONS? CALL-TO-ACTION CARD (Obsidian Block) */}
         {/* ========================================================================= */}
         <motion.div variants={itemVariants}>
-<<<<<<< HEAD
-          <div className="border-4 border-black bg-white p-6 sm:p-10 shadow-neo space-y-6 relative overflow-hidden">
-            <div className="absolute top-0 right-0 -mr-6 -mt-6 w-32 h-32 bg-neo-secondary/30 rounded-full blur-2xl pointer-events-none" />
-
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b-3 border-black pb-6">
+          <div className="bg-[#1B1B1B]/95 backdrop-blur-md border-4 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] p-6 sm:p-8 shadow-[8px_8px_0px_#000] space-y-6 relative overflow-hidden">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b-3 border-[#333333] pb-6 relative z-10">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-5">
                 {/* Friendly Minecraft Helper Mascot */}
-                <div className="relative w-32 h-36 sm:w-40 sm:h-44 md:w-48 md:h-52 shrink-0 drop-shadow-[6px_6px_0px_#000] select-none">
+                <div className="relative w-28 h-32 sm:w-36 sm:h-40 md:w-44 md:h-48 shrink-0 drop-shadow-[4px_4px_0px_#000] select-none">
                   <Image
                     src="/minecraft/hey.png"
                     alt="Friendly Minecraft Support Mascot"
                     fill
                     className="object-contain"
                   />
-                  <div className="absolute -top-2 -right-1 sm:-right-2 bg-neo-accent text-black font-mono text-[10px] sm:text-xs font-black px-2 py-0.5 border-2 border-black shadow-neo-sm rotate-6">
+                  <div className="absolute -top-2 -right-1 sm:-right-2 bg-[#FFAA00] text-black font-mono text-[10px] sm:text-xs font-black px-2 py-0.5 border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[2px_2px_0px_#000] rotate-6">
                     HEY HACKER!
                   </div>
                 </div>
 
                 <div className="space-y-2">
-                  <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-[#FFAA00] text-black border-2 border-black shadow-neo-sm inline-block">
-                    ★ 24/7 MENTOR DESK ★
+                  <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000] inline-block">
+                    ★ 24/7 DIRECT MENTOR DESK ★
                   </span>
-                  <h3 className="font-black text-2xl sm:text-3xl text-black uppercase tracking-tight">
+                  <h3 className="font-mono font-black text-2xl sm:text-3xl text-white uppercase tracking-tight [text-shadow:_2px_2px_0_#000]">
                     STILL GOT UNANSWERED QUERIES?
                   </h3>
-                  <p className="text-sm sm:text-base font-bold text-black/75 max-w-xl">
+                  <p className="font-mono text-xs sm:text-sm font-bold text-[#CCCCCC] max-w-xl leading-relaxed">
                     Our organizing committee and technical mentors are available 24/7 on Discord
                     and official support channels to assist your squad.
                   </p>
                 </div>
-=======
-          <div className="bg-[#1B1B1B]/95 backdrop-blur-md border-4 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] p-6 sm:p-8 shadow-[8px_8px_0px_#000] space-y-6 relative overflow-hidden">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b-3 border-[#333333] pb-6 relative z-10">
-              <div className="space-y-2">
-                <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000] inline-block">
-                  [DIRECT DESK]
-                </span>
-                <h3 className="font-mono font-black text-2xl sm:text-3xl text-white uppercase tracking-tight [text-shadow:_2px_2px_0_#000]">
-                  STILL GOT UNANSWERED QUERIES?
-                </h3>
-                <p className="font-mono text-xs sm:text-sm font-bold text-[#CCCCCC] max-w-xl leading-relaxed">
-                  Our organizing committee and technical mentors are available 24/7 on Discord
-                  and official support channels to assist your squad.
-                </p>
->>>>>>> 0d50337e47eb291054c731a119dbbe09080806d6
               </div>
 
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto shrink-0">
