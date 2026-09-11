@@ -36,11 +36,11 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden min-h-screen min-h-[100svh] flex flex-col justify-between items-center pt-12 pb-0 sm:pt-16 sm:pb-0 border-b-4 border-black">
+    <section className="relative overflow-hidden min-h-screen flex flex-col justify-between items-center pt-12 pb-0 sm:pt-16 sm:pb-0 border-b-4 border-black">
       {/* Minecraft Theme Responsive Background Layer (Full Viewport Height) */}
       <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden">
         <Image
-          src="/minecraft/1.png"
+          src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/1.png"
           alt="HackVerse Minecraft Background"
           fill
           priority

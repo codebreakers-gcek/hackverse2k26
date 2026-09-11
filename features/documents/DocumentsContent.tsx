@@ -66,7 +66,7 @@ export function DocumentsContent() {
       {/* Minecraft Documents Background Layer with Full Clarity */}
       <div className="fixed inset-0 z-0 pointer-events-none select-none overflow-hidden">
         <Image
-          src="/minecraft/documentbg.png"
+          src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/documentbg.png"
           alt="HackVerse Documents Minecraft Background"
           fill
           priority

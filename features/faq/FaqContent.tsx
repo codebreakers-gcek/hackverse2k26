@@ -74,7 +74,7 @@ export function FaqContent() {
       {/* Fixed Minecraft Background Layer with Full Clarity */}
       <div className="fixed inset-0 z-0 select-none pointer-events-none overflow-hidden">
         <Image
-          src="/minecraft/faqbg.png"
+          src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/faqbg.png"
           alt="Hackverse FAQ Background"
           fill
           priority
@@ -129,8 +129,8 @@ export function FaqContent() {
                 key={faq.id}
                 id={faq.id}
                 className={clsx(
-                  "bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[6px_6px_0px_#000] transition-all overflow-hidden scroll-mt-24",
-                  isOpen ? "translate-y-[-2px]" : "hover:translate-y-[-1px]"
+                  "border-4 border-black transition-all duration-200 overflow-hidden shadow-[4px_4px_0px_#000]",
+                  isOpen ? "bg-[#DBDBDB]" : "bg-[#C6C6C6]"
                 )}
               >
                 {/* ACCORDION HEADER / TRIGGER */}
@@ -168,18 +168,10 @@ export function FaqContent() {
 
                   {/* Right Control Icons */}
                   <div className="flex items-center gap-2 shrink-0 pt-1 sm:pt-0">
-                    {/* Copy Share Link Button (span with role=button to avoid button-in-button hydration error) */}
-                    <span
-                      role="button"
-                      tabIndex={0}
+                    {/* Copy Share Link Button */}
+                    <button
+                      type="button"
                       onClick={(e) => handleCopy(faq.id, e)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          handleCopy(faq.id, e as any);
-                        }
-                      }}
                       className="p-1.5 bg-[#707070] hover:bg-[#808080] text-white border-2 border-t-[#9E9E9E] border-l-[#9E9E9E] border-r-[#383838] border-b-[#383838] shadow-[2px_2px_0px_#000] transition-colors hidden sm:flex items-center justify-center cursor-pointer"
                       title="Copy direct link to this FAQ"
                       aria-label="Copy link"
@@ -189,7 +181,7 @@ export function FaqContent() {
                       ) : (
                         <Share2 className="w-3.5 h-3.5 stroke-[2.5px]" />
                       )}
-                    </span>
+                    </button>
 
                     {/* Expand / Chevron Indicator (Minecraft 3D Button) */}
                     <div
@@ -274,7 +266,7 @@ export function FaqContent() {
                 {/* Friendly Minecraft Helper Mascot */}
                 <div className="relative w-24 h-28 sm:w-32 sm:h-36 md:w-36 md:h-40 shrink-0 drop-shadow-[4px_4px_0px_#000] select-none">
                   <Image
-                    src="/minecraft/hey.png"
+                    src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/hey.png"
                     alt="Friendly Minecraft Support Mascot"
                     fill
                     className="object-contain"

@@ -35,7 +35,7 @@ export default function AboutPage() {
       {/* Fixed Minecraft Background Layer with Full Clarity */}
       <div className="fixed inset-0 z-0 select-none pointer-events-none overflow-hidden">
         <Image
-          src="/minecraft/aboutbg.png"
+          src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/aboutbg.png"
           alt="Hackverse About Background"
           fill
           priority

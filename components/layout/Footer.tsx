@@ -27,7 +27,7 @@ export function Footer() {
           {/* ========================================================================= */}
           <div className="hidden min-[1025px]:flex shrink-0 w-[220px] xl:w-[270px] 2xl:w-[310px] self-end justify-start pointer-events-none select-none">
             <img
-              src="/minecraft/minecraft_hostile_mob.png"
+              src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/minecraft_hostile_mob.png"
               alt="Minecraft Hostile Mobs"
               className="w-full h-auto object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.85)] [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]"
               loading="lazy"
@@ -235,7 +235,7 @@ export function Footer() {
           {/* ========================================================================= */}
           <div className="hidden min-[1025px]:flex shrink-0 w-[240px] xl:w-[290px] 2xl:w-[330px] self-end justify-end pointer-events-none select-none">
             <img
-              src="/minecraft/minecraft_group_mob.png"
+              src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/minecraft_group_mob.png"
               alt="Minecraft Survivor Squad"
               className="w-full h-auto object-contain drop-shadow-[0_15px_25px_rgba(0,0,0,0.85)] [mask-image:linear-gradient(to_bottom,black_80%,transparent_100%)]"
               loading="lazy"
