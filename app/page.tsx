@@ -45,7 +45,7 @@ export default function HomePage() {
           {/* Left Side Minecraft Coder at Desk */}
           <div className="absolute inset-y-0 left-0 w-full sm:w-[65%] md:w-[55%] lg:w-[48%] pointer-events-none select-none z-0 overflow-hidden">
             <Image
-              src="/minecraft/desk.jpg"
+              src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/desk.jpg"
               alt="Minecraft Coder at Desk"
               fill
               priority
@@ -66,7 +66,7 @@ export default function HomePage() {
           <div className="hidden lg:block absolute inset-y-0 right-0 w-[380px] xl:w-[480px] 2xl:w-[540px] pointer-events-none select-none z-10 drop-shadow-[12px_12px_0px_#000]">
             <div className="relative w-full h-full">
               <Image
-                src="/minecraft/team_3.png"
+                src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/team_3.png"
                 alt="Minecraft Squad Pass Mascot - Steve, Alex & Saddle Pig"
                 fill
                 className="object-contain object-bottom"
@@ -84,7 +84,7 @@ export default function HomePage() {
             <div className="flex flex-col items-center gap-2 lg:hidden">
               <div className="relative w-36 h-36 xs:w-44 xs:h-44 drop-shadow-[6px_6px_0px_#000]">
                 <Image
-                  src="/minecraft/team_3.png"
+                  src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/team_3.png"
                   alt="Minecraft Squad Pass Mascot"
                   fill
                   className="object-contain"

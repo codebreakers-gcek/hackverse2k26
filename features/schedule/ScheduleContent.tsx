@@ -47,7 +47,7 @@ export function ScheduleContent() {
       {/* Fixed Minecraft Background Layer with Full Clarity */}
       <div className="fixed inset-0 z-0 select-none pointer-events-none overflow-hidden">
         <Image
-          src="/minecraft/schedulebg.png"
+          src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/schedulebg.png"
           alt="Hackverse Schedule Background"
           fill
           priority

@@ -11,7 +11,7 @@ export function CodeBreakersSpotlight() {
       {/* Minecraft Background Layer */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
         <Image
-          src="/minecraft/minecraft_2.jpg"
+          src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/minecraft_2.jpg"
           alt="CodeBreakers Spotlight Minecraft Background"
           fill
           priority
