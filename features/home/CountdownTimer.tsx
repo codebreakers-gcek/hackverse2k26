@@ -63,20 +63,36 @@ export function CountdownTimer() {
   }
 
   const units = [
-    { label: "DAYS", value: String(timeLeft.days).padStart(2, "0"), color: "bg-neo-secondary" },
-    { label: "HOURS", value: String(timeLeft.hours).padStart(2, "0"), color: "bg-white" },
-    { label: "MINS", value: String(timeLeft.minutes).padStart(2, "0"), color: "bg-neo-muted" },
-    { label: "SECS", value: String(timeLeft.seconds).padStart(2, "0"), color: "bg-neo-accent" },
+    {
+      label: "DAYS",
+      value: String(timeLeft.days).padStart(2, "0"),
+      slotStyle: "bg-[#FFAA00] text-black border-4 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500]",
+    },
+    {
+      label: "HOURS",
+      value: String(timeLeft.hours).padStart(2, "0"),
+      slotStyle: "bg-[#E6E6E6] text-black border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#888888] border-b-[#888888]",
+    },
+    {
+      label: "MINS",
+      value: String(timeLeft.minutes).padStart(2, "0"),
+      slotStyle: "bg-[#55FFFF] text-black border-4 border-t-[#A6FFFF] border-l-[#A6FFFF] border-r-[#008888] border-b-[#008888]",
+    },
+    {
+      label: "SECS",
+      value: String(timeLeft.seconds).padStart(2, "0"),
+      slotStyle: "bg-[#FF5555] text-white border-4 border-t-[#FFAAAA] border-l-[#FFAAAA] border-r-[#880000] border-b-[#880000] [text-shadow:_1px_1px_0_#000]",
+    },
   ];
 
   return (
-    <div className="max-w-xl mx-auto my-6 px-1">
+    <div className="max-w-xl mx-auto my-5 px-1">
       <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-[10px] xs:text-xs font-black uppercase tracking-wider mb-2">
-        <span className="inline-flex items-center gap-1.5 bg-black text-white px-2.5 py-1 border-2 border-black shadow-neo-sm">
-          <span className="w-2 h-2 bg-neo-accent inline-block rounded-full animate-pulse" />
+        <span className="inline-flex items-center gap-1.5 bg-black text-[#55FF55] px-2.5 py-1 border-2 border-[#55FF55] shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+          <span className="w-2 h-2 bg-[#55FF55] inline-block rounded-none animate-pulse" />
           <span>HACKATHON KICKOFF IN:</span>
         </span>
-        <span className="inline-block bg-white text-black px-2.5 py-1 border-2 border-black shadow-neo-sm font-black">
+        <span className="inline-block bg-[#1B1B1B] text-[#FFAA00] px-2.5 py-1 border-2 border-[#FFAA00] shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000] font-black">
           OCTOBER 8, 2026
         </span>
       </div>
@@ -85,12 +101,12 @@ export function CountdownTimer() {
         {units.map((unit) => (
           <div
             key={unit.label}
-            className={`border-3 sm:border-4 border-black ${unit.color} p-2 sm:p-4 text-center shadow-neo-sm hover:-translate-y-0.5 transition-transform`}
+            className={`${unit.slotStyle} p-2 sm:p-4 text-center shadow-[3px_3px_0px_#000] hover:-translate-y-0.5 transition-transform`}
           >
-            <div className="font-black text-xl xs:text-2xl sm:text-4xl text-black leading-none font-mono">
+            <div className="font-black text-xl xs:text-2xl sm:text-4xl leading-none font-mono">
               {unit.value}
             </div>
-            <div className="font-mono text-[8px] xs:text-[9px] sm:text-xs font-black text-black tracking-wider uppercase mt-1">
+            <div className="font-mono text-[8px] xs:text-[9px] sm:text-xs font-black tracking-wider uppercase mt-1">
               {unit.label}
             </div>
           </div>

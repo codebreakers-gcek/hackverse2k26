@@ -121,7 +121,7 @@ export function GuidelinesContent() {
           >
             {[
               { label: "SQUAD SIZE", val: "3 - 6 MEMBERS", icon: Users, bg: "bg-neo-secondary" },
-              { label: "SPRINT DURATION", val: "36 HOURS LIVE", icon: Flame, bg: "bg-neo-accent" },
+              { label: "SPRINT DURATION", val: "24 HOURS LIVE", icon: Flame, bg: "bg-neo-accent" },
               { label: "CASH POOL", val: "₹35K+", icon: Award, bg: "bg-white" },
               { label: "IP OWNERSHIP", val: "100% CREATOR OWNED", icon: ShieldCheck, bg: "bg-emerald-300" },
               { label: "EVALUATION", val: "5 JUDGING CRITERIA", icon: Scale, bg: "bg-purple-300" },
@@ -732,7 +732,7 @@ export function GuidelinesContent() {
               REGISTER YOUR SQUAD TODAY
             </h3>
             <p className="font-bold text-xs sm:text-sm text-neutral-300 max-w-xl leading-relaxed">
-              Equip your team with an original idea, align with the 36-hour sprint format, and compete for ₹1,50,000+ in prizes.
+              Equip your team with an original idea, align with the 24-hour sprint format, and compete for ₹1,50,000+ in prizes.
             </p>
           </div>
 

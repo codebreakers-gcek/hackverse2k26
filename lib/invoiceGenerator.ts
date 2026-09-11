@@ -211,7 +211,7 @@ export async function generateInvoicePdfBuffer(
       doc.text("HACKVERSE '26 Team Registration", pageMargin, currentY);
       doc.fontSize(8).font("Helvetica").fillColor("#666666");
       doc.text(
-        `36h continuous state hackathon pass (${data.teamName})`,
+        `24h continuous state hackathon pass (${data.teamName})`,
         pageMargin,
         currentY + 12,
       );

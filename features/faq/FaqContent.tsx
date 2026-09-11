@@ -146,7 +146,7 @@ export function FaqContent() {
             tag="KNOWLEDGE BASE // QUERY DESK"
             title="FREQUENTLY ASKED"
             highlightText="QUESTIONS"
-            subtitle="Everything you need to know about team formations, travel logistics, problem statements, evaluation rubrics, and the 36-hour sprint at GCEK Bhawanipatna."
+            subtitle="Everything you need to know about team formations, travel logistics, problem statements, evaluation rubrics, and the 24-hour sprint at GCEK Bhawanipatna."
           />
         </motion.div>
 
@@ -529,7 +529,7 @@ export function FaqContent() {
           "GOT QUESTIONS? WE'VE GOT ANSWERS",
           "MARCH 28-30, 2026",
           "GCEK BHAWANIPATNA",
-          "36-HOUR BUILD SPRINT",
+          "24-HOUR BUILD SPRINT",
           "₹10K+ PRIZES",
           "24/7 MENTOR DESK",
         ]}

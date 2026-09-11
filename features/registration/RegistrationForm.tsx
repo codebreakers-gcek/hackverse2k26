@@ -1378,7 +1378,7 @@ export function RegistrationForm() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-bold text-black">
                       <div className="flex items-center gap-1.5">
                         <span className="text-emerald-600 font-black">✔</span>
-                        <span>36-Hour Continuous Hack Arena Access</span>
+                        <span>24-Hour Continuous Hack Arena Access</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <span className="text-emerald-600 font-black">✔</span>

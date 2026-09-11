@@ -7,7 +7,7 @@
  * ============================================================================
  */
 export const HEADER_UPDATES: string[] = [
-  "🔥 REGISTRATIONS ARE LIVE — 36-Hour State Flagship Hackathon at GCEK Bhawanipatna",
+  "🔥 REGISTRATIONS ARE LIVE — 24-Hour State Flagship Hackathon at GCEK Bhawanipatna",
   "🏆 ₹35K+ CASH PRIZE + Direct Internship & Interview Referrals",
   "⚡ 4 ARENAS OPEN: Artificial Intelligence, Web3 & Cloud, Cybersecurity, IoT & Embedded",
   "📅 GRAND FINALE DATES: OCTOBER 08 – 10, 2026 // Government College of Engineering Kalahandi",

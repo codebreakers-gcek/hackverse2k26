@@ -67,7 +67,7 @@ export const SCHEDULE_DATA: ScheduleData = {
       progressPercentage: 0,
       items: [
         "Location: Main Auditorium & Advanced Computing Lab Complex, GCEK Bhawanipatna.",
-        "Duration: 36 hours of continuous on-site prototyping, code sprint, mentorship check-ins, and jury review.",
+        "Duration: 24 hours of continuous on-site prototyping, code sprint, mentorship check-ins, and jury review.",
         "Three progressive sub-rounds of judging and final live prototype demonstration.",
         "Facilities provided for uninterrupted development, meals, and accommodations.",
         "Grand Valedictory Ceremony and ₹1,50,000+ Prize Distribution.",

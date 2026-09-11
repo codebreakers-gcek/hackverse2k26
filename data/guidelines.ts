@@ -274,7 +274,7 @@ export const STRUCTURED_RULES = [
     category: "fair-play",
     categoryLabel: "Professionalism",
     title: "Professionalism & Ethical Conduct",
-    description: "Teams are expected to maintain the highest levels of professionalism, collaborative spirit, and ethical conduct throughout the 36-hour sprint.",
+    description: "Teams are expected to maintain the highest levels of professionalism, collaborative spirit, and ethical conduct throughout the 24-hour sprint.",
     tag: "PROFESSIONALISM",
     tagType: "neutral" as const,
     severity: "standard" as const,

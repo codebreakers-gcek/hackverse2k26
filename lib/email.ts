@@ -151,7 +151,7 @@ function renderEmailShell(title: string, contentHtml: string): string {
         HACKVERSE &apos;26
       </h1>
       <div style="font-size: 12px; color: #facc15; font-family: monospace; margin-top: 4px; font-weight: bold;">
-        36-HOUR CONTINUOUS STATE HACKATHON
+        24-HOUR CONTINUOUS STATE HACKATHON
       </div>
     </div>
 
@@ -247,7 +247,7 @@ export async function sendRegistrationSubmissionEmail(data: RegistrationEmailDat
           <tr>
             <td>
               <strong>HACKVERSE 2026 Team Registration</strong><br>
-              <span style="font-size: 11px; color: #71717a;">Includes 36h Arena, Meals &amp; Goodies</span>
+              <span style="font-size: 11px; color: #71717a;">Includes 24h Arena, Meals &amp; Goodies</span>
             </td>
             <td style="font-family: monospace; font-size: 12px;">
               ${data.paymentDetails?.paymentMode || "FREE_SPONSORED"}<br>
@@ -381,7 +381,7 @@ export async function sendRegistrationApprovedEmail(data: RegistrationEmailData)
         &bull; <strong>Squad:</strong> ${data.teamName}<br>
         &bull; <strong>Dates:</strong> ${EVENT_DATA.displayDates}<br>
         &bull; <strong>Venue:</strong> ${EVENT_DATA.location.campus}, ${EVENT_DATA.location.city}<br>
-        &bull; <strong>Access Tier:</strong> ALL-ACCESS PASS (36h Arena + Meals + Ports)
+        &bull; <strong>Access Tier:</strong> ALL-ACCESS PASS (24h Arena + Meals + Ports)
       </div>
     </div>
 

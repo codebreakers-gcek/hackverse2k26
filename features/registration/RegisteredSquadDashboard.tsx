@@ -362,10 +362,10 @@ export function RegisteredSquadDashboard({
             OFFICIAL TOURNAMENT PASS
           </span>
           <h3 className="font-black text-xl sm:text-2xl text-black uppercase tracking-tight">
-            HACKVERSE &apos;26 36-HOUR PASS CONFIRMED
+            HACKVERSE &apos;26 24-HOUR PASS CONFIRMED
           </h3>
           <p className="text-xs sm:text-sm font-bold text-black/80 max-w-xl">
-            Pass includes continuous 36H arena seating, 1Gbps high-speed network ports, complimentary food passes, and official state participation certificates.
+            Pass includes continuous 24H arena seating, 1Gbps high-speed network ports, complimentary food passes, and official state participation certificates.
           </p>
         </div>
 
