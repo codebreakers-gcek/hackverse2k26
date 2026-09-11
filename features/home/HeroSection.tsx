@@ -123,8 +123,8 @@ export function HeroSection() {
 
         {/* Introduction */}
         <motion.div variants={itemVariants} className="max-w-3xl mx-auto my-3 px-2">
-          <div className="bg-white/95 backdrop-blur-sm border-3 border-black p-3.5 sm:p-4 shadow-neo text-center">
-            <p className="text-xs sm:text-sm md:text-base font-bold text-black leading-relaxed">
+          <div className="bg-[#1B1B1B]/90 backdrop-blur-sm border-4 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] p-3.5 sm:p-5 shadow-[4px_4px_0px_#000] text-center">
+            <p className="text-xs sm:text-sm md:text-base font-bold text-[#EAEAEA] font-mono leading-relaxed">
               {EVENT_DATA.shortDescription}
             </p>
           </div>
@@ -133,14 +133,14 @@ export function HeroSection() {
         {/* Event Date & Location Chips */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 my-5 sm:my-6 px-2"
+          className="flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 my-4 sm:my-5 px-2"
         >
-          <div className="inline-flex items-center gap-2 bg-white border-2 sm:border-3 border-black px-3 sm:px-4 py-1.5 sm:py-2 shadow-neo-sm font-mono text-[11px] sm:text-sm font-black text-black">
-            <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neo-accent stroke-[3px]" />
+          <div className="inline-flex items-center gap-2 bg-[#1B1B1B] text-white border-3 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-3.5 sm:px-4 py-1.5 sm:py-2 shadow-[3px_3px_0px_#000] font-mono text-[11px] sm:text-sm font-black">
+            <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#FFAA00] stroke-[3px]" />
             <span>{EVENT_DATA.displayDates}</span>
           </div>
-          <div className="inline-flex items-center gap-2 bg-white border-2 sm:border-3 border-black px-3 sm:px-4 py-1.5 sm:py-2 shadow-neo-sm font-mono text-[11px] sm:text-sm font-black text-black">
-            <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-neo-secondary stroke-[3px]" />
+          <div className="inline-flex items-center gap-2 bg-[#1B1B1B] text-white border-3 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-3.5 sm:px-4 py-1.5 sm:py-2 shadow-[3px_3px_0px_#000] font-mono text-[11px] sm:text-sm font-black">
+            <MapPin className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#55FF55] stroke-[3px]" />
             <span>{EVENT_DATA.location.venue}, {EVENT_DATA.location.city}</span>
           </div>
         </motion.div>
@@ -153,7 +153,7 @@ export function HeroSection() {
         {/* Primary Call-to-Actions */}
         <motion.div
           variants={itemVariants}
-          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-6 sm:mt-8 px-2"
+          className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mt-5 sm:mt-7 px-2"
         >
           <motion.div
             whileHover={shouldReduceMotion ? {} : { y: -2 }}
@@ -163,7 +163,7 @@ export function HeroSection() {
           >
             <Link
               href="/register"
-              className="w-full sm:w-auto h-13 sm:h-14 px-6 sm:px-8 bg-neo-accent text-black font-black text-sm sm:text-base uppercase tracking-wider border-4 border-black shadow-neo hover:shadow-neo-lg active:shadow-none transition-shadow flex items-center justify-center gap-2"
+              className="w-full sm:w-auto h-13 sm:h-14 px-6 sm:px-8 bg-[#5B8731] hover:bg-[#689B37] text-white font-mono font-black text-sm sm:text-base uppercase tracking-wider border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] active:border-t-[#2C4813] active:border-l-[#2C4813] active:border-r-[#85B745] active:border-b-[#85B745] shadow-[4px_4px_0px_#000] [text-shadow:_2px_2px_0_#000] flex items-center justify-center gap-2 transition-colors"
             >
               <span>REGISTER YOUR TEAM</span>
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3px]" />
@@ -178,7 +178,7 @@ export function HeroSection() {
           >
             <Link
               href="/problem-statements"
-              className="w-full sm:w-auto h-13 sm:h-14 px-6 sm:px-8 bg-white text-black font-black text-sm sm:text-base uppercase tracking-wider border-4 border-black shadow-neo hover:bg-neutral-50 hover:shadow-neo-lg active:shadow-none transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto h-13 sm:h-14 px-6 sm:px-8 bg-[#707070] hover:bg-[#808080] text-white font-mono font-black text-sm sm:text-base uppercase tracking-wider border-4 border-t-[#9E9E9E] border-l-[#9E9E9E] border-r-[#383838] border-b-[#383838] active:border-t-[#383838] active:border-l-[#383838] active:border-r-[#9E9E9E] active:border-b-[#9E9E9E] shadow-[4px_4px_0px_#000] [text-shadow:_2px_2px_0_#000] flex items-center justify-center gap-2 transition-colors"
             >
               <Terminal className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3px]" />
               <span>BROWSE PROBLEM STATEMENTS</span>
@@ -189,16 +189,16 @@ export function HeroSection() {
         {/* Trust Badges */}
         <motion.div
           variants={itemVariants}
-          className="mt-8 sm:mt-10 pt-4 flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 font-mono text-xs sm:text-sm font-black px-2"
+          className="mt-8 sm:mt-10 pt-3 flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 font-mono text-xs sm:text-sm font-black px-2"
         >
-          <span className="inline-flex items-center gap-1.5 bg-white text-black border-2 border-black px-3 py-1.5 shadow-neo-sm">
-            <Sparkles className="w-4 h-4 text-neo-accent stroke-[3px] shrink-0" /> NO REGISTRATION FEE
+          <span className="inline-flex items-center gap-1.5 bg-[#1B1B1B] text-white border-2 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-3 py-1.5 shadow-[2px_2px_0px_#000]">
+            <Sparkles className="w-4 h-4 text-[#55FF55] stroke-[3px] shrink-0" /> NO REGISTRATION FEE
           </span>
-          <span className="inline-flex items-center gap-1.5 bg-white text-black border-2 border-black px-3 py-1.5 shadow-neo-sm">
-            <Award className="w-4 h-4 text-neo-secondary stroke-[3px] shrink-0" /> CERTIFICATES FOR ALL PARTICIPANTS
+          <span className="inline-flex items-center gap-1.5 bg-[#1B1B1B] text-white border-2 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-3 py-1.5 shadow-[2px_2px_0px_#000]">
+            <Award className="w-4 h-4 text-[#FFAA00] stroke-[3px] shrink-0" /> CERTIFICATES FOR ALL PARTICIPANTS
           </span>
-          <span className="inline-flex items-center gap-1.5 bg-white text-black border-2 border-black px-3 py-1.5 shadow-neo-sm">
-            <Terminal className="w-4 h-4 text-neo-muted stroke-[3px] shrink-0" /> HARDWARE &amp; AI TRACKS
+          <span className="inline-flex items-center gap-1.5 bg-[#1B1B1B] text-white border-2 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-3 py-1.5 shadow-[2px_2px_0px_#000]">
+            <Terminal className="w-4 h-4 text-[#55FFFF] stroke-[3px] shrink-0" /> HARDWARE &amp; AI TRACKS
           </span>
         </motion.div>
       </motion.div>
