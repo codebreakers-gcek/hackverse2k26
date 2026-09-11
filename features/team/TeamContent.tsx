@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { officialIncharges, coreLeads, clubLeads } from "@/data/teamData";
 import { TeamCategory, TeamMember } from "@/types/team";
@@ -76,12 +77,24 @@ export function TeamContent() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-neo-bg w-full max-w-full overflow-x-hidden">
+    <div className="relative flex flex-col min-h-screen w-full max-w-full overflow-x-hidden">
+      {/* Fixed Minecraft Background Layer */}
+      <div className="fixed inset-0 z-0 select-none pointer-events-none overflow-hidden">
+        <Image
+          src="/minecraft/hackathon_group.png"
+          alt="Hackverse Team Background"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center blur-[4px] scale-105"
+        />
+      </div>
+
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="w-full max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-12 sm:space-y-16 min-w-0"
+        className="relative z-10 w-full max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-12 sm:space-y-16 min-w-0"
       >
         {/* ========================================================================= */}
         {/* SECTION 1: HEADER & INTRO */}
@@ -140,14 +153,14 @@ export function TeamContent() {
         {/* ========================================================================= */}
         {(selectedCategory === "all" || selectedCategory === "officials") && (
           <motion.div variants={itemVariants} className="space-y-6 w-full max-w-full">
-            <div className="flex items-center justify-between border-b-4 border-black pb-3">
+            <div className="flex items-center justify-between border-b-4 border-gray-900 pb-3">
               <div className="flex items-center gap-2">
                 <Crown className="w-6 h-6 text-amber-500 stroke-[2.5px]" />
-                <h3 className="font-black text-xl sm:text-2xl uppercase tracking-tight text-black">
+                <h3 className="font-black text-xl sm:text-2xl uppercase tracking-tight text-white ">
                   HON&apos;BLE PATRONS &amp; FACULTY ADVISORS
                 </h3>
               </div>
-              <span className="font-mono text-xs font-bold text-black/60 hidden sm:inline-block">
+              <span className="font-mono text-xs font-bold text-white/60 hidden sm:inline-block">
                 ACADEMIC &amp; INSTITUTIONAL GOVERNANCE
               </span>
             </div>
@@ -239,14 +252,14 @@ export function TeamContent() {
         {/* ========================================================================= */}
         {(selectedCategory === "all" || selectedCategory === "club") && (
           <motion.div variants={itemVariants} className="space-y-6">
-            <div className="flex items-center justify-between border-b-4 border-black pb-3">
+            <div className="flex items-center justify-between border-b-4 border-gray-900 pb-3">
               <div className="flex items-center gap-2">
-                <Code2 className="w-6 h-6 text-black stroke-[2.5px]" />
-                <h3 className="font-black text-xl sm:text-2xl uppercase tracking-tight text-black">
+                <Code2 className="w-6 h-6 text-white stroke-[2.5px]" />
+                <h3 className="font-black text-xl sm:text-2xl uppercase tracking-tight text-white">
                   MANAGEMENT &amp; TECHNICAL EXECUTIVES
                 </h3>
               </div>
-              <span className="font-mono text-xs font-bold text-black/60 hidden sm:inline-block">
+              <span className="font-mono text-xs font-bold text-white/60 hidden sm:inline-block">
                 SYSTEMS, PR, EVENTS &amp; DEV OPERATIONS
               </span>
             </div>
@@ -306,16 +319,18 @@ export function TeamContent() {
       </motion.div>
 
       {/* Marquee Banner */}
-      <MarqueeBanner
-        items={[
-          "CODEBREAKERS GCEK CREW",
-          "HACKVERSE '26 ARCHITECTS",
-          "STUDENT-LED INNOVATION",
-          "BHABANIPATNA ODISHA",
-          "BREAK CODE • FORGE REALITY",
-        ]}
-        bg="secondary"
-      />
+      <div className="relative z-10">
+        <MarqueeBanner
+          items={[
+            "CODEBREAKERS GCEK CREW",
+            "HACKVERSE '26 ARCHITECTS",
+            "STUDENT-LED INNOVATION",
+            "BHABANIPATNA ODISHA",
+            "BREAK CODE • FORGE REALITY",
+          ]}
+          bg="secondary"
+        />
+      </div>
     </div>
   );
 }

@@ -40,11 +40,9 @@ export function SectionTitle({
         )}
       </h2>
       {subtitle && (
-        <div className="mt-2.5 sm:mt-4 max-w-2xl inline-block bg-white/95 backdrop-blur-sm border-2 border-black px-3.5 sm:px-4 py-1.5 sm:py-2 shadow-neo-sm">
-          <p className="text-xs sm:text-sm md:text-base font-bold text-black leading-relaxed break-words">
-            {subtitle}
-          </p>
-        </div>
+        <p className="mt-2.5 sm:mt-4 max-w-2xl text-xs sm:text-base md:text-lg font-bold text-black/75 leading-relaxed break-words">
+          {subtitle}
+        </p>
       )}
     </div>
   );
