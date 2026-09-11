@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import clsx from "clsx";
 import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
-import { SectionTitle } from "@/components/common/SectionTitle";
+import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 
 export function DomainTrackConsole() {
   const [isProblemStatementsPublished, setIsProblemStatementsPublished] = useState<boolean>(false);
@@ -43,16 +43,16 @@ export function DomainTrackConsole() {
   };
 
   return (
-    <section className="relative py-16 sm:py-24 border-b-4 border-black overflow-hidden bg-neutral-900">
+    <section className="relative pt-16 pb-0 sm:pt-24 sm:pb-0 border-b-4 border-black overflow-hidden bg-neutral-900">
       {/* Minecraft Background Layer */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
         <Image
-          src="/minecraft/wallpaper.jpg"
+          src="/minecraft/wallpaper.png"
           alt="Choose Your Battleground Minecraft Background"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center scale-105"
+          className="object-cover object-center blur-[2px]"
         />
         {/* Subtle dark vignette & pixel backdrop */}
         <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
@@ -212,6 +212,21 @@ export function DomainTrackConsole() {
             </div>
           )}
         </div>
+      </div>
+
+      {/* 5. Ticker Divider (Full bleed edge-to-edge over Minecraft battleground image with zero gaps) */}
+      <div className="w-full relative z-20 mt-10 sm:mt-12 -mb-2 overflow-hidden">
+        <MarqueeBanner
+          items={[
+            "CHAMPION: ₹20K CASH",
+            "RUNNER UP: ₹10K CASH",
+            "STATE CERTIFICATES",
+            "DIRECT INTERVIEW REFERRALS",
+          ]}
+          bg="accent"
+          speed="fast"
+          bended
+        />
       </div>
     </section>
   );

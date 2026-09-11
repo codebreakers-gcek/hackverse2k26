@@ -6,8 +6,9 @@ import { Footer } from "@/components/layout/Footer";
 import { ScrollProgressCircle } from "@/components/layout/ScrollProgressCircle";
 import { AmbientCodeShapes } from "@/components/layout/AmbientCodeShapes";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
-import { CustomCursor } from "@/components/ui/CustomCursor";
 import { GsapLoader } from "@/components/ui/GsapLoader";
+import { MinecraftAudioPlayer } from "@/components/ui/MinecraftAudioPlayer";
+import { MinecraftSoundEffects } from "@/components/ui/MinecraftSoundEffects";
 
 const thuast = localFont({
   src: "../public/font/Thuast-Demo.otf",
@@ -182,15 +183,18 @@ export default function RootLayout({
       </head>
       <body className={`${thuast.variable} bg-neo-bg text-black min-h-screen flex flex-col font-sans selection:bg-neo-secondary selection:text-black relative`}>
         <GsapLoader />
+        <MinecraftSoundEffects />
         <SmoothScrollProvider>
-          <CustomCursor />
           <AmbientCodeShapes />
           <Navbar />
           <main className="flex-1 relative z-10">{children}</main>
           <Footer />
           <ScrollProgressCircle />
+          <MinecraftAudioPlayer />
         </SmoothScrollProvider>
       </body>
     </html>
   );
 }
+
+

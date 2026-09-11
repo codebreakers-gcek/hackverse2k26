@@ -12,6 +12,14 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/font/Minecraft.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --background: oklch(0.9801 0.0034 67.7835);
   --foreground: oklch(0.2006 0.0138 34.3909);
@@ -213,6 +221,7 @@ body {
   min-height: 100vh;
   position: relative;
 }
+
 
 main {
   width: 100%;
