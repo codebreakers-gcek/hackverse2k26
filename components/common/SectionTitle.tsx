@@ -40,7 +40,7 @@ export function SectionTitle({
         )}
       </h2>
       {subtitle && (
-        <p className="mt-2.5 sm:mt-4 max-w-2xl text-xs sm:text-base md:text-lg font-bold text-black/75 leading-relaxed break-words">
+        <p className="mt-2.5 sm:mt-4 max-w-2xl text-xs sm:text-base md:text-lg font-bold text-white/75 leading-relaxed break-words">
           {subtitle}
         </p>
       )}

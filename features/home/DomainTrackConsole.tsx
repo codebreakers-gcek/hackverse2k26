@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   Terminal,
   Cpu,
@@ -64,8 +65,20 @@ export function DomainTrackConsole() {
   };
 
   return (
-    <section className="py-20 bg-neo-bg border-b-4 border-black">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+    <section className="relative py-20 border-b-4 border-black overflow-hidden bg-neo-bg">
+      {/* Minecraft Background Layer */}
+      <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
+        <Image
+          src="/minecraft/image.png"
+          alt="Choose Your Battleground Minecraft Background"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center blur-[4px] scale-105"
+        />
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <SectionTitle
           tag="SYS.TRACK // ARENAS"
           title="CHOOSE YOUR"
@@ -134,59 +147,59 @@ export function DomainTrackConsole() {
           ) : (
             /* Marquee Ticker: Continuous Left Flow of Problem Statements when Published */
             <div className="relative w-full overflow-hidden py-5 bg-neo-bg/60 select-none">
-            <div className="animate-marquee flex items-center gap-6 will-change-transform">
-              {[...PROBLEM_STATEMENTS_DATA, ...PROBLEM_STATEMENTS_DATA].map((ps, idx) => (
-                <Link
-                  key={`${ps.id}-${idx}`}
-                  href={`/problem-statements#${ps.id}`}
-                  className="group shrink-0 w-72 xs:w-80 sm:w-96 border-3 border-black bg-white p-3.5 sm:p-4 shadow-neo-sm hover:shadow-neo hover:-translate-y-1 transition-all duration-150 flex flex-col justify-between"
-                >
-                  <div className="space-y-2">
-                    {/* Top Badges */}
-                    <div className="flex items-center justify-between gap-2 border-b-2 border-black/15 pb-2">
-                      <span className="font-mono text-xs font-black bg-black text-white px-2 py-0.5 border border-black">
-                        {ps.code}
-                      </span>
-                      <div className="flex items-center gap-1.5">
-                        <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neo-muted border border-black">
-                          {ps.category}
+              <div className="animate-marquee flex items-center gap-6 will-change-transform">
+                {[...PROBLEM_STATEMENTS_DATA, ...PROBLEM_STATEMENTS_DATA].map((ps, idx) => (
+                  <Link
+                    key={`${ps.id}-${idx}`}
+                    href={`/problem-statements#${ps.id}`}
+                    className="group shrink-0 w-72 xs:w-80 sm:w-96 border-3 border-black bg-white p-3.5 sm:p-4 shadow-neo-sm hover:shadow-neo hover:-translate-y-1 transition-all duration-150 flex flex-col justify-between"
+                  >
+                    <div className="space-y-2">
+                      {/* Top Badges */}
+                      <div className="flex items-center justify-between gap-2 border-b-2 border-black/15 pb-2">
+                        <span className="font-mono text-xs font-black bg-black text-white px-2 py-0.5 border border-black">
+                          {ps.code}
                         </span>
-                        <span
-                          className={clsx(
-                            "font-mono text-[10px] font-black uppercase px-2 py-0.5 border",
-                            difficultyStyles[ps.difficulty] || "bg-white text-black border-black"
-                          )}
-                        >
-                          {ps.difficulty}
-                        </span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neo-muted border border-black">
+                            {ps.category}
+                          </span>
+                          <span
+                            className={clsx(
+                              "font-mono text-[10px] font-black uppercase px-2 py-0.5 border",
+                              difficultyStyles[ps.difficulty] || "bg-white text-black border-black"
+                            )}
+                          >
+                            {ps.difficulty}
+                          </span>
+                        </div>
                       </div>
+
+                      {/* Title */}
+                      <h4 className="font-black text-sm text-black uppercase tracking-tight line-clamp-1 group-hover:text-neo-accent transition-colors">
+                        {ps.title}
+                      </h4>
+
+                      {/* Short Description */}
+                      <p className="text-xs font-bold text-black/75 line-clamp-2 leading-relaxed">
+                        {ps.shortDescription}
+                      </p>
                     </div>
 
-                    {/* Title */}
-                    <h4 className="font-black text-sm text-black uppercase tracking-tight line-clamp-1 group-hover:text-neo-accent transition-colors">
-                      {ps.title}
-                    </h4>
-
-                    {/* Short Description */}
-                    <p className="text-xs font-bold text-black/75 line-clamp-2 leading-relaxed">
-                      {ps.shortDescription}
-                    </p>
-                  </div>
-
-                  {/* Footer CTA */}
-                  <div className="mt-3 pt-2 border-t-2 border-black/15 flex items-center justify-between text-xs font-black text-black">
-                    <span className="font-mono text-[10px] text-black/60 uppercase">
-                      {ps.suggestedStack.slice(0, 2).join(" • ")}
-                    </span>
-                    <span className="flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                      <span>VIEW PS</span>
-                      <ArrowRight className="w-3.5 h-3.5 stroke-[3px]" />
-                    </span>
-                  </div>
-                </Link>
-              ))}
+                    {/* Footer CTA */}
+                    <div className="mt-3 pt-2 border-t-2 border-black/15 flex items-center justify-between text-xs font-black text-black">
+                      <span className="font-mono text-[10px] text-black/60 uppercase">
+                        {ps.suggestedStack.slice(0, 2).join(" • ")}
+                      </span>
+                      <span className="flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                        <span>VIEW PS</span>
+                        <ArrowRight className="w-3.5 h-3.5 stroke-[3px]" />
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
           )}
         </div>
       </div>
