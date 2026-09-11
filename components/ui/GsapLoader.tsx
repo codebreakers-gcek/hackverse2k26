@@ -20,7 +20,10 @@ export function GsapLoader() {
 
   useEffect(() => {
     // Check if loader has already run in this browser session
-    if (typeof window !== "undefined" && sessionStorage.getItem("hackverse_loader_played")) {
+    if (
+      typeof window !== "undefined" &&
+      sessionStorage.getItem("hackverse_loader_played")
+    ) {
       setIsRendered(false);
       return;
     }
@@ -36,7 +39,7 @@ export function GsapLoader() {
       "GENERATING TERRAIN CHUNKS...",
       "LOADING HACKVERSE '26 PROTOCOLS...",
       "SUMMONING ARENAS (AI • WEB • CYBER • IOT)...",
-      "SPAWNING ₹1,50,000 PRIZE POOL...",
+      "SPAWNING ₹35,000 PRIZE POOL...",
       "SYNCING CODEBREAKERS GCEK SERVERS...",
       "WORLD LOADED! SPAWNING IN...",
     ];
@@ -63,14 +66,17 @@ export function GsapLoader() {
       // 1. Initial State Setup
       gsap.set(containerRef.current, { yPercent: 0 });
       gsap.set(trailingWipeRef.current, { yPercent: 0 });
-      gsap.set(progressFillRef.current, { scaleX: 0, transformOrigin: "left center" });
+      gsap.set(progressFillRef.current, {
+        scaleX: 0,
+        transformOrigin: "left center",
+      });
 
       // 2. Gentle Background Fade (no scale zoom)
       tl.fromTo(
         bgRef.current,
         { opacity: 0.7 },
         { opacity: 1, duration: 2.0, ease: "power1.out" },
-        0
+        0,
       );
 
       // 3. Central Hackverse 3D Logo Entrance (Pop & Settle)
@@ -85,7 +91,7 @@ export function GsapLoader() {
           duration: 0.7,
           ease: "back.out(1.3)",
         },
-        0.15
+        0.15,
       );
 
       // 4. Subtle Floating Idle motion on the 3D Logo
@@ -102,7 +108,7 @@ export function GsapLoader() {
         barContainerRef.current,
         { opacity: 0, y: 20 },
         { opacity: 1, y: 0, duration: 0.45, ease: "power2.out" },
-        "-=0.3"
+        "-=0.3",
       );
 
       // 6. Smooth Progress Bar Tween (0 -> 100%)
@@ -129,7 +135,7 @@ export function GsapLoader() {
             if (statusTextRef.current) {
               const stepIndex = Math.min(
                 Math.floor((progress / 100) * (statusSteps.length - 1)),
-                statusSteps.length - 1
+                statusSteps.length - 1,
               );
               statusTextRef.current.innerText = `> ${statusSteps[stepIndex]}`;
             }
@@ -138,13 +144,13 @@ export function GsapLoader() {
             if (tipTextRef.current) {
               const tipIndex = Math.min(
                 Math.floor((progress / 100) * tips.length),
-                tips.length - 1
+                tips.length - 1,
               );
               tipTextRef.current.innerText = tips[tipIndex];
             }
           },
         },
-        "-=0.1"
+        "-=0.1",
       );
 
       // 7. Brief celebration hold at 100%
@@ -158,7 +164,7 @@ export function GsapLoader() {
           yoyo: true,
           repeat: 1,
         },
-        "+=0.05"
+        "+=0.05",
       );
 
       tl.to({}, { duration: 0.15 });
@@ -175,7 +181,7 @@ export function GsapLoader() {
           duration: 0.4,
           ease: "power3.in",
         },
-        "exit"
+        "exit",
       );
 
       // Main container slides up like a theatrical curtain
@@ -186,7 +192,7 @@ export function GsapLoader() {
           duration: 0.8,
           ease: "power4.inOut",
         },
-        "exit+=0.2"
+        "exit+=0.2",
       );
 
       // Trailing Minecraft grass-green panel follows for an ultra-smooth transition
@@ -197,7 +203,7 @@ export function GsapLoader() {
           duration: 0.8,
           ease: "power4.inOut",
         },
-        "exit+=0.28"
+        "exit+=0.28",
       );
     });
 

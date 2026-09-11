@@ -111,12 +111,12 @@ export const clubLeads: TeamMember[] = [
     borderColor: "#06B6D4",
     gradient: "linear-gradient(135deg, #06B6D4, #000)",
     url: "https://github.com/codebydeepankar",
-    email: "deepankarsahoo18@gmail.com",
+    email: "deepankarsahoo68@gmail.com",
     socials: {
       github: "https://github.com/codebydeepankar",
       instagram: "",
       linkedin: "",
-      website: "https://www.deepankarsahoo.tech",
+      website: "https://www.deepankar.tech",
     },
   },
   {
