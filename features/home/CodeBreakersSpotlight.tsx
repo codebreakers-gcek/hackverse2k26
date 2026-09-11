@@ -57,36 +57,45 @@ export function CodeBreakersSpotlight() {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-            <div className="lg:col-span-2 space-y-4">
-              <h4 className="font-black text-xl sm:text-2xl text-black uppercase tracking-tight">
-                FOSTERING TECHNICAL EXCELLENCE &amp; HACKATHON CULTURE IN ODISHA
-              </h4>
-              <p className="text-base font-bold text-black/90 leading-relaxed">
-                CodeBreakers is the premier student-led technical body of Government College of Engineering Kalahandi. As builders who develop and deploy the institute&apos;s digital infrastructure and manage flagship college events like INSPRANO and UDAAN, we created HACKVERSE &apos;26 to give developers nationwide a pure, non-stop platform to build real software.
-              </p>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            {/* Left Content Column */}
+            <div className="lg:col-span-8 flex flex-col justify-between space-y-6">
+              <div className="space-y-4">
+                <h4 className="font-black text-xl sm:text-2xl text-black uppercase tracking-tight">
+                  FOSTERING TECHNICAL EXCELLENCE &amp; HACKATHON CULTURE IN ODISHA
+                </h4>
+                <p className="text-base font-bold text-black/90 leading-relaxed">
+                  CodeBreakers is the premier student-led technical body of Government College of Engineering Kalahandi. As builders who develop and deploy the institute&apos;s digital infrastructure and manage flagship college events like INSPRANO and UDAAN, we created HACKVERSE &apos;26 to give developers nationwide a pure, non-stop platform to build real software.
+                </p>
+              </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4">
-                <div className="border-3 border-black bg-white/40 backdrop-blur-md p-4 shadow-neo-sm hover:bg-white/70 transition-all">
-                  <Code className="w-6 h-6 text-black stroke-[3px] mb-2" />
-                  <div className="font-black text-sm uppercase">COMPETITIVE CODING</div>
-                  <p className="font-mono text-xs text-black/80 mt-1">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                <div className="border-3 border-black bg-white/40 backdrop-blur-md p-4 shadow-neo-sm hover:bg-white/70 transition-all flex flex-col justify-between">
+                  <div>
+                    <Code className="w-6 h-6 text-black stroke-[3px] mb-2" />
+                    <div className="font-black text-sm uppercase">COMPETITIVE CODING</div>
+                  </div>
+                  <p className="font-mono text-xs text-black/80 mt-2">
                     Regular 9-Lock and CodeChef contests.
                   </p>
                 </div>
 
-                <div className="border-3 border-black bg-white/40 backdrop-blur-md p-4 shadow-neo-sm hover:bg-white/70 transition-all">
-                  <Terminal className="w-6 h-6 text-black stroke-[3px] mb-2" />
-                  <div className="font-black text-sm uppercase">REAL-WORLD APPS</div>
-                  <p className="font-mono text-xs text-black/80 mt-1">
+                <div className="border-3 border-black bg-white/40 backdrop-blur-md p-4 shadow-neo-sm hover:bg-white/70 transition-all flex flex-col justify-between">
+                  <div>
+                    <Terminal className="w-6 h-6 text-black stroke-[3px] mb-2" />
+                    <div className="font-black text-sm uppercase">REAL-WORLD APPS</div>
+                  </div>
+                  <p className="font-mono text-xs text-black/80 mt-2">
                     Production systems shipped for 5000+ users.
                   </p>
                 </div>
 
-                <div className="border-3 border-black bg-white/40 backdrop-blur-md p-4 shadow-neo-sm hover:bg-white/70 transition-all">
-                  <Users className="w-6 h-6 text-black stroke-[3px] mb-2" />
-                  <div className="font-black text-sm uppercase">PEER MENTORSHIP</div>
-                  <p className="font-mono text-xs text-black/80 mt-1">
+                <div className="border-3 border-black bg-white/40 backdrop-blur-md p-4 shadow-neo-sm hover:bg-white/70 transition-all flex flex-col justify-between">
+                  <div>
+                    <Users className="w-6 h-6 text-black stroke-[3px] mb-2" />
+                    <div className="font-black text-sm uppercase">PEER MENTORSHIP</div>
+                  </div>
+                  <p className="font-mono text-xs text-black/80 mt-2">
                     Seniors &amp; alumni guiding juniors daily.
                   </p>
                 </div>
@@ -94,18 +103,20 @@ export function CodeBreakersSpotlight() {
             </div>
 
             {/* Right Card */}
-            <div className="border-4 border-black bg-neo-secondary/75 backdrop-blur-lg p-6 shadow-neo space-y-4 text-center">
-              <div className="font-mono text-xs font-black uppercase text-black/70">
-                HOST INSTITUTION
+            <div className="lg:col-span-4 border-4 border-black bg-neo-secondary/80 backdrop-blur-lg p-6 sm:p-8 shadow-neo flex flex-col justify-between text-center space-y-6">
+              <div className="space-y-3">
+                <div className="font-mono text-xs font-black uppercase text-black/70 inline-block bg-white/50 border border-black px-2 py-0.5 shadow-neo-xs">
+                  HOST INSTITUTION
+                </div>
+                <div className="font-black text-xl sm:text-2xl text-black uppercase leading-snug">
+                  GOVERNMENT COLLEGE OF ENGINEERING KALAHANDI
+                </div>
+                <p className="text-xs sm:text-sm font-bold text-black/80">
+                  Bandopala, Bhawanipatna, Kalahandi, Odisha - 766002
+                </p>
               </div>
-              <div className="font-black text-xl text-black uppercase leading-snug">
-                GOVERNMENT COLLEGE OF ENGINEERING KALAHANDI
-              </div>
-              <p className="text-xs font-bold text-black/80">
-                Bandopala, Bhawanipatna, Kalahandi, Odisha - 766002
-              </p>
 
-              <div className="pt-2 flex flex-col gap-2">
+              <div className="pt-2 flex flex-col gap-2.5">
                 <a
                   href={ENV.OFFICIAL_CLUB_URL}
                   target="_blank"

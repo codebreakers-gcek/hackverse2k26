@@ -168,10 +168,18 @@ export function FaqContent() {
 
                   {/* Right Control Icons */}
                   <div className="flex items-center gap-2 shrink-0 pt-1 sm:pt-0">
-                    {/* Copy Share Link Button */}
-                    <button
-                      type="button"
+                    {/* Copy Share Link Button (span with role=button to avoid button-in-button hydration error) */}
+                    <span
+                      role="button"
+                      tabIndex={0}
                       onClick={(e) => handleCopy(faq.id, e)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleCopy(faq.id, e as any);
+                        }
+                      }}
                       className="p-1.5 bg-[#707070] hover:bg-[#808080] text-white border-2 border-t-[#9E9E9E] border-l-[#9E9E9E] border-r-[#383838] border-b-[#383838] shadow-[2px_2px_0px_#000] transition-colors hidden sm:flex items-center justify-center cursor-pointer"
                       title="Copy direct link to this FAQ"
                       aria-label="Copy link"
@@ -181,7 +189,7 @@ export function FaqContent() {
                       ) : (
                         <Share2 className="w-3.5 h-3.5 stroke-[2.5px]" />
                       )}
-                    </button>
+                    </span>
 
                     {/* Expand / Chevron Indicator (Minecraft 3D Button) */}
                     <div
