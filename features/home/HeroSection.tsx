@@ -44,7 +44,7 @@ export function HeroSection() {
           alt="HackVerse Minecraft Background"
           fill
           priority
-          quality={100}
+          unoptimized
           sizes="100vw"
           className="object-cover object-center"
         />

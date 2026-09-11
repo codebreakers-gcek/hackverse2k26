@@ -236,7 +236,7 @@ export function GsapLoader() {
             alt="Minecraft Loader Environment"
             fill
             priority
-            quality={100}
+            unoptimized
             sizes="100vw"
             className="object-cover object-center"
           />
@@ -266,6 +266,7 @@ export function GsapLoader() {
                   alt="CodeBreakers Logo"
                   width={24}
                   height={24}
+                  unoptimized
                   className="w-full h-full object-contain"
                 />
               </div>
@@ -288,6 +289,7 @@ export function GsapLoader() {
                 width={900}
                 height={260}
                 priority
+                unoptimized
                 className="w-full h-auto object-contain select-none"
               />
             </div>
@@ -367,7 +369,7 @@ export function GsapLoader() {
             className="text-[10px] sm:text-xs text-neutral-300 font-bold [text-shadow:_1px_1px_0_#000]"
             style={{ fontFamily: "'Minecraft', monospace" }}
           >
-            October 28-30, 2026 // GCEK CAMPUS
+            October 08-10, 2026 // GCEK CAMPUS
           </div>
 
           <div

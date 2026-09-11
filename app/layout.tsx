@@ -176,6 +176,9 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;900&display=swap"
           rel="stylesheet"
         />
+        <link rel="preload" as="image" href="/minecraft_loader/bg.webp" type="image/webp" />
+        <link rel="preload" as="image" href="/minecraft_loader/hackverse.webp" type="image/webp" />
+        <link rel="preload" as="image" href="/minecraft/1.webp" type="image/webp" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
