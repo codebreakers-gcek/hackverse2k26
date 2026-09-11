@@ -7,6 +7,7 @@ import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { ArrowRight, Calendar, MapPin, Sparkles, Terminal, Award } from "lucide-react";
 import { EVENT_DATA } from "@/data/event";
 import { CountdownTimer } from "./CountdownTimer";
+import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 
 export function HeroSection() {
   const shouldReduceMotion = useReducedMotion();
@@ -35,7 +36,7 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative overflow-hidden min-h-screen min-h-[100svh] flex flex-col justify-center items-center pt-14 pb-16 sm:pt-20 sm:pb-20 border-b-4 border-black">
+    <section className="relative overflow-hidden min-h-screen min-h-[100svh] flex flex-col justify-between items-center pt-12 pb-0 sm:pt-16 sm:pb-0 border-b-4 border-black">
       {/* Minecraft Theme Responsive Background Layer (Full Viewport Height) */}
       <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden">
         <Image
@@ -185,23 +186,12 @@ export function HeroSection() {
             </Link>
           </motion.div>
         </motion.div>
-
-        {/* Trust Badges */}
-        <motion.div
-          variants={itemVariants}
-          className="mt-8 sm:mt-10 pt-3 flex flex-wrap items-center justify-center gap-2.5 sm:gap-4 font-mono text-xs sm:text-sm font-black px-2"
-        >
-          <span className="inline-flex items-center gap-1.5 bg-[#1B1B1B] text-white border-2 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-3 py-1.5 shadow-[2px_2px_0px_#000]">
-            <Sparkles className="w-4 h-4 text-[#55FF55] stroke-[3px] shrink-0" /> NO REGISTRATION FEE
-          </span>
-          <span className="inline-flex items-center gap-1.5 bg-[#1B1B1B] text-white border-2 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-3 py-1.5 shadow-[2px_2px_0px_#000]">
-            <Award className="w-4 h-4 text-[#FFAA00] stroke-[3px] shrink-0" /> CERTIFICATES FOR ALL PARTICIPANTS
-          </span>
-          <span className="inline-flex items-center gap-1.5 bg-[#1B1B1B] text-white border-2 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-3 py-1.5 shadow-[2px_2px_0px_#000]">
-            <Terminal className="w-4 h-4 text-[#55FFFF] stroke-[3px] shrink-0" /> HARDWARE &amp; AI TRACKS
-          </span>
-        </motion.div>
       </motion.div>
+
+      {/* 2. Scrolling Ticker Marquee (Embedded over Minecraft hero image with zero white gaps) */}
+      <div className="w-full relative z-20 mt-8 overflow-hidden">
+        <MarqueeBanner bg="secondary" speed="normal" bended />
+      </div>
     </section>
   );
 }

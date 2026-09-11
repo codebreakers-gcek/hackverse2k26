@@ -2,7 +2,65 @@
 
 import React, { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, AnimatePresence } from "framer-motion";
+
+function MinecraftDiamondAxe({ isHovered, isClicking }: { isHovered: boolean; isClicking: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 16 16"
+      width="36"
+      height="36"
+      className="pointer-events-none select-none"
+      shapeRendering="crispEdges"
+      style={{
+        filter: isHovered
+          ? "drop-shadow(0 0 8px #55FFFF) drop-shadow(2px 2px 0px #000)"
+          : "drop-shadow(2px 2px 0px rgba(0,0,0,0.85))",
+      }}
+    >
+      {/* Handle / Wooden Stick */}
+      <rect x="1" y="14" width="1" height="1" fill="#2E1B0E" />
+      <rect x="2" y="13" width="1" height="1" fill="#4D2E17" />
+      <rect x="2" y="14" width="1" height="1" fill="#3D2412" />
+      <rect x="3" y="12" width="1" height="1" fill="#693F1F" />
+      <rect x="3" y="13" width="1" height="1" fill="#523118" />
+      <rect x="4" y="11" width="1" height="1" fill="#875128" />
+      <rect x="4" y="12" width="1" height="1" fill="#693F1F" />
+      <rect x="5" y="10" width="1" height="1" fill="#875128" />
+      <rect x="5" y="11" width="1" height="1" fill="#693F1F" />
+      <rect x="6" y="9" width="1" height="1" fill="#A06030" />
+      <rect x="6" y="10" width="1" height="1" fill="#875128" />
+      <rect x="7" y="8" width="1" height="1" fill="#A06030" />
+      <rect x="7" y="9" width="1" height="1" fill="#875128" />
+      <rect x="8" y="7" width="1" height="1" fill="#A06030" />
+      <rect x="8" y="8" width="1" height="1" fill="#875128" />
+      <rect x="9" y="6" width="1" height="1" fill="#875128" />
+      <rect x="9" y="7" width="1" height="1" fill="#693F1F" />
+      <rect x="10" y="5" width="1" height="1" fill="#693F1F" />
+
+      {/* Diamond Axe Head Outlines */}
+      <rect x="5" y="1" width="4" height="1" fill="#0D2E35" />
+      <rect x="4" y="2" width="1" height="4" fill="#0D2E35" />
+      <rect x="9" y="2" width="2" height="1" fill="#0D2E35" />
+      <rect x="11" y="3" width="1" height="2" fill="#0D2E35" />
+      <rect x="10" y="5" width="1" height="2" fill="#0D2E35" />
+      <rect x="8" y="5" width="2" height="1" fill="#0D2E35" />
+      <rect x="7" y="6" width="1" height="1" fill="#0D2E35" />
+      <rect x="5" y="6" width="2" height="1" fill="#0D2E35" />
+
+      {/* Diamond Blade Fill (Highlights & Depth) */}
+      <rect x="5" y="2" width="4" height="1" fill="#75FFFF" />
+      <rect x="5" y="3" width="1" height="3" fill="#75FFFF" />
+      <rect x="6" y="3" width="3" height="1" fill="#4AEDED" />
+      <rect x="9" y="3" width="2" height="1" fill="#2CC5C5" />
+      <rect x="6" y="4" width="3" height="1" fill="#2CC5C5" />
+      <rect x="9" y="4" width="2" height="1" fill="#1B9B9B" />
+      <rect x="6" y="5" width="2" height="1" fill="#1B9B9B" />
+      <rect x="8" y="4" width="1" height="1" fill="#1B9B9B" />
+      <rect x="7" y="5" width="1" height="1" fill="#126868" />
+    </svg>
+  );
+}
 
 export function CustomCursor() {
   const pathname = usePathname();
@@ -14,10 +72,6 @@ export function CustomCursor() {
   // Raw mouse coordinates
   const mouseX = useMotionValue(-100);
   const mouseY = useMotionValue(-100);
-
-  // Smooth springs for outer trailing ring
-  const springX = useSpring(mouseX, { damping: 26, stiffness: 320, mass: 0.4 });
-  const springY = useSpring(mouseY, { damping: 26, stiffness: 320, mass: 0.4 });
 
   useEffect(() => {
     // Only mount on devices with a mouse/fine pointer (ignore touchscreens)
@@ -73,36 +127,43 @@ export function CustomCursor() {
       aria-hidden="true"
       className="hidden md:block pointer-events-none fixed inset-0 z-[9999] select-none"
     >
-      {/* Outer Smooth Trailing Ring (Black Colored & Radiused) */}
-      <motion.div
-        style={{
-          x: springX,
-          y: springY,
-          translateX: "-50%",
-          translateY: "-50%",
-        }}
-        animate={{
-          scale: isClicking ? 0.8 : isHovered ? 1.6 : 1,
-          opacity: isHovered ? 0.9 : 0.6,
-        }}
-        transition={{ duration: 0.15 }}
-        className="fixed top-0 left-0 w-8 h-8 rounded-full border-2 border-black pointer-events-none"
-      />
-
-      {/* Center Black Radiused Pointer Dot */}
+      {/* Minecraft Axe Cursor Pointer */}
       <motion.div
         style={{
           x: mouseX,
           y: mouseY,
-          translateX: "-50%",
-          translateY: "-50%",
+          translateX: "-22%",
+          translateY: "-10%",
         }}
         animate={{
-          scale: isClicking ? 0.7 : isHovered ? 1.3 : 1,
+          scale: isClicking ? 0.9 : isHovered ? 1.15 : 1,
+          rotate: isClicking ? -38 : isHovered ? -12 : 0,
         }}
-        transition={{ duration: 0.08 }}
-        className="fixed top-0 left-0 w-3 h-3 rounded-full bg-black pointer-events-none shadow-sm"
-      />
+        transition={{
+          type: "spring",
+          stiffness: 700,
+          damping: 35,
+          mass: 0.1,
+        }}
+        className="fixed top-0 left-0 origin-[25%_15%] pointer-events-none"
+      >
+        <MinecraftDiamondAxe isHovered={isHovered} isClicking={isClicking} />
+
+        {/* Critical Hit Sparkle on Click */}
+        <AnimatePresence>
+          {isClicking && (
+            <motion.div
+              initial={{ scale: 0, opacity: 1, x: 0, y: 0 }}
+              animate={{ scale: 1.4, opacity: 0, x: -8, y: -8 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="absolute -top-1 -left-1 text-xs font-mono font-black text-[#55FFFF] pointer-events-none [text-shadow:_0_0_4px_#FFF]"
+            >
+              ✦
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 }

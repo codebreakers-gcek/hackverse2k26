@@ -146,10 +146,10 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "team-2",
     question: "CAN MEMBERS BE FROM DIFFERENT COLLEGES OR DIFFERENT MAJORS?",
     answer:
-      "YES! Cross-college, cross-department, and cross-year teams are fully permitted and warmly welcomed. You can team up with peers from any recognized university or institution across India.",
+      "NO. Cross-college teams are not permitted. All members of a squad must belong to the same college/institution. However, cross-department and cross-year teams from the same college are fully permitted and welcomed.",
     category: "teams",
     categoryLabel: "Teams & Eligibility",
-    tags: ["cross college", "different branch", "inter college"],
+    tags: ["same college", "cross college not allowed", "eligibility", "branches"],
   },
   {
     id: "team-3",

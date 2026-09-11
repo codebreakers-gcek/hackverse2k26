@@ -1,5 +1,6 @@
 import React from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { AboutOverview } from "@/features/about/AboutOverview";
 import { PillarCards } from "@/features/about/PillarCards";
 import { ClubMilestones } from "@/features/about/ClubMilestones";
@@ -30,13 +31,31 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-16">
+    <div className="relative flex flex-col min-h-screen w-full max-w-full overflow-x-hidden bg-neutral-950 text-black">
+      {/* Fixed Minecraft Background Layer with Full Clarity */}
+      <div className="fixed inset-0 z-0 select-none pointer-events-none overflow-hidden">
+        <Image
+          src="/minecraft/aboutbg.png"
+          alt="Hackverse About Background"
+          fill
+          priority
+          quality={100}
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        {/* Subtle dark tint to guarantee readability while preserving 100% full image clarity */}
+        <div className="absolute inset-0 bg-black/25 backdrop-blur-[0.5px]" />
+      </div>
+
+      <div className="relative z-10 w-full max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-16 min-w-0">
         <AboutOverview />
         <PillarCards />
         <ClubMilestones />
       </div>
-      <MarqueeBanner bg="secondary" speed="normal" />
+
+      <div className="relative z-10">
+        <MarqueeBanner bg="secondary" speed="normal" />
+      </div>
     </div>
   );
 }

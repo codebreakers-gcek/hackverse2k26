@@ -12,38 +12,20 @@ import { ArrowRight, Terminal } from "lucide-react";
 export default function HomePage() {
   return (
     <div className="flex flex-col">
-      {/* 1. Hero Section (Full Viewport Height Image) */}
+      {/* 1. Hero Section (Includes integrated Minecraft wallpaper Marquee) */}
       <HeroSection />
 
-      {/* 2. Scrolling Ticker Marquee (Overlaying over the hero bottom edge) */}
-      <div className="relative -mt-8 sm:-mt-10 z-20 overflow-hidden">
-        <MarqueeBanner bg="secondary" speed="normal" bended />
-      </div>
-
-      {/* 3. Event High-Impact Numbers */}
+      {/* 2. Event High-Impact Numbers */}
       <ScrollReveal>
         <QuickStats />
       </ScrollReveal>
 
-      {/* 4. Interactive Domain Track Console */}
+      {/* 3. Interactive Domain Track Console (Includes integrated Minecraft wallpaper Marquee) */}
       <ScrollReveal>
         <DomainTrackConsole />
       </ScrollReveal>
 
-      {/* 5. Ticker Divider (Bended & Flowing Right to Left) */}
-      <MarqueeBanner
-        items={[
-          "CHAMPION: ₹20K CASH",
-          "RUNNER UP: ₹10K CASH",
-          "STATE CERTIFICATES",
-          "DIRECT INTERVIEW REFERRALS",
-        ]}
-        bg="accent"
-        speed="fast"
-        bended
-      />
-
-      {/* 6. Prize Pool Breakdown */}
+      {/* 4. Prize Pool Breakdown */}
       <ScrollReveal>
         <PrizePoolBanner />
       </ScrollReveal>
