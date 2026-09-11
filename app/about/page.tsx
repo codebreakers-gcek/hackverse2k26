@@ -11,20 +11,20 @@ export const metadata: Metadata = {
   description:
     "Learn about HACKVERSE '26, our mission, core pillars, and the 5+ year legacy of CodeBreakers - the premier technical society of Government College of Engineering Kalahandi (GCEK).",
   alternates: {
-    canonical: "https://www.codebreakersgcek.tech/about",
+    canonical: "https://hackverse.codebreakersgcek.tech/about",
   },
   openGraph: {
     title: "About HACKVERSE '26 & CodeBreakers GCEK",
     description:
       "Explore the mission, student builder community, and state-level legacy behind HACKVERSE '26 at GCEK Bhawanipatna.",
-    url: "https://www.codebreakersgcek.tech/about",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "About HACKVERSE '26" }],
+    url: "https://hackverse.codebreakersgcek.tech/about",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, type: "image/png", alt: "About HACKVERSE '26" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "About HACKVERSE '26 // CodeBreakers GCEK",
     description: "Learn about the mission, organizers, and legacy behind HACKVERSE '26.",
-    images: ["/og-image.jpg"],
+    images: ["/og-image.png"],
   },
 };
 

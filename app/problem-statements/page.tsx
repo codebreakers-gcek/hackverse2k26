@@ -9,21 +9,21 @@ export const metadata: Metadata = {
   description:
     "Explore the official hackathon problem tracks across AI/ML, Web3 & Decentralized Tech, Cyber Security, Smart Automation & IoT, and Open Innovation for HACKVERSE '26.",
   alternates: {
-    canonical: "https://www.codebreakersgcek.tech/problem-statements",
+    canonical: "https://hackverse.codebreakersgcek.tech/problem-statements",
   },
   openGraph: {
     title: "Official Problem Statements // HACKVERSE '26",
     description:
-      "Choose your battle arena: AI/ML, Cyber Security, Web3, Smart Cities, or Open Innovation with ₹1.5L+ in prizes.",
-    url: "https://www.codebreakersgcek.tech/problem-statements",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "HACKVERSE '26 Problem Statements" }],
+      "Choose your battle arena: AI/ML, Cyber Security, Web3, Smart Cities, or Open Innovation with ₹35K+ in prizes.",
+    url: "https://hackverse.codebreakersgcek.tech/problem-statements",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, type: "image/png", alt: "HACKVERSE '26 Problem Statements" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Official Problem Statements & Tracks // HACKVERSE '26",
     description:
       "Explore high-impact industry problem statements in AI/ML, Web3, Cyber Security, IoT, and Open Innovation.",
-    images: ["/og-image.jpg"],
+    images: ["/og-image.png"],
   },
 };
 

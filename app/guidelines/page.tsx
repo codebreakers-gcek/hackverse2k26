@@ -7,21 +7,21 @@ export const metadata: Metadata = {
   description:
     "Official hackathon rules, squad composition requirements (2-4 hackers), hardware guidelines, code of conduct, and submission regulations for HACKVERSE '26.",
   alternates: {
-    canonical: "https://www.codebreakersgcek.tech/guidelines",
+    canonical: "https://hackverse.codebreakersgcek.tech/guidelines",
   },
   openGraph: {
     title: "Rulebook & Guidelines // HACKVERSE '26",
     description:
       "Official hackathon rules, squad composition, evaluation rubrics, and submission protocols.",
-    url: "https://www.codebreakersgcek.tech/guidelines",
-    images: [{ url: "/og-image.jpg", width: 1200, height: 630, alt: "HACKVERSE '26 Guidelines" }],
+    url: "https://hackverse.codebreakersgcek.tech/guidelines",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, type: "image/png", alt: "HACKVERSE '26 Guidelines" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Official Tournament Rules & Protocols // HACKVERSE '26",
     description:
       "Review the hackathon code of conduct, IP rights, submission rules, and judging criteria.",
-    images: ["/og-image.jpg"],
+    images: ["/og-image.png"],
   },
 };
 
