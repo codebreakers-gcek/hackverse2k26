@@ -6,7 +6,7 @@ import { SectionTitle } from "@/components/common/SectionTitle";
 export const metadata: Metadata = {
   title: "Squad Registration Portal & Verification Dossier",
   description:
-    "Enroll your squad (1-4 members) for HACKVERSE '26 State Hackathon at GCEK Kalahandi. Secure your entry pass, select challenges, and unlock ₹1,50,000+ in rewards.",
+    "Enroll your squad (1-4 members) for HACKVERSE '26 State Hackathon at GCEK Kalahandi. Secure your entry pass, select challenges, and unlock ₹35K+ in rewards.",
   alternates: {
     canonical: "https://www.codebreakersgcek.tech/register",
   },

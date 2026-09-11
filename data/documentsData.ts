@@ -48,7 +48,7 @@ export const HACKATHON_DOCUMENTS: HackathonDocument[] = [
     description:
       "Official institutional endorsement and verification letter to be endorsed with seal and signature by the Head of Department (HOD), Dean, or Principal.",
     isAvailable: true,
-    format: "Microsoft Word (.docx)",
+    format: "Microsoft Word (.docx) / Printable Template",
     embedUrl: "",
     downloadUrl: "/docs/Authorization_Letter_Head_of_Institute.docx",
     instructions: [

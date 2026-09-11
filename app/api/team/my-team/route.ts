@@ -145,6 +145,7 @@ export async function GET(req: NextRequest) {
         remainingEdits,
         canEdit,
         lastEditedAt: docs.lastEditedAt || null,
+        documents: docs,
         createdAt: teamRegistration.createdAt,
         updatedAt: teamRegistration.updatedAt,
       },

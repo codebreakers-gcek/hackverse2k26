@@ -306,8 +306,8 @@ export async function getOrCreateTeamFolder(
       },
       supportsAllDrives: true,
     });
-  } catch (e) {
-    // ignore
+  } catch (permErr) {
+    console.warn("Could not set public permissions on team folder:", permErr);
   }
 
   return folderId;
@@ -319,7 +319,7 @@ export interface UploadOptions {
   buffer: Buffer;
   teamName: string;
   registrationNumber?: string;
-  category: "college_id" | "synopsis" | "other";
+  category: "college_id" | "synopsis" | "payment_proof" | "authorization_letter" | "other" | string;
 }
 
 /**
@@ -352,7 +352,16 @@ export async function uploadDocumentToDrive(options: UploadOptions) {
   }
 
   // Format file name
-  const prefix = options.category === "college_id" ? "CollegeID_" : options.category === "synopsis" ? "Synopsis_" : "Doc_";
+  const prefix =
+    options.category === "payment_proof"
+      ? "PaymentProof_"
+      : options.category === "authorization_letter"
+      ? "AuthLetter_"
+      : options.category === "college_id"
+      ? "CollegeID_"
+      : options.category === "synopsis"
+      ? "Synopsis_"
+      : "Doc_";
   const finalFileName = `${prefix}${options.fileName.replace(/[/\\?%*:|"<>]/g, "_")}`;
 
   const mediaStream = Readable.from(options.buffer);
@@ -373,9 +382,10 @@ export async function uploadDocumentToDrive(options: UploadOptions) {
   });
 
   const fileId = uploadRes.data.id!;
-  const webViewLink = uploadRes.data.webViewLink || `https://drive.google.com/file/d/${fileId}/view`;
+  const webViewLink = `https://drive.google.com/file/d/${fileId}/view?usp=sharing`;
+  const previewLink = `https://drive.google.com/file/d/${fileId}/preview`;
 
-  // Make the file readable with link to anyone
+  // Make the file readable with link to anyone (public view access)
   try {
     await drive.permissions.create({
       fileId,
@@ -413,7 +423,8 @@ export async function uploadDocumentToDrive(options: UploadOptions) {
     fileName: finalFileName,
     originalName: options.fileName,
     webViewLink,
-    webContentLink: uploadRes.data.webContentLink || webViewLink,
+    previewLink,
+    webContentLink: uploadRes.data.webContentLink || `https://drive.google.com/uc?export=download&id=${fileId}`,
     fileSize: uploadRes.data.size,
     mimeType: uploadRes.data.mimeType,
   };

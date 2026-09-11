@@ -19,7 +19,7 @@ export function MarqueeBanner({
     "CODEBREAKERS GCEK",
     "AI / ML TRACK",
     "CYBERSECURITY ARENA",
-    "BHABANIPATNA ODISHA",
+    "BHAWANIPATNA ODISHA",
   ],
   bg = "secondary",
   speed = "normal",

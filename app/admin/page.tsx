@@ -2266,37 +2266,144 @@ export default function AdminDashboardPage() {
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                  {/* Registration Fee (₹ Amount) */}
+                  <div className="p-4 bg-amber-50/70 border-2 border-black space-y-2">
+                    <div className="flex items-center justify-between">
+                      <label className="font-mono text-xs font-black uppercase text-black">
+                        Registration Fee (₹ INR)
+                      </label>
+                      <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-black text-white">
+                        {settings.registrationFee > 0 ? `₹${settings.registrationFee} / SQUAD` : "FREE TIER"}
+                      </span>
+                    </div>
+                    <div className="relative">
+                      <span className="absolute left-3 top-1/2 -translate-y-1/2 font-black text-sm text-black">
+                        ₹
+                      </span>
+                      <input
+                        type="number"
+                        min="0"
+                        step="1"
+                        placeholder="0 for Free Tier"
+                        value={settings.registrationFee}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            registrationFee: Math.max(0, Number(e.target.value) || 0),
+                          })
+                        }
+                        className="w-full pl-7 pr-3 py-2.5 bg-white border-2 border-black font-mono text-sm font-black text-black shadow-neo-xs focus:outline-none"
+                      />
+                    </div>
+                    <p className="font-mono text-[10px] text-black/70">
+                      ★ Sets the locked amount in the dynamic UPI QR code. Enter <strong>0</strong> for Free / Sponsored tier.
+                    </p>
+                  </div>
+
+                  {/* Payment Mandatory Toggle */}
+                  <div className="p-4 bg-amber-50/70 border-2 border-black space-y-2 flex flex-col justify-between">
+                    <label className="font-mono text-xs font-black uppercase text-black">
+                      Payment Enforcement Mode
+                    </label>
+                    <label className="flex items-center gap-3 cursor-pointer py-1">
+                      <input
+                        type="checkbox"
+                        checked={settings.isPaymentMandatory}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            isPaymentMandatory: e.target.checked,
+                          })
+                        }
+                        className="w-5 h-5 border-2 border-black accent-black rounded-none cursor-pointer shrink-0"
+                      />
+                      <span className="font-sans text-xs font-bold text-black">
+                        Make UPI Payment &amp; UTR mandatory before submitting registration
+                      </span>
+                    </label>
+                    <p className="font-mono text-[10px] text-black/70">
+                      {settings.isPaymentMandatory
+                        ? "🔒 All squads must provide a valid UPI Transaction ID."
+                        : "🔓 Squads can register on sponsored / free tier if fee is 0."}
+                    </p>
+                  </div>
+
+                  {/* UPI ID */}
                   <div className="space-y-1">
-                    <label className="font-mono text-xs font-black uppercase">
+                    <label className="font-mono text-xs font-black uppercase text-black">
                       UPI ID For Registrations
                     </label>
                     <input
                       type="text"
+                      placeholder="e.g. codebreakers@upi"
                       value={settings.upiId}
                       onChange={(e) =>
                         setSettings({ ...settings, upiId: e.target.value })
                       }
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold"
+                      className="w-full px-3 py-2.5 bg-white border-2 border-black font-mono text-xs font-bold text-black shadow-neo-xs"
                     />
                   </div>
 
+                  {/* Payee Name */}
                   <div className="space-y-1">
-                    <label className="font-mono text-xs font-black uppercase">
-                      Payee Name
+                    <label className="font-mono text-xs font-black uppercase text-black">
+                      Payee / Beneficiary Name
                     </label>
                     <input
                       type="text"
+                      placeholder="e.g. HACKVERSE 2026 GCEK"
                       value={settings.payeeName}
                       onChange={(e) =>
                         setSettings({ ...settings, payeeName: e.target.value })
                       }
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold"
+                      className="w-full px-3 py-2.5 bg-white border-2 border-black font-mono text-xs font-bold text-black shadow-neo-xs"
                     />
                   </div>
 
+                  {/* Min Squad Size */}
                   <div className="space-y-1">
-                    <label className="font-mono text-xs font-black uppercase">
+                    <label className="font-mono text-xs font-black uppercase text-black">
+                      Min Squad Size (Members)
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="10"
+                      value={settings.minSquadSize}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          minSquadSize: Math.max(1, Number(e.target.value) || 2),
+                        })
+                      }
+                      className="w-full px-3 py-2.5 bg-white border-2 border-black font-mono text-xs font-bold text-black shadow-neo-xs"
+                    />
+                  </div>
+
+                  {/* Max Squad Size */}
+                  <div className="space-y-1">
+                    <label className="font-mono text-xs font-black uppercase text-black">
+                      Max Squad Size (Members)
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="10"
+                      value={settings.maxSquadSize}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          maxSquadSize: Math.max(1, Number(e.target.value) || 4),
+                        })
+                      }
+                      className="w-full px-3 py-2.5 bg-white border-2 border-black font-mono text-xs font-bold text-black shadow-neo-xs"
+                    />
+                  </div>
+
+                  {/* Official Phone */}
+                  <div className="space-y-1">
+                    <label className="font-mono text-xs font-black uppercase text-black">
                       Official Contact Phone
                     </label>
                     <input
@@ -2308,12 +2415,13 @@ export default function AdminDashboardPage() {
                           contactPhone: e.target.value,
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold"
+                      className="w-full px-3 py-2.5 bg-white border-2 border-black font-mono text-xs font-bold text-black shadow-neo-xs"
                     />
                   </div>
 
+                  {/* Official Email */}
                   <div className="space-y-1">
-                    <label className="font-mono text-xs font-black uppercase">
+                    <label className="font-mono text-xs font-black uppercase text-black">
                       Official Contact Email
                     </label>
                     <input
@@ -2325,8 +2433,60 @@ export default function AdminDashboardPage() {
                           contactEmail: e.target.value,
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold"
+                      className="w-full px-3 py-2.5 bg-white border-2 border-black font-mono text-xs font-bold text-black shadow-neo-xs"
                     />
+                  </div>
+
+                  {/* Registration Portal Gate */}
+                  <div className="p-3 bg-neutral-50 border-2 border-black flex items-center justify-between sm:col-span-2">
+                    <div className="space-y-0.5">
+                      <div className="font-black text-xs uppercase text-black">
+                        Registration Portal Open / Close
+                      </div>
+                      <div className="font-mono text-[11px] text-black/70">
+                        Controls whether new registrations can be submitted.
+                      </div>
+                    </div>
+                    <label className="flex items-center gap-2 cursor-pointer font-mono text-xs font-black">
+                      <input
+                        type="checkbox"
+                        checked={settings.isRegistrationOpen}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            isRegistrationOpen: e.target.checked,
+                          })
+                        }
+                        className="w-5 h-5 border-2 border-black accent-black rounded-none cursor-pointer"
+                      />
+                      <span>{settings.isRegistrationOpen ? "OPEN (ACCEPTING)" : "CLOSED (LOCKED)"}</span>
+                    </label>
+                  </div>
+
+                  {/* Problem Statements Gate */}
+                  <div className="p-3 bg-neutral-50 border-2 border-black flex items-center justify-between sm:col-span-2">
+                    <div className="space-y-0.5">
+                      <div className="font-black text-xs uppercase text-black">
+                        Problem Statements Published
+                      </div>
+                      <div className="font-mono text-[11px] text-black/70">
+                        Allows registered squads to select their 2 problem statements.
+                      </div>
+                    </div>
+                    <label className="flex items-center gap-2 cursor-pointer font-mono text-xs font-black">
+                      <input
+                        type="checkbox"
+                        checked={settings.isProblemStatementsPublished}
+                        onChange={(e) =>
+                          setSettings({
+                            ...settings,
+                            isProblemStatementsPublished: e.target.checked,
+                          })
+                        }
+                        className="w-5 h-5 border-2 border-black accent-black rounded-none cursor-pointer"
+                      />
+                      <span>{settings.isProblemStatementsPublished ? "PUBLISHED" : "HIDDEN / LOCKED"}</span>
+                    </label>
                   </div>
                 </div>
               </form>

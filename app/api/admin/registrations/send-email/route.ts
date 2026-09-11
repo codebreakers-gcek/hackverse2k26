@@ -28,6 +28,14 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Registration not found" }, { status: 404 });
     }
 
+    let feeAmount = (reg as any).amount || 0;
+    if (!feeAmount && reg.paymentMode !== "FREE_SPONSORED") {
+      const settings = await prisma.systemSettings.findFirst();
+      if (settings?.registrationFee && settings.registrationFee > 0) {
+        feeAmount = settings.registrationFee;
+      }
+    }
+
     const emailPayload = {
       registrationNumber: reg.registrationNumber,
       teamName: reg.teamName,
@@ -41,7 +49,7 @@ export async function POST(req: NextRequest) {
         paymentMode: reg.paymentMode || undefined,
         transactionId: reg.transactionId,
         paymentStatus: reg.paymentStatus || undefined,
-        amount: (reg as any).amount || undefined,
+        amount: feeAmount || undefined,
       },
       accommodationRequired: Boolean(reg.accommodationRequired),
     };

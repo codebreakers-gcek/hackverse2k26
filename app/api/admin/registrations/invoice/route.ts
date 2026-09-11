@@ -38,6 +38,14 @@ export async function GET(req: NextRequest) {
       day: "numeric",
     });
 
+    let feeAmount = registration.amount || 0;
+    if (!feeAmount && registration.paymentMode !== "FREE_SPONSORED") {
+      const settings = await prisma.systemSettings.findFirst();
+      if (settings?.registrationFee && settings.registrationFee > 0) {
+        feeAmount = settings.registrationFee;
+      }
+    }
+
     const pdfBuffer = await generateInvoicePdfBuffer({
       invoiceNumber: `HV26-INV-${registration.registrationNumber.replace("HV26-", "")}`,
       dateOfIssue: issueDate,
@@ -47,7 +55,7 @@ export async function GET(req: NextRequest) {
       leaderEmail: registration.leaderEmail,
       collegeName: registration.collegeName,
       collegeAddress: registration.collegeAddress as any,
-      amount: registration.amount || 0,
+      amount: feeAmount,
       paymentMode: registration.paymentMode || "UPI_QR",
       transactionId: registration.transactionId || undefined,
       paymentStatus: registration.paymentStatus || "VERIFIED",

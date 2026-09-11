@@ -79,22 +79,26 @@ export const ABOUT_DATA = {
       {
         year: "2019",
         event: "CLUB FOUNDING",
-        detail: "Established by passionate computer science students to cultivate competitive programming & development culture in GCEK.",
+        detail:
+          "Established by passionate computer science students to cultivate competitive programming & development culture in GCEK.",
       },
       {
         year: "2021",
         event: "CAMPUS PLATFORM LAUNCH",
-        detail: "Engineered and deployed the digital portal for college fests INSPRANO and UDAAN with 10,000+ hits.",
+        detail:
+          "Engineered and deployed the digital portal for college fests INSPRANO and UDAAN with 10,000+ hits.",
       },
       {
         year: "2023",
         event: "HACKVERSE'23 INCEPTION",
-        detail: "Hosted the first edition of Hack Nova with 80+ participating teams and STATE recognition.",
+        detail:
+          "Hosted the first edition of Hack Nova with 80+ participating teams and STATE recognition.",
       },
       {
         year: "2026",
         event: "HACKVERSE '26 STATE FEST",
-        detail: "Expanding to a full-scale 3-day multi-track STATE tech symposium with ₹1,50,000+ prize pool.",
+        detail:
+          "Expanding to a full-scale 3-day multi-track STATE tech symposium with ₹35K+ prize pool.",
       },
     ] as ClubMilestone[],
   },
