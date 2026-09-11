@@ -6,7 +6,6 @@ import { QuickStats } from "@/features/home/QuickStats";
 import { DomainTrackConsole } from "@/features/home/DomainTrackConsole";
 import { PrizePoolBanner } from "@/features/home/PrizePoolBanner";
 import { CodeBreakersSpotlight } from "@/features/home/CodeBreakersSpotlight";
-import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 import { MinecraftBlockMarquee } from "@/components/layout/MinecraftBlockMarquee";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { ArrowRight, Terminal } from "lucide-react";

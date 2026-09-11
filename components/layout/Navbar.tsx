@@ -15,9 +15,7 @@ import {
   FileCode2,
   BookOpen,
   ClipboardList,
-  FileText,
-  Presentation,
-  Building2,
+
 } from "lucide-react";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
@@ -148,7 +146,7 @@ export function Navbar() {
       if (!footer || !headerRef.current) return;
 
       const footerRect = footer.getBoundingClientRect();
-      const headerHeight = headerRef.current.offsetHeight || 104;
+      const headerHeight = headerRef.current.offsetHeight || 92;
 
       // When the top of the footer reaches the bottom edge of the sticky navbar
       if (footerRect.top <= headerHeight + 5) {
@@ -243,7 +241,7 @@ export function Navbar() {
         </div>
 
         {/* Main Navbar Bar */}
-        <div className="w-full px-3 sm:px-6 lg:px-8 xl:px-10 h-18 sm:h-20 flex items-center justify-between gap-3 lg:gap-4 xl:gap-8">
+        <div className="w-full px-3 sm:px-6 lg:px-8 xl:px-10 h-14 sm:h-16 flex items-center justify-between gap-3 lg:gap-4 xl:gap-8">
           {/* Brand / Logo - Pinned Left */}
           <div className="shrink-0 flex items-center">
             <Link
@@ -686,7 +684,7 @@ export function Navbar() {
       </header>
 
       {/* Spacer so page content below fixed navbar starts at the exact correct vertical offset */}
-      <div className="h-[104px] sm:h-[112px] w-full shrink-0" aria-hidden="true" />
+      <div className="h-[92px] sm:h-[100px] w-full shrink-0" aria-hidden="true" />
     </>
   );
 }
