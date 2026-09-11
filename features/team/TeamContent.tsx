@@ -99,13 +99,18 @@ export function TeamContent() {
         {/* ========================================================================= */}
         {/* SECTION 1: HEADER & INTRO */}
         {/* ========================================================================= */}
-        <motion.div variants={itemVariants} className="w-full max-w-full">
-          <SectionTitle
-            tag="THE CREW // CODEBREAKERS GCEK"
-            title="MEET THE"
-            highlightText="TEAM"
-            subtitle="The visionary academic patrons, student leaders, and technical architects driving HACKVERSE '26 and shaping the innovation culture at GCEK."
-          />
+        <motion.div variants={itemVariants} className="w-full max-w-full flex justify-center">
+          <div className="w-full max-w-3xl mx-auto p-6 sm:p-8 bg-white/20 backdrop-blur-md border-3 sm:border-4 border-black shadow-neo">
+            <SectionTitle
+              tag="THE CREW // CODEBREAKERS GCEK"
+              title="MEET THE"
+              highlightText="TEAM"
+              subtitle="The visionary academic patrons, student leaders, and technical architects driving HACKVERSE '26 and shaping the innovation culture at GCEK."
+              titleClassName="text-stroke-white"
+              subtitleClassName="text-white font-bold drop-shadow-md"
+              className="!mb-0"
+            />
+          </div>
         </motion.div>
 
         {/* ========================================================================= */}

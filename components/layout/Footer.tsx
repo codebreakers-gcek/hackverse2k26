@@ -17,7 +17,7 @@ export function Footer() {
   }
 
   return (
-    <footer id="main-footer" className="bg-neo-secondary border-t-8 border-black text-black pt-16 pb-12">
+    <footer id="main-footer" className="relative z-20 bg-neo-secondary border-t-8 border-black text-black pt-16 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
