@@ -16,7 +16,7 @@ export function CodeBreakersSpotlight() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center scale-105"
+          className="object-cover object-center"
         />
         {/* Dark vignette overlay for depth & contrast */}
         <div className="absolute inset-0 bg-black/45 backdrop-blur-[1px]" />

@@ -67,7 +67,7 @@ export function PrizePoolBanner() {
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center scale-105"
+          className="object-cover object-center"
         />
         {/* Dark atmospheric overlay: keeps landscape visible while ensuring cards & text pop */}
         <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />

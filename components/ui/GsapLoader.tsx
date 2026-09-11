@@ -19,6 +19,12 @@ export function GsapLoader() {
   const tipTextRef = useRef<HTMLParagraphElement>(null);
 
   useEffect(() => {
+    // Check if loader has already run in this browser session
+    if (typeof window !== "undefined" && sessionStorage.getItem("hackverse_loader_played")) {
+      setIsRendered(false);
+      return;
+    }
+
     // Lock body scroll while loader is active
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -47,6 +53,9 @@ export function GsapLoader() {
         defaults: { ease: "power2.out" },
         onComplete: () => {
           document.body.style.overflow = originalOverflow;
+          if (typeof window !== "undefined") {
+            sessionStorage.setItem("hackverse_loader_played", "true");
+          }
           setIsRendered(false);
         },
       });
@@ -56,11 +65,11 @@ export function GsapLoader() {
       gsap.set(trailingWipeRef.current, { yPercent: 0 });
       gsap.set(progressFillRef.current, { scaleX: 0, transformOrigin: "left center" });
 
-      // 2. Gentle Background Zoom-in & Fade
+      // 2. Gentle Background Fade (no scale zoom)
       tl.fromTo(
         bgRef.current,
-        { scale: 1.08, opacity: 0.7 },
-        { scale: 1.0, opacity: 1, duration: 2.8, ease: "power1.out" },
+        { opacity: 0.7 },
+        { opacity: 1, duration: 2.0, ease: "power1.out" },
         0
       );
 

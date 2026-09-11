@@ -243,8 +243,8 @@ export function Navbar() {
         </div>
 
         {/* Main Navbar Bar */}
-        <div className="w-full max-w-7xl mx-auto px-2 sm:px-4 lg:px-6 xl:px-8 h-18 sm:h-20 flex items-center justify-between gap-2 lg:gap-3 xl:gap-4">
-          {/* Brand / Logo */}
+        <div className="w-full px-3 sm:px-6 lg:px-8 xl:px-10 h-18 sm:h-20 flex items-center justify-between gap-3 lg:gap-4 xl:gap-8">
+          {/* Brand / Logo - Pinned Left */}
           <div className="shrink-0 flex items-center">
             <Link
               href="/"
@@ -269,9 +269,9 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* Desktop Primary Navigation */}
+          {/* Desktop Primary Navigation - Centered and Spaced Away from Left Brand and Right CTA */}
           <nav
-            className="hidden lg:flex items-center gap-1 xl:gap-2 shrink-0"
+            className="hidden lg:flex items-center justify-center gap-1 xl:gap-2 flex-1 mx-2 lg:mx-3 xl:mx-8 shrink-0"
             aria-label="Main Navigation"
           >
             {navLinks.map((link) => {
