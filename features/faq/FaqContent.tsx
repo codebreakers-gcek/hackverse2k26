@@ -20,7 +20,7 @@ import {
   Check,
   Share2,
 } from "lucide-react";
-import {WhatsappIcon } from "@/components/common/SocialIcons";
+import { WhatsappIcon } from "@/components/common/SocialIcons";
 import { SOCIAL_CHANNELS } from "@/data/contactData";
 import clsx from "clsx";
 
@@ -384,10 +384,10 @@ export function FaqContent() {
           items={[
             "HACKVERSE '26",
             "GOT QUESTIONS? WE'VE GOT ANSWERS",
-            "MARCH 28-30, 2026",
+            "OCTOBER 08-10, 2026",
             "GCEK BHAWANIPATNA",
             "24-HOUR BUILD SPRINT",
-            "₹10K+ PRIZES",
+            "₹35K+ PRIZES",
             "24/7 MENTOR DESK",
           ]}
           bg="secondary"
