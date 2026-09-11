@@ -94,7 +94,7 @@ export function GuidelinesContent() {
       {/* Minecraft Guidelines Background Layer with Full Clarity */}
       <div className="fixed inset-0 z-0 pointer-events-none select-none overflow-hidden">
         <Image
-          src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/guidelinesbg.png"
+          src="/minecraft/guidelinesbg.webp"
           alt="HackVerse Guidelines Minecraft Background"
           fill
           priority

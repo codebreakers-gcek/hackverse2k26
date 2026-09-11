@@ -40,7 +40,7 @@ export function HeroSection() {
       {/* Minecraft Theme Responsive Background Layer (Full Viewport Height) */}
       <div className="absolute inset-0 z-0 pointer-events-none select-none overflow-hidden">
         <Image
-          src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/1.png"
+          src="/minecraft/1.webp"
           alt="HackVerse Minecraft Background"
           fill
           priority

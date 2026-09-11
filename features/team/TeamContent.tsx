@@ -81,7 +81,7 @@ export function TeamContent() {
       {/* Fixed Minecraft Background Layer with Full Clarity */}
       <div className="fixed inset-0 z-0 select-none pointer-events-none overflow-hidden">
         <Image
-          src="https://res.cloudinary.com/m2klwmw6/image/upload/v1789130408/teambg.png"
+          src="/minecraft/teambg.webp"
           alt="Hackverse Team Background"
           fill
           priority
