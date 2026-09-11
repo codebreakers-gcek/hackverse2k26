@@ -8,6 +8,8 @@ export interface SectionTitleProps {
   highlightText?: string;
   align?: "left" | "center" | "right";
   className?: string;
+  titleClassName?: string;
+  subtitleClassName?: string;
 }
 
 export function SectionTitle({
@@ -17,6 +19,8 @@ export function SectionTitle({
   highlightText,
   align = "center",
   className,
+  titleClassName,
+  subtitleClassName,
 }: SectionTitleProps) {
   const alignStyles = {
     left: "text-left items-start",
@@ -31,8 +35,8 @@ export function SectionTitle({
           [{tag}]
         </span>
       )}
-      <h2 className="font-black text-xl xs:text-2xl sm:text-4xl md:text-5xl lg:text-6xl text-black uppercase tracking-tight leading-tight break-words max-w-full">
-        {title}{" "}
+      <h2 className="font-black text-xl xs:text-2xl sm:text-4xl md:text-5xl lg:text-6xl uppercase tracking-tight leading-tight break-words max-w-full">
+        <span className={titleClassName || "text-black"}>{title}</span>{" "}
         {highlightText && (
           <span className="inline-block bg-neo-secondary px-1.5 sm:px-2 border-2 sm:border-3 border-black shadow-neo-sm rotate-1 text-black mt-1 sm:mt-0">
             {highlightText}
@@ -40,7 +44,7 @@ export function SectionTitle({
         )}
       </h2>
       {subtitle && (
-        <p className="mt-2.5 sm:mt-4 max-w-2xl text-xs sm:text-base md:text-lg font-bold text-black/75 leading-relaxed break-words">
+        <p className={clsx("mt-2.5 sm:mt-4 max-w-2xl text-xs sm:text-base md:text-lg font-bold leading-relaxed break-words", subtitleClassName || "text-black/75")}>
           {subtitle}
         </p>
       )}

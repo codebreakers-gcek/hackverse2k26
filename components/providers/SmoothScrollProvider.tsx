@@ -1,10 +1,21 @@
 "use client";
 
 import React, { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import Lenis from "lenis";
 import "lenis/dist/lenis.css";
 
 export function SmoothScrollProvider({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
+  // Scroll to top immediately on route transition
+  useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (typeof window !== "undefined" && (window as any).__lenis) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (window as any).__lenis.scrollTo(0, { immediate: true });
+    }
+  }, [pathname]);
   useEffect(() => {
     // Respect OS reduced motion preference
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {

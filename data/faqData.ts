@@ -63,7 +63,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "gen-2",
     question: "WHEN AND WHERE WILL HACKVERSE '26 TAKE PLACE?",
     answer:
-      "The Grand Finale will take place on March 28-30, 2026, in an immersive offline mode at the Government College of Engineering Kalahandi (GCEK) Campus, Bandopala, Bhawanipatna, Odisha - 766003. Round 1 online evaluations precede the offline round.",
+      "The Grand Finale will take place on October 8-10, 2026, in an immersive offline mode at the Government College of Engineering Kalahandi (GCEK) Campus, Bandopala, Bhawanipatna, Odisha - 766003. Round 1 online evaluations precede the offline round.",
     category: "general",
     categoryLabel: "General & About",
     tags: ["venue", "dates", "location", "offline"],
@@ -114,7 +114,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "reg-3",
     question: "WHAT IS THE DEADLINE TO REGISTER?",
     answer:
-      "Online squad registrations and Phase 1 abstract submissions close on March 15, 2026 at 23:59 IST. We strongly recommend completing registration early to receive mentorship updates and problem statement document packs.",
+      "Online squad registrations and Phase 1 abstract submissions close on September 26, 2026 at 23:59 IST. We strongly recommend completing registration early to receive mentorship updates and problem statement document packs.",
     category: "registration",
     categoryLabel: "Registration & Fees",
     tags: ["deadline", "last date", "closing time"],
@@ -146,10 +146,10 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "team-2",
     question: "CAN MEMBERS BE FROM DIFFERENT COLLEGES OR DIFFERENT MAJORS?",
     answer:
-      "YES! Cross-college, cross-department, and cross-year teams are fully permitted and warmly welcomed. You can team up with peers from any recognized university or institution across India.",
+      "NO. Cross-college teams are not permitted. All members of a squad must belong to the same college/institution. However, cross-department and cross-year teams from the same college are fully permitted and welcomed.",
     category: "teams",
     categoryLabel: "Teams & Eligibility",
-    tags: ["cross college", "different branch", "inter college"],
+    tags: ["same college", "cross college not allowed", "eligibility", "branches"],
   },
   {
     id: "team-3",

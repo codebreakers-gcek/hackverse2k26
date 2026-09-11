@@ -7,6 +7,7 @@ import {
   Printer,
   Download,
   Loader2,
+  Terminal,
   Calendar,
   MapPin,
   ArrowRight,
@@ -15,7 +16,6 @@ import {
 import { QRCodeSVG } from "qrcode.react";
 import { toPng } from "html-to-image";
 import { toast } from "sonner";
-import Image from "next/image";
 import { RegistrationSubmissionResult } from "@/types/registration";
 import { EVENT_DATA } from "@/data/event";
 
@@ -98,15 +98,8 @@ export function RegistrationSuccessReceipt({
         {/* Ticket Header */}
         <div className="bg-black text-white p-5 sm:p-6 flex flex-row items-center justify-between gap-4 border-b-4 border-black">
           <div className="flex items-center gap-3.5">
-            <div className="w-12 h-12 bg-white flex items-center justify-center border-2 border-white/40 shrink-0 shadow-sm overflow-hidden p-1 rounded-sm">
-              <Image
-                src="/cbhack.png"
-                alt="Codebreakers Hackverse Logo"
-                width={48}
-                height={48}
-                className="object-contain w-full h-full"
-                unoptimized
-              />
+            <div className="w-11 h-11 bg-amber-400 text-black flex items-center justify-center border-2 border-black shrink-0 shadow-sm font-mono font-black text-xl tracking-tighter">
+              &gt;_
             </div>
             <div>
               <div className="font-black text-lg sm:text-xl tracking-wider uppercase font-sans leading-tight">
@@ -193,7 +186,7 @@ export function RegistrationSuccessReceipt({
             <div className="flex items-center gap-2">
               <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
               <span className="text-[11px] sm:text-xs">
-                Includes 24h Arena Access, &amp; Certifications.
+                Includes 24h Arena Access, 1Gbps Dedicated Ports, Meals &amp; Certifications.
               </span>
             </div>
             <span className="font-mono text-[10px] text-neutral-500 font-bold shrink-0 hidden sm:inline">
@@ -277,8 +270,24 @@ export function RegistrationSuccessReceipt({
             )}
           </button>
 
+          {/* Secondary Action: Print via Browser Dialog */}
+          <button
+            type="button"
+            onClick={handlePrint}
+            className="inline-flex items-center justify-center gap-2 px-4 py-3 bg-white text-black font-black text-xs uppercase tracking-wider border-3 border-black shadow-neo-sm hover:bg-neutral-100 hover:shadow-none transition-all cursor-pointer"
+          >
+            <Printer className="w-4 h-4 stroke-[2.5px]" />
+            <span>PRINT</span>
+          </button>
         </div>
 
+        <button
+          type="button"
+          onClick={onReset}
+          className="px-4 py-2 text-xs font-black uppercase text-black hover:text-rose-700 underline decoration-2 transition-colors text-center cursor-pointer"
+        >
+          REGISTER ANOTHER TEAM
+        </button>
       </div>
 
       {/* Return Link */}

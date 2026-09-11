@@ -1,10 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 
 export default function Template({ children }: { children: React.ReactNode }) {
   const shouldReduceMotion = useReducedMotion();
+
+  // Ensure scroll is at the top when navigating between pages
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (shouldReduceMotion) {
     return <>{children}</>;
@@ -12,12 +17,13 @@ export default function Template({ children }: { children: React.ReactNode }) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 8 }}
-      animate={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
       transition={{
-        duration: 0.3,
-        ease: [0.22, 1, 0.36, 1] as const, // Custom smooth cubic-bezier
+        duration: 0.25,
+        ease: [0.22, 1, 0.36, 1] as const,
       }}
+      className="flex-1 flex flex-col w-full"
     >
       {children}
     </motion.div>

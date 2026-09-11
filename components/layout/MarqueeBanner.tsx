@@ -39,9 +39,9 @@ export function MarqueeBanner({
   const bannerElement = (
     <div
       className={clsx(
-        "relative w-full max-w-full overflow-hidden py-3.5 select-none flex items-center shadow-neo",
+        "relative w-[110%] -left-[5%] overflow-hidden py-3.5 select-none flex items-center shadow-neo",
         bgStyles[bg],
-        bended && "rotate-[-2deg] sm:rotate-[-1.5deg] scale-[1.03] my-4 shadow-neo-lg z-20",
+        bended && "rotate-[-2deg] sm:rotate-[-1.5deg] scale-[1.08] my-3 shadow-neo-lg z-20",
         className
       )}
     >
@@ -58,7 +58,7 @@ export function MarqueeBanner({
 
   if (bended) {
     return (
-      <div className="relative w-full max-w-full overflow-hidden py-3">
+      <div className="relative w-full max-w-full overflow-hidden py-2">
         {bannerElement}
       </div>
     );

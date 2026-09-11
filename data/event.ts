@@ -106,7 +106,7 @@ export const EVENT_DATA: EventInfo = {
       position: "FIRST PLACE // CHAMPION",
       amount: "₹20K",
       perks: [
-        "Official Champion Trophy & Gold Medals",
+        "Cash Prize & Certificate",
         "Direct Tech Interview Referrals",
         "Cloud Credits & Premium Dev Tool Licenses",
         "Featured on CodeBreakers Official Wall of Fame",
@@ -117,7 +117,7 @@ export const EVENT_DATA: EventInfo = {
       position: "RUNNER UP // 2ND PLACE",
       amount: "₹10K",
       perks: [
-        "Silver Medals & Certificates of Excellence",
+        "Cash Prize & Certificates",
         "Mentorship Sprint with Industry Leaders",
         "Cloud Hosting Credit Vouchers",
       ],
@@ -127,7 +127,7 @@ export const EVENT_DATA: EventInfo = {
       position: "THIRD PLACE // 2ND RUNNER UP",
       amount: "₹5K",
       perks: [
-        "Bronze Medals & Certificates of Excellence",
+        "Cash Prize & Certificates",
         "Premium Developer Subscriptions",
         "Exclusive CodeBreakers Merch Kit",
       ],

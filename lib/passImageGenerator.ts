@@ -53,7 +53,9 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
 <svg width="720" height="740" viewBox="0 0 720 740" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <style>
-      text { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, Helvetica, sans-serif; }
+      @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;900&amp;family=IBM+Plex+Mono:wght@600;700;800&amp;family=IBM+Plex+Sans:wght@700;800&amp;display=swap');
+      .font-sans { font-family: 'Space Grotesk', 'IBM Plex Sans', sans-serif; }
+      .font-mono { font-family: 'IBM Plex Mono', monospace; }
     </style>
   </defs>
 
@@ -75,31 +77,31 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
     <!-- Yellow Terminal Box -->
     <g transform="translate(25, 25)">
       <rect width="65" height="65" fill="#FACC15" stroke="#000000" stroke-width="3" />
-      <text x="12" y="44" font-family="'Courier New', Courier, monospace" font-size="34" font-weight="900" fill="#000000">&gt;_</text>
+      <text x="12" y="44" font-family="'IBM Plex Mono', monospace" font-size="34" font-weight="900" fill="#000000">&gt;_</text>
     </g>
 
     <!-- Header Titles -->
-    <text x="105" y="54" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="900" fill="#FFFFFF" letter-spacing="1">HACKVERSE '26 ENTRY PASS</text>
-    <text x="105" y="77" font-family="'Courier New', Courier, monospace" font-size="13" font-weight="800" fill="#FACC15" letter-spacing="1.5">CODEBREAKERS // GCE KALAHANDI</text>
+    <text x="105" y="54" class="font-sans" font-size="22" font-weight="900" fill="#FFFFFF" letter-spacing="1">HACKVERSE '26 ENTRY PASS</text>
+    <text x="105" y="77" class="font-mono" font-size="13" font-weight="800" fill="#FACC15" letter-spacing="1.5">CODEBREAKERS // GCE KALAHANDI</text>
 
     <!-- Ticket Identifier Box -->
     <g transform="translate(470, 28)">
       <rect width="165" height="58" rx="6" fill="#141417" stroke="#333333" stroke-width="1.5" />
-      <text x="82" y="22" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-size="10" font-weight="700" fill="#8E8E98" letter-spacing="1">TICKET IDENTIFIER</text>
-      <text x="82" y="46" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-size="18" font-weight="900" fill="#F59E0B" letter-spacing="2">${ticketNumber}</text>
+      <text x="82" y="22" text-anchor="middle" class="font-mono" font-size="10" font-weight="700" fill="#8E8E98" letter-spacing="1">TICKET IDENTIFIER</text>
+      <text x="82" y="46" text-anchor="middle" class="font-mono" font-size="18" font-weight="900" fill="#F59E0B" letter-spacing="2">${ticketNumber}</text>
     </g>
 
     <!-- Body Section -->
     <g transform="translate(30, 140)">
       <!-- Team Designation -->
-      <text x="0" y="20" font-family="'Courier New', Courier, monospace" font-size="11" font-weight="800" fill="#71717A" letter-spacing="1">TEAM DESIGNATION</text>
-      <text x="0" y="55" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="900" fill="#000000" letter-spacing="-0.5">${teamName}</text>
+      <text x="0" y="20" class="font-mono" font-size="11" font-weight="800" fill="#71717A" letter-spacing="1">TEAM DESIGNATION</text>
+      <text x="0" y="55" class="font-sans" font-size="30" font-weight="900" fill="#000000" letter-spacing="-0.5">${teamName}</text>
 
       <!-- Access Tier Badge -->
       <g transform="translate(440, 5)">
-        <text x="160" y="15" text-anchor="end" font-family="'Courier New', Courier, monospace" font-size="11" font-weight="800" fill="#71717A" letter-spacing="1">ACCESS TIER</text>
+        <text x="160" y="15" text-anchor="end" class="font-mono" font-size="11" font-weight="800" fill="#71717A" letter-spacing="1">ACCESS TIER</text>
         <rect x="25" y="25" width="135" height="34" fill="#CCFBF1" stroke="#000000" stroke-width="2.5" />
-        <text x="92" y="47" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-size="11" font-weight="900" fill="#115E59" letter-spacing="1">ALL-ACCESS PASS</text>
+        <text x="92" y="47" text-anchor="middle" class="font-mono" font-size="11" font-weight="900" fill="#115E59" letter-spacing="1">ALL-ACCESS PASS</text>
       </g>
 
       <!-- Divider 1 -->
@@ -110,17 +112,17 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
         <!-- Dates Box -->
         <rect x="0" y="0" width="46" height="46" fill="#FFE4E6" stroke="#000000" stroke-width="2.5" />
         <text x="23" y="32" text-anchor="middle" font-size="22">📅</text>
-        <text x="60" y="12" font-family="'Courier New', Courier, monospace" font-size="10" font-weight="800" fill="#71717A" letter-spacing="1">EVENT DATES</text>
-        <text x="60" y="29" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="900" fill="#000000">${dates}</text>
-        <text x="60" y="44" font-family="'Courier New', Courier, monospace" font-size="11" font-weight="600" fill="#52525B">24-Hour Continuous Hackathon</text>
+        <text x="60" y="12" class="font-mono" font-size="10" font-weight="800" fill="#71717A" letter-spacing="1">EVENT DATES</text>
+        <text x="60" y="29" class="font-sans" font-size="15" font-weight="900" fill="#000000">${dates}</text>
+        <text x="60" y="44" class="font-mono" font-size="11" font-weight="600" fill="#52525B">24-Hour Continuous Hackathon</text>
 
         <!-- Venue Box -->
         <g transform="translate(305, 0)">
           <rect x="0" y="0" width="46" height="46" fill="#FEF3C7" stroke="#000000" stroke-width="2.5" />
           <text x="23" y="32" text-anchor="middle" font-size="22">📍</text>
-          <text x="60" y="12" font-family="'Courier New', Courier, monospace" font-size="10" font-weight="800" fill="#71717A" letter-spacing="1">REPORTING VENUE</text>
-          <text x="60" y="29" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="900" fill="#000000">${venueCampus.length > 28 ? venueCampus.substring(0, 26) + "..." : venueCampus}</text>
-          <text x="60" y="44" font-family="'Courier New', Courier, monospace" font-size="11" font-weight="600" fill="#52525B">${venueCity}</text>
+          <text x="60" y="12" class="font-mono" font-size="10" font-weight="800" fill="#71717A" letter-spacing="1">REPORTING VENUE</text>
+          <text x="60" y="29" class="font-sans" font-size="13" font-weight="900" fill="#000000">${venueCampus.length > 28 ? venueCampus.substring(0, 26) + "..." : venueCampus}</text>
+          <text x="60" y="44" class="font-mono" font-size="11" font-weight="600" fill="#52525B">${venueCity}</text>
         </g>
       </g>
 
@@ -131,8 +133,8 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
       <g transform="translate(0, 210)">
         <rect width="600" height="44" rx="3" fill="#F0FDF4" stroke="#000000" stroke-width="2.5" />
         <text x="20" y="28" font-size="16">🛡️</text>
-        <text x="48" y="27" font-family="Arial, Helvetica, sans-serif" font-size="12" font-weight="800" fill="#000000">Includes 24h Arena Access, &amp; Certifications.</text>
-        <text x="580" y="27" text-anchor="end" font-family="'Courier New', Courier, monospace" font-size="11" font-weight="800" fill="#71717A">SECURE #HV26</text>
+        <text x="48" y="27" class="font-sans" font-size="12" font-weight="800" fill="#000000">Includes 24h Arena Access, &amp; Certifications.</text>
+        <text x="580" y="27" text-anchor="end" class="font-mono" font-size="11" font-weight="800" fill="#71717A">SECURE #HV26</text>
       </g>
 
       <!-- QR Code & Barcode Section -->
@@ -143,9 +145,9 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
 
         <!-- Check-in labels -->
         <g transform="translate(130, 20)">
-          <text x="0" y="15" font-family="'Courier New', Courier, monospace" font-size="10" font-weight="800" fill="#71717A" letter-spacing="1">FAST-TRACK CHECK-IN</text>
-          <text x="0" y="38" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="900" fill="#000000">Scan at Registration Desk</text>
-          <text x="0" y="60" font-family="'Courier New', Courier, monospace" font-size="12" font-weight="800" fill="#059669">✓ VERIFIED ON ROSTER</text>
+          <text x="0" y="15" class="font-mono" font-size="10" font-weight="800" fill="#71717A" letter-spacing="1">FAST-TRACK CHECK-IN</text>
+          <text x="0" y="38" class="font-sans" font-size="15" font-weight="900" fill="#000000">Scan at Registration Desk</text>
+          <text x="0" y="60" class="font-mono" font-size="12" font-weight="800" fill="#059669">✓ VERIFIED ON ROSTER</text>
         </g>
 
         <!-- Barcode Right -->
@@ -153,7 +155,7 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
           <g transform="translate(${Math.max(0, (230 - totalBarcodeWidth) / 2)}, 0)">
             ${barcodeBarsSvg}
           </g>
-          <text x="115" y="66" text-anchor="middle" font-family="'Courier New', Courier, monospace" font-size="13" font-weight="800" fill="#000000" letter-spacing="3">* ${ticketNumber} *</text>
+          <text x="115" y="66" text-anchor="middle" class="font-mono" font-size="13" font-weight="800" fill="#000000" letter-spacing="3">* ${ticketNumber} *</text>
         </g>
       </g>
     </g>
@@ -161,23 +163,19 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
     <!-- Bottom Footer Bar -->
     <rect x="0" y="630" width="660" height="50" fill="#000000" />
     <line x1="0" y1="630" x2="660" y2="630" stroke="#000000" stroke-width="5" />
-    <text x="25" y="660" font-family="'Courier New', Courier, monospace" font-size="11" font-weight="800" fill="#FFFFFF" letter-spacing="1">HACKVERSE 2026 OFFICIAL STATE HACKATHON</text>
-    <text x="635" y="660" text-anchor="end" font-family="'Courier New', Courier, monospace" font-size="11" font-weight="800" fill="#FFFFFF" letter-spacing="1">GOVT. COLLEGE OF ENGINEERING KALAHANDI</text>
+    <text x="25" y="660" class="font-mono" font-size="11" font-weight="800" fill="#FFFFFF" letter-spacing="1">HACKVERSE 2026 OFFICIAL STATE HACKATHON</text>
+    <text x="635" y="660" text-anchor="end" class="font-mono" font-size="11" font-weight="800" fill="#FFFFFF" letter-spacing="1">GOVT. COLLEGE OF ENGINEERING KALAHANDI</text>
   </g>
 </svg>
 `;
 
-  // Render SVG to 2x PNG buffer with resvg
+  // Render SVG to 3x PNG buffer with resvg
   const resvg = new Resvg(svg, {
     fitTo: {
       mode: "zoom",
       value: 2.0, // High quality 2x resolution
     },
     background: "#0D0D11",
-    font: {
-      loadSystemFonts: true,
-      defaultFontFamily: "Arial",
-    },
   });
 
   const pngData = resvg.render();
