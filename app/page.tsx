@@ -5,7 +5,9 @@ import { HeroSection } from "@/features/home/HeroSection";
 import { QuickStats } from "@/features/home/QuickStats";
 import { DomainTrackConsole } from "@/features/home/DomainTrackConsole";
 import { PrizePoolBanner } from "@/features/home/PrizePoolBanner";
+import { SponsorsTeaser } from "@/features/home/SponsorsTeaser";
 import { CodeBreakersSpotlight } from "@/features/home/CodeBreakersSpotlight";
+import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 import { MinecraftBlockMarquee } from "@/components/layout/MinecraftBlockMarquee";
 import { ScrollReveal } from "@/components/motion/ScrollReveal";
 import { ArrowRight, Terminal } from "lucide-react";
@@ -29,6 +31,26 @@ export default function HomePage() {
       {/* 4. Prize Pool Breakdown */}
       <ScrollReveal>
         <PrizePoolBanner />
+      </ScrollReveal>
+
+      {/* Marquee Separator between Prize Pool and Sponsors */}
+      <MarqueeBanner
+        items={[
+          "PATRON GUILD",
+          "OFFICIAL SPONSORS",
+          "ROSTER REVEALING SOON",
+          "CLOUD COMPUTE PARTNERS",
+          "HACKVERSE '26",
+          "TOOLING GRANTS",
+          "GCEK KALAHANDI",
+        ]}
+        bg="secondary"
+        speed="normal"
+      />
+
+      {/* 5. Official Sponsors Section (Revealing Soon) */}
+      <ScrollReveal>
+        <SponsorsTeaser />
       </ScrollReveal>
 
       {/* Minecraft Block Divider Marquee */}
@@ -96,7 +118,7 @@ export default function HomePage() {
             </div>
 
             <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-[#FFAA00] text-black border-2 border-black shadow-neo-sm inline-block">
-              REGISTRATION DEADLINE // OCTOBER 10, 2026
+              REGISTRATION DEADLINE // SEPTEMBER 10, 2026
             </span>
 
             <h2 className="font-black text-4xl sm:text-6xl text-white uppercase tracking-tight leading-tight [text-shadow:_3px_3px_0_#000]">
@@ -107,7 +129,9 @@ export default function HomePage() {
             </h2>
 
             <p className="text-base sm:text-xl font-bold text-[#EADCE9] max-w-2xl mx-auto leading-relaxed [text-shadow:_1px_1px_0_#000]">
-              Free participation, real-time mentorship, computing infrastructure, and a STATE stage at Government College of Engineering Kalahandi.
+              Free participation, real-time mentorship, computing
+              infrastructure, and a STATE stage at Government College of
+              Engineering Kalahandi.
             </p>
 
             <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">

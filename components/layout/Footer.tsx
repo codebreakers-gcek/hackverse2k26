@@ -135,6 +135,7 @@ export function Footer() {
                     { href: "/documents", label: "Documents" },
                     { href: "/guidelines", label: "Guidelines" },
                     { href: "/schedule", label: "Schedule" },
+                    { href: "/sponsors", label: "Sponsors & Partners" },
                     { href: "/faqs", label: "FAQs" },
                     { href: "/team", label: "Organizing Team" },
                     { href: "/contact", label: "Contact Desk" },
