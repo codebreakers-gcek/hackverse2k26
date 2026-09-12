@@ -316,7 +316,10 @@ export const metadata: Metadata = {
     canonical: "https://hackverse.codebreakersgcek.tech",
   },
   verification: {
-    google: "googlebd4a646d4549ad60",
+    google: [
+      "ZN8_H21SvxCF7C-nkmtfZoTThcFTcUbgQjuhapzl-FY",
+      "googlebd4a646d4549ad60",
+    ],
   },
 };
 
