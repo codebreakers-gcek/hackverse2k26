@@ -12,8 +12,8 @@ export const EVENT_DATA: EventInfo = {
   endDate: "2026-10-10T18:00:00+05:30",
   displayDates: "OCTOBER 08 - 10, 2026",
   location: {
-    campus: "Government College of Engineering Kalahandi",
-    venue: "Main Auditorium & Computing Lab Complex",
+    campus: "Central Library",
+    venue: "Government College of Engineering Kalahandi",
     city: "Bhawanipatna",
     state: "Odisha",
     postalCode: "766002",

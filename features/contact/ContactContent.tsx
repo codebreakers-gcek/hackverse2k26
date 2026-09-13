@@ -253,7 +253,7 @@ export function ContactContent() {
             <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar w-full sm:w-auto select-none">
               {[
                 { id: "all", label: "ALL DESKS", count: ALL_CONTACTS.length },
-                { id: "technical", label: "TECHNICAL DEVS", count: TECHNICAL_TEAM.length },
+                { id: "technical", label: "TECHNICAL HEAD", count: TECHNICAL_TEAM.length },
                 { id: "management", label: "MANAGEMENT TEAM", count: MANAGEMENT_TEAM.length },
               ].map((tab) => {
                 const isActive = selectedCategory === tab.id;

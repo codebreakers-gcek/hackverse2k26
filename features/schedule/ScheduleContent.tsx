@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { SCHEDULE_DATA } from "@/data/schedule";
+import { SCHEDULE_DATA, calculatePhaseProgress } from "@/data/schedule";
 import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 import {
   Calendar,
@@ -18,6 +18,15 @@ import {
 export function ScheduleContent() {
   const data = SCHEDULE_DATA;
   const shouldReduceMotion = useReducedMotion();
+  const [currentDate, setCurrentDate] = React.useState<Date>(() => new Date());
+
+  React.useEffect(() => {
+    // Keep phase progress and status updated in real-time
+    const interval = setInterval(() => {
+      setCurrentDate(new Date());
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
 
   const containerVariants: Variants = {
     hidden: { opacity: shouldReduceMotion ? 1 : 0 },
@@ -134,17 +143,26 @@ export function ScheduleContent() {
         {/* ========================================================================= */}
         <div className="space-y-6">
           {data.phases.map((phase, idx) => {
-            const isCompleted = phase.status === "completed";
-            const isOngoing = phase.status === "ongoing";
+            const dynamicProgress = calculatePhaseProgress(
+              phase.startDate,
+              phase.endDate,
+              currentDate
+            );
+            const isCompleted = dynamicProgress.status === "completed";
+            const isLive =
+              dynamicProgress.status === "live" ||
+              dynamicProgress.status === "ongoing";
+            const isUpcoming = dynamicProgress.status === "upcoming";
+            const progressPercentage = dynamicProgress.progressPercentage;
 
             const statusBadge = isCompleted ? (
               <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-[#707070] text-white border-2 border-t-[#9E9E9E] border-l-[#9E9E9E] border-r-[#383838] border-b-[#383838] shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
                 COMPLETED
               </span>
-            ) : isOngoing ? (
+            ) : isLive ? (
               <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] flex items-center gap-1.5 shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
-                <span className="w-2 h-2 bg-[#55FFFF] inline-block animate-pulse" />
-                ONGOING PHASE
+                <span className="w-2 h-2 bg-[#55FF55] inline-block animate-pulse shadow-[0_0_6px_#55FF55]" />
+                LIVE
               </span>
             ) : (
               <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-[#FFAA00] text-black border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[2px_2px_0px_#000]">
@@ -156,7 +174,9 @@ export function ScheduleContent() {
               <motion.div
                 key={idx}
                 variants={itemVariants}
-                className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[6px_6px_0px_#000] p-6 sm:p-8 flex flex-col md:flex-row gap-6 relative hover:translate-y-[-2px] transition-all"
+                className={`bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[6px_6px_0px_#000] p-6 sm:p-8 flex flex-col md:flex-row gap-6 relative hover:translate-y-[-2px] transition-all ${
+                  isLive ? "ring-2 ring-[#55FF55]/50" : ""
+                }`}
               >
                 {/* Left Phase Column */}
                 <div className="md:w-56 shrink-0 flex md:flex-col items-center md:items-start justify-between border-b-2 md:border-b-0 md:border-r-2 border-[#8B8B8B] pb-4 md:pb-0 md:pr-6 gap-3">
@@ -195,9 +215,9 @@ export function ScheduleContent() {
                           className={`w-4 h-4 stroke-[2.5px] shrink-0 mt-0.5 ${
                             isCompleted
                               ? "text-[#555555]"
-                              : isOngoing
+                              : isLive
                                 ? "text-[#2E7D32]"
-                                : "text-[#D97706]"
+                                : "text-[#8F5500]"
                           }`}
                         />
                         <span className="font-mono font-bold text-xs sm:text-sm text-[#111111] leading-relaxed">
@@ -211,13 +231,23 @@ export function ScheduleContent() {
                   <div className="pt-2">
                     <div className="flex items-center justify-between font-mono text-[11px] font-black text-[#2A2A2A] mb-1">
                       <span>PHASE PROGRESS</span>
-                      <span className="text-[#2E7D32] font-black">{phase.progressPercentage}%</span>
+                      <span
+                        className={`font-black ${
+                          isLive
+                            ? "text-[#1B5E20]"
+                            : isCompleted
+                              ? "text-[#555555]"
+                              : "text-[#8F5500]"
+                        }`}
+                      >
+                        {progressPercentage}%
+                      </span>
                     </div>
                     {/* Dark Inset EXP Bar Track */}
                     <div className="w-full h-3.5 bg-[#2B2B2B] border-2 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] shadow-[inset_2px_2px_4px_rgba(0,0,0,0.7)] p-0.5 overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
-                        animate={{ width: `${phase.progressPercentage}%` }}
+                        animate={{ width: `${progressPercentage}%` }}
                         transition={{
                           duration: 0.8,
                           delay: 0.2 + idx * 0.1,
@@ -226,7 +256,7 @@ export function ScheduleContent() {
                         className={`h-full border border-black ${
                           isCompleted
                             ? "bg-[#707070]"
-                            : isOngoing
+                            : isLive
                               ? "bg-[#55FF55] shadow-[0_0_6px_#55FF55]"
                               : "bg-[#FFAA00]"
                         }`}

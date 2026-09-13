@@ -1,4 +1,4 @@
-export type PhaseStatus = "completed" | "ongoing" | "upcoming";
+export type PhaseStatus = "completed" | "live" | "ongoing" | "upcoming";
 
 export interface DynamicPhaseProgress {
   status: PhaseStatus;
@@ -20,7 +20,7 @@ export interface SchedulePhase {
 /**
  * Dynamically calculates the progress percentage and status of a phase based on current date.
  * - Prior to startDate: upcoming (0%)
- * - Between startDate and endDate: ongoing (1% - 100% proportionally)
+ * - Between startDate and endDate: live (1% - 100% proportionally)
  * - After endDate: completed (100%)
  */
 export function calculatePhaseProgress(
@@ -74,7 +74,7 @@ export function calculatePhaseProgress(
     };
   }
 
-  // Ongoing phase - proportionally calculate progress between 0 and 100%
+  // Live / Ongoing phase - proportionally calculate progress between 0 and 100%
   const totalDuration = endTime - startTime;
   const elapsed = now - startTime;
   const rawPercentage = totalDuration > 0 ? (elapsed / totalDuration) * 100 : 0;
@@ -84,7 +84,7 @@ export function calculatePhaseProgress(
   const daysRemaining = Math.max(0, Math.ceil(msRemaining / (1000 * 60 * 60 * 24)));
 
   return {
-    status: "ongoing",
+    status: "live",
     progressPercentage,
     daysRemaining,
   };
@@ -126,7 +126,7 @@ export const SCHEDULE_DATA: ScheduleData = {
       title: "CodeBreakers Mid-Level Evaluations",
       startDate: "2026-10-01",
       endDate: "2026-10-08",
-      displayDates: "01 Oct 2026 – 08 Oct 2026",
+      displayDates: "02 Oct 2026 – 03 Oct 2026",
       items: [
         "Online & on-campus evaluation through CodeBreakers portal.",
         "Round 1: Initial concept, ideation, and problem understanding assessment.",
@@ -141,7 +141,7 @@ export const SCHEDULE_DATA: ScheduleData = {
       endDate: "2026-10-10",
       displayDates: "08 Oct 2026 – 10 Oct 2026",
       items: [
-        "Location: Main Auditorium & Advanced Computing Lab Complex, GCEK Bhawanipatna.",
+        "Location: Central Library, GCEK Bhawanipatna.",
         "Duration: 24 hours of continuous on-site prototyping, code sprint, mentorship check-ins, and jury review.",
         "Three progressive sub-rounds of judging and final live prototype demonstration.",
         "Facilities provided for uninterrupted development, meals, and accommodations.",
