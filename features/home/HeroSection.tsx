@@ -102,12 +102,25 @@ export function HeroSection() {
           </div>
         </motion.div>
 
-        {/* Massive Headline */}
-        <motion.div variants={itemVariants} className="relative inline-block mb-3 max-w-full">
-          <h1 className="text-3xl xs:text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-tight text-black uppercase leading-none break-words text-outline-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.45)]">
-            <span className="font-thuast tracking-wider">HACKVERSE</span>{" "}
-            <span className="font-thuast tracking-tighter text-neo-accent">&apos;26</span>
-          </h1>
+        {/* Massive 3D Minecraft Logo Headline with '26 beneath SE */}
+        <motion.div variants={itemVariants} className="relative inline-flex flex-col items-center justify-center mb-3 sm:mb-4 max-w-full">
+          <h1 className="sr-only">HACKVERSE &apos;26</h1>
+          <div className="relative w-[92vw] max-w-[420px] xs:max-w-[500px] sm:max-w-[650px] md:max-w-[780px] lg:max-w-[880px] select-none">
+            <Image
+              src="/minecraft_loader/hackverse.webp"
+              alt="HACKVERSE"
+              width={900}
+              height={260}
+              priority
+              className="w-full h-auto object-contain drop-shadow-[0_12px_28px_rgba(0,0,0,0.7)] pointer-events-none select-none"
+            />
+            {/* '26 positioned below HACKVERSE at the bottom right under SE */}
+            <div className="absolute right-[2%] sm:right-[3%] bottom-[3%] sm:bottom-[5%] translate-y-[24%] sm:translate-y-[20%] select-none pointer-events-none z-10">
+              <span className="font-thuast text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-neo-accent uppercase tracking-tighter text-outline-white drop-shadow-[0_4px_12px_rgba(0,0,0,0.65)] -rotate-3 inline-block">
+                &apos;26
+              </span>
+            </div>
+          </div>
         </motion.div>
 
         {/* Tagline sticker */}
