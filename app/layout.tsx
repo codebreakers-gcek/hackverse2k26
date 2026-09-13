@@ -42,6 +42,7 @@ export const metadata: Metadata = {
     "HACKVERSE Hackathon",
     "HACKVERSE Hackathon 2026",
     "HACKVERSE GCEK",
+    "GCEK HACKATHON 26",
     "HACKVERSE GCEK 2026",
     "CodeBreakers GCEK",
     "CodeBreakers",
