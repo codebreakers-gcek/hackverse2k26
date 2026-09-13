@@ -17,15 +17,15 @@ export const HACKATHON_DOCUMENTS: HackathonDocument[] = [
   {
     id: "ppt-template",
     title: "Official Ideation & Presentation PPT Template",
-    shortTitle: "Presentation PPT",
+    shortTitle: "Idea Submission PPT",
     badge: "STAGE 1 & 2 FORMAT",
     category: "presentation",
     description:
       "Standardized presentation deck required for submitting your team's solution architecture, problem analysis, technology stack, workflow, and feasibility.",
-    isAvailable: false,
-    format: "PPTX / Google Slides",
+    isAvailable: true,
+    format: "Microsoft PowerPoint (.pptx)",
     embedUrl: "",
-    downloadUrl: "",
+    downloadUrl: "/docs/[Pub] HACKVERSE'26 _ Idea Submission Template.pptx",
     instructions: [
       "Follow the structured slide order without altering mandatory evaluation headers.",
       "Include detailed system architecture diagrams and chosen technology stack.",
@@ -33,10 +33,10 @@ export const HACKATHON_DOCUMENTS: HackathonDocument[] = [
       "Export as PDF or submit via editable presentation link in your squad portal.",
     ],
     specs: [
-      { label: "FILE FORMAT", value: "Microsoft PowerPoint (.pptx) / PDF" },
+      { label: "FILE FORMAT", value: "Microsoft PowerPoint (.pptx)" },
       { label: "SLIDE COUNT", value: "10 - 12 Slides Standard" },
       { label: "APPLICABILITY", value: "Stage 1 (Screening) & Stage 2 (Mid-Level)" },
-      { label: "CURRENT STATUS", value: "RELEASING SOON // UNDER EMBARGO" },
+      { label: "CURRENT STATUS", value: "AVAILABLE // DOWNLOAD OFFICIAL PPTX" },
     ],
   },
   {
