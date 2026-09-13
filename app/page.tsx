@@ -118,7 +118,7 @@ export default function HomePage() {
             </div>
 
             <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-[#FFAA00] text-black border-2 border-black shadow-neo-sm inline-block">
-              REGISTRATION DEADLINE // SEPTEMBER 10, 2026
+              REGISTRATION DEADLINE // SEPTEMBER 26, 2026
             </span>
 
             <h2 className="font-black text-4xl sm:text-6xl text-white uppercase tracking-tight leading-tight [text-shadow:_3px_3px_0_#000]">
