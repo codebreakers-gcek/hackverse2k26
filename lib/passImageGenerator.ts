@@ -16,13 +16,14 @@ export interface PassImageOptions {
  */
 export async function generatePassPngBuffer(options: PassImageOptions): Promise<Buffer> {
   const ticketNumber = options.ticketNumber || "HV26-241263";
-  const teamName = (options.teamName || "JHATUGANG").toUpperCase();
+  const teamName = (options.teamName || "UNKNOWN").toUpperCase();
   const dates = options.dates || EVENT_DATA.displayDates || "OCTOBER 08 - 10, 2026";
   const venueCampus = options.venueCampus || EVENT_DATA.location?.campus || "Government College of Engineering Kalahandi";
   const venueCity = options.venueCity || `${EVENT_DATA.location?.city || "Bhawanipatna"}, ${EVENT_DATA.location?.state || "Odisha"}`;
 
-  // Generate clean QR code SVG
-  const qrData = `HACKVERSE26_PASS:${ticketNumber}:${teamName}`;
+  // Generate clean QR code SVG linking directly to the team authorization portal
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://hackverse.codebreakersgcek.tech";
+  const qrData = `${baseUrl}/teams/${encodeURIComponent(ticketNumber)}`;
   const qrSvgRaw = await QRCode.toString(qrData, {
     type: "svg",
     margin: 1,

@@ -74,6 +74,7 @@ export async function POST(req: NextRequest) {
       maxSquadSize,
       contactPhone,
       contactEmail,
+      judgeAuthPin,
       googleDriveEnabled,
       googleDriveAuthType,
       googleDriveConnectedEmail,
@@ -113,6 +114,9 @@ export async function POST(req: NextRequest) {
         ...(contactEmail !== undefined && {
           contactEmail: contactEmail?.trim(),
         }),
+        ...(judgeAuthPin !== undefined && {
+          judgeAuthPin: judgeAuthPin?.trim(),
+        }),
         ...(googleDriveEnabled !== undefined && {
           googleDriveEnabled: Boolean(googleDriveEnabled),
         }),
@@ -140,8 +144,8 @@ export async function POST(req: NextRequest) {
       },
       create: {
         id: "default",
-        upiId: upiId ? upiId.trim() : "codebreakers@upi",
-        payeeName: payeeName ? payeeName.trim() : "HACKVERSE 2026 GCEK",
+        upiId: upiId?.trim() || "codebreakers@upi",
+        payeeName: payeeName?.trim() || "HACKVERSE 2026 GCEK",
         registrationFee: Number(registrationFee) || 0,
         isPaymentMandatory: Boolean(isPaymentMandatory),
         isRegistrationOpen:
@@ -152,18 +156,13 @@ export async function POST(req: NextRequest) {
             : true,
         minSquadSize: Number(minSquadSize) || 2,
         maxSquadSize: Number(maxSquadSize) || 4,
-        contactPhone: contactPhone || "+91 9876543210",
-        contactEmail: contactEmail || "hackverse26@codebreakersgcek.tech",
+        contactPhone: contactPhone?.trim() || "+91 9876543210",
+        contactEmail: contactEmail?.trim() || "hackverse26@codebreakersgcek.tech",
+        judgeAuthPin: judgeAuthPin?.trim() || "2026",
         googleDriveEnabled: Boolean(googleDriveEnabled),
-        googleDriveAuthType: googleDriveAuthType
-          ? googleDriveAuthType.trim()
-          : "oauth",
-        googleDriveConnectedEmail: googleDriveConnectedEmail
-          ? googleDriveConnectedEmail.trim()
-          : "",
-        googleDriveFolderId: googleDriveFolderId
-          ? googleDriveFolderId.trim()
-          : "",
+        googleDriveAuthType: googleDriveAuthType ? googleDriveAuthType.trim() : "oauth",
+        googleDriveConnectedEmail: googleDriveConnectedEmail ? googleDriveConnectedEmail.trim() : "",
+        googleDriveFolderId: googleDriveFolderId ? googleDriveFolderId.trim() : "",
         googleDriveFolderName: googleDriveFolderName
           ? googleDriveFolderName.trim()
           : "HACKVERSE 2026 Team Uploads",

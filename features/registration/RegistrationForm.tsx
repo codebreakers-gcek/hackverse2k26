@@ -307,13 +307,8 @@ export function RegistrationForm() {
   }, [session, isAuthPending]);
 
   // File inputs ref & cached files state (stored locally in browser cache until registration confirmation)
-  const collegeIdInputRef = useRef<HTMLInputElement>(null);
   const synopsisInputRef = useRef<HTMLInputElement>(null);
-  const [authLetterFile, setAuthLetterFile] = useState<File | null>(null);
   const [paymentProofFile, setPaymentProofFile] = useState<File | null>(null);
-  const [authLetterPreviewUrl, setAuthLetterPreviewUrl] = useState<
-    string | null
-  >(null);
   const [paymentProofPreviewUrl, setPaymentProofPreviewUrl] = useState<
     string | null
   >(null);
@@ -384,40 +379,6 @@ export function RegistrationForm() {
           console.error("Failed to parse cached registration draft:", e);
         }
       }
-
-      // Restore cached Authorization Letter file from IndexedDB (or fallback to localStorage)
-      (async () => {
-        try {
-          const cached = await getDocFromCache(REG_AUTH_DOC_KEY);
-          if (cached?.file) {
-            const previewUrl = URL.createObjectURL(cached.file);
-            setAuthLetterFile(cached.file);
-            setAuthLetterPreviewUrl(previewUrl);
-            return;
-          }
-        } catch (e) {
-          console.warn("IndexedDB auth letter restore error:", e);
-        }
-
-        const savedAuthDoc = localStorage.getItem(REG_AUTH_DOC_KEY);
-        if (savedAuthDoc) {
-          try {
-            const parsedDoc: CachedDocPayload = JSON.parse(savedAuthDoc);
-            if (parsedDoc?.dataUrl && parsedDoc.name) {
-              const reconstructed = dataURLtoFile(
-                parsedDoc.dataUrl,
-                parsedDoc.name,
-                parsedDoc.type,
-              );
-              const previewUrl = URL.createObjectURL(reconstructed);
-              setAuthLetterFile(reconstructed);
-              setAuthLetterPreviewUrl(previewUrl);
-            }
-          } catch (e) {
-            console.warn("Failed to reconstruct cached auth letter:", e);
-          }
-        }
-      })();
 
       // Restore cached Payment Proof file from IndexedDB (or fallback to localStorage)
       (async () => {
@@ -654,85 +615,6 @@ export function RegistrationForm() {
   };
 
   // Step 4: Local File Caching Handlers (Stored in IndexedDB & browser memory until final submission)
-  // Step 4: Local File Caching Handlers (Stored in IndexedDB & browser memory until final submission)
-  const handleCollegeIdFile = async (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const sizeStr = `${(file.size / (1024 * 1024)).toFixed(2)} MB`;
-    const previewUrl = URL.createObjectURL(file);
-
-    setAuthLetterFile(file);
-    setAuthLetterPreviewUrl(previewUrl);
-
-    // Save to IndexedDB (Persistent high capacity cache)
-    await saveDocToCache(REG_AUTH_DOC_KEY, file, sizeStr);
-
-    // Fallback: Also cache base64 in localStorage if file is small (<= 2.5MB)
-    if (file.size <= 2.5 * 1024 * 1024) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        try {
-          const payload: CachedDocPayload = {
-            name: file.name,
-            type: file.type,
-            sizeStr,
-            dataUrl: reader.result as string,
-          };
-          localStorage.setItem(REG_AUTH_DOC_KEY, JSON.stringify(payload));
-        } catch (err) {
-          console.warn("localStorage auth doc cache quota exceeded:", err);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-
-    setFormData((prev) => ({
-      ...prev,
-      documentUploads: {
-        ...prev.documentUploads,
-        collegeIdFileName: file.name,
-        collegeIdFileSize: sizeStr,
-        collegeIdDriveUrl: "",
-        collegeIdDriveFileId: "",
-      },
-    }));
-
-    if (errors["documentUploads.collegeIdFileName"]) {
-      setErrors((prev) => {
-        const next = { ...prev };
-        delete next["documentUploads.collegeIdFileName"];
-        return next;
-      });
-    }
-  };
-
-  const handleDeleteAuthLetter = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setAuthLetterFile(null);
-    setAuthLetterPreviewUrl(null);
-    if (collegeIdInputRef.current) {
-      collegeIdInputRef.current.value = "";
-    }
-    removeDocFromCache(REG_AUTH_DOC_KEY);
-    try {
-      localStorage.removeItem(REG_AUTH_DOC_KEY);
-    } catch {}
-
-    setFormData((prev) => ({
-      ...prev,
-      documentUploads: {
-        ...prev.documentUploads,
-        collegeIdFileName: "",
-        collegeIdFileSize: "",
-        collegeIdDriveUrl: "",
-        collegeIdDriveFileId: "",
-      },
-    }));
-  };
-
   const handlePaymentProofFile = async (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
@@ -813,63 +695,34 @@ export function RegistrationForm() {
 
   // Safe Document Preview Resolver (Always generates a fresh, active Object URL from cache/file)
   const handleOpenDocPreview = async (
-    type: "AUTH_LETTER" | "PAYMENT_PROOF",
+    type: "PAYMENT_PROOF" = "PAYMENT_PROOF",
   ) => {
-    if (type === "AUTH_LETTER") {
-      const fileName =
-        formData.documentUploads.collegeIdFileName || "Authorization Letter";
+    const fileName =
+      formData.documentUploads.synopsisFileName || "Payment Proof";
 
-      let file = authLetterFile;
-      if (!file) {
-        const cached = await getDocFromCache(REG_AUTH_DOC_KEY);
-        if (cached?.file) {
-          file = cached.file;
-          setAuthLetterFile(cached.file);
-        }
+    let file = paymentProofFile;
+    if (!file) {
+      const cached = await getDocFromCache(REG_PAYMENT_DOC_KEY);
+      if (cached?.file) {
+        file = cached.file;
+        setPaymentProofFile(cached.file);
       }
-
-      let url = "";
-      if (file) {
-        url = URL.createObjectURL(file);
-        setAuthLetterPreviewUrl(url);
-      } else if (formData.documentUploads.collegeIdDriveUrl) {
-        url = formData.documentUploads.collegeIdDriveUrl;
-      }
-
-      setPreviewDocModal({
-        title: "AUTHORIZATION LETTER",
-        fileName,
-        url,
-        fileType: file?.type,
-      });
-    } else {
-      const fileName =
-        formData.documentUploads.synopsisFileName || "Payment Proof";
-
-      let file = paymentProofFile;
-      if (!file) {
-        const cached = await getDocFromCache(REG_PAYMENT_DOC_KEY);
-        if (cached?.file) {
-          file = cached.file;
-          setPaymentProofFile(cached.file);
-        }
-      }
-
-      let url = "";
-      if (file) {
-        url = URL.createObjectURL(file);
-        setPaymentProofPreviewUrl(url);
-      } else if (formData.documentUploads.synopsisDriveUrl) {
-        url = formData.documentUploads.synopsisDriveUrl;
-      }
-
-      setPreviewDocModal({
-        title: "PAYMENT PROOF",
-        fileName,
-        url,
-        fileType: file?.type,
-      });
     }
+
+    let url = "";
+    if (file) {
+      url = URL.createObjectURL(file);
+      setPaymentProofPreviewUrl(url);
+    } else if (formData.documentUploads.synopsisDriveUrl) {
+      url = formData.documentUploads.synopsisDriveUrl;
+    }
+
+    setPreviewDocModal({
+      title: "PAYMENT PROOF",
+      fileName,
+      url,
+      fileType: file?.type,
+    });
   };
 
   // Step Navigation Handlers
@@ -926,33 +779,7 @@ export function RegistrationForm() {
     try {
       const updatedDocs = { ...formData.documentUploads };
 
-      // 1. Upload Authorization Letter to Google Drive if selected
-      if (authLetterFile) {
-        setSubmitProgressText("Uploading Documents ...");
-        try {
-          const uploadData = new FormData();
-          uploadData.append("file", authLetterFile);
-          uploadData.append("teamName", formData.teamName || "Squad");
-          uploadData.append("category", "college_id");
-
-          const res = await fetch("/api/upload/drive", {
-            method: "POST",
-            body: uploadData,
-          });
-          const result = await res.json();
-          if (result.success && result.data) {
-            updatedDocs.collegeIdDriveUrl = result.data.webViewLink;
-            updatedDocs.collegeIdDriveFileId = result.data.fileId;
-          }
-        } catch (uploadErr) {
-          console.warn(
-            "Authorization letter drive upload failed, proceeding:",
-            uploadErr,
-          );
-        }
-      }
-
-      // 2. Upload Payment Proof to Google Drive if selected
+      // 1. Upload Payment Proof to Google Drive if selected
       if (paymentProofFile) {
         setSubmitProgressText("Uploading Payment Proof ...");
         try {
@@ -1033,13 +860,9 @@ export function RegistrationForm() {
   };
 
   const handleResetForm = () => {
-    if (authLetterPreviewUrl) URL.revokeObjectURL(authLetterPreviewUrl);
     if (paymentProofPreviewUrl) URL.revokeObjectURL(paymentProofPreviewUrl);
-    setAuthLetterFile(null);
     setPaymentProofFile(null);
-    setAuthLetterPreviewUrl(null);
     setPaymentProofPreviewUrl(null);
-    if (collegeIdInputRef.current) collegeIdInputRef.current.value = "";
     if (synopsisInputRef.current) synopsisInputRef.current.value = "";
 
     setFormData(initialFormState);
@@ -2139,7 +1962,7 @@ export function RegistrationForm() {
               )}
 
               {/* ========================================================================= */}
-              {/* STEP 4: DOCUMENT UPLOADS & FINAL SUBMISSION                                */}
+              {/* STEP 4: PAYMENT PROOF & FINAL CONFIRMATION                                 */}
               {/* ========================================================================= */}
               {currentStep === 4 && (
                 <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo space-y-6 animate-in fade-in-50 duration-200">
@@ -2149,7 +1972,7 @@ export function RegistrationForm() {
                         04
                       </span>
                       <h3 className="font-black text-xl text-black uppercase tracking-tight">
-                        DOCUMENT UPLOADS &amp; FINAL PASS CONFIRMATION
+                        PAYMENT PROOF &amp; FINAL CONFIRMATION
                       </h3>
                     </div>
                     <span className="font-mono text-[10px] font-bold bg-neo-secondary px-2 py-1 border-2 border-black uppercase hidden sm:inline">
@@ -2157,95 +1980,8 @@ export function RegistrationForm() {
                     </span>
                   </div>
 
-                  {/* Document Upload 1: Authorization Letter (REQUIRED) */}
+                  {/* Payment Proof Upload (REQUIRED) */}
                   <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <label className="text-xs font-black uppercase tracking-wider text-black flex items-center gap-1.5">
-                        <FileText className="w-4 h-4 text-black" />
-                        <span>AUTHORIZATION LETTER (PDF / PNG / JPG)</span>
-                      </label>
-                      <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-rose-600 text-white border border-black shadow-neo-sm">
-                        REQUIRED *
-                      </span>
-                    </div>
-
-                    <input
-                      type="file"
-                      ref={collegeIdInputRef}
-                      onChange={handleCollegeIdFile}
-                      accept=".pdf,.png,.jpg,.jpeg,.webp"
-                      className="hidden"
-                    />
-
-                    <div
-                      onClick={() => collegeIdInputRef.current?.click()}
-                      className={clsx(
-                        "p-6 border-3 border-dashed transition-all text-center space-y-2 cursor-pointer",
-                        errors["documentUploads.collegeIdFileName"]
-                          ? "border-rose-600 bg-rose-50"
-                          : "border-black bg-neutral-50 hover:bg-neo-bg",
-                      )}
-                    >
-                      {formData.documentUploads.collegeIdFileName ? (
-                        <div className="space-y-3">
-                          <div className="font-mono text-xs font-black text-emerald-800 flex items-center justify-center gap-1.5">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                            <span>
-                              ATTACHED:{" "}
-                              {formData.documentUploads.collegeIdFileName}
-                            </span>
-                          </div>
-                          <div className="flex flex-wrap items-center justify-center gap-3 text-[11px] font-mono">
-                            <span className="font-bold text-black/70">
-                              {formData.documentUploads.collegeIdFileSize}
-                            </span>
-                            <button
-                              type="button"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleOpenDocPreview("AUTH_LETTER");
-                              }}
-                              className="inline-flex items-center gap-1 px-3 py-1 bg-white hover:bg-neutral-100 text-black border-2 border-black font-black text-xs uppercase shadow-neo-sm hover:shadow-none transition-all cursor-pointer"
-                            >
-                              <Eye className="w-3.5 h-3.5 stroke-[2.5px]" />
-                              <span>VIEW</span>
-                            </button>
-                            <button
-                              type="button"
-                              onClick={handleDeleteAuthLetter}
-                              className="inline-flex items-center gap-1 px-3 py-1 bg-rose-200 hover:bg-rose-300 text-rose-950 border-2 border-black font-black text-xs uppercase shadow-neo-sm hover:shadow-none transition-all cursor-pointer"
-                            >
-                              <Trash2 className="w-3.5 h-3.5 stroke-[2.5px]" />
-                              <span>DELETE</span>
-                            </button>
-                            <span className="text-black/60 text-[10px] underline">
-                              • Click to replace file
-                            </span>
-                          </div>
-                        </div>
-                      ) : (
-                        <div>
-                          <UploadCloud className="w-8 h-8 mx-auto text-black/70 stroke-[2px] mb-2" />
-                          <p className="font-black text-sm uppercase text-black">
-                            CLICK OR DRAG &amp; DROP AUTHORIZATION LETTER
-                          </p>
-                          <p className="font-mono text-xs text-black/60">
-                            College authorization letter or bonafide certificate
-                            (Max 20MB) • Uploads on confirmation
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                    {errors["documentUploads.collegeIdFileName"] && (
-                      <p className="text-xs font-bold text-rose-600 flex items-center gap-1">
-                        <AlertCircle className="w-3.5 h-3.5" />
-                        {errors["documentUploads.collegeIdFileName"]}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Document Upload 2: Payment Proof (REQUIRED) */}
-                  <div className="space-y-2 pt-2 border-t-2 border-black/15">
                     <div className="flex items-center justify-between">
                       <label className="text-xs font-black uppercase tracking-wider text-black flex items-center gap-1.5">
                         <CreditCard className="w-4 h-4 text-black" />

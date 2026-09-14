@@ -3,7 +3,7 @@ export interface HackathonDocument {
   title: string;
   shortTitle: string;
   badge: string;
-  category: "presentation" | "authorization";
+  category: "presentation" | "rulebook" | "brochure";
   description: string;
   isAvailable: boolean; // true when published, false for "coming soon"
   format: string;
@@ -40,28 +40,53 @@ export const HACKATHON_DOCUMENTS: HackathonDocument[] = [
     ],
   },
   {
-    id: "authorization-letter",
-    title: "Institutional Authorization Letter & NOC Format",
-    shortTitle: "Authorization Letter",
-    badge: "COLLEGE NOC / CONSENT",
-    category: "authorization",
+    id: "rule-book",
+    title: "Official HackVerse '26 Rule Book & Regulations",
+    shortTitle: "Official Rule Book",
+    badge: "RULES & DIRECTIVES",
+    category: "rulebook",
     description:
-      "Official institutional endorsement and verification letter to be endorsed with seal and signature by the Head of Department (HOD), Dean, or Principal.",
+      "Comprehensive regulatory guidebook detailing competition rules, eligibility criteria, code of conduct, scoring rubric, and IP guidelines.",
     isAvailable: true,
-    format: "Microsoft Word (.docx) / Printable Template",
+    format: "Adobe Acrobat PDF (.pdf)",
     embedUrl: "",
-    downloadUrl: "/docs/Authorization_Letter_Head_of_Institute.docx",
+    downloadUrl: "https://assets.cbgcek.dev/HackVerse_26_Rulebook.pdf",
     instructions: [
-      "Print on official college/university letterhead.",
-      "Fill in student details: Names, Roll Numbers, Department, and Team Name.",
-      "Mandatory seal and physical signature from HOD, Dean, or Principal.",
-      "Upload scanned copy during the final qualification round & on-campus check-in.",
+      "Review all 18 core directives and eligibility guidelines before development.",
+      "Strict compliance with hardware/software originality and open-source policies.",
+      "Review evaluation parameters and milestone submission deadlines.",
+      "Familiarize with code of conduct, anti-plagiarism, and dispute resolution policies.",
     ],
     specs: [
-      { label: "FILE FORMAT", value: "Microsoft Word (.docx)" },
-      { label: "SIGNATORY", value: "Head of Department (HOD) / Dean / Principal" },
-      { label: "APPLICABILITY", value: "All Shortlisted Finalist Squads" },
-      { label: "CURRENT STATUS", value: "AVAILABLE // DOWNLOAD OFFICIAL DOCX" },
+      { label: "FILE FORMAT", value: "Adobe Acrobat PDF (.pdf)" },
+      { label: "EDITION", value: "Official Directive v1.0" },
+      { label: "APPLICABILITY", value: "All Registered HackVerse Participants" },
+      { label: "CURRENT STATUS", value: "AVAILABLE // DOWNLOAD OFFICIAL PDF" },
+    ],
+  },
+  {
+    id: "brochure",
+    title: "Official HackVerse '26 Event Brochure",
+    shortTitle: "Event Brochure",
+    badge: "EVENT GUIDE & INFO",
+    category: "brochure",
+    description:
+      "Complete event brochure featuring hackathon overview, prize pool breakdown, tracks, timeline, keynote speakers, and campus information.",
+    isAvailable: true,
+    format: "Adobe Acrobat PDF (.pdf)",
+    embedUrl: "",
+    downloadUrl: "https://assets.cbgcek.dev/HackVerse_26_Brochure.pdf",
+    instructions: [
+      "Explore track themes, problem statement domains, and mentor lineups.",
+      "Review prize distribution, cash awards, and partner bounty opportunities.",
+      "Check venue schedule, food, accommodation, and travel advisories.",
+      "Share with college peers, faculty advisors, and squad members.",
+    ],
+    specs: [
+      { label: "FILE FORMAT", value: "Adobe Acrobat PDF (.pdf)" },
+      { label: "EDITION", value: "Official Event Brochure '26" },
+      { label: "APPLICABILITY", value: "Students, Mentors, Faculty & Partners" },
+      { label: "CURRENT STATUS", value: "AVAILABLE // DOWNLOAD OFFICIAL PDF" },
     ],
   },
 ];

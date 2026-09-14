@@ -10,6 +10,7 @@ import Image from "next/image";
 import {
   FileText,
   Presentation,
+  BookOpen,
   Download,
   ExternalLink,
   Lock,
@@ -26,7 +27,7 @@ import {
 } from "lucide-react";
 import clsx from "clsx";
 
-type DocumentTab = "all" | "presentation" | "authorization";
+type DocumentTab = "all" | "presentation" | "rulebook" | "brochure";
 
 export function DocumentsContent() {
   const shouldReduceMotion = useReducedMotion();
@@ -84,7 +85,8 @@ export function DocumentsContent() {
           items={[
             "OFFICIAL HACKVERSE '26 DOCUMENTS",
             "PRESENTATION PPT TEMPLATE",
-            "INSTITUTIONAL AUTHORIZATION NOC",
+            "OFFICIAL RULE BOOK",
+            "EVENT BROCHURE",
             "STANDARDIZED EVALUATION FORMAT",
             "CODEBREAKERS GCEK",
           ]}
@@ -121,23 +123,25 @@ export function DocumentsContent() {
               </h1>
               <div className="bg-[#1B1B1B]/90 backdrop-blur-sm border-3 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-4 sm:px-5 py-2.5 shadow-[4px_4px_0px_#000] inline-block max-w-2xl">
                 <p className="text-xs sm:text-sm md:text-base font-bold text-[#EAEAEA] font-mono leading-relaxed">
-                  Download standardized presentation decks, ideation templates, and institutional NOC verification forms for HackVerse &apos;26.
+                  Download standardized presentation decks, the official rule book, and event brochures for HackVerse &apos;26.
                 </p>
               </div>
             </div>
           </motion.div>
         {/* ========================================================================= */}
-        {/* SECTION 3: DOCUMENT CARDS GRID (Minecraft GUI Box Style) */}
+        {/* SECTION 3: DOCUMENT CARDS (Minecraft GUI Box Rows) */}
         {/* ========================================================================= */}
-        <motion.div variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <motion.div variants={itemVariants} className="flex flex-col space-y-8 w-full">
           {filteredDocs.map((doc) => {
             const isPPT = doc.category === "presentation";
+            const isRulebook = doc.category === "rulebook";
+            const isBrochure = doc.category === "brochure";
 
             return (
               <div
                 key={doc.id}
                 id={doc.id}
-                className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[6px_6px_0px_#000] p-4 sm:p-6 flex flex-col justify-between space-y-6 relative overflow-hidden"
+                className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[6px_6px_0px_#000] p-4 sm:p-6 flex flex-col space-y-5 relative overflow-hidden"
               >
                 {/* Minecraft Header Bar */}
                 <div
@@ -145,12 +149,14 @@ export function DocumentsContent() {
                     "border-b-4 border-black -mx-4 sm:-mx-6 -mt-4 sm:-mt-6 px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-2 text-white",
                     isPPT
                       ? "bg-[#5B8731] border-t-2 border-t-[#85B745]"
+                      : isRulebook
+                      ? "bg-[#9A3412] border-t-2 border-t-[#EA580C]"
                       : "bg-[#2C6B74] border-t-2 border-t-[#55FFFF]"
                   )}
                 >
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 bg-[#2B2B2B] border-2 border-black flex items-center justify-center text-[#55FFFF] font-mono text-xs font-black shadow-[2px_2px_0px_#000]">
-                      {isPPT ? "📽" : "📜"}
+                      {isPPT ? "📽" : isRulebook ? "📖" : "📄"}
                     </div>
                     <span className="font-mono text-xs sm:text-sm font-black uppercase tracking-wider text-white [text-shadow:_2px_2px_0_#000]">
                       {doc.badge}
@@ -171,126 +177,140 @@ export function DocumentsContent() {
                   )}
                 </div>
 
-                <div className="space-y-5 pt-1">
-                  {/* Title & Description */}
-                  <div className="space-y-2">
-                    <h3 className="font-mono font-black text-xl sm:text-2xl text-black uppercase tracking-wide leading-tight">
-                      {doc.title}
-                    </h3>
-                    <p className="text-xs sm:text-sm font-bold text-black/85 font-mono leading-relaxed">
-                      {doc.description}
-                    </p>
-                  </div>
+                {/* Main Content Grid: Info on left & Inset Preview/Action on right */}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-1">
+                  {/* Left Column: Title, description, specs, instructions */}
+                  <div className="lg:col-span-7 space-y-4 flex flex-col justify-between">
+                    <div className="space-y-2">
+                      <h3 className="font-mono font-black text-xl sm:text-2xl text-black uppercase tracking-wide leading-tight">
+                        {doc.title}
+                      </h3>
+                      <p className="text-xs sm:text-sm font-bold text-black/85 font-mono leading-relaxed">
+                        {doc.description}
+                      </p>
+                    </div>
 
-                  {/* Specs Matrix (Minecraft Inset Slot) */}
-                  <div className="bg-[#8B8B8B] border-4 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] p-3 sm:p-4 grid grid-cols-2 gap-2.5 font-mono text-[11px]">
-                    {doc.specs.map((spec, i) => (
-                      <div key={i} className="flex flex-col">
-                        <span className="text-[9px] font-black text-black/70 uppercase tracking-wider">{spec.label}</span>
-                        <span className="font-black text-black truncate bg-[#A0A0A0]/70 px-2 py-0.5 border border-[#606060] mt-0.5">
-                          {spec.value}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Instructions / Key Requirements */}
-                  <div className="space-y-2.5">
-                    <h4 className="font-mono font-black text-xs uppercase tracking-wider flex items-center gap-1.5 text-black">
-                      <FileCheck className="w-4 h-4 stroke-[2.5px] text-black" />
-                      <span>DOCUMENT REQUIREMENTS &amp; USAGE:</span>
-                    </h4>
-                    <ul className="space-y-1.5 font-mono font-bold text-xs text-black/90">
-                      {doc.instructions.map((inst, i) => (
-                        <li key={i} className="flex items-start gap-2">
-                          <span className="font-mono font-black bg-black text-[#FFAA00] border border-black text-[9px] px-1.5 py-0.2 shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
-                            0{i + 1}
+                    {/* Specs Matrix (Minecraft Inset Slot) */}
+                    <div className="bg-[#8B8B8B] border-4 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] p-3 sm:p-4 grid grid-cols-2 sm:grid-cols-4 gap-2.5 font-mono text-[11px]">
+                      {doc.specs.map((spec, i) => (
+                        <div key={i} className="flex flex-col">
+                          <span className="text-[9px] font-black text-black/70 uppercase tracking-wider truncate">{spec.label}</span>
+                          <span className="font-black text-black bg-[#A0A0A0]/70 px-2 py-1 border border-[#606060] mt-0.5 break-words text-[11px] leading-tight">
+                            {spec.value}
                           </span>
-                          <span>{inst}</span>
-                        </li>
+                        </div>
                       ))}
-                    </ul>
+                    </div>
+
+                    {/* Instructions / Key Requirements */}
+                    <div className="space-y-2">
+                      <h4 className="font-mono font-black text-xs uppercase tracking-wider flex items-center gap-1.5 text-black">
+                        <FileCheck className="w-4 h-4 stroke-[2.5px] text-black" />
+                        <span>DOCUMENT REQUIREMENTS &amp; USAGE:</span>
+                      </h4>
+                      <ul className="space-y-1.5 font-mono font-bold text-xs text-black/90">
+                        {doc.instructions.map((inst, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <span className="font-mono font-black bg-black text-[#FFAA00] border border-black text-[9px] px-1.5 py-0.2 shrink-0 mt-0.5 shadow-[1px_1px_0px_#000]">
+                              0{i + 1}
+                            </span>
+                            <span>{inst}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
 
-                  {/* Document Preview Frame (Minecraft Inset Inventory Slot) */}
-                  <div className="bg-[#8B8B8B] border-4 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] p-4 sm:p-6 text-center space-y-3 relative overflow-hidden">
-                    {doc.isAvailable && doc.embedUrl ? (
-                      <div className="aspect-video w-full border-2 border-black">
-                        <iframe
-                          src={doc.embedUrl}
-                          title={doc.title}
-                          className="w-full h-full"
-                          allowFullScreen
-                        />
-                      </div>
-                    ) : doc.isAvailable && doc.downloadUrl ? (
-                      <div className="py-6 flex flex-col items-center justify-center space-y-3">
-                        <div className="w-16 h-16 bg-[#2B2B2B] border-4 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] mx-auto flex items-center justify-center shadow-[4px_4px_0px_#000]">
-                          {isPPT ? (
-                            <Presentation className="w-8 h-8 text-[#55FF55] stroke-[2.5px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
-                          ) : (
-                            <FileText className="w-8 h-8 text-[#55FF55] stroke-[2.5px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
-                          )}
+                  {/* Right Column: Inset preview slot & Download button */}
+                  <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
+                    {/* Document Preview Frame (Minecraft Inset Inventory Slot) */}
+                    <div className="bg-[#8B8B8B] border-4 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] p-4 sm:p-5 text-center space-y-3 relative overflow-hidden flex-1 flex flex-col items-center justify-center">
+                      {doc.isAvailable && doc.embedUrl ? (
+                        <div className="aspect-video w-full border-2 border-black">
+                          <iframe
+                            src={doc.embedUrl}
+                            title={doc.title}
+                            className="w-full h-full"
+                            allowFullScreen
+                          />
                         </div>
-                        <div className="space-y-1.5">
-                          <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] inline-block shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
-                            ★ OFFICIAL TEMPLATE READY FOR DOWNLOAD ★
-                          </span>
-                          <p className="text-xs font-bold text-black/90 max-w-sm mx-auto font-mono">
-                            {isPPT
-                              ? `Download the official ${doc.shortTitle} (.pptx) to structure your squad's ideation and solution architecture presentation.`
-                              : `Download the official ${doc.shortTitle} (.docx) to print on your college letterhead and obtain institutional endorsement.`}
-                          </p>
+                      ) : doc.isAvailable && doc.downloadUrl ? (
+                        <div className="py-3 flex flex-col items-center justify-center space-y-3">
+                          <div className="w-14 h-14 bg-[#2B2B2B] border-4 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] mx-auto flex items-center justify-center shadow-[4px_4px_0px_#000]">
+                            {isPPT ? (
+                              <Presentation className="w-7 h-7 text-[#55FF55] stroke-[2.5px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
+                            ) : isRulebook ? (
+                              <BookOpen className="w-7 h-7 text-[#55FF55] stroke-[2.5px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
+                            ) : (
+                              <FileText className="w-7 h-7 text-[#55FF55] stroke-[2.5px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
+                            )}
+                          </div>
+                          <div className="space-y-1.5">
+                            <span className="font-mono text-[11px] font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] inline-block shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+                              ★ OFFICIAL DOCUMENT READY ★
+                            </span>
+                            <p className="text-xs font-bold text-black/90 max-w-xs mx-auto font-mono">
+                              {isPPT
+                                ? `Download official ${doc.shortTitle} (.pptx) to structure your squad presentation.`
+                                : isRulebook
+                                ? `Download official ${doc.shortTitle} (.pdf) for directives and scoring rubrics.`
+                                : `Download official ${doc.shortTitle} (.pdf) for event guide, tracks, and prize breakdown.`}
+                            </p>
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="py-6 flex flex-col items-center justify-center space-y-3">
-                        <div className="w-16 h-16 bg-[#2B2B2B] border-4 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] mx-auto flex items-center justify-center shadow-[4px_4px_0px_#000]">
-                          {isPPT ? (
-                            <Presentation className="w-8 h-8 text-[#FFAA00] stroke-[2.5px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
-                          ) : (
-                            <FileText className="w-8 h-8 text-[#55FFFF] stroke-[2.5px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
-                          )}
+                      ) : (
+                        <div className="py-3 flex flex-col items-center justify-center space-y-3">
+                          <div className="w-14 h-14 bg-[#2B2B2B] border-4 border-t-[#151515] border-l-[#151515] border-r-[#4F4F4F] border-b-[#4F4F4F] mx-auto flex items-center justify-center shadow-[4px_4px_0px_#000]">
+                            {isPPT ? (
+                              <Presentation className="w-7 h-7 text-[#FFAA00] stroke-[2.5px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
+                            ) : isRulebook ? (
+                              <BookOpen className="w-7 h-7 text-[#55FFFF] stroke-[2.5px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
+                            ) : (
+                              <FileText className="w-7 h-7 text-[#55FFFF] stroke-[2.5px] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />
+                            )}
+                          </div>
+                          <div className="space-y-1">
+                            <span className="font-mono text-[11px] font-black uppercase px-2.5 py-1 bg-black text-[#FFAA00] border-2 border-[#FFAA00] inline-block shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+                              [DOCUMENT EMBARGO ACTIVE]
+                            </span>
+                            <p className="text-xs font-bold text-black/85 max-w-xs mx-auto font-mono">
+                              The official {doc.shortTitle} format will be downloadable and embedded here once registrations open.
+                            </p>
+                          </div>
                         </div>
-                        <div className="space-y-1">
-                          <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-black text-[#FFAA00] border-2 border-[#FFAA00] inline-block shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
-                            [DOCUMENT EMBARGO ACTIVE]
-                          </span>
-                          <p className="text-xs font-bold text-black/85 max-w-xs mx-auto font-mono">
-                            The official {doc.shortTitle} format will be downloadable and embedded here once registrations open.
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
+                      )}
+                    </div>
 
-                {/* Bottom Action Row */}
-                <div className="pt-3 border-t-3 border-neutral-600 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-                  <div className="font-mono text-xs font-black uppercase text-black flex items-center gap-1.5">
-                    <Layers className="w-3.5 h-3.5" />
-                    <span>FORMAT: {doc.format}</span>
-                  </div>
+                    {/* Bottom Action Row */}
+                    <div className="pt-2 border-t-2 border-neutral-600 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                      <div className="font-mono text-xs font-black uppercase text-black flex items-center gap-1.5">
+                        <Layers className="w-3.5 h-3.5" />
+                        <span>FORMAT: {doc.format}</span>
+                      </div>
 
-                  {doc.isAvailable && doc.downloadUrl ? (
-                    <a
-                      href={doc.downloadUrl}
-                      download
-                      className="bg-[#5B8731] hover:bg-[#689B37] text-white font-mono font-black text-xs uppercase tracking-wider border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] active:border-t-[#2C4813] active:border-l-[#2C4813] active:border-r-[#85B745] active:border-b-[#85B745] px-6 py-2.5 shadow-[3px_3px_0px_#000] [text-shadow:_2px_2px_0_#000] flex items-center justify-center gap-2 transition-colors"
-                    >
-                      <Download className="w-4 h-4 stroke-[2.5px]" />
-                      <span>DOWNLOAD {doc.shortTitle}</span>
-                    </a>
-                  ) : (
-                    <button
-                      type="button"
-                      disabled
-                      className="bg-[#707070] text-[#D0D0D0] font-mono font-black text-xs uppercase tracking-wider border-4 border-t-[#9E9E9E] border-l-[#9E9E9E] border-r-[#383838] border-b-[#383838] px-5 py-2.5 shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000] cursor-not-allowed select-none flex items-center justify-center gap-2"
-                    >
-                      <Clock className="w-4 h-4 stroke-[2.5px]" />
-                      <span>RELEASING SOON</span>
-                    </button>
-                  )}
+                      {doc.isAvailable && doc.downloadUrl ? (
+                        <a
+                          href={doc.downloadUrl}
+                          download
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="bg-[#5B8731] hover:bg-[#689B37] text-white font-mono font-black text-xs uppercase tracking-wider border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] active:border-t-[#2C4813] active:border-l-[#2C4813] active:border-r-[#85B745] active:border-b-[#85B745] px-5 py-2.5 shadow-[3px_3px_0px_#000] [text-shadow:_2px_2px_0_#000] flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                        >
+                          <Download className="w-4 h-4 stroke-[2.5px]" />
+                          <span>DOWNLOAD {doc.shortTitle}</span>
+                        </a>
+                      ) : (
+                        <button
+                          type="button"
+                          disabled
+                          className="bg-[#707070] text-[#D0D0D0] font-mono font-black text-xs uppercase tracking-wider border-4 border-t-[#9E9E9E] border-l-[#9E9E9E] border-r-[#383838] border-b-[#383838] px-5 py-2.5 shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000] cursor-not-allowed select-none flex items-center justify-center gap-2"
+                        >
+                          <Clock className="w-4 h-4 stroke-[2.5px]" />
+                          <span>RELEASING SOON</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             );
@@ -312,7 +332,7 @@ export function DocumentsContent() {
                 </h3>
               </div>
               <p className="text-xs sm:text-sm font-bold text-black/90 font-mono leading-relaxed max-w-4xl">
-                All participating squads are required to strictly adhere to the official presentation deck format. Submissions made in unapproved custom formats may face scoring penalties during Stage 1 screening. The Authorization Letter (NOC) must carry the official seal of your institution to be valid for final entry passes.
+                All participating squads are required to strictly adhere to the official presentation deck format and competition guidelines. Please review the official Rule Book and Event Brochure before submitting your project. Submissions made in unapproved custom formats may face scoring penalties during Stage 1 screening.
               </p>
               <div className="flex flex-wrap gap-3 pt-2">
                 <Link
