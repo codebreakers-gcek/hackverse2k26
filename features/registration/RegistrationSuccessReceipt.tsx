@@ -32,7 +32,11 @@ export function RegistrationSuccessReceipt({
   const [isDownloading, setIsDownloading] = useState(false);
 
   const ticketNumber = result.ticketId || result.registrationId || "HV26-241263";
-  const qrData = `HACKVERSE26_PASS:${ticketNumber}:${result.teamName || "SQUAD"}`;
+  const baseUrl =
+    typeof window !== "undefined" && window.location.origin
+      ? window.location.origin
+      : process.env.NEXT_PUBLIC_APP_URL || "https://hackverse.codebreakersgcek.tech";
+  const qrData = `${baseUrl}/teams/${encodeURIComponent(ticketNumber)}`;
 
   // Download pass as PNG
   const handleDownloadPng = async () => {

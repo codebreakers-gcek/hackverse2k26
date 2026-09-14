@@ -200,7 +200,7 @@ export async function sendRegistrationSubmissionEmail(data: RegistrationEmailDat
         ⏳ Status: Under Review
       </div>
       <div>
-        Our organizing team will review your squad registration details and submitted authorization documents. Once approved by the admin, your official <strong>Entry Pass</strong> will be generated and emailed to you.
+        Our organizing team will review your squad registration details and submitted payment proof. Once approved by the admin, your official <strong>Entry Pass</strong> will be generated and emailed to you.
       </div>
     </div>
 

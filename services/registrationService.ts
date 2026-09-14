@@ -147,17 +147,9 @@ export function validateStep3(data: RegistrationFormData): Record<string, string
 export function validateStep4(data: RegistrationFormData): Record<string, string> {
   const errors: Record<string, string> = {};
 
-  const hasAuthLetter =
-    (data.documentUploads?.collegeIdFileName && data.documentUploads.collegeIdFileName.trim().length > 0) ||
-    ((data.documentUploads as any)?.authorizationLetterFileName && (data.documentUploads as any).authorizationLetterFileName.trim().length > 0);
-
   const hasPaymentProof =
     (data.documentUploads?.synopsisFileName && data.documentUploads.synopsisFileName.trim().length > 0) ||
     ((data.documentUploads as any)?.paymentProofFileName && (data.documentUploads as any).paymentProofFileName.trim().length > 0);
-
-  if (!hasAuthLetter) {
-    errors["documentUploads.collegeIdFileName"] = "College Authorization Letter is required.";
-  }
 
   if (!hasPaymentProof) {
     errors["documentUploads.synopsisFileName"] = "Payment proof / transaction receipt is required.";

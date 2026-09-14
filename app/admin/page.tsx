@@ -41,6 +41,15 @@ import {
   Lock,
   Unlock,
   EyeOff,
+  KeyRound,
+  QrCode,
+  Smartphone,
+  Laptop,
+  Globe,
+  Copy,
+  CheckCheck,
+  Radio,
+  UserCheck,
 } from "lucide-react";
 import {
   Sheet,
@@ -57,6 +66,7 @@ type AdminTab =
   | "teams"
   | "accomodation"
   | "payments"
+  | "scanner"
   | "settings";
 
 interface RegistrationRecord {
@@ -150,6 +160,7 @@ interface SystemSettingsState {
   maxSquadSize: number;
   contactPhone?: string;
   contactEmail?: string;
+  judgeAuthPin?: string;
   googleDriveEnabled?: boolean;
   googleDriveAuthType?: string;
   googleDriveConnectedEmail?: string;
@@ -183,6 +194,7 @@ export default function AdminDashboardPage() {
     maxSquadSize: 4,
     contactPhone: "+91 9876543210",
     contactEmail: "hackverse26@codebreakersgcek.tech",
+    judgeAuthPin: "2026",
     googleDriveEnabled: false,
     googleDriveAuthType: "oauth",
     googleDriveConnectedEmail: "",
@@ -253,6 +265,38 @@ export default function AdminDashboardPage() {
     description: "",
     onConfirm: () => {},
   });
+
+  // Scanner PIN & Connected Devices State (5-min PIN, max 8 devices)
+  const [scannerData, setScannerData] = useState<{
+    active: boolean;
+    session: {
+      id: string;
+      pin: string;
+      createdAt: string;
+      expiresAt: string;
+      maxDevices: number;
+      activeDeviceCount: number;
+      devices: Array<{
+        id: string;
+        verifierName: string;
+        deviceInfo: string;
+        ipAddress: string;
+        createdAt: string;
+        lastActiveAt: string;
+        isActive: boolean;
+      }>;
+    } | null;
+    remainingSeconds: number;
+    recentSessions?: any[];
+  }>({
+    active: false,
+    session: null,
+    remainingSeconds: 0,
+  });
+  const [isGeneratingPin, setIsGeneratingPin] = useState(false);
+  const [isRevokingPin, setIsRevokingPin] = useState(false);
+  const [isRevokingDevice, setIsRevokingDevice] = useState<string | null>(null);
+  const [copiedPin, setCopiedPin] = useState(false);
 
   const openConfirm = (config: {
     title: string;
@@ -352,6 +396,110 @@ export default function AdminDashboardPage() {
       setIsLoading(false);
     }
   }, []);
+
+  // Fetch Scanner PIN status
+  const fetchScannerData = useCallback(async () => {
+    try {
+      const res = await fetch("/api/admin/scanner-pin");
+      if (res.ok) {
+        const data = await res.json();
+        setScannerData(data);
+      }
+    } catch (err) {
+      console.error("Failed to fetch scanner PIN status:", err);
+    }
+  }, []);
+
+  // Generate 5-Minute PIN
+  const handleGenerateScannerPin = async () => {
+    setIsGeneratingPin(true);
+    try {
+      const res = await fetch("/api/admin/scanner-pin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "generate" }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        toast.success(`Generated 5-minute PIN: ${data.session?.pin}`);
+        fetchScannerData();
+      } else {
+        toast.error(data.error || "Failed to generate PIN");
+      }
+    } catch {
+      toast.error("Network error generating PIN");
+    } finally {
+      setIsGeneratingPin(false);
+    }
+  };
+
+  // Revoke active PIN
+  const handleRevokePin = async () => {
+    setIsRevokingPin(true);
+    try {
+      const res = await fetch("/api/admin/scanner-pin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "revoke_pin" }),
+      });
+      if (res.ok) {
+        toast.success("Active PIN session revoked");
+        fetchScannerData();
+      }
+    } catch {
+      toast.error("Network error revoking PIN");
+    } finally {
+      setIsRevokingPin(false);
+    }
+  };
+
+  // Revoke single device session
+  const handleRevokeDevice = async (deviceId: string, name: string) => {
+    setIsRevokingDevice(deviceId);
+    try {
+      const res = await fetch("/api/admin/scanner-pin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ action: "revoke_device", deviceId }),
+      });
+      if (res.ok) {
+        toast.success(`Disconnected ${name}`);
+        fetchScannerData();
+      }
+    } catch {
+      toast.error("Failed to disconnect device");
+    } finally {
+      setIsRevokingDevice(null);
+    }
+  };
+
+  // Scanner PIN live countdown tick
+  useEffect(() => {
+    if (!scannerData.active || scannerData.remainingSeconds <= 0) return;
+    const interval = setInterval(() => {
+      setScannerData((prev) => {
+        const next = Math.max(0, prev.remainingSeconds - 1);
+        if (next === 0 && prev.active) {
+          fetchScannerData();
+        }
+        return {
+          ...prev,
+          remainingSeconds: next,
+          active: next > 0,
+        };
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [scannerData.active, scannerData.remainingSeconds, fetchScannerData]);
+
+  // Periodic polling when on scanner or dashboard tab
+  useEffect(() => {
+    if (activeTab === "scanner" || activeTab === "dashboard") {
+      fetchScannerData();
+      const poll = setInterval(fetchScannerData, 6000);
+      return () => clearInterval(poll);
+    }
+  }, [activeTab, fetchScannerData]);
 
   useEffect(() => {
     fetchData();
@@ -938,6 +1086,14 @@ export default function AdminDashboardPage() {
                 badge: stats?.paymentPending ?? 0,
               },
               {
+                id: "scanner",
+                label: "Scanner & Judge PIN",
+                icon: KeyRound,
+                badge: scannerData.active
+                  ? `${scannerData.session?.activeDeviceCount || 0}/8`
+                  : undefined,
+              },
+              {
                 id: "settings",
                 label: "Storage & Settings",
                 icon: Settings,
@@ -1019,6 +1175,7 @@ export default function AdminDashboardPage() {
                   {activeTab === "teams" && "Squad Rosters & Verification"}
                   {activeTab === "accomodation" && "Hostel & Room Allocation"}
                   {activeTab === "payments" && "Finance & Transaction Audit"}
+                  {activeTab === "scanner" && "Live Scanner & Judge PIN Control"}
                   {activeTab === "settings" && "Storage & System Controls"}
                 </span>
               </h1>
@@ -1818,7 +1975,305 @@ export default function AdminDashboardPage() {
           )}
 
           {/* ===================================================================== */}
-          {/* TAB 5: SETTINGS & STORAGE                                             */}
+          {/* TAB 5: SCANNER & JUDGE PIN CONTROL                                    */}
+          {/* ===================================================================== */}
+          {activeTab === "scanner" && (
+            <div className="space-y-8 animate-in fade-in duration-200 max-w-5xl">
+              {/* Header Card */}
+              <div className="border-4 border-black bg-white p-6 shadow-neo space-y-6">
+                <div className="flex flex-wrap items-center justify-between gap-4 border-b-3 border-black pb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-amber-400 border-2 border-black flex items-center justify-center shrink-0 shadow-neo-sm">
+                      <KeyRound className="w-6 h-6 stroke-[2.5px] text-black" />
+                    </div>
+                    <div>
+                      <h3 className="font-black text-xl uppercase tracking-tight">
+                        Live Scanner &amp; Judge Access PIN
+                      </h3>
+                      <p className="font-mono text-xs text-neutral-600">
+                        Dynamic 5-minute expiring access codes • Maximum 8 device sessions per PIN
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <Link
+                      href="/teams"
+                      target="_blank"
+                      className="px-3.5 py-2 bg-neutral-100 hover:bg-neutral-200 border-2 border-black font-mono font-black text-xs uppercase flex items-center gap-1.5 shadow-neo-xs cursor-pointer"
+                    >
+                      <ExternalLink className="w-3.5 h-3.5" />
+                      <span>Open /teams Scanner</span>
+                    </Link>
+                    <button
+                      onClick={fetchScannerData}
+                      className="p-2 bg-white hover:bg-neutral-100 border-2 border-black font-mono text-xs font-bold flex items-center gap-1 shadow-neo-xs cursor-pointer"
+                    >
+                      <RefreshCw className="w-4 h-4 text-black" />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Active PIN & Action Spotlight */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  {/* Left: Active PIN Spotlight */}
+                  <div
+                    className={`md:col-span-2 border-3 border-black p-6 space-y-5 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] ${
+                      scannerData.active ? "bg-amber-50" : "bg-neutral-50"
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-mono text-xs font-black uppercase text-neutral-700 flex items-center gap-1.5">
+                        <Radio className={`w-3.5 h-3.5 ${scannerData.active ? "text-emerald-600 animate-pulse" : "text-neutral-400"}`} />
+                        <span>{scannerData.active ? "ACTIVE 5-MINUTE AUTHORIZATION PIN" : "NO ACTIVE PIN SESSION"}</span>
+                      </span>
+
+                      {scannerData.active && (
+                        <span className="font-mono text-xs font-black px-2.5 py-0.5 bg-emerald-300 border-2 border-black uppercase">
+                          🟢 LIVE
+                        </span>
+                      )}
+                    </div>
+
+                    {scannerData.active && scannerData.session ? (
+                      <div className="space-y-4">
+                        <div className="flex flex-wrap items-center gap-4">
+                          <div className="flex-1 bg-white border-3 border-black p-4 flex items-center justify-between shadow-neo-sm">
+                            <span className="font-mono text-4xl sm:text-5xl font-black tracking-widest text-black">
+                              {scannerData.session.pin}
+                            </span>
+                            <button
+                              onClick={() => {
+                                navigator.clipboard.writeText(scannerData.session?.pin || "");
+                                setCopiedPin(true);
+                                toast.success("PIN copied to clipboard!");
+                                setTimeout(() => setCopiedPin(false), 2000);
+                              }}
+                              className="px-3 py-2 bg-neutral-100 hover:bg-neutral-200 border-2 border-black font-mono text-xs font-black uppercase flex items-center gap-1 cursor-pointer"
+                            >
+                              {copiedPin ? <CheckCheck className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                              <span>{copiedPin ? "COPIED" : "COPY"}</span>
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Progress Bar & Countdown */}
+                        <div className="space-y-1.5">
+                          <div className="flex justify-between font-mono text-xs font-black text-black">
+                            <span className="flex items-center gap-1">
+                              <Clock className="w-3.5 h-3.5" />
+                              TIME REMAINING:
+                            </span>
+                            <span className={scannerData.remainingSeconds < 60 ? "text-rose-600 font-bold" : "text-black"}>
+                              {Math.floor(scannerData.remainingSeconds / 60)}m {scannerData.remainingSeconds % 60}s
+                            </span>
+                          </div>
+                          <div className="w-full h-3 bg-neutral-200 border-2 border-black overflow-hidden">
+                            <div
+                              className={`h-full transition-all duration-1000 ${
+                                scannerData.remainingSeconds > 120
+                                  ? "bg-emerald-500"
+                                  : scannerData.remainingSeconds > 45
+                                  ? "bg-amber-400"
+                                  : "bg-rose-500"
+                              }`}
+                              style={{ width: `${Math.min(100, (scannerData.remainingSeconds / 300) * 100)}%` }}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="py-6 text-center space-y-2 border-2 border-dashed border-neutral-300">
+                        <Lock className="w-8 h-8 text-neutral-400 mx-auto" />
+                        <p className="font-mono text-xs font-bold text-neutral-600">
+                          There is no active PIN. Click below to issue a fresh 5-minute access code for judges/staff.
+                        </p>
+                      </div>
+                    )}
+
+                    {/* Action Buttons */}
+                    <div className="flex flex-wrap gap-3 pt-2">
+                      <button
+                        onClick={handleGenerateScannerPin}
+                        disabled={isGeneratingPin}
+                        className="flex-1 py-3 px-4 bg-amber-400 hover:bg-amber-500 text-black border-3 border-black font-mono font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-neo cursor-pointer active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-50"
+                      >
+                        {isGeneratingPin ? (
+                          <>
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                            <span>GENERATING...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Zap className="w-4 h-4 stroke-[2.5px]" />
+                            <span>{scannerData.active ? "GENERATE FRESH PIN (REPLACES ACTIVE)" : "GENERATE NEW 5-MIN PIN"}</span>
+                          </>
+                        )}
+                      </button>
+
+                      {scannerData.active && (
+                        <button
+                          onClick={handleRevokePin}
+                          disabled={isRevokingPin}
+                          className="py-3 px-4 bg-rose-100 hover:bg-rose-200 text-rose-900 border-3 border-black font-mono font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-neo-sm cursor-pointer active:translate-x-0.5 active:translate-y-0.5 disabled:opacity-50"
+                        >
+                          {isRevokingPin ? (
+                            <Loader2 className="w-4 h-4 animate-spin" />
+                          ) : (
+                            <XCircle className="w-4 h-4 text-rose-600" />
+                          )}
+                          <span>INVALIDATE PIN</span>
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Right: Device Capacity Card */}
+                  <div className="border-3 border-black bg-white p-5 space-y-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col justify-between">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <span className="font-mono text-xs font-black uppercase text-neutral-600">
+                          DEVICE QUOTA
+                        </span>
+                        <Smartphone className="w-4 h-4 text-black" />
+                      </div>
+                      <div className="text-3xl font-black font-mono text-black">
+                        {scannerData.session?.activeDeviceCount || 0}{" "}
+                        <span className="text-base text-neutral-500 font-bold">/ 8 MAX</span>
+                      </div>
+                      <div className="w-full h-2.5 bg-neutral-100 border-2 border-black overflow-hidden">
+                        <div
+                          className="h-full bg-black transition-all"
+                          style={{
+                            width: `${Math.min(
+                              100,
+                              ((scannerData.session?.activeDeviceCount || 0) / 8) * 100
+                            )}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="p-3 bg-neutral-50 border border-black space-y-1 text-[11px] font-mono text-neutral-600">
+                      <div className="font-bold text-black uppercase">SECURITY POLICY:</div>
+                      <div>• 5-min window is for PIN code entry/joining.</div>
+                      <div>• Logged-in devices remain authorized indefinitely.</div>
+                      <div>• Max 8 concurrent scanner devices per PIN.</div>
+                      <div>• Admins can revoke any device below.</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Connected Devices Roster */}
+              <div className="border-4 border-black bg-white shadow-neo">
+                <div className="p-5 border-b-3 border-black flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2.5">
+                    <Users className="w-5 h-5 text-black stroke-[2.5px]" />
+                    <h3 className="font-black text-base uppercase tracking-tight">
+                      Logged-In Devices on Active PIN ({scannerData.session?.devices?.length || 0})
+                    </h3>
+                  </div>
+                  <span className="font-mono text-xs text-neutral-600">
+                    Real-time list of scanners &amp; judges connected with the PIN
+                  </span>
+                </div>
+
+                {!scannerData.session?.devices || scannerData.session.devices.length === 0 ? (
+                  <div className="p-8 text-center space-y-2 font-mono text-xs font-bold text-neutral-500">
+                    <Smartphone className="w-8 h-8 text-neutral-300 mx-auto" />
+                    <p>No devices currently logged in with this PIN session.</p>
+                    <p className="text-[11px] text-neutral-400">
+                      Devices will appear here as soon as judges or staff sign in at /teams.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left font-mono text-xs border-collapse">
+                      <thead>
+                        <tr className="bg-neutral-100 border-b-2 border-black uppercase text-[11px] font-black text-black">
+                          <th className="p-3.5">#</th>
+                          <th className="p-3.5">Verifier / Judge Name</th>
+                          <th className="p-3.5">Device &amp; Browser</th>
+                          <th className="p-3.5">IP Address</th>
+                          <th className="p-3.5">Login Time</th>
+                          <th className="p-3.5">Status</th>
+                          <th className="p-3.5 text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-black/10">
+                        {scannerData.session.devices.map((device, idx) => (
+                          <tr
+                            key={device.id}
+                            className={`hover:bg-amber-50/50 transition-colors ${
+                              !device.isActive ? "opacity-50 bg-neutral-50" : ""
+                            }`}
+                          >
+                            <td className="p-3.5 font-bold text-neutral-500">{idx + 1}</td>
+                            <td className="p-3.5 font-black text-black text-sm flex items-center gap-2">
+                              <div className="w-7 h-7 bg-amber-300 border border-black flex items-center justify-center font-mono text-xs font-black shrink-0">
+                                {device.verifierName.charAt(0).toUpperCase()}
+                              </div>
+                              <span>{device.verifierName}</span>
+                            </td>
+                            <td className="p-3.5 font-bold text-neutral-700">
+                              <div className="flex items-center gap-1.5">
+                                {device.deviceInfo?.includes("Mobile") ? (
+                                  <Smartphone className="w-3.5 h-3.5 text-black" />
+                                ) : (
+                                  <Laptop className="w-3.5 h-3.5 text-black" />
+                                )}
+                                <span>{device.deviceInfo || "Web Browser"}</span>
+                              </div>
+                            </td>
+                            <td className="p-3.5 font-mono text-neutral-600">
+                              <div className="flex items-center gap-1">
+                                <Globe className="w-3 h-3 text-neutral-400" />
+                                <span>{device.ipAddress || "Unknown"}</span>
+                              </div>
+                            </td>
+                            <td className="p-3.5 font-mono text-neutral-600">
+                              {new Date(device.createdAt).toLocaleTimeString("en-US", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                second: "2-digit",
+                                hour12: true,
+                              })}
+                            </td>
+                            <td className="p-3.5">
+                              {device.isActive ? (
+                                <span className="px-2 py-0.5 bg-emerald-200 border border-black font-black text-[10px] text-emerald-950 uppercase">
+                                  ONLINE
+                                </span>
+                              ) : (
+                                <span className="px-2 py-0.5 bg-rose-200 border border-black font-black text-[10px] text-rose-950 uppercase">
+                                  REVOKED
+                                </span>
+                              )}
+                            </td>
+                            <td className="p-3.5 text-right">
+                              {device.isActive && (
+                                <button
+                                  onClick={() => handleRevokeDevice(device.id, device.verifierName)}
+                                  disabled={isRevokingDevice === device.id}
+                                  className="px-2.5 py-1 bg-rose-100 hover:bg-rose-200 text-rose-900 border border-black font-mono text-[10px] font-black uppercase cursor-pointer"
+                                >
+                                  {isRevokingDevice === device.id ? "DISCONNECTING..." : "DISCONNECT"}
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* ===================================================================== */}
+          {/* TAB 6: SETTINGS & STORAGE                                             */}
           {/* ===================================================================== */}
           {activeTab === "settings" && (
             <div className="space-y-8 animate-in fade-in duration-200 max-w-4xl">
@@ -2435,6 +2890,42 @@ export default function AdminDashboardPage() {
                       }
                       className="w-full px-3 py-2.5 bg-white border-2 border-black font-mono text-xs font-bold text-black shadow-neo-xs"
                     />
+                  </div>
+
+                  {/* Judge & QR Scanner Authorization PIN */}
+                  <div className="space-y-2 sm:col-span-2 p-4 bg-amber-50 border-2 border-black">
+                    <div className="flex items-center justify-between">
+                      <label className="font-mono text-xs font-black uppercase text-black flex items-center gap-1.5">
+                        <KeyRound className="w-4 h-4" />
+                        <span>Judge &amp; Scanner QR Authorization PIN</span>
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          const randomPin = Math.floor(1000 + Math.random() * 9000).toString();
+                          setSettings({ ...settings, judgeAuthPin: randomPin });
+                          toast.info(`Generated new PIN: ${randomPin}`);
+                        }}
+                        className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-black text-[#55FF55] border border-black hover:bg-neutral-800 cursor-pointer"
+                      >
+                        ⚡ Generate Random PIN
+                      </button>
+                    </div>
+                    <input
+                      type="text"
+                      value={settings.judgeAuthPin || "2026"}
+                      onChange={(e) =>
+                        setSettings({
+                          ...settings,
+                          judgeAuthPin: e.target.value,
+                        })
+                      }
+                      placeholder="e.g. 2026"
+                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-sm font-black text-black shadow-neo-xs tracking-wider"
+                    />
+                    <p className="font-mono text-[11px] text-neutral-600">
+                      When judges or staff scan a contestant's pass QR code, they must enter their name and this PIN to unlock the team's full dossier and scoring portal.
+                    </p>
                   </div>
 
                   {/* Registration Portal Gate */}
