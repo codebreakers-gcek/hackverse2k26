@@ -18,6 +18,7 @@ import { toPng } from "html-to-image";
 import { toast } from "sonner";
 import { RegistrationSubmissionResult } from "@/types/registration";
 import { EVENT_DATA } from "@/data/event";
+import { encodeCode128B } from "@/lib/barcode128";
 
 export interface RegistrationSuccessReceiptProps {
   result: RegistrationSubmissionResult;
@@ -37,6 +38,8 @@ export function RegistrationSuccessReceipt({
       ? window.location.origin
       : process.env.NEXT_PUBLIC_APP_URL || "https://hackverse.codebreakersgcek.tech";
   const qrData = `${baseUrl}/teams/${encodeURIComponent(ticketNumber)}`;
+  const barcodeData = encodeCode128B(ticketNumber);
+  const barcodeScale = 1.35;
 
   // Download pass as PNG
   const handleDownloadPng = async () => {
@@ -223,21 +226,27 @@ export function RegistrationSuccessReceipt({
               </div>
             </div>
 
-            {/* Crisp Vector Barcode */}
+            {/* Crisp Vector Barcode (Code 128) */}
             <div className="flex flex-col items-center sm:items-end justify-center space-y-1.5 w-full sm:w-auto">
-              <div className="flex items-center gap-0.5 sm:gap-1 h-12 overflow-hidden max-w-full">
-                {[
-                  3, 1, 4, 1, 2, 5, 2, 1, 3, 2, 4, 1, 5, 2, 1, 3, 2, 4, 1, 2,
-                  5, 2, 1, 3, 2, 4, 1, 2, 3, 1, 4, 2, 5, 1, 2, 3, 2, 4, 1, 3,
-                ].map((w, i) => (
-                  <div
-                    key={i}
-                    className="h-full bg-black shrink-0"
-                    style={{ width: `${w * 1.5}px` }}
-                  />
-                ))}
+              <div className="flex items-center h-12 overflow-hidden max-w-full">
+                <svg
+                  width={barcodeData.totalModules * barcodeScale}
+                  height={44}
+                  className="max-w-full shrink-0"
+                >
+                  {barcodeData.bars.map((bar, i) => (
+                    <rect
+                      key={i}
+                      x={(bar.x * barcodeScale).toFixed(1)}
+                      y={0}
+                      width={(bar.width * barcodeScale).toFixed(1)}
+                      height={44}
+                      fill="#000000"
+                    />
+                  ))}
+                </svg>
               </div>
-              <div className="font-mono text-xs sm:text-sm font-black tracking-[0.3em] text-black">
+              <div className="font-mono text-xs sm:text-sm font-black tracking-[0.25em] text-black">
                 * {ticketNumber} *
               </div>
             </div>

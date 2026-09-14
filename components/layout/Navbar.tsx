@@ -184,8 +184,8 @@ export function Navbar() {
     }
   };
 
-  // Do not render public Navbar on admin dashboard (called after all hooks to comply with React rules)
-  if (pathname?.startsWith("/admin")) {
+  // Do not render public Navbar on admin dashboard or /teams portal & judging sections (called after all hooks to comply with React rules)
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/teams")) {
     return null;
   }
 

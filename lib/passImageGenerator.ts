@@ -1,6 +1,7 @@
 import QRCode from "qrcode";
 import { Resvg } from "@resvg/resvg-js";
 import { EVENT_DATA } from "@/data/event";
+import { generateCode128Svg } from "@/lib/barcode128";
 
 export interface PassImageOptions {
   ticketNumber: string;
@@ -36,18 +37,12 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
   // Extract inner SVG content or base64 data url
   const qrBase64 = `data:image/svg+xml;utf8,${encodeURIComponent(qrSvgRaw)}`;
 
-  // Barcode pattern bars
-  const barWidths = [4, 2, 5, 2, 7, 3, 4, 6, 2, 5, 3, 7, 2, 4, 3, 6, 4, 2, 8, 3, 5, 2, 4, 3, 6, 2, 5, 3, 7, 2, 4, 3, 6, 4, 2];
-  let currentX = 0;
-  const barcodeBarsSvg = barWidths
-    .map((w) => {
-      const rect = `<rect x="${currentX}" y="0" width="${w}" height="42" fill="#000000" />`;
-      currentX += w + 2.5;
-      return rect;
-    })
-    .join("\n");
-
-  const totalBarcodeWidth = currentX;
+  // Standard Code 128 1D Barcode matching exact ticketNumber
+  const { svgBars: barcodeBarsSvg, totalWidth: totalBarcodeWidth } = generateCode128Svg(
+    ticketNumber,
+    44,
+    1.45
+  );
 
   // Render SVG Template (Exact proportions and neo-brutalist styling)
   const svg = `

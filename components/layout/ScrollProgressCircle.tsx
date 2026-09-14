@@ -38,7 +38,7 @@ export function ScrollProgressCircle() {
     });
   };
 
-  if (pathname?.startsWith("/admin")) {
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/teams")) {
     return null;
   }
 
