@@ -50,7 +50,11 @@ import {
   CheckCheck,
   Radio,
   UserCheck,
+  Printer,
+  Barcode,
 } from "lucide-react";
+import { QRCodeSVG } from "qrcode.react";
+import { encodeCode128B } from "@/lib/barcode128";
 import {
   Sheet,
   SheetContent,
@@ -249,6 +253,10 @@ export default function AdminDashboardPage() {
   const [activeProofTab, setActiveProofTab] = useState<
     "collegeId" | "synopsis" | "payment"
   >("collegeId");
+
+  // Pass & Check-In QR Modal for Desk Printing
+  const [selectedPassSquad, setSelectedPassSquad] = useState<RegistrationRecord | null>(null);
+  const [isPassModalOpen, setIsPassModalOpen] = useState(false);
 
   // Custom Neo-Brutalist Confirmation Dialog State
   const [confirmDialog, setConfirmDialog] = useState<{
@@ -1663,6 +1671,18 @@ export default function AdminDashboardPage() {
                             <div className="flex items-center justify-end gap-1.5">
                               <button
                                 onClick={() => {
+                                  setSelectedPassSquad(squad);
+                                  setIsPassModalOpen(true);
+                                }}
+                                className="px-2.5 py-1.5 bg-amber-300 hover:bg-amber-400 text-black border-2 border-black font-black font-mono text-[10px] uppercase shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer flex items-center gap-1"
+                                title="Download / Print Entry Pass & Desk QR Badge"
+                              >
+                                <QrCode className="w-3 h-3" />
+                                <span>PASS / QR</span>
+                              </button>
+
+                              <button
+                                onClick={() => {
                                   setSelectedSquad(squad);
                                   setIsSquadSheetOpen(true);
                                 }}
@@ -3064,6 +3084,19 @@ export default function AdminDashboardPage() {
                       <span>SEND ENTRY PASS &amp; INVOICE EMAIL</span>
                     </button>
 
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedPassSquad(selectedSquad);
+                        setIsPassModalOpen(true);
+                      }}
+                      className="w-full py-2 bg-emerald-300 hover:bg-emerald-400 text-emerald-950 border-2 border-black font-black text-xs uppercase flex items-center justify-center gap-2 cursor-pointer shadow-neo-sm"
+                    >
+                      <QrCode className="w-3.5 h-3.5" />
+                      <span>OFFICIAL PASS &amp; DESK QR BADGE</span>
+                      <Printer className="w-3.5 h-3.5" />
+                    </button>
+
                     <a
                       href={`/api/admin/registrations/invoice?id=${selectedSquad.id}`}
                       target="_blank"
@@ -3679,6 +3712,210 @@ export default function AdminDashboardPage() {
             </div>
           );
         })()}
+      {/* ===================================================================== */}
+      {/* MODAL: OFFICIAL ENTRY PASS & DESK CHECK-IN QR CODE                    */}
+      {/* ===================================================================== */}
+      {isPassModalOpen && selectedPassSquad && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-xs animate-in fade-in duration-200"
+          onClick={() => setIsPassModalOpen(false)}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-lg bg-white border-4 border-black p-6 space-y-5 shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] max-h-[90vh] overflow-y-auto"
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b-3 border-black pb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="w-9 h-9 bg-amber-300 border-2 border-black flex items-center justify-center shadow-neo-xs">
+                  <QrCode className="w-5 h-5 stroke-[2.5px] text-black" />
+                </div>
+                <div>
+                  <h3 className="font-mono font-black text-base text-black uppercase">
+                    OFFICIAL CHECK-IN BADGE &amp; QR
+                  </h3>
+                  <p className="font-mono text-[11px] text-neutral-600">
+                    Scan at Registration Desk • Print on Badge Card
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setIsPassModalOpen(false)}
+                className="w-8 h-8 bg-black text-white hover:bg-neutral-800 border-2 border-black flex items-center justify-center font-bold text-sm cursor-pointer shadow-neo-xs"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Printable Pass Card Base */}
+            <div
+              id="hackverse-printable-desk-card"
+              className="border-3 border-black p-5 bg-white space-y-4 shadow-neo-sm relative"
+            >
+              {/* Top Header: cbhack logo on left, HACKVERSE'26 in center, cblogo on right */}
+              <div className="flex items-center justify-between border-b-2 border-black/20 pb-3 gap-2">
+                {/* Top Left: HACKVERSE Logo */}
+                <div className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-start shrink-0">
+                  <img
+                    src="/cbhack.webp"
+                    alt="HACKVERSE '26"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+
+                {/* Center Title: HACKVERSE'26 in Thuast font */}
+                <div className="flex items-center justify-center text-center flex-1 min-w-0 px-1">
+                  <h2
+                    style={{ fontFamily: "var(--font-thuast, 'Thuast'), 'Thuast', sans-serif" }}
+                    className="font-thuast font-normal text-xl sm:text-2xl text-black tracking-normal uppercase leading-none whitespace-nowrap"
+                  >
+                    HACKVERSE&apos;26
+                  </h2>
+                </div>
+
+                {/* Top Right: CodeBreakers Logo */}
+                <div className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-end shrink-0">
+                  <img
+                    src="/cblogo.webp"
+                    alt="CodeBreakers GCEK"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+              </div>
+
+              {/* Squad Name on Left & Squad Identifier on Right */}
+              <div className="flex items-start justify-between gap-4 pt-1">
+                {/* Left: Squad Name & College Info */}
+                <div className="min-w-0 flex-1">
+                  <span className="font-mono text-[10px] font-black uppercase text-neutral-500 block tracking-wider">
+                    SQUAD NAME
+                  </span>
+                  <span className="font-sans font-black text-xl text-black uppercase block leading-tight mt-0.5 truncate">
+                    {selectedPassSquad.teamName}
+                  </span>
+                  <span className="font-mono text-xs text-neutral-700 block truncate mt-1">
+                    {selectedPassSquad.collegeName}
+                  </span>
+                </div>
+
+                {/* Right: Squad Identifier */}
+                <div className="space-y-1 text-right shrink-0">
+                  <span className="font-mono text-[10px] font-black uppercase text-neutral-500 block tracking-wider">
+                    SQUAD IDENTIFIER
+                  </span>
+                  <div className="flex items-center justify-end gap-2 flex-wrap">
+                    <span className="font-mono font-black text-lg text-black bg-amber-200 px-2.5 py-0.5 border-2 border-black inline-block shadow-neo-xs">
+                      {selectedPassSquad.registrationNumber}
+                    </span>
+                    {selectedPassSquad.status &&
+                      selectedPassSquad.status !== "PENDING_VERIFICATION" && (
+                        <span className="px-2 py-0.5 bg-emerald-200 border-2 border-black font-mono font-black text-[11px] text-emerald-950 uppercase">
+                          {selectedPassSquad.status}
+                        </span>
+                      )}
+                  </div>
+                </div>
+              </div>
+
+              {/* 2D QR Code & 1D Barcode Preview (Centered & Stacked) */}
+              <div className="p-5 bg-neutral-50 border-2 border-black flex flex-col items-center justify-center gap-4 text-center">
+                {/* 2D QR Code (Larger & Centered) */}
+                <div className="flex flex-col items-center justify-center">
+                  <div className="p-2.5 border-2 border-black bg-white shadow-neo-sm">
+                    <QRCodeSVG
+                      value={`${typeof window !== "undefined" ? window.location.origin : "https://hackverse.codebreakersgcek.tech"}/teams/${selectedPassSquad.registrationNumber}`}
+                      size={160}
+                      level="H"
+                      includeMargin={false}
+                    />
+                  </div>
+                </div>
+
+                {/* 1D Barcode (At the Bottom of 2D QR, Centered) */}
+                <div className="flex flex-col items-center justify-center space-y-1 w-full pt-1">
+                  <div className="flex items-center justify-center h-11 overflow-hidden max-w-full">
+                    {(() => {
+                      const bData = encodeCode128B(selectedPassSquad.registrationNumber);
+                      const bScale = 1.35;
+                      return (
+                        <svg
+                          width={bData.totalModules * bScale}
+                          height={42}
+                          className="max-w-full shrink-0"
+                        >
+                          {bData.bars.map((bar, i) => (
+                            <rect
+                              key={i}
+                              x={(bar.x * bScale).toFixed(1)}
+                              y={0}
+                              width={(bar.width * bScale).toFixed(1)}
+                              height={42}
+                              fill="#000000"
+                            />
+                          ))}
+                        </svg>
+                      );
+                    })()}
+                  </div>
+                  <span className="font-mono text-[11px] font-black tracking-widest text-black">
+                    * {selectedPassSquad.registrationNumber} *
+                  </span>
+                </div>
+              </div>
+
+              {/* Leader & Contact Info */}
+              <div className="grid grid-cols-2 gap-2 text-xs font-mono pt-1 border-t border-black/15">
+                <div>
+                  <span className="text-[10px] font-bold text-neutral-500 uppercase block">TEAM LEADER:</span>
+                  <span className="font-bold text-black truncate block">{selectedPassSquad.leaderName}</span>
+                </div>
+                <div>
+                  <span className="text-[10px] font-bold text-neutral-500 uppercase block">CONTACT:</span>
+                  <span className="font-bold text-black truncate block">{selectedPassSquad.leaderPhone}</span>
+                </div>
+              </div>
+
+              {/* Footer Note */}
+              <div className="text-[10px] font-mono font-bold text-neutral-500 text-center uppercase tracking-wider pt-2 border-t border-dashed border-black/25">
+                HACKVERSE &apos;26 • REGISTRATION DESK PASS &amp; VERIFICATION
+              </div>
+            </div>
+
+            {/* Actions: Download Pass PNG, Direct Print, View URL */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
+              <a
+                href={`/api/admin/registrations/pass?id=${selectedPassSquad.registrationNumber}`}
+                download={`${selectedPassSquad.registrationNumber}-ENTRY-PASS.png`}
+                className="py-2.5 px-3 bg-amber-400 hover:bg-amber-500 text-black border-2 border-black font-mono font-black text-xs uppercase flex items-center justify-center gap-1.5 shadow-neo-sm cursor-pointer text-center"
+              >
+                <Download className="w-4 h-4" />
+                <span>DOWNLOAD BADGE (PNG)</span>
+              </a>
+
+              <button
+                type="button"
+                onClick={() => {
+                  window.print();
+                }}
+                className="py-2.5 px-3 bg-black hover:bg-neutral-800 text-white border-2 border-black font-mono font-black text-xs uppercase flex items-center justify-center gap-1.5 shadow-neo-sm cursor-pointer text-center"
+              >
+                <Printer className="w-4 h-4" />
+                <span>PRINT DESK CARD</span>
+              </button>
+
+              <Link
+                href={`/teams/${selectedPassSquad.registrationNumber}`}
+                target="_blank"
+                className="sm:col-span-2 py-2 px-3 bg-neutral-100 hover:bg-neutral-200 text-black border-2 border-black font-mono font-black text-xs uppercase flex items-center justify-center gap-1.5 shadow-neo-xs cursor-pointer text-center"
+              >
+                <ExternalLink className="w-3.5 h-3.5" />
+                <span>OPEN SQUAD DOSSIER (/teams/{selectedPassSquad.registrationNumber})</span>
+              </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Neo-Brutalist Action Confirmation Alert Dialog Modal */}
       <ConfirmDialog
         isOpen={confirmDialog.isOpen}

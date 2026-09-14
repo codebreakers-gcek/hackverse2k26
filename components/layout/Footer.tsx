@@ -16,8 +16,8 @@ import { EVENT_DATA } from "@/data/event";
 export function Footer() {
   const pathname = usePathname();
 
-  // Do not show footer in dashboard/admin section
-  if (pathname?.startsWith("/admin")) {
+  // Do not show footer in dashboard/admin section or /teams section
+  if (pathname?.startsWith("/admin") || pathname?.startsWith("/teams")) {
     return null;
   }
 
