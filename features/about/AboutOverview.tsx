@@ -1,6 +1,6 @@
 import React from "react";
 import { ABOUT_DATA } from "@/data/about";
-import { Sparkles, Target, Zap } from "lucide-react";
+import { Sparkles, Target, Zap, Compass } from "lucide-react";
 
 export function AboutOverview() {
   return (
@@ -8,8 +8,8 @@ export function AboutOverview() {
       {/* Minecraft Header */}
       <div className="flex justify-center w-full max-w-full">
         <div className="flex flex-col items-center text-center space-y-3 sm:space-y-4 max-w-3xl">
-          <span className="font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000] inline-block">
-            ★ ABOUT // ORIGIN ★
+          <span className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+            <Compass className="w-3.5 h-3.5" /> ABOUT // ORIGIN
           </span>
 
           <h1 className="font-black text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white uppercase tracking-tight leading-tight [text-shadow:_3px_3px_0_#000,_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000]">
@@ -30,8 +30,8 @@ export function AboutOverview() {
       {/* Main Narrative Card (Minecraft Stone GUI Slab) */}
       <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[8px_8px_0px_#000] p-6 sm:p-10 space-y-6">
         <div className="border-b-3 border-[#8B8B8B] pb-4 flex flex-wrap items-center justify-between gap-2">
-          <span className="font-mono text-xs font-black uppercase bg-[#55FF55] text-black px-3 py-1 border-2 border-t-[#9EFF9E] border-l-[#9EFF9E] border-r-[#1B801B] border-b-[#1B801B] shadow-[2px_2px_0px_#000]">
-            ★ MISSION DIRECTIVE ★
+          <span className="inline-flex items-center gap-1.5 font-mono text-xs font-black uppercase bg-[#55FF55] text-black px-3 py-1 border-2 border-t-[#9EFF9E] border-l-[#9EFF9E] border-r-[#1B801B] border-b-[#1B801B] shadow-[2px_2px_0px_#000]">
+            <Target className="w-3.5 h-3.5" /> MISSION DIRECTIVE
           </span>
           <span className="font-mono text-xs font-bold text-[#2A2A2A]">
             DISPATCH // GCEK CSE LABS

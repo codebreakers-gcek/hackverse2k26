@@ -1618,7 +1618,7 @@ export default function AdminDashboardPage() {
                                     : "bg-amber-200 text-amber-950"
                             }`}
                           >
-                            {squad.status === "BANNED" ? "⛔ BANNED" : squad.status}
+                            {squad.status === "BANNED" ? "BANNED" : squad.status}
                           </span>
                           <ChevronRight className="w-4 h-4 stroke-[2.5px]" />
                         </div>
@@ -1663,7 +1663,7 @@ export default function AdminDashboardPage() {
                         PENDING VERIFICATION
                       </option>
                       <option value="REJECTED">REJECTED</option>
-                      <option value="BANNED">⛔ BANNED / DISQUALIFIED</option>
+                      <option value="BANNED">BANNED / DISQUALIFIED</option>
                     </select>
                   </div>
 
@@ -1877,7 +1877,7 @@ export default function AdminDashboardPage() {
                                       : "bg-amber-200 text-amber-950"
                               }`}
                             >
-                              {squad.status === "BANNED" ? "⛔ BANNED" : squad.status}
+                              {squad.status === "BANNED" ? "BANNED" : squad.status}
                             </span>
                           </td>
 
@@ -2029,7 +2029,7 @@ export default function AdminDashboardPage() {
                             {ps.code || ps.id} — {ps.title.length > 30 ? ps.title.slice(0, 30) + "..." : ps.title}
                           </option>
                         ))}
-                        <option value="UNASSIGNED">⚠️ UNASSIGNED / NO PS SELECTED</option>
+                        <option value="UNASSIGNED">UNASSIGNED / NO PS SELECTED</option>
                       </select>
                     </div>
                   </div>
@@ -2044,7 +2044,7 @@ export default function AdminDashboardPage() {
                           : "text-neutral-700 hover:text-black"
                       }`}
                     >
-                      📦 By Challenge
+                      By Challenge
                     </button>
                     <button
                       onClick={() => setPsViewMode("table")}
@@ -2054,7 +2054,7 @@ export default function AdminDashboardPage() {
                           : "text-neutral-700 hover:text-black"
                       }`}
                     >
-                      📋 Full Matrix
+                      Full Matrix
                     </button>
                     <button
                       onClick={() => {
@@ -2067,7 +2067,7 @@ export default function AdminDashboardPage() {
                           : "text-neutral-700 hover:text-black"
                       }`}
                     >
-                      ⚠️ Unassigned ({unassignedPsCount})
+                      Unassigned ({unassignedPsCount})
                     </button>
                   </div>
                 </div>
@@ -2189,7 +2189,7 @@ export default function AdminDashboardPage() {
                                             : "bg-amber-200 text-amber-950"
                                         }`}
                                       >
-                                        {squad.status === "BANNED" ? "⛔ BANNED" : squad.status}
+                                        {squad.status === "BANNED" ? "BANNED" : squad.status}
                                       </span>
                                     </div>
 
@@ -2376,7 +2376,7 @@ export default function AdminDashboardPage() {
                                       : "bg-amber-200 text-amber-950"
                                   }`}
                                 >
-                                  {squad.status === "BANNED" ? "⛔ BANNED" : squad.status}
+                                  {squad.status === "BANNED" ? "BANNED" : squad.status}
                                 </span>
                               </td>
                               <td className="p-3.5 text-right">
@@ -2430,7 +2430,7 @@ export default function AdminDashboardPage() {
                               colSpan={6}
                               className="p-8 text-center font-mono font-bold text-emerald-700"
                             >
-                              🎉 ALL REGISTERED SQUADS HAVE SELECTED A PROBLEM STATEMENT!
+                              ALL REGISTERED SQUADS HAVE SELECTED A PROBLEM STATEMENT!
                             </td>
                           </tr>
                         ) : (
@@ -3544,7 +3544,7 @@ export default function AdminDashboardPage() {
                       />
                     </div>
                     <p className="font-mono text-[10px] text-black/70">
-                      ★ Sets the locked amount in the dynamic UPI QR code. Enter <strong>0</strong> for Free / Sponsored tier.
+                      Sets the locked amount in the dynamic UPI QR code. Enter <strong>0</strong> for Free / Sponsored tier.
                     </p>
                   </div>
 
@@ -3571,8 +3571,8 @@ export default function AdminDashboardPage() {
                     </label>
                     <p className="font-mono text-[10px] text-black/70">
                       {settings.isPaymentMandatory
-                        ? "🔒 All squads must provide a valid UPI Transaction ID."
-                        : "🔓 Squads can register on sponsored / free tier if fee is 0."}
+                        ? "All squads must provide a valid UPI Transaction ID."
+                        : "Squads can register on sponsored / free tier if fee is 0."}
                     </p>
                   </div>
 
@@ -3700,7 +3700,7 @@ export default function AdminDashboardPage() {
                         }}
                         className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-black text-[#55FF55] border border-black hover:bg-neutral-800 cursor-pointer"
                       >
-                        ⚡ Generate Random PIN
+                        Generate Random PIN
                       </button>
                     </div>
                     <input
@@ -3802,7 +3802,7 @@ export default function AdminDashboardPage() {
                             : "bg-amber-300 text-black"
                     }`}
                   >
-                    {selectedSquad.status === "BANNED" ? "⛔ BANNED" : selectedSquad.status}
+                    {selectedSquad.status === "BANNED" ? "BANNED" : selectedSquad.status}
                   </span>
                 </div>
                 <h2 className="text-2xl font-black uppercase tracking-tight text-white break-words">
@@ -3821,12 +3821,12 @@ export default function AdminDashboardPage() {
                     <span>Decision &amp; Dispatch</span>
                     {selectedSquad.status === "CONFIRMED" && (
                       <span className="text-[10px] font-black bg-emerald-300 text-emerald-950 px-2 py-0.5 border border-black">
-                        ✓ CONFIRMED SQUAD
+                        CONFIRMED SQUAD
                       </span>
                     )}
                     {selectedSquad.status === "BANNED" && (
                       <span className="text-[10px] font-black bg-rose-600 text-white px-2 py-0.5 border border-black">
-                        ⛔ BANNED / DISQUALIFIED
+                        BANNED / DISQUALIFIED
                       </span>
                     )}
                   </div>

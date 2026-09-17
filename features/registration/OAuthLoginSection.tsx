@@ -77,9 +77,9 @@ export function OAuthLoginSection({ onUserPrefill }: OAuthLoginSectionProps) {
 
   if (isPending) {
     return (
-      <div className="border-4 border-black bg-white p-6 shadow-neo mb-8 flex items-center justify-center gap-3">
+      <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-6 shadow-[6px_6px_0px_#000] mb-8 flex items-center justify-center gap-3">
         <Loader2 className="w-5 h-5 animate-spin text-black" />
-        <span className="font-mono text-xs font-black uppercase tracking-wider">
+        <span className="font-mono text-xs font-black uppercase tracking-wider text-black">
           CHECKING AUTHENTICATION STATUS...
         </span>
       </div>
@@ -93,28 +93,28 @@ export function OAuthLoginSection({ onUserPrefill }: OAuthLoginSectionProps) {
 
   // If user is not authenticated: Show Google & GitHub OAuth Buttons
   return (
-    <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo mb-8 space-y-5">
+    <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-6 sm:p-8 shadow-[6px_6px_0px_#000] mb-8 space-y-5">
       {/* Header Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-3 border-black pb-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-3 border-[#8B8B8B] pb-3">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 bg-neo-secondary border-2 border-black flex items-center justify-center shadow-neo-sm">
+          <div className="w-8 h-8 bg-[#FFAA00] border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] flex items-center justify-center shadow-[2px_2px_0px_#000]">
             <Lock className="w-4 h-4 stroke-[3px] text-black" />
           </div>
           <div>
-            <span className="font-mono text-[10px] font-black uppercase text-black/60">
+            <span className="font-mono text-[10px] font-black uppercase text-[#333333]">
               STEP 01 // IDENTITY VERIFICATION
             </span>
-            <h3 className="font-black text-lg sm:text-xl text-black uppercase tracking-tight">
+            <h3 className="font-mono font-black text-lg sm:text-xl text-black uppercase tracking-tight">
               SIGN IN WITH OAUTH (GOOGLE / GITHUB)
             </h3>
           </div>
         </div>
-        <div className="font-mono text-[11px] font-bold bg-neo-bg px-2.5 py-1 border-2 border-black">
+        <div className="font-mono text-[11px] font-bold bg-[#DBDBDB] px-2.5 py-1 border-2 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] text-black">
           AUTONOMOUS ROLE DISPATCH
         </div>
       </div>
 
-      <p className="text-xs sm:text-sm font-bold text-black/80 leading-relaxed">
+      <p className="text-xs sm:text-sm font-bold text-[#1A1A1A] font-mono leading-relaxed">
         Sign in with your Google or GitHub account to authenticate your squad credentials. Otherwise, your details will be pre-filled below for fast squad registration.
       </p>
 
@@ -126,7 +126,7 @@ export function OAuthLoginSection({ onUserPrefill }: OAuthLoginSectionProps) {
           onClick={() => handleOAuthSignIn("google")}
           disabled={loadingProvider !== null}
           className={clsx(
-            "h-14 px-6 bg-white text-black font-black text-sm uppercase tracking-wider border-3 border-black shadow-neo hover:-translate-y-0.5 hover:shadow-neo-lg active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all flex items-center justify-center gap-3 focus:outline-none focus:ring-4 focus:ring-black",
+            "h-14 px-6 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black font-mono font-black text-sm uppercase tracking-wider border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[4px_4px_0px_#000] hover:translate-y-[-1px] active:translate-y-1 transition-all flex items-center justify-center gap-3 cursor-pointer",
             loadingProvider === "google" && "opacity-75 cursor-wait"
           )}
         >
@@ -161,7 +161,7 @@ export function OAuthLoginSection({ onUserPrefill }: OAuthLoginSectionProps) {
           onClick={() => handleOAuthSignIn("github")}
           disabled={loadingProvider !== null}
           className={clsx(
-            "h-14 px-6 bg-black text-white font-black text-sm uppercase tracking-wider border-3 border-black shadow-neo hover:-translate-y-0.5 hover:shadow-neo-lg active:translate-x-0.5 active:translate-y-0.5 active:shadow-none transition-all flex items-center justify-center gap-3 focus:outline-none focus:ring-4 focus:ring-black",
+            "h-14 px-6 bg-[#3C3C3C] hover:bg-[#4A4A4A] text-white font-mono font-black text-sm uppercase tracking-wider border-4 border-t-[#666666] border-l-[#666666] border-r-[#1F1F1F] border-b-[#1F1F1F] shadow-[4px_4px_0px_#000] [text-shadow:_1px_1px_0_#000] hover:translate-y-[-1px] active:translate-y-1 transition-all flex items-center justify-center gap-3 cursor-pointer",
             loadingProvider === "github" && "opacity-75 cursor-wait"
           )}
         >

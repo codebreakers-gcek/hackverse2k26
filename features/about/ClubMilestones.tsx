@@ -15,7 +15,7 @@ export function ClubMilestones() {
           </h3>
         </div>
         <span className="font-mono text-[11px] font-bold text-[#55FFFF] hidden sm:inline-block [text-shadow:_1px_1px_0_#000]">
-          ★ 5+ YEARS OF BUILDER CULTURE ★
+          5+ YEARS OF BUILDER CULTURE
         </span>
       </div>
 

@@ -382,7 +382,7 @@ export function GsapLoader() {
             className="text-[10px] sm:text-xs text-[#FFAA00] font-bold [text-shadow:_1px_1px_0_#000]"
             style={{ fontFamily: "'Minecraft', monospace" }}
           >
-            ★ ₹35,000 PRIZE POOL ★
+            ₹35,000 PRIZE POOL
           </div>
         </footer>
       </div>

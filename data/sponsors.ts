@@ -7,7 +7,7 @@ export interface BenefitRow {
 
 export const SPONSORS_DATA = {
   header: {
-    tag: "★ SPONSORSHIP PACKET // HACKVERSE '26 ★",
+    tag: "SPONSORSHIP PACKET // HACKVERSE '26",
     title: "SPONSORSHIP",
     highlight: "PACKET",
     subtitle:

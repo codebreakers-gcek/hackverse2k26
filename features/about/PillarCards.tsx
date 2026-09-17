@@ -21,7 +21,7 @@ export function PillarCards() {
           </h3>
         </div>
         <span className="font-mono text-[11px] font-bold text-[#55FFFF] hidden sm:inline-block [text-shadow:_1px_1px_0_#000]">
-          ★ 4 DISTINCT VALUE DOMAINS ★
+          4 DISTINCT VALUE DOMAINS
         </span>
       </div>
 
@@ -66,7 +66,7 @@ export function PillarCards() {
 
               <div className="pt-3 border-t-2 border-[#8B8B8B] font-mono text-[11px] font-black uppercase text-black/80 flex items-center justify-between">
                 <span>EXPLORE WITH CODEBREAKERS SQUAD</span>
-                <span className="text-[#5B8731] font-black">★ ACTIVE</span>
+                <span className="text-[#5B8731] font-black">[ACTIVE]</span>
               </div>
             </div>
           );

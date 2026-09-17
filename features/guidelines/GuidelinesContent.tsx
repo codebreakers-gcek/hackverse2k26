@@ -35,6 +35,9 @@ import {
   Lock,
   Percent,
   Terminal,
+  Swords,
+  Ban,
+  BookOpen,
 } from "lucide-react";
 import clsx from "clsx";
 
@@ -117,7 +120,8 @@ export function GuidelinesContent() {
           className="object-cover object-center"
         />
         {/* Subtle dark tint to guarantee readability while preserving 100% full image clarity */}
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/85" />
       </div>
 
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -138,8 +142,8 @@ export function GuidelinesContent() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
             {/* Minecraft Themed Header Title */}
             <div className="flex flex-col items-center sm:items-start text-center sm:text-left space-y-3">
-              <span className="font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000] inline-block">
-                ★ CODEBREAKERS GCEK // RULEBOOK DIRECTIVES ★
+              <span className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+                <BookOpen className="w-3.5 h-3.5" /> CODEBREAKERS GCEK // RULEBOOK DIRECTIVES
               </span>
 
               <h1 className="font-black text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white uppercase tracking-tight leading-tight [text-shadow:_3px_3px_0_#000,_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000]">
@@ -232,7 +236,7 @@ export function GuidelinesContent() {
             <div className="bg-[#5B8731] border-4 border-black border-t-2 border-t-[#85B745] px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-white shadow-[4px_4px_0px_#000]">
               <div className="flex items-center gap-2.5">
                 <div className="w-6 h-6 bg-[#2B2B2B] text-[#55FF55] font-mono text-xs font-black flex items-center justify-center border-2 border-black shadow-[2px_2px_0px_#000]">
-                  ⚔
+                  <Swords className="w-3.5 h-3.5 text-[#55FF55]" />
                 </div>
                 <h2 className="font-mono font-black text-xs sm:text-sm uppercase tracking-wider text-white [text-shadow:_2px_2px_0_#000]">
                   01 // CRITICAL DIRECTIVES AT A GLANCE
@@ -470,8 +474,8 @@ export function GuidelinesContent() {
                                   key={fIdx}
                                   className="flex items-start gap-1.5"
                                 >
-                                  <span className="text-[#2C6B2C] font-black">
-                                    ✔
+                                  <span className="text-[#2C6B2C] font-black shrink-0 mt-0.5">
+                                    <Check className="w-3 h-3 stroke-[3px]" />
                                   </span>
                                   <span>{focus}</span>
                                 </li>
@@ -713,7 +717,7 @@ export function GuidelinesContent() {
               <div className="bg-[#8B3A3A] border-4 border-t-[#C26B6B] border-l-[#C26B6B] border-r-[#4A1515] border-b-[#4A1515] p-5 shadow-[6px_6px_0px_#000] text-white space-y-3">
                 <div className="flex items-center gap-2.5 text-[#FFEAEA]">
                   <div className="w-7 h-7 bg-[#2B1B1B] border-2 border-[#FF5555] flex items-center justify-center text-[#FF5555] font-mono font-black text-xs">
-                    ⛔
+                    <Ban className="w-4 h-4 text-[#FF5555] stroke-[2.5px]" />
                   </div>
                   <h3 className="font-mono font-black text-base uppercase tracking-wide text-white [text-shadow:_1px_1px_0_#000]">
                     Plagiarism &amp; Pre-built Code
@@ -729,7 +733,7 @@ export function GuidelinesContent() {
               <div className="bg-[#8B3A3A] border-4 border-t-[#C26B6B] border-l-[#C26B6B] border-r-[#4A1515] border-b-[#4A1515] p-5 shadow-[6px_6px_0px_#000] text-white space-y-3">
                 <div className="flex items-center gap-2.5 text-[#FFEAEA]">
                   <div className="w-7 h-7 bg-[#2B1B1B] border-2 border-[#FF5555] flex items-center justify-center text-[#FF5555] font-mono font-black text-xs">
-                    ⛔
+                    <Ban className="w-4 h-4 text-[#FF5555] stroke-[2.5px]" />
                   </div>
                   <h3 className="font-mono font-black text-base uppercase tracking-wide text-white [text-shadow:_1px_1px_0_#000]">
                     No Jury Lobbying
@@ -745,7 +749,7 @@ export function GuidelinesContent() {
               <div className="bg-[#8B3A3A] border-4 border-t-[#C26B6B] border-l-[#C26B6B] border-r-[#4A1515] border-b-[#4A1515] p-5 shadow-[6px_6px_0px_#000] text-white space-y-3">
                 <div className="flex items-center gap-2.5 text-[#FFEAEA]">
                   <div className="w-7 h-7 bg-[#2B1B1B] border-2 border-[#FF5555] flex items-center justify-center text-[#FF5555] font-mono font-black text-xs">
-                    ⛔
+                    <Ban className="w-4 h-4 text-[#FF5555] stroke-[2.5px]" />
                   </div>
                   <h3 className="font-mono font-black text-base uppercase tracking-wide text-white [text-shadow:_1px_1px_0_#000]">
                     Infrastructure Integrity

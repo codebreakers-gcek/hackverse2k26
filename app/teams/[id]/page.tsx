@@ -31,6 +31,7 @@ import {
   Home,
   FileCode,
   Scan,
+  MessageSquare,
 } from "lucide-react";
 import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 import Image from "next/image";
@@ -277,7 +278,8 @@ export default function TeamDetailPage() {
           sizes="100vw"
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/85" />
       </div>
 
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -303,7 +305,7 @@ export default function TeamDetailPage() {
                 <div className="bg-[#2B2B2B] text-white -mx-6 sm:-mx-8 -mt-6 sm:-mt-8 p-4 border-b-4 border-black flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <div className="w-7 h-7 bg-amber-400 text-black border-2 border-black flex items-center justify-center font-mono font-black text-xs">
-                      🔒
+                      <Lock className="w-4 h-4 text-black stroke-[2.5px]" />
                     </div>
                     <span className="font-mono text-xs sm:text-sm font-black uppercase tracking-wider text-[#55FFFF]">
                       VERIFICATION GATE
@@ -555,18 +557,20 @@ export default function TeamDetailPage() {
 
                       <div className="bg-white border-2 border-black p-3 space-y-0.5">
                         <span className="text-[10px] font-black text-neutral-500 uppercase block">PHONE &amp; WHATSAPP</span>
-                        <div className="font-bold text-black flex flex-col">
-                          <a href={`tel:${team.leader.phone}`} className="hover:underline">
-                            📞 {team.leader.phone}
+                        <div className="font-bold text-black flex flex-col gap-0.5">
+                          <a href={`tel:${team.leader.phone}`} className="hover:underline flex items-center gap-1.5">
+                            <Phone className="w-3.5 h-3.5 text-neutral-700 shrink-0" />
+                            <span>{team.leader.phone}</span>
                           </a>
                           {team.leader.whatsapp && (
                             <a
                               href={`https://wa.me/${team.leader.whatsapp.replace(/[^0-9]/g, "")}`}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-emerald-700 hover:underline"
+                              className="text-emerald-700 hover:underline flex items-center gap-1.5"
                             >
-                              💬 WA: {team.leader.whatsapp}
+                              <MessageSquare className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
+                              <span>WA: {team.leader.whatsapp}</span>
                             </a>
                           )}
                         </div>

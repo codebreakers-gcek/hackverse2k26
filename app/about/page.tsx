@@ -96,7 +96,8 @@ export default function AboutPage() {
           className="object-cover object-center"
         />
         {/* Subtle dark tint to guarantee readability while preserving 100% full image clarity */}
-        <div className="absolute inset-0 bg-black/25 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/85" />
       </div>
 
       <div className="relative z-10 w-full max-w-7xl mx-auto px-3 xs:px-4 sm:px-6 lg:px-8 py-8 sm:py-16 space-y-16 min-w-0">

@@ -1,3 +1,5 @@
+import fs from "fs";
+import path from "path";
 import QRCode from "qrcode";
 import { Resvg } from "@resvg/resvg-js";
 import { EVENT_DATA } from "@/data/event";
@@ -21,6 +23,22 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
   const dates = options.dates || EVENT_DATA.displayDates || "OCTOBER 08 - 10, 2026";
   const venueCampus = options.venueCampus || EVENT_DATA.location?.campus || "Government College of Engineering Kalahandi";
   const venueCity = options.venueCity || `${EVENT_DATA.location?.city || "Bhawanipatna"}, ${EVENT_DATA.location?.state || "Odisha"}`;
+
+  // Read official Hackverse logo as base64 for embedding in the SVG image
+  let logoBase64 = "";
+  try {
+    const logoPngPath = path.join(process.cwd(), "public", "cbhack.png");
+    if (fs.existsSync(logoPngPath)) {
+      const logoBuf = fs.readFileSync(logoPngPath);
+      logoBase64 = `data:image/png;base64,${logoBuf.toString("base64")}`;
+    } else {
+      const logoWebpPath = path.join(process.cwd(), "public", "cbhack.webp");
+      if (fs.existsSync(logoWebpPath)) {
+        const logoBuf = fs.readFileSync(logoWebpPath);
+        logoBase64 = `data:image/webp;base64,${logoBuf.toString("base64")}`;
+      }
+    }
+  } catch {}
 
   // Generate clean QR code SVG linking directly to the team authorization portal
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://hackverse.codebreakersgcek.tech";
@@ -70,10 +88,13 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
     <rect x="0" y="0" width="660" height="115" fill="#000000" />
     <line x1="0" y1="115" x2="660" y2="115" stroke="#000000" stroke-width="5" />
 
-    <!-- Yellow Terminal Box -->
+    <!-- Hackverse Logo Box -->
     <g transform="translate(25, 25)">
-      <rect width="65" height="65" fill="#FACC15" stroke="#000000" stroke-width="3" />
-      <text x="12" y="44" font-family="'IBM Plex Mono', monospace" font-size="34" font-weight="900" fill="#000000">&gt;_</text>
+      ${
+        logoBase64
+          ? `<image href="${logoBase64}" x="0" y="0" width="65" height="65" preserveAspectRatio="xMidYMid meet" />`
+          : `<rect width="65" height="65" fill="#000000" stroke="#FACC15" stroke-width="3" /><text x="12" y="44" font-family="'IBM Plex Mono', monospace" font-size="34" font-weight="900" fill="#FACC15">&gt;_</text>`
+      }
     </g>
 
     <!-- Header Titles -->
@@ -105,9 +126,10 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
 
       <!-- Row: Dates & Venue -->
       <g transform="translate(0, 110)">
-        <!-- Dates Box -->
-        <rect x="0" y="0" width="46" height="46" fill="#FFE4E6" stroke="#000000" stroke-width="2.5" />
-        <text x="23" y="32" text-anchor="middle" font-size="22">📅</text>
+        <!-- Date Box -->
+        <rect x="0" y="0" width="46" height="46" fill="#DBEAFE" stroke="#000000" stroke-width="2.5" />
+        <rect x="13" y="13" width="20" height="20" fill="none" stroke="#000000" stroke-width="2" />
+        <line x1="13" y1="19" x2="33" y2="19" stroke="#000000" stroke-width="2" />
         <text x="60" y="12" class="font-mono" font-size="10" font-weight="800" fill="#71717A" letter-spacing="1">EVENT DATES</text>
         <text x="60" y="29" class="font-sans" font-size="15" font-weight="900" fill="#000000">${dates}</text>
         <text x="60" y="44" class="font-mono" font-size="11" font-weight="600" fill="#52525B">24-Hour Continuous Hackathon</text>
@@ -115,7 +137,8 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
         <!-- Venue Box -->
         <g transform="translate(305, 0)">
           <rect x="0" y="0" width="46" height="46" fill="#FEF3C7" stroke="#000000" stroke-width="2.5" />
-          <text x="23" y="32" text-anchor="middle" font-size="22">📍</text>
+          <circle cx="23" cy="20" r="7" fill="none" stroke="#000000" stroke-width="2" />
+          <path d="M 23 27 L 23 33" stroke="#000000" stroke-width="2" />
           <text x="60" y="12" class="font-mono" font-size="10" font-weight="800" fill="#71717A" letter-spacing="1">REPORTING VENUE</text>
           <text x="60" y="29" class="font-sans" font-size="13" font-weight="900" fill="#000000">${venueCampus.length > 28 ? venueCampus.substring(0, 26) + "..." : venueCampus}</text>
           <text x="60" y="44" class="font-mono" font-size="11" font-weight="600" fill="#52525B">${venueCity}</text>
@@ -128,7 +151,7 @@ export async function generatePassPngBuffer(options: PassImageOptions): Promise<
       <!-- Perks Strip -->
       <g transform="translate(0, 210)">
         <rect width="600" height="44" rx="3" fill="#F0FDF4" stroke="#000000" stroke-width="2.5" />
-        <text x="20" y="28" font-size="16">🛡️</text>
+        <rect x="16" y="14" width="16" height="16" fill="#15803D" />
         <text x="48" y="27" class="font-sans" font-size="12" font-weight="800" fill="#000000">Includes 24h Arena Access, &amp; Certifications.</text>
         <text x="580" y="27" text-anchor="end" class="font-mono" font-size="11" font-weight="800" fill="#71717A">SECURE #HV26</text>
       </g>

@@ -109,7 +109,38 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 4. Ban / Lock System: Check if squad preferences have already been finalized
+    // 4. Permission Check: ONLY the designated Squad Leader can choose & lock problem statements
+    const isLeader =
+      (teamRegistration.userId && teamRegistration.userId === user.id) ||
+      (teamRegistration.leaderEmail &&
+        teamRegistration.leaderEmail.toLowerCase().trim() === userEmail);
+
+    if (!isLeader) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Permission Denied: Only the designated Squad Leader is authorized to select and submit problem statement preferences for the squad.",
+        },
+        { status: 403 }
+      );
+    }
+
+    // 5. Admin Verification Check: Squad MUST be verified and CONFIRMED by admin
+    if (teamRegistration.status !== "CONFIRMED") {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Your squad registration has not been verified by the admin yet (Status: " +
+            teamRegistration.status +
+            "). Problem statement selection will unlock once your squad is verified and confirmed by the admin desk.",
+        },
+        { status: 403 }
+      );
+    }
+
+    // 6. Ban / Lock System: Check if squad preferences have already been finalized
     const currentDocs = (teamRegistration.documents as Record<string, any>) || {};
     if (
       currentDocs.isPsLocked === true ||

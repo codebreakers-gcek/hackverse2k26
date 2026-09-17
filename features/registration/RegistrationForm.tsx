@@ -51,6 +51,8 @@ import {
   Eye,
   X,
   Home,
+  Check,
+  AlertTriangle,
 } from "lucide-react";
 import clsx from "clsx";
 
@@ -245,6 +247,8 @@ export function RegistrationForm() {
   const [isCheckingExistingTeam, setIsCheckingExistingTeam] =
     useState<boolean>(true);
   const [forceNewRegistration, setForceNewRegistration] =
+    useState<boolean>(false);
+  const [showClearDraftModal, setShowClearDraftModal] =
     useState<boolean>(false);
 
   // Dynamic Payment & System Settings from Admin
@@ -842,12 +846,11 @@ export function RegistrationForm() {
   };
 
   const handleClearDraft = () => {
-    if (typeof window !== "undefined") {
-      const confirmClear = window.confirm(
-        "Are you sure you want to clear your saved registration draft and restart from Step 1?",
-      );
-      if (!confirmClear) return;
+    setShowClearDraftModal(true);
+  };
 
+  const handleConfirmClearDraft = () => {
+    if (typeof window !== "undefined") {
       clearAllDocCache();
       try {
         localStorage.removeItem(REG_DRAFT_KEY);
@@ -857,6 +860,7 @@ export function RegistrationForm() {
       } catch {}
     }
     handleResetForm();
+    setShowClearDraftModal(false);
   };
 
   const handleResetForm = () => {
@@ -905,7 +909,7 @@ export function RegistrationForm() {
 
       {/* Checking squad records state */}
       {isAuthenticated && isCheckingExistingTeam && (
-        <div className="border-4 border-black bg-white p-8 shadow-neo text-center space-y-3">
+        <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-8 shadow-[6px_6px_0px_#000] text-center space-y-3">
           <Loader2 className="w-8 h-8 animate-spin mx-auto text-black" />
           <p className="font-mono text-xs font-black uppercase tracking-wider text-black">
             Verifying squad registration records...
@@ -915,8 +919,8 @@ export function RegistrationForm() {
 
       {/* When user is NOT authenticated: Display Locked State Notice */}
       {!isAuthenticated && !isAuthPending && (
-        <div className="border-4 border-black bg-neo-muted/30 p-8 shadow-neo text-center space-y-4">
-          <div className="w-14 h-14 bg-white border-3 border-black mx-auto flex items-center justify-center shadow-neo-sm">
+        <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-8 shadow-[6px_6px_0px_#000] text-center space-y-4">
+          <div className="w-14 h-14 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] mx-auto flex items-center justify-center shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)]">
             <Lock className="w-7 h-7 text-black stroke-[2.5px]" />
           </div>
           <div className="space-y-1">
@@ -955,8 +959,8 @@ export function RegistrationForm() {
         (!existingTeamData || forceNewRegistration) &&
         paymentSettings &&
         paymentSettings.isRegistrationOpen === false && (
-          <div className="border-4 border-black bg-rose-200 p-8 shadow-neo text-center space-y-4">
-            <div className="w-14 h-14 bg-white border-3 border-black mx-auto flex items-center justify-center shadow-neo-sm">
+          <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-8 shadow-[6px_6px_0px_#000] text-center space-y-4">
+            <div className="w-14 h-14 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] mx-auto flex items-center justify-center shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)]">
               <Lock className="w-7 h-7 text-black stroke-[2.5px]" />
             </div>
             <div className="space-y-2">
@@ -974,7 +978,7 @@ export function RegistrationForm() {
                 <button
                   type="button"
                   onClick={() => setForceNewRegistration(false)}
-                  className="px-6 py-2.5 bg-black text-white font-black text-xs uppercase font-mono shadow-neo-sm hover:bg-neutral-800 transition-all cursor-pointer"
+                  className="px-6 py-2.5 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black font-black text-xs uppercase font-mono border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all cursor-pointer"
                 >
                   &larr; Return to My Squad Dossier
                 </button>
@@ -991,7 +995,7 @@ export function RegistrationForm() {
           <div className="space-y-8">
             {/* Switch back banner if user was previously registered */}
             {existingTeamData && forceNewRegistration && (
-              <div className="border-3 border-black bg-neo-accent p-3 shadow-neo-sm flex flex-col sm:flex-row items-center justify-between gap-2">
+              <div className="bg-[#FFAA00] border-4 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] p-3.5 shadow-[4px_4px_0px_#000] flex flex-col sm:flex-row items-center justify-between gap-2">
                 <span className="font-mono text-xs font-black uppercase text-black">
                   Currently registered as squad:{" "}
                   <strong>{existingTeamData.teamName}</strong>
@@ -999,7 +1003,7 @@ export function RegistrationForm() {
                 <button
                   type="button"
                   onClick={() => setForceNewRegistration(false)}
-                  className="font-mono text-xs font-black uppercase px-3 py-1 bg-black text-white hover:bg-neutral-800 transition-colors cursor-pointer"
+                  className="font-mono text-xs font-black uppercase px-3 py-1 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[2px_2px_0px_#000] active:translate-y-0.5 transition-colors cursor-pointer"
                 >
                   &larr; Return to Squad Dossier
                 </button>
@@ -1007,17 +1011,17 @@ export function RegistrationForm() {
             )}
 
             {/* Multi-Step Progress Header Stepper */}
-            <div className="border-4 border-black bg-white p-4 sm:p-6 shadow-neo space-y-4">
+            <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-4 sm:p-6 shadow-[6px_6px_0px_#000] space-y-4">
               {/* Top Cache Status Bar */}
-              <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-black/15 pb-3">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-[#555555]/30 pb-3">
                 <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse inline-block" />
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-600 animate-pulse inline-block" />
                   <span className="font-mono text-[11px] sm:text-xs font-black uppercase text-black">
                     AUTO-SAVE ACTIVE <span className="text-black/50">•</span>{" "}
                     STEP 0{currentStep} PRESERVED
                   </span>
                   {hasRestoredDraft && (
-                    <span className="hidden sm:inline-block font-mono text-[9px] font-black uppercase px-1.5 py-0.5 bg-emerald-100 text-emerald-900 border border-emerald-800">
+                    <span className="hidden sm:inline-block font-mono text-[9px] font-black uppercase px-1.5 py-0.5 bg-[#5B8731] text-white border border-[#2C4813]">
                       RESTORED FROM CACHE
                     </span>
                   )}
@@ -1025,7 +1029,7 @@ export function RegistrationForm() {
                 <button
                   type="button"
                   onClick={handleClearDraft}
-                  className="font-mono text-[10px] sm:text-xs font-black uppercase px-2.5 py-1 bg-neutral-100 hover:bg-rose-100 hover:text-rose-700 border-2 border-black text-black transition-colors flex items-center gap-1.5 shadow-neo-xs cursor-pointer"
+                  className="font-mono text-[10px] sm:text-xs font-black uppercase px-2.5 py-1 bg-[#DBDBDB] hover:bg-rose-100 hover:text-rose-800 border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] text-black shadow-[2px_2px_0px_#000] active:translate-y-0.5 transition-colors flex items-center gap-1.5 cursor-pointer"
                   title="Clear cached draft and start fresh"
                 >
                   <Trash2 className="w-3.5 h-3.5 stroke-[2.5px]" />
@@ -1035,7 +1039,6 @@ export function RegistrationForm() {
 
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-3">
                 {stepsList.map((st) => {
-                  const Icon = st.icon;
                   const isCurrent = currentStep === st.num;
                   const isPassed = currentStep > st.num;
 
@@ -1048,22 +1051,22 @@ export function RegistrationForm() {
                       }}
                       disabled={!isPassed && !isCurrent}
                       className={clsx(
-                        "p-3 border-3 border-black flex items-center gap-2.5 transition-all text-left",
+                        "p-3 border-3 flex items-center gap-2.5 transition-all text-left",
                         isCurrent
-                          ? "bg-neo-secondary text-black shadow-neo-sm"
+                          ? "bg-[#5B8731] text-white border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000]"
                           : isPassed
-                            ? "bg-emerald-100 text-emerald-950 hover:bg-emerald-200 cursor-pointer"
-                            : "bg-neutral-100 text-black/40 opacity-70 cursor-not-allowed",
+                            ? "bg-[#DBDBDB] text-[#2C4813] hover:bg-[#EAEAEA] border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[3px_3px_0px_#000] cursor-pointer"
+                            : "bg-[#B0B0B0] text-black/40 border-t-[#C6C6C6] border-l-[#C6C6C6] border-r-[#707070] border-b-[#707070] opacity-70 cursor-not-allowed",
                       )}
                     >
                       <div
                         className={clsx(
-                          "w-8 h-8 font-mono font-black text-xs flex items-center justify-center shrink-0 border-2 border-black",
+                          "w-8 h-8 font-mono font-black text-xs flex items-center justify-center shrink-0 border-2",
                           isCurrent
-                            ? "bg-black text-white"
+                            ? "bg-[#2C4813] text-[#85B745] border-[#1E310C]"
                             : isPassed
-                              ? "bg-emerald-600 text-white"
-                              : "bg-white text-black",
+                              ? "bg-[#5B8731] text-white border-[#2C4813]"
+                              : "bg-[#808080] text-white/70 border-[#555555]",
                         )}
                       >
                         {isPassed ? (
@@ -1073,10 +1076,20 @@ export function RegistrationForm() {
                         )}
                       </div>
                       <div className="overflow-hidden">
-                        <div className="font-mono text-[9px] font-black uppercase text-black/50 leading-none">
+                        <div
+                          className={clsx(
+                            "font-mono text-[9px] font-black uppercase leading-none",
+                            isCurrent ? "text-white/80" : "text-black/50"
+                          )}
+                        >
                           STEP 0{st.num}
                         </div>
-                        <div className="font-black text-xs uppercase text-black truncate leading-tight mt-0.5">
+                        <div
+                          className={clsx(
+                            "font-black text-xs uppercase truncate leading-tight mt-0.5",
+                            isCurrent ? "text-white" : "text-black"
+                          )}
+                        >
                           {st.title}
                         </div>
                       </div>
@@ -1089,7 +1102,7 @@ export function RegistrationForm() {
             <form onSubmit={handleSubmit} noValidate className="space-y-8">
               {/* Form General Error Alert */}
               {errors.form && (
-                <div className="border-4 border-black bg-neo-accent p-4 shadow-neo text-black flex items-center gap-3">
+                <div className="border-4 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] bg-[#FFAA00] p-4 shadow-[4px_4px_0px_#000] text-black flex items-center gap-3">
                   <AlertCircle className="w-6 h-6 stroke-[3px] shrink-0" />
                   <p className="font-black text-sm">{errors.form}</p>
                 </div>
@@ -1099,17 +1112,17 @@ export function RegistrationForm() {
               {/* STEP 1: COLLEGE & SQUAD DETAILS                                           */}
               {/* ========================================================================= */}
               {currentStep === 1 && (
-                <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo space-y-6 animate-in fade-in-50 duration-200">
-                  <div className="border-b-4 border-black pb-3 flex items-center justify-between">
+                <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-6 sm:p-8 shadow-[6px_6px_0px_#000] space-y-6 animate-in fade-in-50 duration-200">
+                  <div className="border-b-4 border-[#555555]/30 pb-3 flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <span className="font-mono text-xs font-black uppercase px-2 py-0.5 bg-black text-white">
+                      <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[2px_2px_0px_#000]">
                         01
                       </span>
                       <h3 className="font-black text-xl text-black uppercase tracking-tight">
                         SQUAD PROFILE &amp; COLLEGE ADDRESS
                       </h3>
                     </div>
-                    <span className="font-mono text-[10px] font-bold bg-neo-bg px-2 py-1 border-2 border-black uppercase hidden sm:inline">
+                    <span className="font-mono text-[10px] font-black bg-[#FFAA00] text-black px-2 py-1 border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[2px_2px_0px_#000] uppercase hidden sm:inline">
                       STEP 1 OF 4
                     </span>
                   </div>
@@ -1147,8 +1160,8 @@ export function RegistrationForm() {
                   </div>
 
                   {/* College Address Fields */}
-                  <div className="pt-4 border-t-2 border-black/15 space-y-4">
-                    <div className="font-mono text-xs font-black uppercase text-black/70 flex items-center gap-2">
+                  <div className="pt-4 border-t-2 border-[#555555]/30 space-y-4">
+                    <div className="font-mono text-xs font-black uppercase text-black/80 flex items-center gap-2">
                       <Building2 className="w-4 h-4 text-black" />
                       <span>INSTITUTION CAMPUS ADDRESS:</span>
                     </div>
@@ -1211,17 +1224,15 @@ export function RegistrationForm() {
                   </div>
 
                   {/* Step 1 Navigation CTA */}
-                  <div className="pt-6 border-t-4 border-black flex justify-end">
-                    <Button
+                  <div className="pt-6 border-t-4 border-[#555555]/30 flex justify-end">
+                    <button
                       type="button"
-                      variant="primary"
-                      size="lg"
                       onClick={handleNextStep}
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto px-8 py-3.5 bg-[#5B8731] hover:bg-[#689B37] text-white border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] font-black text-sm uppercase tracking-wider shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 [text-shadow:_1px_1px_0_#000] cursor-pointer"
                     >
                       <span>PROCEED TO STEP 02: SQUAD MEMBERS</span>
                       <ArrowRight className="w-5 h-5 stroke-[3px]" />
-                    </Button>
+                    </button>
                   </div>
                 </div>
               )}
@@ -1232,17 +1243,17 @@ export function RegistrationForm() {
               {currentStep === 2 && (
                 <div className="space-y-6 animate-in fade-in-50 duration-200">
                   {/* Leader Box */}
-                  <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo space-y-6">
-                    <div className="border-b-4 border-black pb-3 flex items-center justify-between">
+                  <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-6 sm:p-8 shadow-[6px_6px_0px_#000] space-y-6">
+                    <div className="border-b-4 border-[#555555]/30 pb-3 flex items-center justify-between">
                       <div className="flex items-center gap-2.5">
-                        <span className="font-mono text-xs font-black uppercase px-2 py-0.5 bg-black text-white">
+                        <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[2px_2px_0px_#000]">
                           02.1
                         </span>
                         <h3 className="font-black text-xl text-black uppercase tracking-tight">
                           TEAM LEADER (PRIMARY LIAISON)
                         </h3>
                       </div>
-                      <span className="font-mono text-[10px] font-black bg-neo-secondary px-2.5 py-0.5 border border-black uppercase">
+                      <span className="font-mono text-[10px] font-black bg-[#FFAA00] text-black px-2.5 py-1 border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[2px_2px_0px_#000] uppercase">
                         CAPTAIN / LEADER
                       </span>
                     </div>
@@ -1405,10 +1416,10 @@ export function RegistrationForm() {
                   </div>
 
                   {/* Additional Members Box */}
-                  <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo space-y-6">
-                    <div className="border-b-4 border-black pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                  <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-6 sm:p-8 shadow-[6px_6px_0px_#000] space-y-6">
+                    <div className="border-b-4 border-[#555555]/30 pb-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                       <div className="flex items-center gap-2.5">
-                        <span className="font-mono text-xs font-black uppercase px-2 py-0.5 bg-black text-white">
+                        <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[2px_2px_0px_#000]">
                           02.2
                         </span>
                         <div>
@@ -1430,9 +1441,10 @@ export function RegistrationForm() {
                         onClick={handleAddMember}
                         disabled={formData.members.length >= 3}
                         className={clsx(
-                          "px-4 py-2 bg-neo-secondary text-black font-black text-xs uppercase tracking-wider border-3 border-black shadow-neo-sm hover:shadow-none transition-all flex items-center gap-1.5 self-start sm:self-auto",
-                          formData.members.length >= 3 &&
-                            "opacity-50 cursor-not-allowed bg-neutral-300",
+                          "px-4 py-2 text-white font-black text-xs uppercase tracking-wider border-3 shadow-[3px_3px_0px_#000] active:translate-y-0.5 transition-all flex items-center gap-1.5 self-start sm:self-auto cursor-pointer [text-shadow:_1px_1px_0_#000]",
+                          formData.members.length >= 3
+                            ? "opacity-50 cursor-not-allowed bg-[#707070] border-t-[#8A8A8A] border-l-[#8A8A8A] border-r-[#4A4A4A] border-b-[#4A4A4A]"
+                            : "bg-[#5B8731] hover:bg-[#689B37] border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813]",
                         )}
                       >
                         <Plus className="w-4 h-4 stroke-[3px]" />
@@ -1445,14 +1457,14 @@ export function RegistrationForm() {
                     </div>
 
                     {errors.members && (
-                      <div className="p-3.5 bg-rose-50 border-2 border-rose-500 text-rose-700 font-mono text-xs font-bold flex items-center gap-2">
-                        <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+                      <div className="p-3.5 bg-rose-100 border-2 border-rose-600 text-rose-900 font-mono text-xs font-bold flex items-center gap-2">
+                        <AlertCircle className="w-4 h-4 text-rose-700 shrink-0" />
                         <span>{errors.members}</span>
                       </div>
                     )}
 
                     {formData.members.length === 0 ? (
-                      <div className="p-6 bg-amber-50 border-3 border-black text-center space-y-2">
+                      <div className="p-6 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] text-center space-y-2">
                         <p className="font-bold text-sm text-black/90">
                           A minimum of 1 co-hacker is required (total 2 members
                           minimum). Please click &quot;ADD CO-HACKER&quot;
@@ -1464,10 +1476,10 @@ export function RegistrationForm() {
                         {formData.members.map((member, idx) => (
                           <div
                             key={idx}
-                            className="p-5 sm:p-6 bg-neo-bg border-3 border-black shadow-neo-sm space-y-5 animate-in fade-in-50 duration-200"
+                            className="p-5 sm:p-6 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] space-y-5 animate-in fade-in-50 duration-200"
                           >
-                            <div className="flex items-center justify-between border-b-2 border-black pb-2">
-                              <span className="font-mono text-xs font-black uppercase bg-black text-white px-2 py-0.5 border border-black">
+                            <div className="flex items-center justify-between border-b-2 border-[#555555]/30 pb-2">
+                              <span className="font-mono text-xs font-black uppercase bg-[#555555] text-white px-2 py-0.5 border border-t-[#707070] border-l-[#707070] border-r-[#333333] border-b-[#333333]">
                                 CO-HACKER #{idx + 2}{" "}
                                 {idx === 0 && "(MANDATORY 2ND MEMBER)"}
                               </span>
@@ -1481,10 +1493,10 @@ export function RegistrationForm() {
                                     : "Remove this co-hacker"
                                 }
                                 className={clsx(
-                                  "px-2.5 py-1 text-white font-black text-xs uppercase border border-black flex items-center gap-1 transition-all",
+                                  "px-2.5 py-1 text-white font-black text-xs uppercase border-2 flex items-center gap-1 transition-all shadow-[2px_2px_0px_#000] active:translate-y-0.5",
                                   formData.members.length <= 1
-                                    ? "bg-neutral-400 opacity-60 cursor-not-allowed text-neutral-800"
-                                    : "bg-rose-500 hover:bg-rose-600",
+                                    ? "bg-[#707070] opacity-60 cursor-not-allowed border-t-[#8A8A8A] border-l-[#8A8A8A] border-r-[#4A4A4A] border-b-[#4A4A4A] text-neutral-300"
+                                    : "bg-[#B83131] hover:bg-[#C93B3B] border-t-[#E05353] border-l-[#E05353] border-r-[#731818] border-b-[#731818] cursor-pointer",
                                 )}
                               >
                                 <Trash2 className="w-3.5 h-3.5 stroke-[2.5px]" />
@@ -1694,45 +1706,44 @@ export function RegistrationForm() {
                   </div>
 
                   {/* Step 2 Navigation Buttons */}
-                  <div className="pt-4 border-t-4 border-black flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="pt-4 border-t-4 border-[#555555]/30 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <button
                       type="button"
                       onClick={handlePrevStep}
-                      className="w-full sm:w-auto px-6 h-12 bg-white text-black font-black text-sm uppercase tracking-wider border-3 border-black shadow-neo-sm hover:bg-neutral-100 flex items-center justify-center gap-2"
+                      className="w-full sm:w-auto px-6 h-12 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black font-black text-sm uppercase tracking-wider border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <ArrowLeft className="w-4 h-4 stroke-[3px]" />
                       <span>PREVIOUS STEP</span>
                     </button>
 
-                    <Button
+                    <button
                       type="button"
-                      variant="primary"
-                      size="lg"
                       onClick={handleNextStep}
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto px-8 py-3.5 bg-[#5B8731] hover:bg-[#689B37] text-white border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] font-black text-sm uppercase tracking-wider shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 [text-shadow:_1px_1px_0_#000] cursor-pointer"
                     >
                       <span>PROCEED TO STEP 03: PAYMENT BLOCK</span>
                       <ArrowRight className="w-5 h-5 stroke-[3px]" />
-                    </Button>
+                    </button>
                   </div>
                 </div>
               )}
 
               {/* ========================================================================= */}
+              {/* ========================================================================= */}
               {/* STEP 3: PAYMENT & REGISTRATION TIER (CONFIGURABLE / ADMIN ENABLED)         */}
               {/* ========================================================================= */}
               {currentStep === 3 && (
-                <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo space-y-6 animate-in fade-in-50 duration-200">
-                  <div className="border-b-4 border-black pb-3 flex items-center justify-between">
+                <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-6 sm:p-8 shadow-[6px_6px_0px_#000] space-y-6 animate-in fade-in-50 duration-200">
+                  <div className="border-b-4 border-[#555555]/30 pb-3 flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <span className="font-mono text-xs font-black uppercase px-2 py-0.5 bg-black text-white">
+                      <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[2px_2px_0px_#000]">
                         03
                       </span>
                       <h3 className="font-black text-xl text-black uppercase tracking-tight">
                         REGISTRATION PASS &amp; UPI PAYMENT BLOCK
                       </h3>
                     </div>
-                    <span className="font-mono text-[10px] font-black bg-neo-secondary px-2.5 py-0.5 border border-black uppercase">
+                    <span className="font-mono text-[10px] font-black bg-[#FFAA00] text-black px-2.5 py-1 border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[2px_2px_0px_#000] uppercase">
                       {paymentSettings.registrationFee > 0
                         ? `FEE: ₹${paymentSettings.registrationFee}`
                         : "SPONSORED PASS"}
@@ -1741,10 +1752,10 @@ export function RegistrationForm() {
 
                   <div className="space-y-6">
                     {/* Dynamic UPI Payment Card with QR Code */}
-                    <div className="p-6 border-4 border-black bg-neo-bg shadow-neo space-y-6">
+                    <div className="p-6 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] space-y-6">
                       <div className="flex flex-col md:flex-row items-center gap-6">
                         {/* Dynamic UPI QR Code */}
-                        <div className="p-3 bg-white border-3 border-black shadow-neo-sm shrink-0 flex flex-col items-center">
+                        <div className="p-3 bg-white border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shrink-0 flex flex-col items-center shadow-[inset_1px_1px_2px_rgba(0,0,0,0.2)]">
                           <img
                             src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(
                               `upi://pay?pa=${paymentSettings.upiId}&pn=${encodeURIComponent(paymentSettings.payeeName)}&am=${paymentSettings.registrationFee || ""}&cu=INR`,
@@ -1752,7 +1763,7 @@ export function RegistrationForm() {
                             alt="Official Hackathon UPI QR Code"
                             className="w-44 h-44 border border-black"
                           />
-                          <span className="font-mono text-[10px] font-black uppercase tracking-wider text-black/70 mt-2 flex items-center gap-1">
+                          <span className="font-mono text-[10px] font-black uppercase tracking-wider text-black/80 mt-2 flex items-center gap-1">
                             <QrCode className="w-3.5 h-3.5" />
                             <span>SCAN VIA ANY UPI APP</span>
                           </span>
@@ -1761,7 +1772,7 @@ export function RegistrationForm() {
                         {/* Payee and UPI Details */}
                         <div className="space-y-4 flex-1">
                           <div className="space-y-1">
-                            <span className="font-mono text-xs font-black uppercase text-black/60">
+                            <span className="font-mono text-xs font-black uppercase text-black/70">
                               PAYEE / BENEFICIARY:
                             </span>
                             <h4 className="font-black text-lg uppercase text-black">
@@ -1770,9 +1781,9 @@ export function RegistrationForm() {
                           </div>
 
                           {/* UPI ID Copy Box */}
-                          <div className="p-3.5 bg-white border-2 border-black flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                          <div className="p-3.5 bg-[#C6C6C6] border-2 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.2)]">
                             <div>
-                              <span className="font-mono text-[10px] font-bold text-black/60 uppercase block">
+                              <span className="font-mono text-[10px] font-bold text-black/70 uppercase block">
                                 OFFICIAL ADMIN UPI ID:
                               </span>
                               <span className="font-mono text-sm font-black text-black select-all">
@@ -1789,7 +1800,7 @@ export function RegistrationForm() {
                                 setCopiedUpi(true);
                                 setTimeout(() => setCopiedUpi(false), 2500);
                               }}
-                              className="px-3 py-1.5 bg-neo-secondary text-black font-black text-xs uppercase border-2 border-black shadow-neo-sm hover:shadow-none flex items-center justify-center gap-1.5 shrink-0 cursor-pointer active:translate-y-0.5"
+                              className="px-3.5 py-2 bg-[#FFAA00] hover:bg-[#FFB82E] text-black font-black text-xs uppercase border-3 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[3px_3px_0px_#000] flex items-center justify-center gap-1.5 shrink-0 cursor-pointer active:translate-y-0.5"
                             >
                               <span>
                                 {copiedUpi
@@ -1800,8 +1811,8 @@ export function RegistrationForm() {
                           </div>
 
                           {/* Scanner Fallback Instruction */}
-                          <div className="p-3 bg-amber-100/90 border-2 border-amber-900/40 text-black flex items-start gap-2.5">
-                            <AlertCircle className="w-4 h-4 text-amber-800 shrink-0 mt-0.5 stroke-[2.5px]" />
+                          <div className="p-3 bg-amber-100 border-2 border-amber-800/40 text-black flex items-start gap-2.5">
+                            <AlertCircle className="w-4 h-4 text-amber-900 shrink-0 mt-0.5 stroke-[2.5px]" />
                             <div className="space-y-0.5">
                               <span className="font-mono text-[11px] font-black uppercase text-amber-950 block">
                                 SCANNER FAILED OR UNABLE TO SCAN QR?
@@ -1819,7 +1830,7 @@ export function RegistrationForm() {
                             </div>
                           </div>
 
-                          <p className="font-sans text-xs font-bold text-black/75">
+                          <p className="font-sans text-xs font-bold text-black/80">
                             After successful transfer, copy the{" "}
                             <strong>
                               12-digit numeric UTR / Reference Number
@@ -1830,7 +1841,7 @@ export function RegistrationForm() {
                       </div>
 
                       {/* Numeric UTR Input Section */}
-                      <div className="pt-4 border-t-2 border-black/20 space-y-3">
+                      <div className="pt-4 border-t-2 border-[#555555]/30 space-y-3">
                         <Input
                           label="12-DIGIT TRANSACTION REFERENCE ID / UPI UTR (NUMBERS ONLY)"
                           required
@@ -1881,11 +1892,11 @@ export function RegistrationForm() {
                           }))
                         }
                         className={clsx(
-                          "p-4 border-3 border-black cursor-pointer transition-all flex items-center justify-between gap-4",
+                          "p-4 border-3 cursor-pointer transition-all flex items-center justify-between gap-4",
                           formData.paymentDetails.paymentMode ===
                             "FREE_SPONSORED"
-                            ? "bg-emerald-100 border-emerald-900 shadow-neo-sm"
-                            : "bg-white hover:bg-neutral-50",
+                            ? "bg-[#5B8731]/20 border-t-[#5B8731] border-l-[#5B8731] border-r-[#2C4813] border-b-[#2C4813] shadow-[3px_3px_0px_#000]"
+                            : "bg-[#DBDBDB] hover:bg-[#EAEAEA] border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555]",
                         )}
                       >
                         <div className="flex items-center gap-3">
@@ -1900,34 +1911,34 @@ export function RegistrationForm() {
                             </p>
                           </div>
                         </div>
-                        <span className="font-mono text-xs font-black bg-white px-2 py-0.5 border border-black uppercase">
+                        <span className="font-mono text-xs font-black bg-[#DBDBDB] px-2 py-0.5 border border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] uppercase">
                           ₹0 WAIVER
                         </span>
                       </div>
                     )}
 
                     {/* Amenities Breakdown Box */}
-                    <div className="p-4 bg-white border-3 border-black space-y-2">
+                    <div className="p-4 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] space-y-2">
                       <div className="font-mono text-xs font-black uppercase text-black">
                         INCLUDED WITH YOUR CONFIRMED PASS:
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-bold text-black">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-emerald-600 font-black">✔</span>
+                          <Check className="w-3.5 h-3.5 text-[#2C4813] stroke-[3px] shrink-0" />
                           <span>24-Hour Continuous Hack Arena Access</span>
                         </div>
                         <div className="flex items-center gap-1.5">
-                          <span className="text-emerald-600 font-black">✔</span>
+                          <Check className="w-3.5 h-3.5 text-[#2C4813] stroke-[3px] shrink-0" />
                           <span>All Basic Amenities &amp; Power Backup</span>
                         </div>
                         <div className="flex items-center gap-1.5">
-                          <span className="text-emerald-600 font-black">✔</span>
+                          <Check className="w-3.5 h-3.5 text-[#2C4813] stroke-[3px] shrink-0" />
                           <span>
                             Complimentary Meals &amp; Energy Refreshments
                           </span>
                         </div>
                         <div className="flex items-center gap-1.5">
-                          <span className="text-emerald-600 font-black">✔</span>
+                          <Check className="w-3.5 h-3.5 text-[#2C4813] stroke-[3px] shrink-0" />
                           <span>
                             Official Government State Hackathon Certificate
                           </span>
@@ -1937,26 +1948,24 @@ export function RegistrationForm() {
                   </div>
 
                   {/* Step 3 Navigation Buttons */}
-                  <div className="pt-6 border-t-4 border-black flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="pt-6 border-t-4 border-[#555555]/30 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <button
                       type="button"
                       onClick={handlePrevStep}
-                      className="w-full sm:w-auto px-6 h-12 bg-white text-black font-black text-sm uppercase tracking-wider border-3 border-black shadow-neo-sm hover:bg-neutral-100 flex items-center justify-center gap-2"
+                      className="w-full sm:w-auto px-6 h-12 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black font-black text-sm uppercase tracking-wider border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <ArrowLeft className="w-4 h-4 stroke-[3px]" />
                       <span>PREVIOUS STEP</span>
                     </button>
 
-                    <Button
+                    <button
                       type="button"
-                      variant="primary"
-                      size="lg"
                       onClick={handleNextStep}
-                      className="w-full sm:w-auto"
+                      className="w-full sm:w-auto px-8 py-3.5 bg-[#5B8731] hover:bg-[#689B37] text-white border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] font-black text-sm uppercase tracking-wider shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 [text-shadow:_1px_1px_0_#000] cursor-pointer"
                     >
                       <span>PROCEED TO STEP 04: DOCUMENT UPLOADS</span>
                       <ArrowRight className="w-5 h-5 stroke-[3px]" />
-                    </Button>
+                    </button>
                   </div>
                 </div>
               )}
@@ -1965,17 +1974,17 @@ export function RegistrationForm() {
               {/* STEP 4: PAYMENT PROOF & FINAL CONFIRMATION                                 */}
               {/* ========================================================================= */}
               {currentStep === 4 && (
-                <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo space-y-6 animate-in fade-in-50 duration-200">
-                  <div className="border-b-4 border-black pb-3 flex items-center justify-between">
+                <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-6 sm:p-8 shadow-[6px_6px_0px_#000] space-y-6 animate-in fade-in-50 duration-200">
+                  <div className="border-b-4 border-[#555555]/30 pb-3 flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
-                      <span className="font-mono text-xs font-black uppercase px-2 py-0.5 bg-black text-white">
+                      <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[2px_2px_0px_#000]">
                         04
                       </span>
                       <h3 className="font-black text-xl text-black uppercase tracking-tight">
                         PAYMENT PROOF &amp; FINAL CONFIRMATION
                       </h3>
                     </div>
-                    <span className="font-mono text-[10px] font-bold bg-neo-secondary px-2 py-1 border-2 border-black uppercase hidden sm:inline">
+                    <span className="font-mono text-[10px] font-black bg-[#FFAA00] text-black px-2 py-1 border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[2px_2px_0px_#000] uppercase hidden sm:inline">
                       FINAL STEP 4
                     </span>
                   </div>
@@ -1987,7 +1996,7 @@ export function RegistrationForm() {
                         <CreditCard className="w-4 h-4 text-black" />
                         <span>PAYMENT PROOF (PDF / PNG / JPG / RECEIPT)</span>
                       </label>
-                      <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-rose-600 text-white border border-black shadow-neo-sm">
+                      <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-[#B83131] text-white border-2 border-t-[#E05353] border-l-[#E05353] border-r-[#731818] border-b-[#731818] shadow-[2px_2px_0px_#000]">
                         REQUIRED *
                       </span>
                     </div>
@@ -2005,14 +2014,14 @@ export function RegistrationForm() {
                       className={clsx(
                         "p-6 border-3 border-dashed transition-all text-center space-y-2 cursor-pointer",
                         errors["documentUploads.synopsisFileName"]
-                          ? "border-rose-600 bg-rose-50"
-                          : "border-black bg-neutral-50 hover:bg-neo-bg",
+                          ? "border-rose-600 bg-rose-100"
+                          : "border-[#555555] bg-[#DBDBDB] hover:bg-[#EAEAEA]",
                       )}
                     >
                       {formData.documentUploads.synopsisFileName ? (
                         <div className="space-y-3">
-                          <div className="font-mono text-xs font-black text-emerald-800 flex items-center justify-center gap-1.5">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <div className="font-mono text-xs font-black text-emerald-900 flex items-center justify-center gap-1.5">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-700 shrink-0" />
                             <span>
                               ATTACHED:{" "}
                               {formData.documentUploads.synopsisFileName}
@@ -2028,7 +2037,7 @@ export function RegistrationForm() {
                                 e.stopPropagation();
                                 handleOpenDocPreview("PAYMENT_PROOF");
                               }}
-                              className="inline-flex items-center gap-1 px-3 py-1 bg-white hover:bg-neutral-100 text-black border-2 border-black font-black text-xs uppercase shadow-neo-sm hover:shadow-none transition-all cursor-pointer"
+                              className="inline-flex items-center gap-1 px-3 py-1 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black text-xs uppercase shadow-[2px_2px_0px_#000] active:translate-y-0.5 transition-all cursor-pointer"
                             >
                               <Eye className="w-3.5 h-3.5 stroke-[2.5px]" />
                               <span>VIEW</span>
@@ -2036,7 +2045,7 @@ export function RegistrationForm() {
                             <button
                               type="button"
                               onClick={handleDeletePaymentProof}
-                              className="inline-flex items-center gap-1 px-3 py-1 bg-rose-200 hover:bg-rose-300 text-rose-950 border-2 border-black font-black text-xs uppercase shadow-neo-sm hover:shadow-none transition-all cursor-pointer"
+                              className="inline-flex items-center gap-1 px-3 py-1 bg-[#B83131] hover:bg-[#C93B3B] text-white border-2 border-t-[#E05353] border-l-[#E05353] border-r-[#731818] border-b-[#731818] font-black text-xs uppercase shadow-[2px_2px_0px_#000] active:translate-y-0.5 transition-all cursor-pointer"
                             >
                               <Trash2 className="w-3.5 h-3.5 stroke-[2.5px]" />
                               <span>DELETE</span>
@@ -2068,39 +2077,8 @@ export function RegistrationForm() {
                     )}
                   </div>
 
-                  {/* 4. EVENT ACCOMMODATION PREFERENCE */}
-                  {/* <div className="border-4 border-black p-5 sm:p-6 bg-neutral-50 shadow-neo space-y-3">
-                    <div className="flex items-center gap-2 border-b-2 border-black/20 pb-2">
-                      <Home className="w-5 h-5 text-black stroke-[2.5px]" />
-                      <h4 className="font-black text-sm sm:text-base uppercase text-black">
-                        4. EVENT ACCOMMODATION PREFERENCE
-                      </h4>
-                    </div>
-
-                    <label
-                      htmlFor="reg-accommodation-preference"
-                      className="flex items-start gap-3 cursor-pointer select-none group"
-                    >
-                      <input
-                        type="checkbox"
-                        id="reg-accommodation-preference"
-                        checked={Boolean(formData.accommodationRequired)}
-                        onChange={(e) =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            accommodationRequired: e.target.checked,
-                          }))
-                        }
-                        className="w-5 h-5 sm:w-6 sm:h-6 border-3 border-black accent-black rounded-none cursor-pointer shrink-0 mt-0.5"
-                      />
-                      <span className="font-bold text-xs sm:text-sm text-black group-hover:text-amber-950 leading-snug">
-                        Request On-Campus Hostel Accommodation for our squad during Hackathon days (Subject to availability)
-                      </span>
-                    </label>
-                  </div> */}
-
                   {/* Final Guidelines Acceptance Box */}
-                  <div className="p-5 border-4 border-black bg-neo-secondary/30 shadow-neo space-y-3 pt-4">
+                  <div className="p-5 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] space-y-3 pt-4">
                     <div className="flex items-start gap-3">
                       <input
                         type="checkbox"
@@ -2119,7 +2097,7 @@ export function RegistrationForm() {
                             }));
                           }
                         }}
-                        className="w-6 h-6 border-3 border-black accent-black rounded-none cursor-pointer shrink-0 mt-0.5"
+                        className="w-6 h-6 accent-black rounded-none cursor-pointer shrink-0 mt-0.5"
                       />
                       <label
                         htmlFor="agree-checkbox-final"
@@ -2138,28 +2116,26 @@ export function RegistrationForm() {
 
                     {errors.agreeToGuidelines && (
                       <p className="text-xs font-black text-red-600 flex items-center gap-1">
-                        <span>⚠</span> {errors.agreeToGuidelines}
+                        <AlertTriangle className="w-3.5 h-3.5 text-red-600 stroke-[2.5px] shrink-0" /> {errors.agreeToGuidelines}
                       </p>
                     )}
                   </div>
 
                   {/* Final Navigation & Submit Buttons */}
-                  <div className="pt-4 border-t-4 border-black flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="pt-4 border-t-4 border-[#555555]/30 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <button
                       type="button"
                       onClick={handlePrevStep}
-                      className="w-full sm:w-auto px-6 h-14 bg-white text-black font-black text-sm uppercase tracking-wider border-3 border-black shadow-neo-sm hover:bg-neutral-100 flex items-center justify-center gap-2"
+                      className="w-full sm:w-auto px-6 h-14 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black font-black text-sm uppercase tracking-wider border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 cursor-pointer"
                     >
                       <ArrowLeft className="w-4 h-4 stroke-[3px]" />
                       <span>PREVIOUS STEP</span>
                     </button>
 
-                    <Button
+                    <button
                       type="submit"
-                      variant="primary"
-                      size="lg"
                       disabled={isSubmitting}
-                      className="w-full sm:w-auto min-w-[280px] h-14 bg-neo-accent text-black font-black text-base"
+                      className="w-full sm:w-auto min-w-[280px] h-14 bg-[#5B8731] hover:bg-[#689B37] text-white font-black text-base uppercase border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 [text-shadow:_1px_1px_0_#000] cursor-pointer"
                     >
                       {isSubmitting ? (
                         <span className="flex items-center gap-2">
@@ -2171,7 +2147,7 @@ export function RegistrationForm() {
                       ) : (
                         <span>CONFIRM &amp; GENERATE PASS</span>
                       )}
-                    </Button>
+                    </button>
                   </div>
                 </div>
               )}
@@ -2188,12 +2164,12 @@ export function RegistrationForm() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className="relative w-full max-w-2xl sm:max-w-3xl bg-white border-4 border-black shadow-neo-lg flex flex-col max-h-[calc(100vh-8rem)] sm:max-h-[calc(100vh-9rem)] animate-in zoom-in-95 duration-150 overflow-hidden shrink-0 mt-0"
+            className="relative w-full max-w-2xl sm:max-w-3xl bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[8px_8px_0px_#000] flex flex-col max-h-[calc(100vh-8rem)] sm:max-h-[calc(100vh-9rem)] animate-in zoom-in-95 duration-150 overflow-hidden shrink-0 mt-0"
           >
             {/* Modal Header */}
-            <div className="py-2.5 px-4 sm:py-3 sm:px-5 bg-neo-secondary border-b-3 border-black flex items-center justify-between shrink-0">
+            <div className="py-2.5 px-4 sm:py-3 sm:px-5 bg-[#FFAA00] border-b-3 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] flex items-center justify-between shrink-0">
               <div className="space-y-0.5 min-w-0 pr-2">
-                <span className="font-mono text-[9px] font-black uppercase px-2 py-0.5 bg-black text-white inline-block">
+                <span className="font-mono text-[9px] font-black uppercase px-2 py-0.5 bg-[#5B8731] text-white inline-block border border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813]">
                   DOCUMENT PREVIEW
                 </span>
                 <h3 className="font-black text-sm sm:text-base text-black uppercase tracking-tight truncate max-w-xs sm:max-w-lg">
@@ -2203,7 +2179,7 @@ export function RegistrationForm() {
               <button
                 type="button"
                 onClick={() => setPreviewDocModal(null)}
-                className="w-8 h-8 sm:w-9 sm:h-9 bg-white hover:bg-rose-400 border-2 border-black font-black flex items-center justify-center shadow-neo-sm cursor-pointer shrink-0 transition-colors"
+                className="w-8 h-8 sm:w-9 sm:h-9 bg-[#DBDBDB] hover:bg-[#EAEAEA] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black flex items-center justify-center shadow-[2px_2px_0px_#000] cursor-pointer shrink-0 transition-colors"
                 title="Close preview"
               >
                 <X className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3px]" />
@@ -2211,7 +2187,7 @@ export function RegistrationForm() {
             </div>
 
             {/* Modal Body - Compact Preview Viewport */}
-            <div className="p-3 sm:p-4 overflow-y-auto flex-1 bg-neutral-100 flex items-center justify-center min-h-[200px] max-h-[48vh] sm:max-h-[50vh]">
+            <div className="p-3 sm:p-4 overflow-y-auto flex-1 bg-[#DBDBDB] flex items-center justify-center min-h-[200px] max-h-[48vh] sm:max-h-[50vh]">
               {previewDocModal.url ? (
                 previewDocModal.fileType?.startsWith("image/") ||
                 previewDocModal.fileName.match(
@@ -2222,7 +2198,7 @@ export function RegistrationForm() {
                     <img
                       src={previewDocModal.url}
                       alt={previewDocModal.fileName}
-                      className="max-h-[44vh] sm:max-h-[46vh] max-w-full object-contain border-3 border-black shadow-neo-sm bg-white"
+                      className="max-h-[44vh] sm:max-h-[46vh] max-w-full object-contain border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] bg-white"
                     />
                   </div>
                 ) : previewDocModal.fileType === "application/pdf" ||
@@ -2230,10 +2206,10 @@ export function RegistrationForm() {
                   <iframe
                     src={previewDocModal.url}
                     title={previewDocModal.fileName}
-                    className="w-full h-[44vh] sm:h-[46vh] border-3 border-black bg-white shadow-neo-sm"
+                    className="w-full h-[44vh] sm:h-[46vh] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] bg-white shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)]"
                   />
                 ) : (
-                  <div className="p-6 text-center space-y-3 bg-white border-3 border-black shadow-neo-sm">
+                  <div className="p-6 text-center space-y-3 bg-[#C6C6C6] border-3 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[4px_4px_0px_#000]">
                     <FileText className="w-10 h-10 mx-auto text-black" />
                     <p className="font-black text-xs uppercase text-black">
                       {previewDocModal.fileName}
@@ -2245,7 +2221,7 @@ export function RegistrationForm() {
                       href={previewDocModal.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-neo-secondary border-2 border-black font-black text-xs uppercase shadow-neo-sm hover:shadow-none transition-all"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#FFAA00] hover:bg-[#FFB82E] text-black border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] font-black text-xs uppercase shadow-[2px_2px_0px_#000] active:translate-y-0.5 transition-all"
                     >
                       <span>OPEN IN NEW TAB</span>
                       <ExternalLink className="w-3.5 h-3.5" />
@@ -2253,8 +2229,8 @@ export function RegistrationForm() {
                   </div>
                 )
               ) : (
-                <div className="p-6 text-center space-y-2 bg-white border-3 border-black shadow-neo-sm">
-                  <AlertCircle className="w-8 h-8 mx-auto text-amber-600" />
+                <div className="p-6 text-center space-y-2 bg-[#C6C6C6] border-3 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[4px_4px_0px_#000]">
+                  <AlertCircle className="w-8 h-8 mx-auto text-amber-800" />
                   <p className="font-black text-xs uppercase text-black">
                     Document preview not found in memory
                   </p>
@@ -2266,13 +2242,13 @@ export function RegistrationForm() {
             </div>
 
             {/* Modal Footer */}
-            <div className="py-2.5 px-4 bg-white border-t-3 border-black flex items-center justify-between shrink-0">
+            <div className="py-2.5 px-4 bg-[#C6C6C6] border-t-3 border-t-[#FFFFFF] border-b-[#555555] flex items-center justify-between shrink-0">
               {previewDocModal.url ? (
                 <a
                   href={previewDocModal.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 border-2 border-black font-mono text-xs font-bold text-black shadow-neo-sm cursor-pointer transition-colors"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-[#DBDBDB] hover:bg-[#EAEAEA] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-mono text-xs font-bold text-black shadow-[2px_2px_0px_#000] cursor-pointer transition-colors"
                 >
                   <span>OPEN IN FULL TAB</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -2284,9 +2260,68 @@ export function RegistrationForm() {
               <button
                 type="button"
                 onClick={() => setPreviewDocModal(null)}
-                className="px-4 py-1.5 bg-black text-white hover:bg-neutral-800 border-2 border-black font-black text-xs uppercase tracking-wider cursor-pointer shadow-neo-sm"
+                className="px-4 py-1.5 bg-[#555555] hover:bg-[#666666] text-white border-2 border-t-[#777777] border-l-[#777777] border-r-[#333333] border-b-[#333333] font-black text-xs uppercase tracking-wider cursor-pointer shadow-[2px_2px_0px_#000]"
               >
                 CLOSE
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Clear Draft Confirmation Modal */}
+      {showClearDraftModal && (
+        <div className="fixed inset-0 z-[99999] flex items-center justify-center p-3 sm:p-4 md:p-6 bg-black/80 backdrop-blur-xs overflow-hidden">
+          {/* Backdrop click to dismiss */}
+          <div
+            className="fixed inset-0 z-0"
+            onClick={() => setShowClearDraftModal(false)}
+          />
+
+          <div className="relative z-10 bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] max-w-md w-full flex flex-col shadow-[12px_12px_0px_#000] overflow-hidden my-auto text-black">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b-4 border-black p-4 bg-[#AA0000] text-white border-t-2 border-t-[#FF5555] shrink-0">
+              <div className="flex items-center gap-2 pr-2">
+                <AlertTriangle className="w-5 h-5 text-white stroke-[3px] shrink-0" />
+                <h3 className="font-black text-sm sm:text-base uppercase tracking-tight text-white line-clamp-1 [text-shadow:_1px_1px_0_#000]">
+                  CLEAR REGISTRATION DRAFT?
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setShowClearDraftModal(false)}
+                className="p-1 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black cursor-pointer shrink-0 shadow-[2px_2px_0px_#000]"
+                aria-label="Close dialog"
+              >
+                <X className="w-4 h-4 stroke-[3px]" />
+              </button>
+            </div>
+
+            {/* Modal Body */}
+            <div className="p-5 sm:p-6 space-y-4 bg-[#DBDBDB]">
+              <p className="text-xs sm:text-sm font-bold text-black/90 leading-relaxed">
+                Are you sure you want to clear your saved registration draft and restart from <strong>Step 1</strong>?
+              </p>
+              <div className="p-3 bg-[#C6C6C6] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] text-xs font-mono font-bold text-black/80 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)]">
+                All unsaved form progress, roster entries, and cached document uploads will be permanently reset from your browser session.
+              </div>
+            </div>
+
+            {/* Modal Actions */}
+            <div className="p-4 bg-[#C6C6C6] border-t-4 border-black flex items-center justify-end gap-3 shrink-0">
+              <button
+                type="button"
+                onClick={() => setShowClearDraftModal(false)}
+                className="px-4 py-2 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black text-xs uppercase tracking-wider shadow-[3px_3px_0px_#000] active:translate-y-1 transition-all cursor-pointer"
+              >
+                CANCEL
+              </button>
+              <button
+                type="button"
+                onClick={handleConfirmClearDraft}
+                className="px-5 py-2 bg-[#AA0000] hover:bg-[#CC0000] text-white border-4 border-t-[#FF5555] border-l-[#FF5555] border-r-[#550000] border-b-[#550000] font-black text-xs uppercase tracking-wider shadow-[3px_3px_0px_#000] active:translate-y-1 transition-all cursor-pointer [text-shadow:_1px_1px_0_#000]"
+              >
+                CONFIRM &amp; RESET
               </button>
             </div>
           </div>

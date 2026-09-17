@@ -1,5 +1,6 @@
 import React, { InputHTMLAttributes, forwardRef } from "react";
 import clsx from "clsx";
+import { AlertTriangle } from "lucide-react";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -39,7 +40,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         />
         {error && (
           <p id={`${inputId}-error`} className="text-xs font-bold text-red-600 flex items-center gap-1">
-            <span>⚠</span> {error}
+            <AlertTriangle className="w-3.5 h-3.5 stroke-[2.5px] text-red-600 shrink-0" />
+            <span>{error}</span>
           </p>
         )}
         {!error && helperText && (

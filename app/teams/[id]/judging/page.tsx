@@ -92,7 +92,8 @@ export default function TeamJudgingPage() {
           sizes="100vw"
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[2px]" />
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/85" />
       </div>
 
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -138,7 +139,7 @@ export default function TeamJudgingPage() {
               </div>
 
               <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[2px_2px_0px_#000]">
-                ★ PORTAL PREVIEW ★
+                PORTAL PREVIEW
               </span>
             </div>
 

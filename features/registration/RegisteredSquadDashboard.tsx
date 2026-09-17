@@ -32,6 +32,8 @@ import {
   Home,
   Check,
   Eye,
+  Ban,
+  Star,
 } from "lucide-react";
 import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
 import { RegistrationSuccessReceipt } from "./RegistrationSuccessReceipt";
@@ -367,16 +369,19 @@ export function RegisteredSquadDashboard({
   if (showReceiptModal) {
     return (
       <div className="space-y-6">
-        <div className="flex justify-between items-center bg-white p-4 border-4 border-black shadow-neo print:hidden">
-          <span className="font-mono text-xs font-black uppercase text-black">
-            OFFICIAL DIGITAL BOARDING PASS PREVIEW
-          </span>
+        <div className="flex flex-col sm:flex-row justify-between sm:items-center gap-3 bg-[#C6C6C6] p-4 sm:p-5 border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[6px_6px_0px_#000] text-black print:hidden">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 bg-[#5B8731] inline-block shadow-[1px_1px_0px_#000]" />
+            <span className="font-mono text-xs sm:text-sm font-black uppercase tracking-wider text-black">
+              OFFICIAL DIGITAL ENTRY PASS DOSSIER
+            </span>
+          </div>
           <button
             type="button"
             onClick={() => setShowReceiptModal(false)}
-            className="px-4 py-2 bg-neo-secondary text-black font-black text-xs uppercase border-2 border-black hover:bg-neo-accent transition-all cursor-pointer"
+            className="px-4 py-2 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black font-mono font-black text-xs uppercase border-3 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[3px_3px_0px_#000] active:translate-y-0.5 transition-all cursor-pointer flex items-center justify-center gap-1.5"
           >
-            ← BACK TO SQUAD DASHBOARD
+            <span>&larr; BACK TO SQUAD DASHBOARD</span>
           </button>
         </div>
         <RegistrationSuccessReceipt
@@ -396,26 +401,34 @@ export function RegisteredSquadDashboard({
   return (
     <div className="space-y-8 animate-in fade-in-50 duration-200">
       {/* Top Registration Status Banner */}
-      <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo-lg space-y-5">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-4 border-black pb-5">
+      <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-6 sm:p-8 shadow-[6px_6px_0px_#000] space-y-5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b-4 border-[#555555]/30 pb-5">
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
-              <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-black text-white border-2 border-black shadow-neo-sm">
+              <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[2px_2px_0px_#000]">
                 {teamData.registrationNumber}
               </span>
               <span
                 className={clsx(
-                  "font-mono text-xs font-black uppercase px-3 py-1 border-2 border-black shadow-neo-sm",
+                  "font-mono text-xs font-black uppercase px-3 py-1 border-2 shadow-[2px_2px_0px_#000]",
                   status === "CONFIRMED"
-                    ? "bg-emerald-300 text-black"
+                    ? "bg-[#FFAA00] text-black border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500]"
                     : status === "BANNED"
-                    ? "bg-rose-600 text-white"
+                    ? "bg-[#B83131] text-white border-t-[#E05353] border-l-[#E05353] border-r-[#731818] border-b-[#731818]"
                     : status === "REJECTED"
-                    ? "bg-rose-400 text-black"
-                    : "bg-neo-secondary text-black"
+                    ? "bg-[#D9534F] text-white border-t-[#F07A76] border-l-[#F07A76] border-r-[#9E2A27] border-b-[#9E2A27]"
+                    : "bg-[#DBDBDB] text-black border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555]"
                 )}
               >
-                STATUS: {status === "BANNED" ? "⛔ BANNED / DISQUALIFIED" : status}
+                STATUS:{" "}
+                {status === "BANNED" ? (
+                  <span className="inline-flex items-center gap-1">
+                    <Ban className="w-3.5 h-3.5 text-white shrink-0" />
+                    <span>BANNED / DISQUALIFIED</span>
+                  </span>
+                ) : (
+                  status
+                )}
               </span>
             </div>
 
@@ -423,7 +436,7 @@ export function RegisteredSquadDashboard({
               TEAM: {teamData.teamName}
             </h2>
 
-            <div className="flex flex-wrap items-center gap-3 font-mono text-xs font-bold text-black/70 pt-1">
+            <div className="flex flex-wrap items-center gap-3 font-mono text-xs font-bold text-black/80 pt-1">
               <span className="flex items-center gap-1.5">
                 <Building2 className="w-4 h-4 text-black" />
                 <span>{teamData.collegeName}</span>
@@ -434,7 +447,7 @@ export function RegisteredSquadDashboard({
                 </span>
               )}
               {teamData.accommodationRequired && (
-                <span className="px-2 py-0.5 bg-blue-100 text-blue-900 border border-black font-black text-[10px] uppercase">
+                <span className="px-2 py-0.5 bg-[#DBDBDB] text-blue-900 border border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black text-[10px] uppercase shadow-[1px_1px_0px_#000]">
                   HOSTEL ACCOMMODATION REQUESTED
                 </span>
               )}
@@ -443,16 +456,16 @@ export function RegisteredSquadDashboard({
 
           {/* User Account Info Chip & Quick Edit Button */}
           <div className="flex flex-col gap-2 shrink-0">
-            <div className="p-3.5 bg-neo-bg border-3 border-black space-y-1 font-mono text-xs shrink-0 self-start md:self-auto">
-              <div className="font-black uppercase text-black/60 text-[10px] flex items-center gap-1">
-                <UserCheck className="w-3.5 h-3.5 text-emerald-700" />
+            <div className="p-3.5 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] space-y-1 font-mono text-xs shrink-0 self-start md:self-auto">
+              <div className="font-black uppercase text-black/70 text-[10px] flex items-center gap-1">
+                <UserCheck className="w-3.5 h-3.5 text-emerald-800" />
                 <span>CURRENT LOGGED-IN ACCOUNT:</span>
               </div>
               <div className="font-black text-black text-sm uppercase">
                 {currentUser.name || "AUTHENTICATED MEMBER"}
               </div>
               <div className="text-black/80 font-bold">{currentUser.email}</div>
-              <div className="text-[10px] font-black uppercase text-black/70 pt-0.5">
+              <div className="text-[10px] font-black uppercase text-black/80 pt-0.5">
                 ROLE: {isLeader ? "TEAM LEADER" : "REGISTERED TEAM MEMBER"}
               </div>
             </div>
@@ -463,10 +476,10 @@ export function RegisteredSquadDashboard({
                 onClick={handleOpenEditModal}
                 disabled={!canLeaderEdit}
                 className={clsx(
-                  "px-4 py-2 border-3 border-black font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-neo-sm hover:shadow-none",
+                  "px-4 py-2 border-4 font-black text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer shadow-[4px_4px_0px_#000] active:translate-y-1",
                   canLeaderEdit
-                    ? "bg-amber-300 hover:bg-amber-400 text-black"
-                    : "bg-neutral-200 text-neutral-500 cursor-not-allowed border-neutral-400"
+                    ? "bg-[#FFAA00] hover:bg-[#FFB82E] text-black border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500]"
+                    : "bg-[#8A8A8A] text-white/60 cursor-not-allowed border-t-[#A0A0A0] border-l-[#A0A0A0] border-r-[#555555] border-b-[#555555]"
                 )}
               >
                 {canLeaderEdit ? (
@@ -482,8 +495,8 @@ export function RegisteredSquadDashboard({
                 )}
               </button>
             ) : (
-              <div className="px-3 py-2 bg-neutral-100 border-2 border-black font-mono text-[11px] font-bold text-black/70 flex items-center justify-center gap-1.5 shadow-neo-sm">
-                <Lock className="w-3.5 h-3.5 text-neutral-600" />
+              <div className="px-3 py-2 bg-[#DBDBDB] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-mono text-[11px] font-bold text-black/80 flex items-center justify-center gap-1.5 shadow-[2px_2px_0px_#000]">
+                <Lock className="w-3.5 h-3.5 text-neutral-700" />
                 <span>EDITING RESERVED FOR SQUAD LEADER</span>
               </div>
             )}
@@ -491,13 +504,13 @@ export function RegisteredSquadDashboard({
         </div>
 
         {/* Quick Summary Notice */}
-        <div className="p-3.5 sm:p-4 bg-emerald-50 border-3 border-black text-xs sm:text-sm font-bold text-emerald-950 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 overflow-hidden">
+        <div className="p-3.5 sm:p-4 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] text-xs sm:text-sm font-bold text-black flex flex-col md:flex-row items-start md:items-center justify-between gap-3 overflow-hidden">
           <div className="flex items-start sm:items-center gap-2.5 min-w-0 flex-1">
-            <CheckCircle2 className="w-5 h-5 text-emerald-600 stroke-[3px] shrink-0 mt-0.5 sm:mt-0" />
+            <CheckCircle2 className="w-5 h-5 text-emerald-800 stroke-[3px] shrink-0 mt-0.5 sm:mt-0" />
             <p className="leading-snug">
               Your team credentials and registration pass are active in the HACKVERSE &apos;26 system.
               {isLeader && remainingEdits > 0 && (
-                <span className="text-emerald-800 block sm:inline sm:ml-1 font-extrabold">
+                <span className="text-[#2C4813] block sm:inline sm:ml-1 font-extrabold">
                   (You can modify squad details {remainingEdits} more time{remainingEdits === 1 ? "" : "s"}).
                 </span>
               )}
@@ -508,7 +521,7 @@ export function RegisteredSquadDashboard({
             <button
               type="button"
               onClick={() => setShowReceiptModal(true)}
-              className="w-full sm:w-auto px-4 py-2 bg-white hover:bg-neutral-100 text-black border-2 border-black font-black text-xs uppercase shadow-neo-sm hover:shadow-none transition-all flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
+              className="w-full sm:w-auto px-4 py-2 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black text-xs uppercase shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
             >
               <Printer className="w-3.5 h-3.5 stroke-[2.5px]" />
               <span>VIEW DIGITAL PASS</span>
@@ -520,11 +533,8 @@ export function RegisteredSquadDashboard({
       {/* ========================================================================= */}
       {/* SECTION 2: PROBLEM STATEMENT PREFERENCES STATUS */}
       {/* ========================================================================= */}
-      {/* ========================================================================= */}
-      {/* SECTION 2: PROBLEM STATEMENT PREFERENCES STATUS */}
-      {/* ========================================================================= */}
-      <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-3 border-black pb-3">
+      <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-6 sm:p-8 shadow-[6px_6px_0px_#000] space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-3 border-[#555555]/30 pb-3">
           <div className="flex items-center gap-2.5">
             <FileCode2 className="w-5 h-5 text-black stroke-[2.5px]" />
             <h3 className="font-black text-xl uppercase tracking-tight text-black">
@@ -534,26 +544,48 @@ export function RegisteredSquadDashboard({
 
           {psIds.length >= 1 ? (
             <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
-              <span className="font-mono text-xs font-black uppercase px-3 py-1.5 bg-emerald-300 text-emerald-950 border-2 border-black flex items-center gap-1.5 shadow-neo-sm">
+              <span className="font-mono text-xs font-black uppercase px-3 py-1.5 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] flex items-center gap-1.5 shadow-[2px_2px_0px_#000]">
                 <Lock className="w-3.5 h-3.5 stroke-[2.5px]" />
                 <span>LOCKED &amp; FINALIZED</span>
               </span>
               <Link
                 href="/register/ps"
-                className="px-3.5 py-1.5 bg-white hover:bg-neutral-100 text-black font-mono font-black text-xs uppercase border-2 border-black shadow-neo-sm hover:shadow-none transition-all flex items-center gap-1.5"
+                className="px-3.5 py-1.5 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black font-mono font-black text-xs uppercase border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[2px_2px_0px_#000] active:translate-y-0.5 transition-all flex items-center gap-1.5"
               >
                 <Eye className="w-3.5 h-3.5 stroke-[2.5px]" />
                 <span>VIEW LOCKED DOSSIER</span>
               </Link>
             </div>
-          ) : (
+          ) : teamData?.status !== "CONFIRMED" ? (
+            <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+              <span className="font-mono text-xs font-black uppercase px-3 py-1.5 bg-[#FFAA00] text-black border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] flex items-center gap-1.5 shadow-[2px_2px_0px_#000]">
+                <Lock className="w-3.5 h-3.5 stroke-[2.5px]" />
+                <span>LOCKED // APPROVAL PENDING</span>
+              </span>
+              <Link
+                href="/problem-statements"
+                className="px-3.5 py-1.5 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black font-mono font-black text-xs uppercase border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[2px_2px_0px_#000] active:translate-y-0.5 transition-all flex items-center gap-1.5"
+              >
+                <Eye className="w-3.5 h-3.5 stroke-[2.5px]" />
+                <span>EXPLORE SPECS</span>
+              </Link>
+            </div>
+          ) : isLeader ? (
             <Link
               href="/register/ps"
-              className="px-4 py-2 bg-neo-secondary hover:bg-neo-accent text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-neo-sm hover:shadow-none transition-all flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+              className="px-4 py-2 bg-[#5B8731] hover:bg-[#689B37] text-white font-black text-xs uppercase tracking-wider border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center gap-1.5 self-start sm:self-auto cursor-pointer [text-shadow:_1px_1px_0_#000]"
             >
               <Sparkles className="w-3.5 h-3.5 stroke-[2.5px]" />
               <span>SELECT STATEMENTS NOW</span>
               <ArrowRight className="w-3.5 h-3.5 stroke-[3px]" />
+            </Link>
+          ) : (
+            <Link
+              href="/register/ps"
+              className="px-3.5 py-1.5 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black font-mono font-black text-xs uppercase border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[2px_2px_0px_#000] active:translate-y-0.5 transition-all flex items-center gap-1.5 self-start sm:self-auto"
+            >
+              <Eye className="w-3.5 h-3.5 stroke-[2.5px]" />
+              <span>VIEW STATEMENTS</span>
             </Link>
           )}
         </div>
@@ -562,22 +594,24 @@ export function RegisteredSquadDashboard({
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Preference 1 Card (Mandatory) */}
-              <div className="p-4 bg-amber-50 border-3 border-black shadow-neo-sm space-y-2">
+              <div className="p-4 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] space-y-2">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neo-secondary text-black border border-black inline-block">
-                    ★ CHOICE #1 (PRIMARY PREFERENCE - MANDATORY)
+                  <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-[#FFAA00] text-black border border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] inline-flex items-center gap-1 shadow-[1px_1px_0px_#000]">
+                    <Star className="w-3 h-3 text-black fill-black shrink-0" />
+                    <span>CHOICE #1 (PRIMARY PREFERENCE - MANDATORY)</span>
                   </span>
-                  <span className="font-mono text-[9px] font-black uppercase px-1.5 py-0.5 bg-emerald-300 text-emerald-950 border border-black">
-                    🔒 LOCKED
+                  <span className="font-mono text-[9px] font-black uppercase px-1.5 py-0.5 bg-[#5B8731] text-white border border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] inline-flex items-center gap-1">
+                    <Lock className="w-2.5 h-2.5 stroke-[2.5px]" />
+                    <span>LOCKED</span>
                   </span>
                 </div>
                 <div className="font-black text-base uppercase text-black">
                   [{pref1?.code || psIds[0]}] {pref1?.title || "Problem Statement"}
                 </div>
-                <p className="text-xs font-bold text-black/75 line-clamp-2 leading-relaxed">
+                <p className="text-xs font-bold text-black/80 line-clamp-2 leading-relaxed">
                   {pref1?.shortDescription || "Selected as primary 1st preference for hackathon evaluation."}
                 </p>
-                <div className="font-mono text-[11px] text-black/60 pt-1 flex items-center justify-between">
+                <div className="font-mono text-[11px] text-black/70 pt-1 flex items-center justify-between">
                   <span>Domain: {pref1?.domain || "Assigned Track"}</span>
                   <span className="font-bold text-black">{pref1?.category}</span>
                 </div>
@@ -585,35 +619,37 @@ export function RegisteredSquadDashboard({
 
               {/* Preference 2 Card (Optional) */}
               {pref2 || psIds[1] ? (
-                <div className="p-4 bg-rose-50 border-3 border-black shadow-neo-sm space-y-2">
+                <div className="p-4 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] space-y-2">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neo-accent text-black border border-black inline-block">
-                      ★ CHOICE #2 (SECONDARY PREFERENCE - OPTIONAL)
+                    <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-[#FFAA00] text-black border border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] inline-flex items-center gap-1 shadow-[1px_1px_0px_#000]">
+                      <Star className="w-3 h-3 text-black fill-black shrink-0" />
+                      <span>CHOICE #2 (SECONDARY PREFERENCE - OPTIONAL)</span>
                     </span>
-                    <span className="font-mono text-[9px] font-black uppercase px-1.5 py-0.5 bg-emerald-300 text-emerald-950 border border-black">
-                      🔒 LOCKED
+                    <span className="font-mono text-[9px] font-black uppercase px-1.5 py-0.5 bg-[#5B8731] text-white border border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] inline-flex items-center gap-1">
+                      <Lock className="w-2.5 h-2.5 stroke-[2.5px]" />
+                      <span>LOCKED</span>
                     </span>
                   </div>
                   <div className="font-black text-base uppercase text-black">
                     [{pref2?.code || psIds[1]}] {pref2?.title || "Problem Statement"}
                   </div>
-                  <p className="text-xs font-bold text-black/75 line-clamp-2 leading-relaxed">
+                  <p className="text-xs font-bold text-black/80 line-clamp-2 leading-relaxed">
                     {pref2?.shortDescription || "Selected as 2nd preference for hackathon evaluation."}
                   </p>
-                  <div className="font-mono text-[11px] text-black/60 pt-1 flex items-center justify-between">
+                  <div className="font-mono text-[11px] text-black/70 pt-1 flex items-center justify-between">
                     <span>Domain: {pref2?.domain || "Assigned Track"}</span>
                     <span className="font-bold text-black">{pref2?.category}</span>
                   </div>
                 </div>
               ) : (
-                <div className="p-4 bg-neutral-50 border-3 border-dashed border-black/40 flex flex-col justify-between space-y-2">
-                  <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neutral-200 text-black border border-black inline-block self-start">
+                <div className="p-4 bg-[#C6C6C6] border-3 border-dashed border-[#555555] flex flex-col justify-between space-y-2">
+                  <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-[#DBDBDB] text-black border border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] inline-block self-start">
                     CHOICE #2 (OPTIONAL)
                   </span>
                   <div className="font-black text-sm uppercase text-black/70">
                     No 2nd Preference Selected
                   </div>
-                  <p className="text-xs font-bold text-black/50 leading-relaxed">
+                  <p className="text-xs font-bold text-black/60 leading-relaxed">
                     Your squad is locked into 1 primary problem statement for hackathon jury evaluation.
                   </p>
                 </div>
@@ -621,29 +657,67 @@ export function RegisteredSquadDashboard({
             </div>
 
             {/* Anti-tamper banner */}
-            <div className="p-3 bg-amber-50 border-2 border-black font-mono text-xs text-neutral-800 flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-700 stroke-[3px] shrink-0" />
+            <div className="p-3 bg-[#DBDBDB] border-2 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] font-mono text-xs text-black/85 flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-800 stroke-[3px] shrink-0" />
               <span>
                 <strong>Anti-Tamper Protocol Active:</strong> Problem statement preferences for Squad <strong>{teamData.teamName}</strong> are officially finalized and locked in the jury scoring system. No further edits or modifications are permitted.
               </span>
             </div>
           </div>
-        ) : (
-          <div className="p-5 bg-amber-100 border-3 border-black space-y-3">
-            <div className="flex items-center gap-2 text-amber-950 font-black text-sm">
-              <AlertTriangle className="w-5 h-5 text-amber-800 stroke-[3px]" />
-              <span>PROBLEM STATEMENTS ARE LIVE — SELECTION REQUIRED!</span>
+        ) : teamData?.status !== "CONFIRMED" ? (
+          <div className="p-5 bg-[#DBDBDB] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[4px_4px_0px_#000] space-y-3">
+            <div className="flex items-center gap-2 text-black font-black text-sm">
+              <Lock className="w-5 h-5 text-black stroke-[3px]" />
+              <span>PROBLEM STATEMENT SELECTION LOCKED // ADMIN APPROVAL REQUIRED</span>
             </div>
-            <p className="text-xs sm:text-sm font-bold text-amber-900 leading-relaxed">
-              Problem statements are officially live! Every registered squad must select at least <strong>ONE (1) primary problem statement</strong> (Mandatory). You may optionally choose a <strong>2nd preference</strong> (Optional). Once submitted, selection is permanent.
+            <p className="text-xs sm:text-sm font-bold text-black/85 leading-relaxed">
+              Your squad registration is currently under review by the admin desk (Status: <strong className="text-black font-mono">{teamData.status}</strong>). Problem statement selection will unlock automatically once your squad is officially verified and approved.
+            </p>
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <Link
+                href="/problem-statements"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black text-xs uppercase tracking-wider shadow-[3px_3px_0px_#000] active:translate-y-1 transition-all cursor-pointer"
+              >
+                <Eye className="w-4 h-4 stroke-[2.5px]" />
+                <span>EXPLORE ALL PROBLEM STATEMENTS</span>
+              </Link>
+            </div>
+          </div>
+        ) : isLeader ? (
+          <div className="p-5 bg-[#FFAA00] border-4 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[4px_4px_0px_#000] space-y-3">
+            <div className="flex items-center gap-2 text-black font-black text-sm">
+              <AlertTriangle className="w-5 h-5 text-black stroke-[3px]" />
+              <span>PROBLEM STATEMENTS ARE LIVE — LEADER SELECTION REQUIRED!</span>
+            </div>
+            <p className="text-xs sm:text-sm font-bold text-black/90 leading-relaxed">
+              Problem statements are officially live! As Squad Leader, you must select at least <strong>ONE (1) primary problem statement</strong> (Mandatory). You may optionally choose a <strong>2nd preference</strong> (Optional). Once submitted, selection is permanent.
             </p>
             <Link
               href="/register/ps"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-neo-secondary hover:bg-neo-accent text-black border-3 border-black font-black text-xs uppercase tracking-wider shadow-neo-sm hover:shadow-none transition-all cursor-pointer"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-[#5B8731] hover:bg-[#689B37] text-white border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] font-black text-xs uppercase tracking-wider shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all cursor-pointer [text-shadow:_1px_1px_0_#000]"
             >
               <span>SELECT PROBLEM STATEMENTS NOW</span>
               <ArrowRight className="w-4 h-4 stroke-[3px]" />
             </Link>
+          </div>
+        ) : (
+          <div className="p-5 bg-[#DBDBDB] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[4px_4px_0px_#000] space-y-3">
+            <div className="flex items-center gap-2 text-black font-black text-sm">
+              <AlertTriangle className="w-5 h-5 text-[#8F5500] stroke-[3px]" />
+              <span>PROBLEM STATEMENTS ARE LIVE — AWAITING LEADER FINALIZATION</span>
+            </div>
+            <p className="text-xs sm:text-sm font-bold text-black/85 leading-relaxed">
+              Problem statements are officially live! Your Squad Leader (<strong>{teamData?.leader?.name || "Leader"}</strong>) is authorized to select and lock the official problem statement preferences for your squad. You can browse all problem statements and review the specifications.
+            </p>
+            <div className="flex flex-wrap items-center gap-3 pt-1">
+              <Link
+                href="/register/ps"
+                className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#5B8731] hover:bg-[#689B37] text-white border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] font-black text-xs uppercase tracking-wider shadow-[3px_3px_0px_#000] active:translate-y-1 transition-all cursor-pointer [text-shadow:_1px_1px_0_#000]"
+              >
+                <Eye className="w-4 h-4 stroke-[2.5px]" />
+                <span>VIEW PROBLEM STATEMENTS</span>
+              </Link>
+            </div>
           </div>
         )}
       </div>
@@ -651,13 +725,13 @@ export function RegisteredSquadDashboard({
       {/* ========================================================================= */}
       {/* SECTION 3: SQUAD ROSTER (LEADER & ALL MEMBERS) */}
       {/* ========================================================================= */}
-      <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 border-b-3 border-black pb-3">
+      <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-6 sm:p-8 shadow-[6px_6px_0px_#000] space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-4 border-b-3 border-[#555555]/30 pb-3">
           <div className="flex items-start sm:items-center gap-2.5 min-w-0 flex-1">
             <Users className="w-5 h-5 text-black stroke-[2.5px] shrink-0 mt-0.5 sm:mt-0" />
             <h3 className="font-black text-lg sm:text-xl uppercase tracking-tight text-black leading-tight">
               SQUAD ROSTER &amp; MEMBER CREDENTIALS{" "}
-              <span className="text-black/60 font-mono text-xs sm:text-sm font-bold block sm:inline sm:ml-1">
+              <span className="text-black/70 font-mono text-xs sm:text-sm font-bold block sm:inline sm:ml-1">
                 (1 LEADER + {membersList.length} CO-HACKERS)
               </span>
             </h3>
@@ -667,13 +741,13 @@ export function RegisteredSquadDashboard({
               <button
                 type="button"
                 onClick={handleOpenEditModal}
-                className="px-3 py-1 bg-amber-300 hover:bg-amber-400 text-black border-2 border-black font-black text-xs uppercase tracking-wider shadow-neo-sm hover:shadow-none transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+                className="px-3 py-1 bg-[#FFAA00] hover:bg-[#FFB82E] text-black border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] font-black text-xs uppercase tracking-wider shadow-[2px_2px_0px_#000] active:translate-y-0.5 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
               >
                 <Edit3 className="w-3.5 h-3.5" />
                 <span>EDIT ROSTER</span>
               </button>
             )}
-            <span className="font-mono text-xs font-black bg-black text-white px-2.5 py-1 border border-black uppercase hidden sm:inline-block shrink-0 shadow-neo-sm">
+            <span className="font-mono text-xs font-black bg-[#5B8731] text-white px-2.5 py-1 border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] uppercase hidden sm:inline-block shrink-0 shadow-[2px_2px_0px_#000]">
               TOTAL: {1 + membersList.length} MEMBERS
             </span>
           </div>
@@ -681,15 +755,15 @@ export function RegisteredSquadDashboard({
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
           {/* LEADER CARD */}
-          <div className="border-3 border-black bg-amber-50/70 p-5 shadow-neo-sm space-y-3 relative">
-            <div className="flex items-center justify-between gap-2 border-b-2 border-black/20 pb-2">
-              <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-neo-secondary text-black border border-black flex items-center gap-1.5">
-                <Crown className="w-3.5 h-3.5 text-amber-950 fill-amber-950" />
+          <div className="bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] p-5 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] space-y-3 relative">
+            <div className="flex items-center justify-between gap-2 border-b-2 border-[#555555]/30 pb-2">
+              <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-[#FFAA00] text-black border border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] flex items-center gap-1.5 shadow-[1px_1px_0px_#000]">
+                <Crown className="w-3.5 h-3.5 text-black fill-black" />
                 <span>TEAM LEADER</span>
               </span>
 
               {isLeader && (
-                <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-black text-white border border-black">
+                <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-[#5B8731] text-white border border-[#2C4813]">
                   [YOU - LOGGED IN]
                 </span>
               )}
@@ -737,17 +811,19 @@ export function RegisteredSquadDashboard({
               <div
                 key={idx}
                 className={clsx(
-                  "border-3 border-black p-5 shadow-neo-sm space-y-3 relative",
-                  isThisMemberLoggedIn ? "bg-emerald-50 border-emerald-900 ring-2 ring-black" : "bg-neo-bg"
+                  "border-3 p-5 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] space-y-3 relative",
+                  isThisMemberLoggedIn
+                    ? "bg-[#DBDBDB] border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] ring-2 ring-[#5B8731]"
+                    : "bg-[#DBDBDB] border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF]"
                 )}
               >
-                <div className="flex items-center justify-between gap-2 border-b-2 border-black/20 pb-2">
-                  <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-neo-muted text-black border border-black">
+                <div className="flex items-center justify-between gap-2 border-b-2 border-[#555555]/30 pb-2">
+                  <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-[#555555] text-white border border-t-[#777777] border-l-[#777777] border-r-[#333333] border-b-[#333333]">
                     CO-HACKER #{idx + 2}
                   </span>
 
                   {isThisMemberLoggedIn && (
-                    <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-black text-white border border-black">
+                    <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-[#5B8731] text-white border border-[#2C4813]">
                       [YOU - LOGGED IN]
                     </span>
                   )}
@@ -788,15 +864,15 @@ export function RegisteredSquadDashboard({
       {/* ========================================================================= */}
       {/* SECTION 4: PASS DETAILS & ACTION BAR */}
       {/* ========================================================================= */}
-      <div className="border-4 border-black bg-neo-secondary p-6 sm:p-8 shadow-neo flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6">
+      <div className="bg-[#FFAA00] border-4 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] p-6 sm:p-8 shadow-[6px_6px_0px_#000] flex flex-col md:flex-row items-stretch md:items-center justify-between gap-6">
         <div className="space-y-1">
-          <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-black text-white border border-black inline-block">
+          <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-[#5B8731] text-white border border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] inline-block shadow-[2px_2px_0px_#000]">
             OFFICIAL TOURNAMENT PASS
           </span>
           <h3 className="font-black text-xl sm:text-2xl text-black uppercase tracking-tight">
             HACKVERSE &apos;26 24-HOUR PASS CONFIRMED
           </h3>
-          <p className="text-xs sm:text-sm font-bold text-black/80 max-w-xl">
+          <p className="text-xs sm:text-sm font-bold text-black/90 max-w-xl">
             Pass includes continuous 24H arena seating, complimentary food passes, and official state participation certificates.
           </p>
         </div>
@@ -806,7 +882,7 @@ export function RegisteredSquadDashboard({
             <button
               type="button"
               onClick={handleOpenEditModal}
-              className="px-5 py-3.5 bg-amber-300 hover:bg-amber-400 text-black border-3 border-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-neo-sm hover:shadow-none transition-all flex items-center justify-center gap-2 cursor-pointer"
+              className="px-5 py-3.5 bg-[#5B8731] hover:bg-[#689B37] text-white border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] font-black text-xs sm:text-sm uppercase tracking-wider shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 cursor-pointer [text-shadow:_1px_1px_0_#000]"
             >
               <Edit3 className="w-4 h-4 stroke-[3px]" />
               <span>EDIT SQUAD ({remainingEdits}/3)</span>
@@ -816,7 +892,7 @@ export function RegisteredSquadDashboard({
           <button
             type="button"
             onClick={() => setShowReceiptModal(true)}
-            className="px-6 py-3.5 bg-white hover:bg-neutral-100 text-black border-3 border-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-neo-sm hover:shadow-none transition-all flex items-center justify-center gap-2 cursor-pointer"
+            className="px-6 py-3.5 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black text-xs sm:text-sm uppercase tracking-wider shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <Printer className="w-4 h-4 stroke-[3px]" />
             <span>PRINT / SAVE PASS</span>
@@ -838,16 +914,16 @@ export function RegisteredSquadDashboard({
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-3xl lg:max-w-4xl bg-white border-4 border-black shadow-neo-lg max-h-[calc(100dvh-125px)] sm:max-h-[calc(100vh-135px)] flex flex-col animate-in zoom-in-95 duration-150 overflow-hidden"
+              className="relative w-full max-w-3xl lg:max-w-4xl bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[8px_8px_0px_#000] max-h-[calc(100dvh-125px)] sm:max-h-[calc(100vh-135px)] flex flex-col animate-in zoom-in-95 duration-150 overflow-hidden"
             >
               {/* Modal Header */}
-              <div className="py-3 px-4 sm:py-4 sm:px-6 bg-neo-secondary border-b-3 border-black flex items-center justify-between shrink-0">
+              <div className="py-3 px-4 sm:py-4 sm:px-6 bg-[#FFAA00] border-b-3 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] flex items-center justify-between shrink-0">
                 <div className="space-y-0.5 min-w-0 pr-2">
                   <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="font-mono text-[10px] sm:text-xs font-black uppercase px-2 py-0.5 bg-black text-white border border-black shadow-neo-sm">
+                    <span className="font-mono text-[10px] sm:text-xs font-black uppercase px-2 py-0.5 bg-[#5B8731] text-white border border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[1px_1px_0px_#000]">
                       SQUAD MODIFICATION PORTAL
                     </span>
-                    <span className="font-mono text-[10px] sm:text-xs font-black uppercase px-2 py-0.5 bg-amber-300 text-black border border-black shadow-neo-sm">
+                    <span className="font-mono text-[10px] sm:text-xs font-black uppercase px-2 py-0.5 bg-[#DBDBDB] text-black border border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[1px_1px_0px_#000]">
                       {remainingEdits} OF {maxEdits} EDITS REMAINING
                     </span>
                   </div>
@@ -858,14 +934,14 @@ export function RegisteredSquadDashboard({
                 <button
                   type="button"
                   onClick={() => setShowEditModal(false)}
-                  className="w-8 h-8 sm:w-9 sm:h-9 bg-white hover:bg-rose-400 border-2 border-black font-black text-base flex items-center justify-center shadow-neo-sm hover:shadow-none transition-all cursor-pointer shrink-0"
+                  className="w-8 h-8 sm:w-9 sm:h-9 bg-[#DBDBDB] hover:bg-[#EAEAEA] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black text-base flex items-center justify-center shadow-[2px_2px_0px_#000] cursor-pointer shrink-0"
                 >
                   <X className="w-5 h-5 stroke-[3px]" />
                 </button>
               </div>
 
               {/* Quota Warning Alert */}
-              <div className="py-2.5 px-4 sm:px-6 bg-amber-100 border-b-3 border-black flex items-start gap-2.5 shrink-0">
+              <div className="py-2.5 px-4 sm:px-6 bg-amber-100 border-b-3 border-amber-800/40 flex items-start gap-2.5 shrink-0">
                 <AlertTriangle className="w-4 h-4 text-amber-900 stroke-[2.5px] shrink-0 mt-0.5" />
                 <div className="text-xs font-bold text-amber-950">
                   <span>
@@ -878,18 +954,18 @@ export function RegisteredSquadDashboard({
               {/* Modal Body (Scrollable with Lenis prevent) */}
               <div
                 data-lenis-prevent="true"
-                className="p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8 overflow-y-auto flex-1 font-sans overscroll-contain"
+                className="p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8 overflow-y-auto flex-1 font-sans overscroll-contain bg-[#C6C6C6]"
               >
               {editError && (
-                <div className="p-4 bg-rose-100 border-3 border-black font-mono text-xs font-black text-rose-950 flex items-center gap-2">
+                <div className="p-4 bg-rose-100 border-3 border-rose-600 font-mono text-xs font-black text-rose-950 flex items-center gap-2">
                   <AlertTriangle className="w-4 h-4 text-rose-700 stroke-[3px] shrink-0" />
                   <span>{editError}</span>
                 </div>
               )}
 
               {/* 1. SQUAD & COLLEGE INFO */}
-              <div className="border-3 border-black p-5 bg-neutral-50 space-y-4">
-                <div className="flex items-center gap-2 border-b-2 border-black/20 pb-2">
+              <div className="bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] p-5 space-y-4">
+                <div className="flex items-center gap-2 border-b-2 border-[#555555]/30 pb-2">
                   <Building2 className="w-5 h-5 text-black stroke-[2.5px]" />
                   <h4 className="font-black text-base uppercase text-black">
                     1. SQUAD &amp; INSTITUTE PROFILE
@@ -905,7 +981,7 @@ export function RegisteredSquadDashboard({
                       type="text"
                       value={editForm.teamName}
                       onChange={(e) => setEditForm({ ...editForm, teamName: e.target.value })}
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-neo-sm"
+                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-sm"
                       placeholder="e.g. ByteBusters"
                     />
                   </div>
@@ -918,7 +994,7 @@ export function RegisteredSquadDashboard({
                       type="text"
                       value={editForm.collegeName}
                       onChange={(e) => setEditForm({ ...editForm, collegeName: e.target.value })}
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-neo-sm"
+                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-sm"
                       placeholder="e.g. Govt College of Engineering Kalahandi"
                     />
                   </div>
@@ -936,7 +1012,7 @@ export function RegisteredSquadDashboard({
                           collegeAddress: { ...editForm.collegeAddress, city: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-neo-sm"
+                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-sm"
                       placeholder="e.g. Bhawanipatna"
                     />
                   </div>
@@ -954,7 +1030,7 @@ export function RegisteredSquadDashboard({
                           collegeAddress: { ...editForm.collegeAddress, state: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-neo-sm"
+                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-sm"
                       placeholder="e.g. Odisha"
                     />
                   </div>
@@ -962,15 +1038,15 @@ export function RegisteredSquadDashboard({
               </div>
 
               {/* 2. TEAM LEADER PROFILE */}
-              <div className="border-3 border-black p-5 bg-amber-50/60 space-y-4">
-                <div className="flex items-center justify-between border-b-2 border-black/20 pb-2">
+              <div className="bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] p-5 space-y-4">
+                <div className="flex items-center justify-between border-b-2 border-[#555555]/30 pb-2">
                   <div className="flex items-center gap-2">
-                    <Crown className="w-5 h-5 text-amber-950 fill-amber-950" />
+                    <Crown className="w-5 h-5 text-black fill-black" />
                     <h4 className="font-black text-base uppercase text-black">
                       2. TEAM LEADER DETAILS (YOU)
                     </h4>
                   </div>
-                  <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-black text-white">
+                  <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-[#FFAA00] text-black border border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500]">
                     LEADER
                   </span>
                 </div>
@@ -984,7 +1060,7 @@ export function RegisteredSquadDashboard({
                       type="text"
                       disabled
                       value={editForm.leader.name}
-                      className="w-full px-3 py-2 bg-neutral-200 border-2 border-black font-mono text-xs font-bold text-black/70 cursor-not-allowed"
+                      className="w-full px-3 py-2 bg-neutral-200 border-2 border-[#888888] font-mono text-xs font-bold text-black/70 cursor-not-allowed"
                     />
                   </div>
 
@@ -996,7 +1072,7 @@ export function RegisteredSquadDashboard({
                       type="email"
                       disabled
                       value={editForm.leader.email}
-                      className="w-full px-3 py-2 bg-neutral-200 border-2 border-black font-mono text-xs font-bold text-black/70 cursor-not-allowed"
+                      className="w-full px-3 py-2 bg-neutral-200 border-2 border-[#888888] font-mono text-xs font-bold text-black/70 cursor-not-allowed"
                     />
                   </div>
 
@@ -1013,7 +1089,7 @@ export function RegisteredSquadDashboard({
                           leader: { ...editForm.leader, phone: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-neo-sm"
+                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-sm"
                       placeholder="e.g. 9876543210"
                     />
                   </div>
@@ -1031,7 +1107,7 @@ export function RegisteredSquadDashboard({
                           leader: { ...editForm.leader, whatsapp: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-neo-sm"
+                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-sm"
                       placeholder="e.g. 9876543210"
                     />
                   </div>
@@ -1048,7 +1124,7 @@ export function RegisteredSquadDashboard({
                           leader: { ...editForm.leader, branch: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-neo-sm"
+                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-sm"
                     >
                       {BRANCH_OPTIONS.map((b) => (
                         <option key={b.value} value={b.value}>
@@ -1070,7 +1146,7 @@ export function RegisteredSquadDashboard({
                           leader: { ...editForm.leader, year: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-neo-sm"
+                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-sm"
                     >
                       {YEAR_OPTIONS.map((y) => (
                         <option key={y.value} value={y.value}>
@@ -1092,7 +1168,7 @@ export function RegisteredSquadDashboard({
                           leader: { ...editForm.leader, role: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-neo-sm"
+                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-sm"
                     >
                       {LEADER_ROLE_OPTIONS.map((r) => (
                         <option key={r.value} value={r.value}>
@@ -1115,7 +1191,7 @@ export function RegisteredSquadDashboard({
                           leader: { ...editForm.leader, github: e.target.value },
                         })
                       }
-                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-neo-sm"
+                      className="w-full px-3 py-2 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:bg-amber-50 focus:outline-none shadow-sm"
                       placeholder="e.g. torvalds"
                     />
                   </div>
@@ -1123,8 +1199,8 @@ export function RegisteredSquadDashboard({
               </div>
 
               {/* 3. CO-HACKERS ROSTER */}
-              <div className="border-3 border-black p-5 bg-neutral-50 space-y-5">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-black/20 pb-2">
+              <div className="bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] p-5 space-y-5">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-2 border-[#555555]/30 pb-2">
                   <div className="flex items-center gap-2">
                     <Users className="w-5 h-5 text-black stroke-[2.5px]" />
                     <h4 className="font-black text-base uppercase text-black">
@@ -1135,7 +1211,7 @@ export function RegisteredSquadDashboard({
                     <button
                       type="button"
                       onClick={handleAddMember}
-                      className="px-3 py-1.5 bg-emerald-300 hover:bg-emerald-400 text-black border-2 border-black font-black text-xs uppercase shadow-neo-sm flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
+                      className="px-3 py-1.5 bg-[#5B8731] hover:bg-[#689B37] text-white border-3 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] font-black text-xs uppercase shadow-[2px_2px_0px_#000] flex items-center gap-1.5 self-start sm:self-auto cursor-pointer [text-shadow:_1px_1px_0_#000]"
                     >
                       <PlusCircle className="w-3.5 h-3.5" />
                       <span>ADD CO-HACKER #{editForm.members.length + 2}</span>
@@ -1147,10 +1223,10 @@ export function RegisteredSquadDashboard({
                   {editForm.members.map((member, idx) => (
                     <div
                       key={idx}
-                      className="border-2 border-black bg-white p-4 shadow-neo-sm space-y-4 relative"
+                      className="border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] bg-[#C6C6C6] p-4 shadow-[3px_3px_0px_#000] space-y-4 relative"
                     >
-                      <div className="flex items-center justify-between gap-2 border-b border-black/15 pb-2">
-                        <span className="font-mono text-xs font-black uppercase px-2 py-0.5 bg-neo-muted text-black border border-black">
+                      <div className="flex items-center justify-between gap-2 border-b border-[#555555]/30 pb-2">
+                        <span className="font-mono text-xs font-black uppercase px-2 py-0.5 bg-[#555555] text-white border border-t-[#777777] border-l-[#777777] border-r-[#333333] border-b-[#333333]">
                           CO-HACKER #{idx + 2}
                         </span>
 
@@ -1158,7 +1234,7 @@ export function RegisteredSquadDashboard({
                           <button
                             type="button"
                             onClick={() => handleRemoveMember(idx)}
-                            className="px-2.5 py-1 bg-rose-100 hover:bg-rose-300 text-rose-900 border border-black font-black text-[11px] uppercase flex items-center gap-1 cursor-pointer"
+                            className="px-2.5 py-1 bg-[#B83131] hover:bg-[#C93B3B] text-white border-2 border-t-[#E05353] border-l-[#E05353] border-r-[#731818] border-b-[#731818] font-black text-[11px] uppercase flex items-center gap-1 cursor-pointer shadow-[2px_2px_0px_#000]"
                             title="Remove this member from squad"
                           >
                             <Trash2 className="w-3.5 h-3.5" />
@@ -1262,49 +1338,26 @@ export function RegisteredSquadDashboard({
                   ))}
                 </div>
               </div>
-
-              {/* 4. ACCOMMODATION PREFERENCE */}
-              {/* <div className="border-3 border-black p-5 bg-blue-50/60 space-y-3">
-                <div className="flex items-center gap-2 border-b-2 border-black/20 pb-2">
-                  <Home className="w-5 h-5 text-blue-900 stroke-[2.5px]" />
-                  <h4 className="font-black text-base uppercase text-black">
-                    4. EVENT ACCOMMODATION PREFERENCE
-                  </h4>
-                </div>
-                <label className="flex items-center gap-3 cursor-pointer select-none">
-                  <input
-                    type="checkbox"
-                    checked={editForm.accommodationRequired}
-                    onChange={(e) =>
-                      setEditForm({ ...editForm, accommodationRequired: e.target.checked })
-                    }
-                    className="w-5 h-5 border-2 border-black rounded-none text-black focus:ring-0 accent-black cursor-pointer"
-                  />
-                  <span className="font-bold text-xs sm:text-sm text-black">
-                    Request On-Campus Hostel Accommodation for our squad during Hackathon days (Subject to availability)
-                  </span>
-                </label>
-              </div> */}
             </div>
 
             {/* Modal Footer */}
-            <div className="p-5 sm:p-6 bg-neutral-100 border-t-4 border-black flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0">
-              <div className="font-mono text-xs font-black text-black/80">
-                EDIT QUOTA: <span className="text-amber-800">{remainingEdits} / {maxEdits} ATTEMPTS LEFT</span>
+            <div className="p-5 sm:p-6 bg-[#C6C6C6] border-t-4 border-[#555555]/40 flex flex-col sm:flex-row items-center justify-between gap-4 shrink-0">
+              <div className="font-mono text-xs font-black text-black">
+                EDIT QUOTA: <span className="text-[#8F5500] font-black">{remainingEdits} / {maxEdits} ATTEMPTS LEFT</span>
               </div>
 
               <div className="flex items-center gap-3 w-full sm:w-auto">
                 <button
                   type="button"
                   onClick={() => setShowEditModal(false)}
-                  className="w-1/2 sm:w-auto px-5 py-2.5 bg-white hover:bg-neutral-200 text-black border-2 border-black font-black text-xs uppercase shadow-neo-sm cursor-pointer"
+                  className="w-1/2 sm:w-auto px-5 py-2.5 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black text-xs uppercase shadow-[3px_3px_0px_#000] active:translate-y-0.5 cursor-pointer"
                 >
                   CANCEL
                 </button>
                 <button
                   type="button"
                   onClick={handleValidateBeforeConfirm}
-                  className="w-1/2 sm:w-auto px-6 py-2.5 bg-neo-secondary hover:bg-neo-accent text-black border-2 border-black font-black text-xs uppercase tracking-wider shadow-neo-sm hover:shadow-none transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-1/2 sm:w-auto px-6 py-2.5 bg-[#5B8731] hover:bg-[#689B37] text-white border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] font-black text-xs uppercase tracking-wider shadow-[3px_3px_0px_#000] active:translate-y-0.5 transition-all flex items-center justify-center gap-2 cursor-pointer [text-shadow:_1px_1px_0_#000]"
                 >
                   <Save className="w-4 h-4 stroke-[3px]" />
                   <span>REVIEW &amp; SAVE</span>
@@ -1330,9 +1383,9 @@ export function RegisteredSquadDashboard({
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className="w-full max-w-md bg-white border-4 border-black shadow-neo-lg p-6 space-y-5 animate-in zoom-in-95 duration-150 overflow-hidden"
+              className="w-full max-w-md bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[8px_8px_0px_#000] p-6 space-y-5 animate-in zoom-in-95 duration-150 overflow-hidden"
             >
-              <div className="w-12 h-12 bg-amber-300 border-3 border-black flex items-center justify-center shadow-neo-sm mx-auto">
+              <div className="w-12 h-12 bg-[#FFAA00] border-3 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] flex items-center justify-center shadow-[3px_3px_0px_#000] mx-auto">
                 <AlertTriangle className="w-6 h-6 text-black stroke-[3px]" />
               </div>
 
@@ -1345,7 +1398,7 @@ export function RegisteredSquadDashboard({
                 </p>
               </div>
 
-              <div className="p-3 bg-amber-50 border-2 border-black text-xs font-mono font-bold text-amber-950 text-center">
+              <div className="p-3 bg-[#DBDBDB] border-2 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] text-xs font-mono font-bold text-black text-center shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)]">
                 Target Team: <strong className="uppercase">{editForm.teamName}</strong> • {editForm.members.length + 1} Total Members
               </div>
 
@@ -1354,7 +1407,7 @@ export function RegisteredSquadDashboard({
                   type="button"
                   disabled={isSaving}
                   onClick={() => setShowConfirmSaveModal(false)}
-                  className="w-1/2 px-4 py-3 bg-neutral-200 hover:bg-neutral-300 text-black border-2 border-black font-black text-xs uppercase cursor-pointer"
+                  className="w-1/2 px-4 py-3 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black text-xs uppercase shadow-[3px_3px_0px_#000] active:translate-y-0.5 cursor-pointer"
                 >
                   BACK
                 </button>
@@ -1362,7 +1415,7 @@ export function RegisteredSquadDashboard({
                   type="button"
                   disabled={isSaving}
                   onClick={handleExecuteSave}
-                  className="w-1/2 px-4 py-3 bg-neo-secondary hover:bg-neo-accent text-black border-2 border-black font-black text-xs uppercase tracking-wider shadow-neo-sm hover:shadow-none transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-1/2 px-4 py-3 bg-[#5B8731] hover:bg-[#689B37] text-white border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] font-black text-xs uppercase tracking-wider shadow-[3px_3px_0px_#000] active:translate-y-0.5 transition-all flex items-center justify-center gap-2 cursor-pointer [text-shadow:_1px_1px_0_#000]"
                 >
                   {isSaving ? (
                     <>
@@ -1396,9 +1449,9 @@ export function RegisteredSquadDashboard({
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              className="relative w-full max-w-4xl bg-white border-4 border-black shadow-neo-lg max-h-[calc(100dvh-125px)] sm:max-h-[calc(100vh-135px)] flex flex-col animate-in zoom-in-95 duration-150 overflow-hidden"
+              className="relative w-full max-w-4xl bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[8px_8px_0px_#000] max-h-[calc(100dvh-125px)] sm:max-h-[calc(100vh-135px)] flex flex-col animate-in zoom-in-95 duration-150 overflow-hidden"
             >
-              <div className="py-3 px-4 sm:py-4 sm:px-6 bg-neo-secondary border-b-3 border-black flex items-center justify-between shrink-0">
+              <div className="py-3 px-4 sm:py-4 sm:px-6 bg-[#FFAA00] border-b-3 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
                   <Printer className="w-5 h-5 text-black stroke-[2.5px]" />
                   <h3 className="font-black text-lg sm:text-xl uppercase tracking-tight text-black">
@@ -1408,7 +1461,7 @@ export function RegisteredSquadDashboard({
                 <button
                   type="button"
                   onClick={() => setShowReceiptModal(false)}
-                  className="w-8 h-8 sm:w-9 sm:h-9 bg-white hover:bg-rose-400 border-2 border-black font-black text-base flex items-center justify-center shadow-neo-sm hover:shadow-none transition-all cursor-pointer shrink-0"
+                  className="w-8 h-8 sm:w-9 sm:h-9 bg-[#DBDBDB] hover:bg-[#EAEAEA] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black text-base flex items-center justify-center shadow-[2px_2px_0px_#000] cursor-pointer shrink-0"
                 >
                   <X className="w-5 h-5 stroke-[3px]" />
                 </button>
@@ -1416,7 +1469,7 @@ export function RegisteredSquadDashboard({
 
               <div
                 data-lenis-prevent="true"
-                className="p-4 sm:p-6 md:p-8 overflow-y-auto flex-1 font-sans overscroll-contain"
+                className="p-4 sm:p-6 md:p-8 overflow-y-auto flex-1 font-sans overscroll-contain bg-[#C6C6C6]"
               >
                 <RegistrationSuccessReceipt
                   result={{
@@ -1436,3 +1489,4 @@ export function RegisteredSquadDashboard({
     </div>
   );
 }
+
