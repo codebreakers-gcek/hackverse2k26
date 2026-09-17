@@ -20,9 +20,10 @@ export interface ProblemStatement {
   shortDescription: string;
   fullDescription: string;
   difficulty: DifficultyLevel;
-  suggestedStack: string[];
+  suggestedStack?: string[];
   keyDeliverables: string[];
   constraints?: string[];
+  relevantDatasets?: string[];
   evaluationFocus: string[];
   sponsorOrMentor?: string;
   driveUrl?: string; // Google Drive / Document link placeholder

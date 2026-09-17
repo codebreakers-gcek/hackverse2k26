@@ -35,8 +35,7 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 function getPrismaClient(): PrismaClient {
-  // If cached client has scannerPinSession model delegate, return it
-  if (globalForPrisma.prisma && "scannerPinSession" in (globalForPrisma.prisma as any)) {
+  if (globalForPrisma.prisma) {
     return globalForPrisma.prisma;
   }
   const client = new PrismaClient({
@@ -47,7 +46,6 @@ function getPrismaClient(): PrismaClient {
   return client;
 }
 
-// Resilient proxy to always resolve the active Prisma Client with all models
 export const prisma = new Proxy({} as PrismaClient, {
   get(_target, prop: string | symbol) {
     const client = getPrismaClient();

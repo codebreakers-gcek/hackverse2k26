@@ -137,7 +137,10 @@ export function ConfirmDialog({
           </p>
 
           <div className="p-3 bg-neutral-100 border-2 border-black font-mono text-[11px] text-neutral-600 space-y-1">
-            <span className="font-black text-black uppercase">⚠️ Notice:</span>
+            <div className="font-black text-black uppercase flex items-center gap-1.5">
+              <AlertTriangle className="w-3.5 h-3.5 stroke-[2.5px] text-amber-600" />
+              <span>Notice:</span>
+            </div>
             <p>Please double-check before proceeding. This operation will take effect immediately.</p>
           </div>
         </div>

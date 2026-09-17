@@ -91,43 +91,20 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ valid: false }, { status: 400 });
   }
 
-  try {
-    if (prisma.scannerDeviceLogin) {
-      const deviceLogin = await prisma.scannerDeviceLogin.findUnique({
-        where: { deviceToken: token },
-        include: { pinSession: true },
-      });
-
-      if (!deviceLogin || !deviceLogin.isActive) {
-        return NextResponse.json({ valid: false });
-      }
-
+  // Fallback token check or scannerPinService check
+  const activeSessionResult = await scannerPinService.getActiveSession();
+  if (activeSessionResult.active && activeSessionResult.session) {
+    const dev = activeSessionResult.session.devices.find(
+      (d) => d.deviceToken === token && d.isActive
+    );
+    if (dev) {
       return NextResponse.json({
         valid: true,
-        verifierName: deviceLogin.verifierName,
-        deviceInfo: deviceLogin.deviceInfo,
-      });
-    } else {
-      const rows: any = await prisma.$queryRawUnsafe(
-        `SELECT d."verifierName", d."deviceInfo", d."isActive"
-         FROM "scanner_device_logins" d
-         WHERE d."deviceToken" = $1
-         LIMIT 1`,
-        token
-      );
-
-      if (!rows || rows.length === 0 || !rows[0].isActive) {
-        return NextResponse.json({ valid: false });
-      }
-
-      const row = rows[0];
-      return NextResponse.json({
-        valid: true,
-        verifierName: row.verifierName,
-        deviceInfo: row.deviceInfo,
+        verifierName: dev.verifierName,
+        deviceInfo: dev.deviceInfo,
       });
     }
-  } catch (error) {
-    return NextResponse.json({ valid: false });
   }
+
+  return NextResponse.json({ valid: false });
 }

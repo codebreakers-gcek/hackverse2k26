@@ -39,7 +39,6 @@ import {
   ImageIcon,
   FileX,
   Lock,
-  Unlock,
   EyeOff,
   KeyRound,
   QrCode,
@@ -49,9 +48,13 @@ import {
   Copy,
   CheckCheck,
   Radio,
-  UserCheck,
   Printer,
-  Barcode,
+  Ban,
+  Building2,
+  GraduationCap,
+  Target,
+  AlertTriangle,
+  Sparkles,
 } from "lucide-react";
 import { QRCodeSVG } from "qrcode.react";
 import { encodeCode128B } from "@/lib/barcode128";
@@ -68,6 +71,7 @@ import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
 type AdminTab =
   | "dashboard"
   | "teams"
+  | "problems"
   | "accomodation"
   | "payments"
   | "scanner"
@@ -232,6 +236,11 @@ export default function AdminDashboardPage() {
   const [psFilter, setPsFilter] = useState("ALL");
   const [accomFilter, setAccomFilter] = useState("ALL");
   const [paymentFilter, setPaymentFilter] = useState("ALL");
+
+  // Problem Statements Tracker Section States
+  const [psViewMode, setPsViewMode] = useState<"grouped" | "table" | "unassigned">("grouped");
+  const [psTrackerSearch, setPsTrackerSearch] = useState("");
+  const [psTrackerFilter, setPsTrackerFilter] = useState("ALL");
 
   // Sheet Drawer States
   const [selectedSquad, setSelectedSquad] = useState<RegistrationRecord | null>(
@@ -689,6 +698,80 @@ export default function AdminDashboardPage() {
     });
   };
 
+  // Ban / Disqualify Squad
+  const handleBanSquad = (squad: RegistrationRecord) => {
+    openConfirm({
+      title: "BAN / DISQUALIFY SQUAD",
+      description: `Are you sure you want to BAN squad "${squad.teamName}" (${squad.registrationNumber})? This squad will be disqualified from HACKVERSE '26 immediately and entry permissions will be revoked.`,
+      confirmText: "YES, BAN SQUAD",
+      cancelText: "CANCEL",
+      variant: "danger",
+      onConfirm: async () => {
+        setIsUpdating(true);
+        try {
+          const res = await fetch("/api/admin/registrations", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: squad.id, status: "BANNED" }),
+          });
+          if (res.ok) {
+            toast.error(`Squad "${squad.teamName}" has been BANNED / DISQUALIFIED.`);
+            setConfirmDialog((prev) => ({ ...prev, isOpen: false }));
+            await fetchData();
+            if (selectedSquad?.id === squad.id) {
+              setSelectedSquad((prev) =>
+                prev ? { ...prev, status: "BANNED" } : null,
+              );
+            }
+          } else {
+            toast.error("Failed to ban squad.");
+          }
+        } catch {
+          toast.error("Network error.");
+        } finally {
+          setIsUpdating(false);
+        }
+      },
+    });
+  };
+
+  // Unban / Restore Squad
+  const handleUnbanSquad = (squad: RegistrationRecord) => {
+    openConfirm({
+      title: "UNBAN & RESTORE SQUAD",
+      description: `Are you sure you want to lift the ban and restore squad "${squad.teamName}" (${squad.registrationNumber}) to CONFIRMED status?`,
+      confirmText: "YES, RESTORE SQUAD",
+      cancelText: "CANCEL",
+      variant: "success",
+      onConfirm: async () => {
+        setIsUpdating(true);
+        try {
+          const res = await fetch("/api/admin/registrations", {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id: squad.id, status: "CONFIRMED" }),
+          });
+          if (res.ok) {
+            toast.success(`Squad "${squad.teamName}" restored to CONFIRMED status.`);
+            setConfirmDialog((prev) => ({ ...prev, isOpen: false }));
+            await fetchData();
+            if (selectedSquad?.id === squad.id) {
+              setSelectedSquad((prev) =>
+                prev ? { ...prev, status: "CONFIRMED" } : null,
+              );
+            }
+          } else {
+            toast.error("Failed to restore squad.");
+          }
+        } catch {
+          toast.error("Network error.");
+        } finally {
+          setIsUpdating(false);
+        }
+      },
+    });
+  };
+
   // Save Settings
   const handleSaveSettings = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -920,10 +1003,45 @@ export default function AdminDashboardPage() {
     toast.success("CSV export initiated.");
   };
 
+  // Helper to extract and resolve problem statements for a squad
+  const getSquadPs = useCallback((squad: RegistrationRecord | null) => {
+    if (!squad) return { p1: null, p2: null, p1Raw: null, p2Raw: null, hasPs: false, psSubmittedAt: null };
+    const docs = squad.documents || {};
+    const selectedList: string[] = Array.isArray(docs.selectedProblemStatements)
+      ? docs.selectedProblemStatements
+      : [];
+    const p1Raw = squad.problemStatementId || docs.problemStatement1 || selectedList[0] || null;
+    const p2Raw = docs.problemStatement2 || selectedList[1] || null;
+
+    const resolve = (val: string | null) => {
+      if (!val) return null;
+      return (
+        PROBLEM_STATEMENTS_DATA.find(
+          (p) =>
+            p.id.toLowerCase() === val.toLowerCase() ||
+            p.code.toLowerCase() === val.toLowerCase()
+        ) || null
+      );
+    };
+
+    const p1 = resolve(p1Raw);
+    const p2 = resolve(p2Raw);
+
+    return {
+      p1Raw,
+      p2Raw,
+      p1,
+      p2,
+      hasPs: Boolean(p1 || p1Raw),
+      psSubmittedAt: docs.psSubmittedAt || null,
+    };
+  }, []);
+
   // Filtered Squads
   const query = (searchQuery || "").toLowerCase().trim();
   const filteredSquads = registrations.filter((squad) => {
     if (!squad) return false;
+    const { p1, p2, p1Raw, hasPs } = getSquadPs(squad);
 
     const matchesSearch =
       !query ||
@@ -932,12 +1050,25 @@ export default function AdminDashboardPage() {
       (squad.leaderEmail || "").toLowerCase().includes(query) ||
       (squad.registrationNumber || "").toLowerCase().includes(query) ||
       (squad.collegeName || "").toLowerCase().includes(query) ||
-      (squad.transactionId || "").toLowerCase().includes(query);
+      (squad.transactionId || "").toLowerCase().includes(query) ||
+      (p1?.title || "").toLowerCase().includes(query) ||
+      (p1?.code || "").toLowerCase().includes(query) ||
+      (p2?.title || "").toLowerCase().includes(query) ||
+      (p2?.code || "").toLowerCase().includes(query) ||
+      (p1Raw || "").toLowerCase().includes(query);
 
     const matchesStatus =
       statusFilter === "ALL" || squad.status === statusFilter;
     const matchesPs =
-      psFilter === "ALL" || squad.problemStatementId === psFilter;
+      psFilter === "ALL"
+        ? true
+        : psFilter === "UNASSIGNED"
+        ? !hasPs
+        : p1?.id === psFilter ||
+          p1?.code === psFilter ||
+          p2?.id === psFilter ||
+          p2?.code === psFilter ||
+          p1Raw === psFilter;
     const matchesAccom =
       accomFilter === "ALL" ||
       (accomFilter === "REQUESTED" && squad.accommodationRequired) ||
@@ -960,6 +1091,39 @@ export default function AdminDashboardPage() {
     );
   });
 
+  // Filtered Squads for Problem Statements Section
+  const psTrackerFilteredSquads = registrations.filter((squad) => {
+    if (!squad) return false;
+    const { p1, p2, p1Raw, p2Raw, hasPs } = getSquadPs(squad);
+    const q = (psTrackerSearch || "").toLowerCase().trim();
+    const matchesSearch =
+      !q ||
+      (squad.teamName || "").toLowerCase().includes(q) ||
+      (squad.leaderName || "").toLowerCase().includes(q) ||
+      (squad.leaderEmail || "").toLowerCase().includes(q) ||
+      (squad.registrationNumber || "").toLowerCase().includes(q) ||
+      (squad.collegeName || "").toLowerCase().includes(q) ||
+      (p1?.title || "").toLowerCase().includes(q) ||
+      (p1?.code || "").toLowerCase().includes(q) ||
+      (p2?.title || "").toLowerCase().includes(q) ||
+      (p2?.code || "").toLowerCase().includes(q) ||
+      (p1Raw || "").toLowerCase().includes(q) ||
+      (p2Raw || "").toLowerCase().includes(q);
+
+    const matchesFilter =
+      psTrackerFilter === "ALL"
+        ? true
+        : psTrackerFilter === "UNASSIGNED"
+        ? !hasPs
+        : p1?.id === psTrackerFilter ||
+          p1?.code === psTrackerFilter ||
+          p2?.id === psTrackerFilter ||
+          p2?.code === psTrackerFilter ||
+          p1Raw === psTrackerFilter;
+
+    return matchesSearch && matchesFilter;
+  });
+
   // Calculate Metrics
   const totalSquadCount = stats?.totalSquads ?? registrations.length;
   const confirmedCount =
@@ -977,6 +1141,8 @@ export default function AdminDashboardPage() {
   const accomAllocatedCount =
     stats?.accommodationAllocated ??
     registrations.filter((r) => r.accommodationStatus === "ALLOCATED").length;
+  const assignedPsCount = registrations.filter((r) => getSquadPs(r).hasPs).length;
+  const unassignedPsCount = registrations.filter((r) => !getSquadPs(r).hasPs).length;
 
   // Render Authentication Warning if not logged in as Admin
   if (!isPending && !isAdmin) {
@@ -1082,6 +1248,12 @@ export default function AdminDashboardPage() {
                 badge: totalSquadCount,
               },
               {
+                id: "problems",
+                label: "Problem Statements",
+                icon: Compass,
+                badge: assignedPsCount,
+              },
+              {
                 id: "accomodation",
                 label: "Hostel Allocation",
                 icon: BedDouble,
@@ -1181,6 +1353,7 @@ export default function AdminDashboardPage() {
                 <span>
                   {activeTab === "dashboard" && "Command Dashboard"}
                   {activeTab === "teams" && "Squad Rosters & Verification"}
+                  {activeTab === "problems" && "Problem Statements & Squad Selections"}
                   {activeTab === "accomodation" && "Hostel & Room Allocation"}
                   {activeTab === "payments" && "Finance & Transaction Audit"}
                   {activeTab === "scanner" && "Live Scanner & Judge PIN Control"}
@@ -1315,7 +1488,13 @@ export default function AdminDashboardPage() {
                     return (
                       <div
                         key={ps.id}
-                        className="p-4 bg-neutral-50 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] space-y-2"
+                        onClick={() => {
+                          setActiveTab("problems");
+                          setPsTrackerFilter(ps.id);
+                          setPsViewMode("grouped");
+                        }}
+                        className="p-4 bg-neutral-50 hover:bg-amber-50 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] space-y-2 cursor-pointer transition-all hover:-translate-y-0.5"
+                        title="Click to view all squads choosing this Problem Statement"
                       >
                         <div className="flex items-center justify-between font-mono text-xs font-black">
                           <span className="text-amber-700 bg-amber-100 px-2 py-0.5 border border-black">
@@ -1432,12 +1611,14 @@ export default function AdminDashboardPage() {
                             className={`font-mono text-[10px] font-black uppercase px-2 py-1 border-2 border-black ${
                               squad.status === "CONFIRMED"
                                 ? "bg-emerald-300 text-emerald-950"
-                                : squad.status === "REJECTED"
-                                  ? "bg-rose-300 text-rose-950"
-                                  : "bg-amber-200 text-amber-950"
+                                : squad.status === "BANNED"
+                                  ? "bg-rose-600 text-white"
+                                  : squad.status === "REJECTED"
+                                    ? "bg-rose-300 text-rose-950"
+                                    : "bg-amber-200 text-amber-950"
                             }`}
                           >
-                            {squad.status}
+                            {squad.status === "BANNED" ? "⛔ BANNED" : squad.status}
                           </span>
                           <ChevronRight className="w-4 h-4 stroke-[2.5px]" />
                         </div>
@@ -1482,6 +1663,7 @@ export default function AdminDashboardPage() {
                         PENDING VERIFICATION
                       </option>
                       <option value="REJECTED">REJECTED</option>
+                      <option value="BANNED">⛔ BANNED / DISQUALIFIED</option>
                     </select>
                   </div>
 
@@ -1598,13 +1780,43 @@ export default function AdminDashboardPage() {
                             </div>
                           </td>
 
-                          <td className="p-3.5 max-w-[200px]">
+                          <td className="p-3.5 max-w-[220px]">
                             <div className="font-medium text-black truncate">
                               {squad.collegeName}
                             </div>
-                            <div className="font-mono text-[10px] text-amber-700 font-bold">
-                              Track: {squad.problemStatementId || "General"}
-                            </div>
+                            {(() => {
+                              const { p1, p2, p1Raw, hasPs } = getSquadPs(squad);
+                              if (p1) {
+                                return (
+                                  <div className="mt-1 space-y-0.5">
+                                    <span className="font-mono text-[9px] font-black uppercase px-1.5 py-0.5 bg-amber-300 text-amber-950 border border-black inline-block">
+                                      {p1.code}
+                                    </span>
+                                    <div className="font-sans text-[11px] font-bold text-neutral-800 line-clamp-1">
+                                      {p1.title}
+                                    </div>
+                                    {p2 && (
+                                      <div className="font-mono text-[9px] text-neutral-500 font-bold">
+                                        + #2: {p2.code}
+                                      </div>
+                                    )}
+                                  </div>
+                                );
+                              }
+                              if (p1Raw) {
+                                return (
+                                  <div className="font-mono text-[10px] text-amber-800 font-bold mt-0.5">
+                                    Track: {p1Raw}
+                                  </div>
+                                );
+                              }
+                              return (
+                                <div className="font-mono text-[10px] text-rose-600 font-bold mt-0.5 flex items-center gap-1">
+                                  <AlertTriangle className="w-3 h-3 text-rose-600 shrink-0" />
+                                  <span>No Track Selected</span>
+                                </div>
+                              );
+                            })()}
                           </td>
 
                           <td className="p-3.5">
@@ -1658,12 +1870,14 @@ export default function AdminDashboardPage() {
                               className={`inline-block font-mono text-[10px] font-black uppercase px-2.5 py-1 border-2 border-black ${
                                 squad.status === "CONFIRMED"
                                   ? "bg-emerald-300 text-emerald-950"
-                                  : squad.status === "REJECTED"
-                                    ? "bg-rose-300 text-rose-950"
-                                    : "bg-amber-200 text-amber-950"
+                                  : squad.status === "BANNED"
+                                    ? "bg-rose-600 text-white"
+                                    : squad.status === "REJECTED"
+                                      ? "bg-rose-300 text-rose-950"
+                                      : "bg-amber-200 text-amber-950"
                               }`}
                             >
-                              {squad.status}
+                              {squad.status === "BANNED" ? "⛔ BANNED" : squad.status}
                             </span>
                           </td>
 
@@ -1691,7 +1905,7 @@ export default function AdminDashboardPage() {
                                 INSPECT
                               </button>
 
-                              {squad.status !== "CONFIRMED" && (
+                              {squad.status !== "CONFIRMED" && squad.status !== "BANNED" && (
                                 <button
                                   onClick={() =>
                                     handleUpdateStatus(squad.id, "CONFIRMED")
@@ -1711,6 +1925,564 @@ export default function AdminDashboardPage() {
                   </tbody>
                 </table>
               </div>
+            </div>
+          )}
+
+          {/* ===================================================================== */}
+          {/* TAB: PROBLEM STATEMENTS & SQUAD SELECTIONS                             */}
+          {/* ===================================================================== */}
+          {activeTab === "problems" && (
+            <div className="space-y-6 animate-in fade-in duration-200">
+              {/* Quick Metrics Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                <div className="p-5 bg-amber-300 border-4 border-black shadow-neo space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs font-black uppercase text-black/70">
+                      LIVE CHALLENGES
+                    </span>
+                    <Compass className="w-5 h-5 text-black stroke-[2.5px]" />
+                  </div>
+                  <div className="text-3xl font-black font-mono text-black">
+                    {PROBLEM_STATEMENTS_DATA.length}
+                  </div>
+                  <div className="font-mono text-xs font-bold text-black/80">
+                    Official Track Catalog
+                  </div>
+                </div>
+
+                <div className="p-5 bg-emerald-300 border-4 border-black shadow-neo space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs font-black uppercase text-black/70">
+                      ASSIGNED SQUADS
+                    </span>
+                    <CheckCircle2 className="w-5 h-5 text-black stroke-[2.5px]" />
+                  </div>
+                  <div className="text-3xl font-black font-mono text-black">
+                    {assignedPsCount}
+                  </div>
+                  <div className="font-mono text-xs font-bold text-black/80">
+                    {totalSquadCount > 0
+                      ? Math.round((assignedPsCount / totalSquadCount) * 100)
+                      : 0}
+                    % Squads with Selected PS
+                  </div>
+                </div>
+
+                <div className="p-5 bg-rose-200 border-4 border-black shadow-neo space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs font-black uppercase text-black/70">
+                      UNASSIGNED SQUADS
+                    </span>
+                    <ShieldAlert className="w-5 h-5 text-black stroke-[2.5px]" />
+                  </div>
+                  <div className="text-3xl font-black font-mono text-black">
+                    {unassignedPsCount}
+                  </div>
+                  <div className="font-mono text-xs font-bold text-black/80">
+                    Awaiting Track Selection
+                  </div>
+                </div>
+
+                <div className="p-5 bg-cyan-200 border-4 border-black shadow-neo space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs font-black uppercase text-black/70">
+                      ACTIVE RATIO
+                    </span>
+                    <Users className="w-5 h-5 text-black stroke-[2.5px]" />
+                  </div>
+                  <div className="text-3xl font-black font-mono text-black">
+                    {PROBLEM_STATEMENTS_DATA.length > 0
+                      ? (assignedPsCount / PROBLEM_STATEMENTS_DATA.length).toFixed(1)
+                      : "0.0"}
+                  </div>
+                  <div className="font-mono text-xs font-bold text-black/80">
+                    Avg Squads per Track
+                  </div>
+                </div>
+              </div>
+
+              {/* Filter Controls & View Switcher */}
+              <div className="border-4 border-black bg-white p-5 shadow-neo space-y-4">
+                <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
+                  {/* Search and Filter Inputs */}
+                  <div className="flex-1 grid grid-cols-1 sm:grid-cols-12 gap-3">
+                    <div className="sm:col-span-7 relative">
+                      <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500 stroke-[2.5px]" />
+                      <input
+                        type="text"
+                        placeholder="Search squad name, leader, college, ticket ID, track..."
+                        value={psTrackerSearch}
+                        onChange={(e) => setPsTrackerSearch(e.target.value)}
+                        className="w-full pl-10 pr-4 py-2.5 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:outline-none focus:bg-amber-50"
+                      />
+                    </div>
+
+                    <div className="sm:col-span-5">
+                      <select
+                        value={psTrackerFilter}
+                        onChange={(e) => setPsTrackerFilter(e.target.value)}
+                        className="w-full px-3 py-2.5 bg-white border-2 border-black font-mono text-xs font-bold text-black focus:outline-none cursor-pointer"
+                      >
+                        <option value="ALL">ALL PROBLEM STATEMENTS</option>
+                        {PROBLEM_STATEMENTS_DATA.map((ps) => (
+                          <option key={ps.id} value={ps.id}>
+                            {ps.code || ps.id} — {ps.title.length > 30 ? ps.title.slice(0, 30) + "..." : ps.title}
+                          </option>
+                        ))}
+                        <option value="UNASSIGNED">⚠️ UNASSIGNED / NO PS SELECTED</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* View Mode Toggle */}
+                  <div className="flex items-center gap-1 border-2 border-black p-1 bg-neutral-100 shrink-0">
+                    <button
+                      onClick={() => setPsViewMode("grouped")}
+                      className={`px-3 py-1.5 font-mono text-xs font-black uppercase transition-all cursor-pointer ${
+                        psViewMode === "grouped"
+                          ? "bg-black text-white shadow-sm"
+                          : "text-neutral-700 hover:text-black"
+                      }`}
+                    >
+                      📦 By Challenge
+                    </button>
+                    <button
+                      onClick={() => setPsViewMode("table")}
+                      className={`px-3 py-1.5 font-mono text-xs font-black uppercase transition-all cursor-pointer ${
+                        psViewMode === "table"
+                          ? "bg-black text-white shadow-sm"
+                          : "text-neutral-700 hover:text-black"
+                      }`}
+                    >
+                      📋 Full Matrix
+                    </button>
+                    <button
+                      onClick={() => {
+                        setPsViewMode("unassigned");
+                        setPsTrackerFilter("UNASSIGNED");
+                      }}
+                      className={`px-3 py-1.5 font-mono text-xs font-black uppercase transition-all cursor-pointer ${
+                        psViewMode === "unassigned"
+                          ? "bg-rose-500 text-white shadow-sm"
+                          : "text-neutral-700 hover:text-black"
+                      }`}
+                    >
+                      ⚠️ Unassigned ({unassignedPsCount})
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between text-xs font-mono font-bold text-neutral-600 pt-2 border-t-2 border-neutral-200">
+                  <span>
+                    FILTER: {psTrackerFilter === "ALL" ? "ALL CHALLENGES" : psTrackerFilter}
+                    {psTrackerSearch ? ` • QUERY: "${psTrackerSearch}"` : ""}
+                  </span>
+                  {(psTrackerSearch || psTrackerFilter !== "ALL") && (
+                    <button
+                      onClick={() => {
+                        setPsTrackerSearch("");
+                        setPsTrackerFilter("ALL");
+                      }}
+                      className="text-rose-700 underline cursor-pointer"
+                    >
+                      Reset Filters
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* VIEW 1: GROUPED BY CHALLENGE TRACK */}
+              {psViewMode === "grouped" && (
+                <div className="space-y-6">
+                  {PROBLEM_STATEMENTS_DATA.filter((ps) =>
+                    psTrackerFilter === "ALL" ? true : ps.id === psTrackerFilter || ps.code === psTrackerFilter
+                  ).map((ps) => {
+                    const q = psTrackerSearch.toLowerCase().trim();
+                    const matchingSquads = registrations.filter((squad) => {
+                      const { p1, p2, p1Raw, p2Raw } = getSquadPs(squad);
+                      const isMatch =
+                        p1?.id === ps.id ||
+                        p1?.code === ps.code ||
+                        p2?.id === ps.id ||
+                        p2?.code === ps.code ||
+                        (p1Raw && (p1Raw.toLowerCase() === ps.id.toLowerCase() || p1Raw.toLowerCase() === ps.code.toLowerCase())) ||
+                        (p2Raw && (p2Raw.toLowerCase() === ps.id.toLowerCase() || p2Raw.toLowerCase() === ps.code.toLowerCase()));
+
+                      if (!isMatch) return false;
+                      if (!q) return true;
+                      return (
+                        (squad.teamName || "").toLowerCase().includes(q) ||
+                        (squad.leaderName || "").toLowerCase().includes(q) ||
+                        (squad.leaderEmail || "").toLowerCase().includes(q) ||
+                        (squad.registrationNumber || "").toLowerCase().includes(q) ||
+                        (squad.collegeName || "").toLowerCase().includes(q)
+                      );
+                    });
+
+                    return (
+                      <div
+                        key={ps.id}
+                        className="border-4 border-black bg-white shadow-neo space-y-4 p-5 sm:p-6"
+                      >
+                        {/* Problem Statement Header */}
+                        <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 border-b-3 border-black pb-4">
+                          <div className="space-y-1.5">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-mono font-black text-xs text-amber-900 bg-amber-300 px-2.5 py-1 border-2 border-black">
+                                {ps.code || ps.id}
+                              </span>
+                              <span className="font-mono font-bold text-xs bg-neutral-100 text-neutral-800 px-2.5 py-1 border-2 border-black">
+                                {ps.category}
+                              </span>
+                              <span className="font-mono text-xs font-bold text-neutral-600">
+                                Domain: {ps.domain}
+                              </span>
+                            </div>
+                            <h3 className="text-base sm:text-lg font-black uppercase tracking-tight text-black">
+                              {ps.title}
+                            </h3>
+                            <p className="text-xs text-neutral-600 line-clamp-2 max-w-4xl">
+                              {ps.shortDescription}
+                            </p>
+                          </div>
+
+                          <div className="shrink-0 flex items-center gap-2 self-start md:self-auto">
+                            <span className="font-mono font-black text-xs px-3 py-1.5 bg-black text-white border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                              {matchingSquads.length} SQUADS SELECTED
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Squads Assigned to this PS */}
+                        {matchingSquads.length === 0 ? (
+                          <div className="p-6 bg-neutral-50 border-2 border-dashed border-neutral-300 text-center font-mono text-xs font-bold text-neutral-500">
+                            No squads matching current filter have selected this challenge yet.
+                          </div>
+                        ) : (
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 pt-1">
+                            {matchingSquads.map((squad) => {
+                              const { p1, p2, p1Raw } = getSquadPs(squad);
+                              const isP1 =
+                                p1?.id === ps.id ||
+                                p1?.code === ps.code ||
+                                (p1Raw && (p1Raw.toLowerCase() === ps.id.toLowerCase() || p1Raw.toLowerCase() === ps.code.toLowerCase()));
+                              const isP2 = p2?.id === ps.id || p2?.code === ps.code;
+
+                              return (
+                                <div
+                                  key={squad.id}
+                                  className="p-4 bg-amber-50/50 hover:bg-amber-100/70 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] space-y-3 transition-all flex flex-col justify-between"
+                                >
+                                  <div className="space-y-2">
+                                    <div className="flex items-center justify-between gap-2">
+                                      <span className="font-mono font-black text-xs text-amber-800 bg-white px-2 py-0.5 border border-black">
+                                        {squad.registrationNumber}
+                                      </span>
+                                      <span
+                                        className={`font-mono text-[9px] font-black uppercase px-2 py-0.5 border border-black ${
+                                          squad.status === "CONFIRMED"
+                                            ? "bg-emerald-300 text-emerald-950"
+                                            : squad.status === "BANNED"
+                                            ? "bg-rose-600 text-white"
+                                            : squad.status === "REJECTED"
+                                            ? "bg-rose-300 text-rose-950"
+                                            : "bg-amber-200 text-amber-950"
+                                        }`}
+                                      >
+                                        {squad.status === "BANNED" ? "⛔ BANNED" : squad.status}
+                                      </span>
+                                    </div>
+
+                                    <div>
+                                      <div className="font-black text-sm uppercase text-black">
+                                        {squad.teamName}
+                                      </div>
+                                      <div className="font-mono text-[11px] text-neutral-600 truncate">
+                                        {squad.collegeName}
+                                      </div>
+                                    </div>
+
+                                    {/* Preference Badge */}
+                                    <div className="pt-0.5">
+                                      {isP1 ? (
+                                        <span className="font-mono text-[9px] font-black uppercase px-2 py-0.5 bg-amber-300 text-amber-950 border border-black inline-flex items-center gap-1">
+                                          <Sparkles className="w-2.5 h-2.5 shrink-0" />
+                                          <span>CHOICE #1 (PRIMARY)</span>
+                                        </span>
+                                      ) : isP2 ? (
+                                        <span className="font-mono text-[9px] font-black uppercase px-2 py-0.5 bg-blue-200 text-blue-950 border border-black inline-flex items-center gap-1">
+                                          <Sparkles className="w-2.5 h-2.5 shrink-0" />
+                                          <span>CHOICE #2 (BACKUP)</span>
+                                        </span>
+                                      ) : null}
+                                    </div>
+
+                                    <div className="p-2 bg-white border border-neutral-300 text-[11px] space-y-0.5 font-mono">
+                                      <div className="font-bold text-neutral-800 truncate">
+                                        Leader: {squad.leaderName}
+                                      </div>
+                                      <div className="text-neutral-600 truncate text-[10px]">
+                                        {squad.leaderEmail}
+                                      </div>
+                                      <div className="text-neutral-600 text-[10px]">
+                                        Phone: {squad.leaderPhone}
+                                      </div>
+                                      <div className="text-neutral-500 text-[10px]">
+                                        Total Members: {1 + (squad.members?.length || 0)}
+                                      </div>
+                                    </div>
+                                  </div>
+
+                                  <button
+                                    onClick={() => {
+                                      setSelectedSquad(squad);
+                                      setIsSquadSheetOpen(true);
+                                    }}
+                                    className="w-full py-2 bg-white hover:bg-black hover:text-white text-black border-2 border-black font-black font-mono text-[11px] uppercase transition-all shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer flex items-center justify-center gap-1.5 mt-2"
+                                  >
+                                    <Eye className="w-3.5 h-3.5" />
+                                    <span>Inspect Squad</span>
+                                  </button>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* VIEW 2: FULL TABULAR MATRIX */}
+              {psViewMode === "table" && (
+                <div className="border-4 border-black bg-white shadow-neo overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-black text-white font-mono text-xs uppercase border-b-4 border-black">
+                        <th className="p-3.5">Ticket ID</th>
+                        <th className="p-3.5">Squad Name</th>
+                        <th className="p-3.5">Leader &amp; Contact</th>
+                        <th className="p-3.5">College</th>
+                        <th className="p-3.5">Choice #1 (Primary)</th>
+                        <th className="p-3.5">Choice #2 (Backup)</th>
+                        <th className="p-3.5">Status</th>
+                        <th className="p-3.5 text-right">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y-2 divide-black font-sans text-xs">
+                      {psTrackerFilteredSquads.length === 0 ? (
+                        <tr>
+                          <td
+                            colSpan={8}
+                            className="p-8 text-center font-mono font-bold text-neutral-500"
+                          >
+                            NO SQUADS FOUND MATCHING THE SELECTED TRACK FILTERS.
+                          </td>
+                        </tr>
+                      ) : (
+                        psTrackerFilteredSquads.map((squad) => {
+                          const { p1, p2, p1Raw, p2Raw, hasPs } = getSquadPs(squad);
+
+                          return (
+                            <tr
+                              key={squad.id}
+                              className="hover:bg-amber-50/60 transition-colors"
+                            >
+                              <td className="p-3.5 font-mono font-black">
+                                <span className="text-amber-800 bg-amber-100 px-2 py-0.5 border border-black">
+                                  {squad.registrationNumber}
+                                </span>
+                              </td>
+                              <td className="p-3.5">
+                                <div className="font-black uppercase">{squad.teamName}</div>
+                                <div className="font-mono text-[10px] text-neutral-500">
+                                  {1 + (squad.members?.length || 0)} Members
+                                </div>
+                              </td>
+                              <td className="p-3.5">
+                                <div className="font-bold">{squad.leaderName}</div>
+                                <div className="font-mono text-[11px] text-neutral-600">
+                                  {squad.leaderEmail}
+                                </div>
+                                <div className="font-mono text-[10px] text-neutral-500">
+                                  {squad.leaderPhone}
+                                </div>
+                              </td>
+                              <td className="p-3.5 font-mono text-[11px] text-neutral-700 max-w-xs truncate">
+                                {squad.collegeName}
+                              </td>
+                              {/* Primary Track */}
+                              <td className="p-3.5 max-w-xs">
+                                {p1 ? (
+                                  <div className="space-y-0.5">
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="font-mono font-black text-[10px] bg-amber-300 text-amber-950 px-1.5 py-0.5 border border-black">
+                                        {p1.code || p1.id}
+                                      </span>
+                                      <span className="font-mono text-[10px] text-neutral-500 font-bold">
+                                        {p1.category}
+                                      </span>
+                                    </div>
+                                    <div className="font-black text-xs text-black truncate">
+                                      {p1.title}
+                                    </div>
+                                  </div>
+                                ) : p1Raw ? (
+                                  <span className="font-mono text-xs font-black text-neutral-800 bg-neutral-100 px-2 py-0.5 border border-black">
+                                    {p1Raw}
+                                  </span>
+                                ) : (
+                                  <span className="font-mono text-xs font-black text-rose-700 bg-rose-100 px-2 py-0.5 border border-rose-400">
+                                    UNASSIGNED
+                                  </span>
+                                )}
+                              </td>
+                              {/* Secondary Track */}
+                              <td className="p-3.5 max-w-xs">
+                                {p2 ? (
+                                  <div className="space-y-0.5">
+                                    <div className="flex items-center gap-1.5">
+                                      <span className="font-mono font-black text-[10px] bg-blue-200 text-blue-950 px-1.5 py-0.5 border border-black">
+                                        {p2.code || p2.id}
+                                      </span>
+                                      <span className="font-mono text-[10px] text-neutral-500 font-bold">
+                                        {p2.category}
+                                      </span>
+                                    </div>
+                                    <div className="font-bold text-xs text-neutral-800 truncate">
+                                      {p2.title}
+                                    </div>
+                                  </div>
+                                ) : p2Raw ? (
+                                  <span className="font-mono text-xs font-black text-neutral-800 bg-neutral-100 px-2 py-0.5 border border-black">
+                                    {p2Raw}
+                                  </span>
+                                ) : (
+                                  <span className="font-mono text-xs text-neutral-400 font-bold">
+                                    — None —
+                                  </span>
+                                )}
+                              </td>
+                              <td className="p-3.5">
+                                <span
+                                  className={`font-mono text-[10px] font-black uppercase px-2 py-0.5 border-2 border-black ${
+                                    squad.status === "CONFIRMED"
+                                      ? "bg-emerald-300 text-emerald-950"
+                                      : squad.status === "BANNED"
+                                      ? "bg-rose-600 text-white"
+                                      : squad.status === "REJECTED"
+                                      ? "bg-rose-300 text-rose-950"
+                                      : "bg-amber-200 text-amber-950"
+                                  }`}
+                                >
+                                  {squad.status === "BANNED" ? "⛔ BANNED" : squad.status}
+                                </span>
+                              </td>
+                              <td className="p-3.5 text-right">
+                                <button
+                                  onClick={() => {
+                                    setSelectedSquad(squad);
+                                    setIsSquadSheetOpen(true);
+                                  }}
+                                  className="px-2.5 py-1.5 bg-white hover:bg-neutral-100 border-2 border-black font-black font-mono text-[10px] uppercase shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer"
+                                >
+                                  INSPECT
+                                </button>
+                              </td>
+                            </tr>
+                          );
+                        })
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+
+              {/* VIEW 3: UNASSIGNED SQUADS QUEUE */}
+              {psViewMode === "unassigned" && (
+                <div className="space-y-4">
+                  <div className="p-4 bg-rose-100 border-3 border-black shadow-neo-sm flex items-center justify-between">
+                    <div className="flex items-center gap-2.5">
+                      <ShieldAlert className="w-5 h-5 text-rose-700 stroke-[2.5px]" />
+                      <span className="font-mono text-xs font-black uppercase text-rose-950">
+                        {unassignedPsCount} Squads have not yet selected a challenge track
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="border-4 border-black bg-white shadow-neo overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-black text-white font-mono text-xs uppercase border-b-4 border-black">
+                          <th className="p-3.5">Ticket ID</th>
+                          <th className="p-3.5">Squad Name</th>
+                          <th className="p-3.5">Leader &amp; Contact</th>
+                          <th className="p-3.5">College</th>
+                          <th className="p-3.5">Status</th>
+                          <th className="p-3.5 text-right">Action</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y-2 divide-black font-sans text-xs">
+                        {registrations.filter((r) => !getSquadPs(r).hasPs).length === 0 ? (
+                          <tr>
+                            <td
+                              colSpan={6}
+                              className="p-8 text-center font-mono font-bold text-emerald-700"
+                            >
+                              🎉 ALL REGISTERED SQUADS HAVE SELECTED A PROBLEM STATEMENT!
+                            </td>
+                          </tr>
+                        ) : (
+                          registrations
+                            .filter((r) => !getSquadPs(r).hasPs)
+                            .map((squad) => (
+                              <tr key={squad.id} className="hover:bg-rose-50/50">
+                                <td className="p-3.5 font-mono font-black">
+                                  <span className="text-amber-800 bg-amber-100 px-2 py-0.5 border border-black">
+                                    {squad.registrationNumber}
+                                  </span>
+                                </td>
+                                <td className="p-3.5 font-black uppercase">{squad.teamName}</td>
+                                <td className="p-3.5">
+                                  <div className="font-bold">{squad.leaderName}</div>
+                                  <div className="font-mono text-[11px] text-neutral-600">
+                                    {squad.leaderEmail} &bull; {squad.leaderPhone}
+                                  </div>
+                                </td>
+                                <td className="p-3.5 font-mono text-[11px] text-neutral-700">
+                                  {squad.collegeName}
+                                </td>
+                                <td className="p-3.5">
+                                  <span
+                                    className={`font-mono text-[10px] font-black uppercase px-2 py-0.5 border-2 border-black ${
+                                      squad.status === "CONFIRMED"
+                                        ? "bg-emerald-300 text-emerald-950"
+                                        : "bg-amber-200 text-amber-950"
+                                    }`}
+                                  >
+                                    {squad.status}
+                                  </span>
+                                </td>
+                                <td className="p-3.5 text-right">
+                                  <button
+                                    onClick={() => {
+                                      setSelectedSquad(squad);
+                                      setIsSquadSheetOpen(true);
+                                    }}
+                                    className="px-2.5 py-1.5 bg-white hover:bg-neutral-100 border-2 border-black font-black font-mono text-[10px] uppercase shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer"
+                                  >
+                                    INSPECT
+                                  </button>
+                                </td>
+                              </tr>
+                            ))
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
@@ -3023,12 +3795,14 @@ export default function AdminDashboardPage() {
                     className={`font-mono text-xs font-black uppercase px-2.5 py-0.5 border-2 border-white ${
                       selectedSquad.status === "CONFIRMED"
                         ? "bg-emerald-400 text-black"
-                        : selectedSquad.status === "REJECTED"
-                          ? "bg-rose-400 text-black"
-                          : "bg-amber-300 text-black"
+                        : selectedSquad.status === "BANNED"
+                          ? "bg-rose-600 text-white"
+                          : selectedSquad.status === "REJECTED"
+                            ? "bg-rose-400 text-black"
+                            : "bg-amber-300 text-black"
                     }`}
                   >
-                    {selectedSquad.status}
+                    {selectedSquad.status === "BANNED" ? "⛔ BANNED" : selectedSquad.status}
                   </span>
                 </div>
                 <h2 className="text-2xl font-black uppercase tracking-tight text-white break-words">
@@ -3043,29 +3817,108 @@ export default function AdminDashboardPage() {
               <div className="px-6 space-y-6">
                 {/* Status Update Quick Action Strip */}
                 <div className="p-4 bg-amber-100 border-3 border-black space-y-3">
-                  <div className="font-mono text-xs font-black uppercase">
-                    Decision &amp; Dispatch
+                  <div className="font-mono text-xs font-black uppercase flex items-center justify-between">
+                    <span>Decision &amp; Dispatch</span>
+                    {selectedSquad.status === "CONFIRMED" && (
+                      <span className="text-[10px] font-black bg-emerald-300 text-emerald-950 px-2 py-0.5 border border-black">
+                        ✓ CONFIRMED SQUAD
+                      </span>
+                    )}
+                    {selectedSquad.status === "BANNED" && (
+                      <span className="text-[10px] font-black bg-rose-600 text-white px-2 py-0.5 border border-black">
+                        ⛔ BANNED / DISQUALIFIED
+                      </span>
+                    )}
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
-                    <button
-                      onClick={() =>
-                        handleUpdateStatus(selectedSquad.id, "CONFIRMED")
-                      }
-                      disabled={isUpdating}
-                      className="py-2.5 bg-emerald-400 hover:bg-emerald-500 text-black border-2 border-black font-black text-xs uppercase shadow-neo-sm cursor-pointer"
-                    >
-                      ✓ CONFIRM SQUAD
-                    </button>
-                    <button
-                      onClick={() =>
-                        handleUpdateStatus(selectedSquad.id, "REJECTED")
-                      }
-                      disabled={isUpdating}
-                      className="py-2.5 bg-rose-400 hover:bg-rose-500 text-black border-2 border-black font-black text-xs uppercase shadow-neo-sm cursor-pointer"
-                    >
-                      ✕ REJECT
-                    </button>
-                  </div>
+
+                  {/* Dynamic Action Buttons based on Squad Status */}
+                  {selectedSquad.status === "CONFIRMED" ? (
+                    <div className="grid grid-cols-2 gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleBanSquad(selectedSquad)}
+                        disabled={isUpdating}
+                        className="py-2.5 bg-rose-600 hover:bg-rose-700 text-white border-2 border-black font-black text-xs uppercase shadow-neo-sm cursor-pointer flex items-center justify-center gap-1.5 transition-all"
+                      >
+                        <Ban className="w-3.5 h-3.5 stroke-[2.5px]" />
+                        <span>BAN SQUAD</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleUpdateStatus(selectedSquad.id, "REJECTED")
+                        }
+                        disabled={isUpdating}
+                        className="py-2.5 bg-rose-400 hover:bg-rose-500 text-black border-2 border-black font-black text-xs uppercase shadow-neo-sm cursor-pointer flex items-center justify-center gap-1.5"
+                      >
+                        <X className="w-3.5 h-3.5 stroke-[2.5px]" />
+                        <span>REJECT</span>
+                      </button>
+                    </div>
+                  ) : selectedSquad.status === "BANNED" ? (
+                    <div className="space-y-2">
+                      <div className="p-2.5 bg-rose-200 border-2 border-rose-600 text-rose-950 font-mono text-xs font-bold flex items-center gap-2">
+                        <Ban className="w-4 h-4 text-rose-700 shrink-0 stroke-[2.5px]" />
+                        <span>This squad is currently BANNED from HACKVERSE &apos;26.</span>
+                      </div>
+                      <div className="grid grid-cols-2 gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleUnbanSquad(selectedSquad)}
+                          disabled={isUpdating}
+                          className="py-2.5 bg-emerald-400 hover:bg-emerald-500 text-black border-2 border-black font-black text-xs uppercase shadow-neo-sm cursor-pointer flex items-center justify-center gap-1.5"
+                        >
+                          <Check className="w-3.5 h-3.5 stroke-[3px]" />
+                          <span>UNBAN &amp; RESTORE</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() =>
+                            handleUpdateStatus(selectedSquad.id, "REJECTED")
+                          }
+                          disabled={isUpdating}
+                          className="py-2.5 bg-rose-400 hover:bg-rose-500 text-black border-2 border-black font-black text-xs uppercase shadow-neo-sm cursor-pointer flex items-center justify-center gap-1.5"
+                        >
+                          <X className="w-3.5 h-3.5 stroke-[2.5px]" />
+                          <span>REJECT</span>
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-3 gap-2">
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleUpdateStatus(selectedSquad.id, "CONFIRMED")
+                        }
+                        disabled={isUpdating}
+                        className="py-2.5 bg-emerald-400 hover:bg-emerald-500 text-black border-2 border-black font-black text-xs uppercase shadow-neo-sm cursor-pointer flex items-center justify-center gap-1"
+                      >
+                        <Check className="w-3.5 h-3.5 stroke-[3px]" />
+                        <span>CONFIRM</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          handleUpdateStatus(selectedSquad.id, "REJECTED")
+                        }
+                        disabled={isUpdating}
+                        className="py-2.5 bg-rose-400 hover:bg-rose-500 text-black border-2 border-black font-black text-xs uppercase shadow-neo-sm cursor-pointer flex items-center justify-center gap-1"
+                      >
+                        <X className="w-3.5 h-3.5 stroke-[2.5px]" />
+                        <span>REJECT</span>
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleBanSquad(selectedSquad)}
+                        disabled={isUpdating}
+                        className="py-2.5 bg-rose-600 hover:bg-rose-700 text-white border-2 border-black font-black text-xs uppercase shadow-neo-sm cursor-pointer flex items-center justify-center gap-1"
+                      >
+                        <Ban className="w-3.5 h-3.5 stroke-[2.5px]" />
+                        <span>BAN</span>
+                      </button>
+                    </div>
+                  )}
 
                   {/* Email & Invoice Triggers */}
                   <div className="pt-2 border-t border-black/20 flex flex-col gap-2">
@@ -3118,16 +3971,119 @@ export default function AdminDashboardPage() {
                   <div className="text-base font-black uppercase">
                     {selectedSquad.leaderName}
                   </div>
-                  <div className="font-mono text-xs text-neutral-700 space-y-0.5">
-                    <div>📧 {selectedSquad.leaderEmail}</div>
-                    <div>📱 {selectedSquad.leaderPhone}</div>
-                    <div>🏛️ {selectedSquad.collegeName}</div>
-                    <div>
-                      🎓 {selectedSquad.leaderBranch} (
-                      {selectedSquad.leaderYear})
+                  <div className="font-mono text-xs text-neutral-700 space-y-1.5">
+                    <div className="flex items-center gap-2">
+                      <Mail className="w-3.5 h-3.5 text-neutral-600 shrink-0" />
+                      <span>{selectedSquad.leaderEmail}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Smartphone className="w-3.5 h-3.5 text-neutral-600 shrink-0" />
+                      <span>{selectedSquad.leaderPhone}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Building2 className="w-3.5 h-3.5 text-neutral-600 shrink-0" />
+                      <span>{selectedSquad.collegeName}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <GraduationCap className="w-3.5 h-3.5 text-neutral-600 shrink-0" />
+                      <span>
+                        {selectedSquad.leaderBranch} ({selectedSquad.leaderYear})
+                      </span>
                     </div>
                   </div>
                 </div>
+
+                {/* Problem Statement Track Preferences */}
+                {(() => {
+                  const { p1, p2, p1Raw, p2Raw, hasPs, psSubmittedAt } = getSquadPs(selectedSquad);
+                  return (
+                    <div className="border-3 border-black p-4 space-y-3 bg-amber-50/50 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                      <div className="font-mono text-xs font-black uppercase text-neutral-800 flex items-center justify-between">
+                        <span className="flex items-center gap-1.5">
+                          <Target className="w-4 h-4 text-amber-900" />
+                          <span>PROBLEM STATEMENT PREFERENCES</span>
+                        </span>
+                        <span
+                          className={`font-mono text-[9px] font-black uppercase px-2 py-0.5 border border-black flex items-center gap-1 ${
+                            hasPs ? "bg-emerald-300 text-emerald-950" : "bg-rose-200 text-rose-950"
+                          }`}
+                        >
+                          {hasPs ? (
+                            <>
+                              <Lock className="w-3 h-3" />
+                              <span>LOCKED &amp; SUBMITTED</span>
+                            </>
+                          ) : (
+                            <>
+                              <AlertTriangle className="w-3 h-3" />
+                              <span>UNASSIGNED</span>
+                            </>
+                          )}
+                        </span>
+                      </div>
+
+                      {hasPs ? (
+                        <div className="space-y-2.5">
+                          {/* Choice #1 (Primary) */}
+                          <div className="p-3 bg-white border-2 border-black space-y-1">
+                            <div className="flex items-center justify-between gap-1">
+                              <span className="font-mono font-black text-[10px] bg-amber-300 text-amber-950 px-2 py-0.5 border border-black">
+                                CHOICE #1 (PRIMARY)
+                              </span>
+                              {p1 && (
+                                <span className="font-mono text-[10px] font-bold text-neutral-600">
+                                  {p1.category}
+                                </span>
+                              )}
+                            </div>
+                            <div className="font-black text-xs text-black">
+                              {p1 ? `${p1.code} — ${p1.title}` : p1Raw}
+                            </div>
+                            {p1?.domain && (
+                              <div className="font-mono text-[10px] text-neutral-500">
+                                Domain: {p1.domain}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Choice #2 (Backup) */}
+                          {p2 || p2Raw ? (
+                            <div className="p-3 bg-white border-2 border-black space-y-1">
+                              <div className="flex items-center justify-between gap-1">
+                                <span className="font-mono font-black text-[10px] bg-blue-200 text-blue-950 px-2 py-0.5 border border-black">
+                                  CHOICE #2 (BACKUP)
+                                </span>
+                                {p2 && (
+                                  <span className="font-mono text-[10px] font-bold text-neutral-600">
+                                    {p2.category}
+                                  </span>
+                                )}
+                              </div>
+                              <div className="font-bold text-xs text-neutral-900">
+                                {p2 ? `${p2.code} — ${p2.title}` : p2Raw}
+                              </div>
+                              {p2?.domain && (
+                                <div className="font-mono text-[10px] text-neutral-500">
+                                  Domain: {p2.domain}
+                                </div>
+                              )}
+                            </div>
+                          ) : null}
+
+                          {psSubmittedAt && (
+                            <div className="font-mono text-[10px] text-neutral-500">
+                              Submitted: {new Date(psSubmittedAt).toLocaleString("en-IN")}
+                            </div>
+                          )}
+                        </div>
+                      ) : (
+                        <div className="p-3 bg-neutral-100 border border-neutral-300 font-mono text-xs text-neutral-500">
+                          Squad has not locked or submitted problem statement preferences yet.
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
 
                 {/* Team Members Roster */}
                 <div className="border-3 border-black p-4 space-y-3 bg-neutral-50 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
