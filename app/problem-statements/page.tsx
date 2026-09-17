@@ -1,7 +1,8 @@
 import React from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
+import { Terminal } from "lucide-react";
 import { ProblemStatementList } from "@/features/problems/ProblemStatementList";
-import { SectionTitle } from "@/components/common/SectionTitle";
 import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 
 export const metadata: Metadata = {
@@ -81,17 +82,64 @@ export const metadata: Metadata = {
 
 export default function ProblemStatementsPage() {
   return (
-    <div className="flex flex-col">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-12">
-        <SectionTitle
-          tag="CHALLENGES // 2026 ARENA"
-          title="OFFICIAL PROBLEM"
-          highlightText="STATEMENTS"
-          subtitle="Select your arena of technical combat. Each challenge represents real-world engineering constraints with concrete evaluation criteria."
+    <div className="relative min-h-screen bg-neutral-950 text-white overflow-hidden flex flex-col selection:bg-[#FFAA00] selection:text-black">
+      {/* Minecraft Problem Statements Background Layer with Full Clarity */}
+      <div className="fixed inset-0 z-0 pointer-events-none select-none overflow-hidden">
+        <Image
+          src="/minecraft/wallpaper.webp"
+          alt="HackVerse Problem Statements Minecraft Background"
+          fill
+          priority
+          unoptimized
+          sizes="100vw"
+          className="object-cover object-center"
         />
-        <ProblemStatementList />
+        {/* Subtle dark tint to guarantee readability while preserving image clarity */}
+        <div className="absolute inset-0 bg-black/35 backdrop-blur-[1px]" />
       </div>
-      <MarqueeBanner bg="secondary" speed="normal" />
+
+      <div className="relative z-10 flex flex-col min-h-screen">
+        {/* Top Banner Marquee */}
+        <MarqueeBanner
+          items={[
+            "OFFICIAL PROBLEM STATEMENTS",
+            "3 LIVE CHALLENGES",
+            "AUTONOMOUS ROBOTICS & IOT",
+            "HEALTHCARE & DISASTER MANAGEMENT",
+            "OFFLINE DIGITAL LEARNING EDUTECH",
+            "₹35K+ PRIZE POOL",
+          ]}
+          bg="secondary"
+        />
+
+        {/* Hero Header Section */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 space-y-8 sm:space-y-10 w-full flex-1">
+          <div className="flex flex-col items-center sm:items-start text-center sm:text-left space-y-3">
+            <span className="font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000] inline-flex items-center gap-2">
+              <Terminal className="w-3.5 h-3.5 stroke-[2.5px]" />
+              <span>CHALLENGES // 2026 ARENA</span>
+            </span>
+
+            <h1 className="font-black text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white uppercase tracking-tight leading-tight [text-shadow:_3px_3px_0_#000,_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000]">
+              OFFICIAL PROBLEM{" "}
+              <span className="inline-block bg-[#FFAA00] text-black px-2.5 sm:px-3 py-0.5 border-4 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[4px_4px_0px_#000] -rotate-1 [text-shadow:none]">
+                STATEMENTS
+              </span>
+            </h1>
+
+            <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-4 sm:p-5 shadow-[6px_6px_0px_#000] max-w-3xl">
+              <p className="text-xs sm:text-sm md:text-base font-bold text-black font-mono leading-relaxed">
+                Select your arena of technical combat. Each challenge represents real-world engineering constraints with concrete evaluation criteria and industry relevance.
+              </p>
+            </div>
+          </div>
+
+          <ProblemStatementList />
+        </div>
+
+        <MarqueeBanner bg="secondary" speed="normal" />
+      </div>
     </div>
   );
 }
+
