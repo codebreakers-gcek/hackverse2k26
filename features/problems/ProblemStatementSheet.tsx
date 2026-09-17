@@ -173,11 +173,11 @@ export function ProblemStatementSheet({
                 </p>
               </div>
 
-              {/* Mandatory Key Deliverables */}
+              {/* Expected Solution */}
               <div className="border-4 border-black bg-white p-5 sm:p-6 shadow-neo space-y-4">
                 <h3 className="font-black text-sm uppercase tracking-wider text-black flex items-center gap-2 border-b-2 border-black/10 pb-2">
                   <CheckCircle className="w-4 h-4 text-emerald-600 stroke-[3px]" />
-                  <span>MANDATORY KEY DELIVERABLES (MVP SCOPE):</span>
+                  <span>EXPECTED SOLUTION:</span>
                 </h3>
                 <div className="space-y-2.5">
                   {problem.keyDeliverables.map((deliv, idx) => (
@@ -212,8 +212,8 @@ export function ProblemStatementSheet({
                 </div>
               )}
 
-              {/* Recommended Toolkit & Evaluation Focus Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Recommended Toolkit & Evaluation Focus (Stacked as Two Rows) */}
+              <div className="space-y-6">
                 {/* Tech Stack */}
                 <div className="border-4 border-black bg-white p-5 shadow-neo space-y-3">
                   <div className="font-mono text-xs font-black uppercase text-black/70 flex items-center gap-1.5 border-b-2 border-black/10 pb-2">
@@ -233,19 +233,19 @@ export function ProblemStatementSheet({
                 </div>
 
                 {/* Evaluation Focus */}
-                <div className="border-4 border-black bg-white p-5 shadow-neo space-y-3">
+                <div className="border-4 border-black bg-white p-5 sm:p-6 shadow-neo space-y-3">
                   <div className="font-mono text-xs font-black uppercase text-black/70 flex items-center gap-1.5 border-b-2 border-black/10 pb-2">
                     <Award className="w-4 h-4 text-amber-500 stroke-[2.5px]" />
                     <span>EVALUATION EMPHASIS:</span>
                   </div>
-                  <div className="flex flex-wrap gap-2">
-                    {problem.evaluationFocus.map((crit) => (
-                      <span
-                        key={crit}
-                        className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-neo-secondary border-2 border-black text-black shadow-neo-sm"
+                  <div className="flex flex-col gap-2.5">
+                    {problem.evaluationFocus.map((crit, idx) => (
+                      <div
+                        key={idx}
+                        className="font-mono text-xs font-black uppercase p-3 bg-neo-secondary border-2 border-black text-black shadow-neo-sm leading-relaxed"
                       >
                         {crit}
-                      </span>
+                      </div>
                     ))}
                   </div>
                 </div>

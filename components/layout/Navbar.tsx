@@ -33,7 +33,7 @@ export function Navbar() {
 
   const user = session?.user as { name?: string; email?: string; image?: string; role?: string } | undefined;
   const isAdmin = user?.role === "admin";
-  const [isProblemStatementsPublished, setIsProblemStatementsPublished] = useState<boolean>(false);
+  const [isProblemStatementsPublished, setIsProblemStatementsPublished] = useState<boolean>(true);
 
   // Fetch live system settings
   useEffect(() => {
@@ -54,11 +54,10 @@ export function Navbar() {
   }, [pathname]);
 
   // Primary navigation links
-  const navLinks = [
+  const navLinks: Array<{ label: string; href: string; badge?: string }> = [
     { label: "ABOUT", href: "/about" },
     {
       label: "PROBLEM STATEMENTS",
-      badge: !isProblemStatementsPublished ? "SOON" : undefined,
       href: "/problem-statements",
     },
     {
@@ -414,46 +413,27 @@ export function Navbar() {
                           <span>SQUAD REGISTRATION</span>
                         </Link>
 
-                        {/* Problem Statement Link (Switches between Live Selection and Coming Soon) */}
-                        {isProblemStatementsPublished ? (
-                          <>
-                            <Link
-                              href="/register/ps"
-                              onClick={() => setUserDropdownOpen(false)}
-                              className="p-2.5 bg-amber-50 hover:bg-neo-secondary border-2 border-black flex items-center gap-2.5 transition-colors text-black shadow-neo-sm"
-                            >
-                              <FileCode2 className="w-4 h-4 stroke-[2.5px] text-amber-700" />
-                              <div className="flex flex-col text-left">
-                                <span>SELECT 2 PROBLEM STATEMENTS</span>
-                                <span className="text-[9px] font-mono font-bold text-black/60">PREFERENCE 1 &amp; PREFERENCE 2</span>
-                              </div>
-                            </Link>
+                        {/* Problem Statement Links */}
+                        <Link
+                          href="/register/ps"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="p-2.5 bg-amber-50 hover:bg-neo-secondary border-2 border-black flex items-center gap-2.5 transition-colors text-black shadow-neo-sm"
+                        >
+                          <FileCode2 className="w-4 h-4 stroke-[2.5px] text-amber-700" />
+                          <div className="flex flex-col text-left">
+                            <span>SELECT 2 PROBLEM STATEMENTS</span>
+                            <span className="text-[9px] font-mono font-bold text-black/60">PREFERENCE 1 &amp; PREFERENCE 2</span>
+                          </div>
+                        </Link>
 
-                            <Link
-                              href="/problem-statements"
-                              onClick={() => setUserDropdownOpen(false)}
-                              className="p-2.5 hover:bg-neo-secondary border-2 border-transparent hover:border-black flex items-center gap-2.5 transition-colors text-black"
-                            >
-                              <FileCode2 className="w-4 h-4 stroke-[2.5px]" />
-                              <span>ALL PROBLEM SPECS</span>
-                            </Link>
-                          </>
-                        ) : (
-                          <Link
-                            href="/problem-statements"
-                            onClick={() => setUserDropdownOpen(false)}
-                            className="p-2.5 bg-amber-50 hover:bg-neo-secondary border-2 border-black flex items-center gap-2.5 transition-colors text-black shadow-neo-sm"
-                          >
-                            <FileCode2 className="w-4 h-4 stroke-[2.5px] text-amber-700" />
-                            <div className="flex flex-col text-left">
-                              <span className="flex items-center gap-1.5">
-                                <span>PROBLEM STATEMENTS</span>
-                                <span className="bg-amber-300 text-black text-[9px] font-mono font-black px-1.5 py-0.2 border border-black">COMING SOON</span>
-                              </span>
-                              <span className="text-[9px] font-mono font-bold text-black/60">UNDER EMBARGO • RELEASING SOON</span>
-                            </div>
-                          </Link>
-                        )}
+                        <Link
+                          href="/problem-statements"
+                          onClick={() => setUserDropdownOpen(false)}
+                          className="p-2.5 hover:bg-neo-secondary border-2 border-transparent hover:border-black flex items-center gap-2.5 transition-colors text-black"
+                        >
+                          <FileCode2 className="w-4 h-4 stroke-[2.5px]" />
+                          <span>ALL PROBLEM SPECS</span>
+                        </Link>
 
                         <Link
                           href="/guidelines"
@@ -572,41 +552,21 @@ export function Navbar() {
                     </button>
                   </div>
 
-                  {/* Problem Statement Selection / Coming Soon direct link */}
-                  {isProblemStatementsPublished ? (
-                    <Link
-                      href="/register/ps"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="w-full p-2.5 bg-amber-200 hover:bg-neo-secondary border-2 border-black font-black text-xs uppercase flex items-center justify-between text-black shadow-neo-sm transition-all"
-                    >
-                      <div className="flex items-center gap-2">
-                        <FileCode2 className="w-4 h-4 text-amber-950 stroke-[2.5px] shrink-0" />
-                        <div className="flex flex-col text-left">
-                          <span className="leading-tight">SELECT 2 PROBLEM STATEMENTS</span>
-                          <span className="font-mono text-[9px] font-bold text-black/60">CHOICE #1 &amp; #2</span>
-                        </div>
+                  {/* Problem Statement Selection direct link */}
+                  <Link
+                    href="/register/ps"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="w-full p-2.5 bg-amber-200 hover:bg-neo-secondary border-2 border-black font-black text-xs uppercase flex items-center justify-between text-black shadow-neo-sm transition-all"
+                  >
+                    <div className="flex items-center gap-2">
+                      <FileCode2 className="w-4 h-4 text-amber-950 stroke-[2.5px] shrink-0" />
+                      <div className="flex flex-col text-left">
+                        <span className="leading-tight">SELECT 2 PROBLEM STATEMENTS</span>
+                        <span className="font-mono text-[9px] font-bold text-black/60">CHOICE #1 &amp; #2</span>
                       </div>
-                      <ArrowRight className="w-4 h-4 stroke-[3px] shrink-0" />
-                    </Link>
-                  ) : (
-                    <Link
-                      href="/problem-statements"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="w-full p-2.5 bg-amber-200 hover:bg-neo-secondary border-2 border-black font-black text-xs uppercase flex items-center justify-between text-black shadow-neo-sm transition-all"
-                    >
-                      <div className="flex items-center gap-2">
-                        <FileCode2 className="w-4 h-4 text-amber-950 stroke-[2.5px] shrink-0" />
-                        <div className="flex flex-col text-left">
-                          <span className="leading-tight flex items-center gap-1.5">
-                            <span>PROBLEM STATEMENTS</span>
-                            <span className="bg-black text-white text-[8px] font-mono px-1 py-0.2">SOON</span>
-                          </span>
-                          <span className="font-mono text-[9px] font-bold text-black/60">COMING SOON // EMBARGO</span>
-                        </div>
-                      </div>
-                      <ArrowRight className="w-4 h-4 stroke-[3px] shrink-0" />
-                    </Link>
-                  )}
+                    </div>
+                    <ArrowRight className="w-4 h-4 stroke-[3px] shrink-0" />
+                  </Link>
 
                   {/* Squad Dossier & Registration link */}
                   <Link

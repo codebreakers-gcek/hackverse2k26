@@ -12,7 +12,7 @@ import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
 import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 
 export function DomainTrackConsole() {
-  const [isProblemStatementsPublished, setIsProblemStatementsPublished] = useState<boolean>(false);
+  const [isProblemStatementsPublished, setIsProblemStatementsPublished] = useState<boolean>(true);
   const [loadingSettings, setLoadingSettings] = useState<boolean>(true);
 
   useEffect(() => {
