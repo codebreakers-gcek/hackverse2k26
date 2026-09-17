@@ -8,7 +8,6 @@ import { ProblemStatement } from "@/types/problemStatement";
 import {
   CheckCircle,
   AlertTriangle,
-  Code2,
   ArrowRight,
   X,
   Sparkles,
@@ -63,10 +62,10 @@ export function ProblemStatementSheet({
 
   if (!mounted) return null;
 
-  const difficultyColors = {
-    Beginner: "bg-emerald-300 text-black",
-    Intermediate: "bg-neo-secondary text-black",
-    Advanced: "bg-neo-accent text-black",
+  const difficultyBadgeStyle = {
+    Beginner: "bg-[#008800] text-white border border-[#55FF55]",
+    Intermediate: "bg-[#FFAA00] text-black border border-[#FFE285]",
+    Advanced: "bg-[#FF5555] text-white border border-[#FF8888]",
   };
 
   const sheetPortal = (
@@ -78,34 +77,24 @@ export function ProblemStatementSheet({
           data-lenis-prevent-touch="true"
           className="fixed inset-0 z-50 flex justify-end"
         >
-          {/* ========================================================================= */}
-          {/* HARDWARE-ACCELERATED BACKDROP (NO BACKDROP FILTER BLUR LAG) */}
-          {/* ========================================================================= */}
+          {/* HARDWARE-ACCELERATED BACKDROP */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.2, ease: "linear" }}
+            transition={{ duration: 0.15 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 z-40 cursor-pointer"
+            className="fixed inset-0 bg-black/75 z-40 cursor-pointer"
             aria-hidden="true"
           />
 
-          {/* ========================================================================= */}
-          {/* HIGH-PERFORMANCE 60FPS COMPOSITED DRAWER */}
-          {/* ========================================================================= */}
+          {/* MINECRAFT THEMED DRAWER */}
           <motion.aside
             initial={{ x: "100%" }}
             animate={{ x: "0%" }}
             exit={{ x: "100%" }}
-            transition={{
-              type: "spring",
-              damping: 32,
-              stiffness: 320,
-              mass: 0.8,
-            }}
-            style={{ willChange: "transform" }}
-            className="relative z-50 w-full sm:w-[520px] md:w-[620px] lg:w-[40vw] lg:max-w-[40vw] xl:w-[40vw] xl:max-w-[40vw] h-full max-h-screen bg-neo-bg border-l-4 border-black text-black flex flex-col overflow-hidden shadow-[-12px_0px_35px_rgba(0,0,0,0.35)]"
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="relative z-50 w-full sm:w-[540px] md:w-[640px] lg:w-[45vw] lg:max-w-[700px] h-full max-h-screen bg-[#C6C6C6] border-l-4 sm:border-l-6 border-black text-black flex flex-col overflow-hidden shadow-[-12px_0px_35px_rgba(0,0,0,0.7)]"
             role="dialog"
             aria-modal="true"
             aria-labelledby="sheet-title"
@@ -113,26 +102,26 @@ export function ProblemStatementSheet({
             {/* ------------------------------------------------------------- */}
             {/* FIXED HEADER STRIP */}
             {/* ------------------------------------------------------------- */}
-            <div className="shrink-0 bg-white border-b-4 border-black p-5 sm:p-6 space-y-3 select-none">
+            <div className="shrink-0 bg-[#5B8731] border-b-4 border-black p-5 sm:p-6 space-y-3 select-none text-white border-t-2 border-t-[#85B745]">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-white border-2 border-black shadow-neo-sm">
+                  <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-black shadow-[2px_2px_0px_#000]">
                     {problem.code}
                   </span>
-                  <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-neo-muted text-black border-2 border-black">
+                  <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-[#282828] text-[#55FFFF] border border-black shadow-[1px_1px_0px_#000]">
                     {problem.category}
                   </span>
                   <span
-                    className={`font-mono text-xs font-black uppercase px-2.5 py-1 border-2 border-black ${difficultyColors[problem.difficulty]}`}
+                    className={`font-mono text-xs font-black uppercase px-2.5 py-1 shadow-[1px_1px_0px_#000] ${difficultyBadgeStyle[problem.difficulty]}`}
                   >
                     {problem.difficulty}
                   </span>
                 </div>
 
-                {/* Custom Neo-Brutalist Close Button */}
+                {/* Close Button */}
                 <button
                   onClick={onClose}
-                  className="p-2 bg-white text-black hover:bg-neo-accent border-3 border-black shadow-neo-sm hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-none transition-all flex items-center justify-center font-black cursor-pointer"
+                  className="p-2 bg-black text-white hover:bg-[#FF5555] hover:text-white border-2 border-black shadow-[2px_2px_0px_#000] active:translate-x-0.5 active:translate-y-0.5 transition-all flex items-center justify-center font-black cursor-pointer"
                   title="Close Specifications (Esc)"
                   aria-label="Close sheet"
                 >
@@ -141,13 +130,13 @@ export function ProblemStatementSheet({
               </div>
 
               <div>
-                <div className="font-mono text-[11px] font-black uppercase tracking-wider text-black/60 flex items-center gap-1.5">
+                <div className="font-mono text-xs font-bold uppercase tracking-wider text-[#FFE285] flex items-center gap-1.5 [text-shadow:_1px_1px_0_#000]">
                   <Compass className="w-3.5 h-3.5 stroke-[2.5px]" />
                   <span>{problem.domain}</span>
                 </div>
                 <h2
                   id="sheet-title"
-                  className="font-black text-xl sm:text-2xl text-black uppercase tracking-tight leading-tight mt-1"
+                  className="font-mono font-black text-xl sm:text-2xl text-white uppercase tracking-tight leading-tight mt-1.5 [text-shadow:_2px_2px_0_#000]"
                 >
                   {problem.title}
                 </h2>
@@ -155,21 +144,21 @@ export function ProblemStatementSheet({
             </div>
 
             {/* ------------------------------------------------------------- */}
-            {/* SCROLLABLE BODY (LENIS PREVENTED + ZERO LAG) */}
+            {/* SCROLLABLE BODY */}
             {/* ------------------------------------------------------------- */}
             <div
               data-lenis-prevent="true"
               data-lenis-prevent-wheel="true"
               data-lenis-prevent-touch="true"
-              className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-6 bg-neo-bg overscroll-contain touch-pan-y"
+              className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-6 bg-[#DBDBDB] overscroll-contain touch-pan-y"
             >
               {/* Detailed Brief Card */}
-              <div className="border-4 border-black bg-white p-5 sm:p-6 shadow-neo space-y-3">
-                <div className="flex items-center gap-2 font-mono text-xs font-black uppercase text-black">
-                  <Sparkles className="w-4 h-4 text-amber-500 stroke-[3px]" />
+              <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-3">
+                <div className="flex items-center gap-2 font-mono text-xs font-black uppercase text-[#256010]">
+                  <Sparkles className="w-4 h-4 stroke-[2.5px]" />
                   <span>DETAILED PROBLEM BRIEF &amp; OBJECTIVE</span>
                 </div>
-                <div className="text-sm sm:text-base font-bold text-black/90 leading-relaxed space-y-3.5">
+                <div className="text-xs sm:text-sm font-mono font-bold text-black/85 leading-relaxed space-y-3.5">
                   {problem.fullDescription.split("\n\n").map((para, pIdx) => (
                     <p key={pIdx}>{para}</p>
                   ))}
@@ -177,18 +166,18 @@ export function ProblemStatementSheet({
               </div>
 
               {/* Expected Solution */}
-              <div className="border-4 border-black bg-white p-5 sm:p-6 shadow-neo space-y-4">
-                <h3 className="font-black text-sm uppercase tracking-wider text-black flex items-center gap-2 border-b-2 border-black/10 pb-2">
-                  <CheckCircle className="w-4 h-4 text-emerald-600 stroke-[3px]" />
-                  <span>EXPECTED SOLUTION:</span>
+              <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-4">
+                <h3 className="font-mono font-black text-xs sm:text-sm uppercase tracking-wider text-black flex items-center gap-2 border-b-2 border-black/20 pb-2">
+                  <CheckCircle className="w-4 h-4 text-[#256010] stroke-[3px]" />
+                  <span>EXPECTED SOLUTION &amp; KEY DELIVERABLES:</span>
                 </h3>
                 <div className="space-y-2.5">
                   {problem.keyDeliverables.map((deliv, idx) => (
                     <div
                       key={idx}
-                      className="flex items-start gap-3 p-3 bg-neo-bg border-2 border-black text-xs sm:text-sm font-bold text-black"
+                      className="flex items-start gap-3 p-3 bg-[#8B8B8B] border-4 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] text-xs sm:text-sm font-mono font-bold text-black"
                     >
-                      <span className="w-6 h-6 bg-black text-white font-mono text-xs font-black flex items-center justify-center shrink-0 border border-black">
+                      <span className="w-6 h-6 bg-black text-[#55FF55] font-mono text-xs font-black flex items-center justify-center shrink-0 border border-black shadow-[1px_1px_0px_#000]">
                         {idx + 1}
                       </span>
                       <span className="leading-snug pt-0.5">{deliv}</span>
@@ -199,15 +188,15 @@ export function ProblemStatementSheet({
 
               {/* Technical Constraints */}
               {problem.constraints && problem.constraints.length > 0 && (
-                <div className="border-4 border-black bg-amber-100 p-5 sm:p-6 shadow-neo space-y-3">
-                  <h3 className="font-black text-xs sm:text-sm uppercase tracking-wider text-amber-950 flex items-center gap-2 border-b-2 border-black/20 pb-2">
-                    <AlertTriangle className="w-4 h-4 text-amber-800 stroke-[3px]" />
+                <div className="bg-[#E8C5C5] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#883333] border-b-[#883333] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-3">
+                  <h3 className="font-mono font-black text-xs sm:text-sm uppercase tracking-wider text-[#991B1B] flex items-center gap-2 border-b-2 border-[#991B1B]/30 pb-2">
+                    <AlertTriangle className="w-4 h-4 text-[#991B1B] stroke-[3px]" />
                     <span>TECHNICAL BOUNDARY CONSTRAINTS &amp; RULES:</span>
                   </h3>
-                  <ul className="space-y-1.5 text-xs sm:text-sm font-bold text-black/85">
+                  <ul className="space-y-1.5 text-xs sm:text-sm font-mono font-bold text-black/90">
                     {problem.constraints.map((c, i) => (
                       <li key={i} className="flex items-start gap-2">
-                        <span className="text-amber-900 font-mono font-black">▸</span>
+                        <span className="text-[#991B1B] font-mono font-black">▸</span>
                         <span>{c}</span>
                       </li>
                     ))}
@@ -217,18 +206,18 @@ export function ProblemStatementSheet({
 
               {/* Relevant Datasets & Data Sources */}
               {problem.relevantDatasets && problem.relevantDatasets.length > 0 && (
-                <div className="border-4 border-black bg-cyan-50 p-5 sm:p-6 shadow-neo space-y-3">
-                  <h3 className="font-black text-xs sm:text-sm uppercase tracking-wider text-cyan-950 flex items-center gap-2 border-b-2 border-black/20 pb-2">
-                    <Database className="w-4 h-4 text-cyan-800 stroke-[3px]" />
+                <div className="bg-[#C5DCE8] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#336688] border-b-[#336688] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-3">
+                  <h3 className="font-mono font-black text-xs sm:text-sm uppercase tracking-wider text-[#0C4A6E] flex items-center gap-2 border-b-2 border-[#0C4A6E]/30 pb-2">
+                    <Database className="w-4 h-4 text-[#0C4A6E] stroke-[3px]" />
                     <span>RELEVANT DATASETS &amp; DATA SOURCES:</span>
                   </h3>
                   <div className="space-y-2">
                     {problem.relevantDatasets.map((ds, idx) => (
                       <div
                         key={idx}
-                        className="flex items-start gap-2.5 p-2.5 bg-white border-2 border-black text-xs sm:text-sm font-bold text-black"
+                        className="flex items-start gap-2.5 p-2.5 bg-[#8B8B8B] border-2 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] text-xs sm:text-sm font-mono font-bold text-black"
                       >
-                        <span className="w-5 h-5 bg-cyan-300 text-black font-mono text-xs font-black flex items-center justify-center shrink-0 border border-black">
+                        <span className="w-5 h-5 bg-black text-[#55FFFF] font-mono text-xs font-black flex items-center justify-center shrink-0 border border-black shadow-[1px_1px_0px_#000]">
                           {idx + 1}
                         </span>
                         <span className="leading-snug pt-0.5">{ds}</span>
@@ -239,16 +228,16 @@ export function ProblemStatementSheet({
               )}
 
               {/* Evaluation Focus */}
-              <div className="border-4 border-black bg-white p-5 sm:p-6 shadow-neo space-y-3">
-                <div className="font-mono text-xs font-black uppercase text-black/70 flex items-center gap-1.5 border-b-2 border-black/10 pb-2">
-                  <Award className="w-4 h-4 text-amber-500 stroke-[2.5px]" />
+              <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-3">
+                <div className="font-mono text-xs font-black uppercase text-black flex items-center gap-1.5 border-b-2 border-black/20 pb-2">
+                  <Award className="w-4 h-4 text-[#8F5500] stroke-[2.5px]" />
                   <span>EVALUATION EMPHASIS:</span>
                 </div>
                 <div className="flex flex-col gap-2.5">
                   {problem.evaluationFocus.map((crit, idx) => (
                     <div
                       key={idx}
-                      className="font-mono text-xs font-black uppercase p-3 bg-neo-secondary border-2 border-black text-black shadow-neo-sm leading-relaxed"
+                      className="font-mono text-xs font-black uppercase p-3 bg-[#8B8B8B] border-2 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] text-black shadow-[2px_2px_0px_#000] leading-relaxed"
                     >
                       {crit}
                     </div>
@@ -258,11 +247,11 @@ export function ProblemStatementSheet({
 
               {/* Mentorship & Support */}
               {problem.sponsorOrMentor && (
-                <div className="border-3 border-black bg-white p-4 flex items-center justify-between gap-3">
-                  <span className="font-mono text-xs font-bold text-black/70">
+                <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-4 flex items-center justify-between gap-3">
+                  <span className="font-mono text-xs font-bold text-black/80">
                     INDUSTRY SPONSOR &amp; MENTORSHIP:
                   </span>
-                  <span className="font-mono text-xs font-black bg-neo-muted px-2 py-0.5 border border-black">
+                  <span className="font-mono text-xs font-black bg-black text-[#55FF55] px-2 py-0.5 border border-black shadow-[1px_1px_0px_#000]">
                     {problem.sponsorOrMentor}
                   </span>
                 </div>
@@ -272,12 +261,12 @@ export function ProblemStatementSheet({
             {/* ------------------------------------------------------------- */}
             {/* FIXED FOOTER ACTIONS */}
             {/* ------------------------------------------------------------- */}
-            <div className="shrink-0 bg-white border-t-4 border-black p-4 sm:p-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 select-none">
+            <div className="shrink-0 bg-[#C6C6C6] border-t-4 border-black p-4 sm:p-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 select-none">
               <a
                 href={problem.driveUrl || "#"}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-3.5 font-black text-xs uppercase tracking-wider border-3 border-black bg-white hover:bg-neutral-100 transition-all shadow-neo-sm hover:shadow-none hover:translate-x-0.5 hover:translate-y-0.5 flex items-center justify-center gap-2 cursor-pointer"
+                className="w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-3.5 font-mono font-black text-xs uppercase tracking-wider bg-[#5B8731] hover:bg-[#70B237] text-white border-3 border-t-[#85B745] border-l-[#85B745] border-r-[#38591E] border-b-[#38591E] shadow-[2px_2px_0px_#000] flex items-center justify-center gap-2 cursor-pointer"
               >
                 <Download className="w-4 h-4 stroke-[3px]" />
                 <span>DOWNLOAD SPEC DOCUMENT</span>
@@ -286,7 +275,7 @@ export function ProblemStatementSheet({
               <Link
                 href="/register"
                 onClick={onClose}
-                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 bg-neo-secondary hover:bg-neo-accent text-black font-black text-xs sm:text-sm uppercase tracking-wider border-4 border-black shadow-neo hover:shadow-neo-lg hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-3.5 bg-[#FFAA00] hover:bg-[#FFC04D] text-black font-mono font-black text-xs sm:text-sm uppercase tracking-wider border-3 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[3px_3px_0px_#000] flex items-center justify-center gap-2"
               >
                 <span>REGISTER SQUAD FOR HACKVERSE</span>
                 <ArrowRight className="w-4 h-4 stroke-[3px]" />
@@ -300,3 +289,4 @@ export function ProblemStatementSheet({
 
   return createPortal(sheetPortal, document.body);
 }
+
