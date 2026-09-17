@@ -1,8 +1,6 @@
 import { Resend } from "resend";
-import { generatePassPngBuffer } from "@/lib/passImageGenerator";
 import { generateInvoicePdfBuffer } from "@/lib/invoiceGenerator";
 import { EVENT_DATA } from "@/data/event";
-import { prisma } from "@/lib/prisma";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const RESEND_FROM_EMAIL =
@@ -11,7 +9,7 @@ const RESEND_FROM_EMAIL =
 // Lazy initialize Resend client
 function getResendClient() {
   if (!RESEND_API_KEY) {
-    console.warn("⚠️ RESEND_API_KEY is not set in environment variables. Email sending is in mock/log mode.");
+    console.warn("[EMAIL_SERVICE] RESEND_API_KEY is not set in environment variables. Email sending is in mock/log mode.");
     return null;
   }
   return new Resend(RESEND_API_KEY);
@@ -147,13 +145,22 @@ function renderEmailShell(title: string, contentHtml: string): string {
 <body>
   <div class="wrapper">
     <div class="header">
-      <div class="badge">CODEBREAKERS // GCE KALAHANDI</div>
-      <h1 style="margin: 0; font-size: 24px; font-weight: 900; letter-spacing: -0.5px; text-transform: uppercase;">
-        HACKVERSE &apos;26
-      </h1>
-      <div style="font-size: 12px; color: #facc15; font-family: monospace; margin-top: 4px; font-weight: bold;">
-        24-HOUR CONTINUOUS STATE HACKATHON
-      </div>
+      <table style="width: 100%; border-collapse: collapse;">
+        <tr>
+          <td style="vertical-align: middle;">
+            <div class="badge">CODEBREAKERS // GCE KALAHANDI</div>
+            <h1 style="margin: 0; font-size: 24px; font-weight: 900; letter-spacing: -0.5px; text-transform: uppercase; color: #ffffff;">
+              HACKVERSE &apos;26
+            </h1>
+            <div style="font-size: 12px; color: #facc15; font-family: monospace; margin-top: 4px; font-weight: bold;">
+              24-HOUR CONTINUOUS STATE HACKATHON
+            </div>
+          </td>
+          <td style="width: 58px; text-align: right; vertical-align: middle;">
+            <img src="https://hackverse.codebreakersgcek.tech/cbhack.png" alt="HACKVERSE Logo" width="54" height="54" style="border: none; outline: none; display: inline-block; vertical-align: middle;" />
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="content">
@@ -244,7 +251,7 @@ export async function sendRegistrationSubmissionEmail(data: RegistrationEmailDat
     <!-- Payment & Submission Info -->
     <div class="card" style="background: #ffffff;">
       <div style="font-family: monospace; font-size: 12px; font-weight: 900; color: #000000; text-transform: uppercase; border-bottom: 2px solid #000; padding-bottom: 6px;">
-        📄 SUBMISSION &amp; PAYMENT DETAILS
+        SUBMISSION &amp; PAYMENT DETAILS
       </div>
 
       <table class="receipt-table">
@@ -313,36 +320,18 @@ export async function sendRegistrationSubmissionEmail(data: RegistrationEmailDat
 
 /**
  * 2. Send Email when Registration is Approved
- * - To Team (Leader & Members): Receives Approved Registration Email with digital Entry Pass (PNG) attached.
- * - To Admin: Receives Admin Audit Email with Official Invoice (PDF) and Pass attached.
+ * - Sends official Tax Invoice (PDF) attachment to Team Leader only.
  */
 export async function sendRegistrationApprovedEmail(data: RegistrationEmailData) {
   const resend = getResendClient();
-  const teamRecipients = [data.leaderEmail];
+  const leaderRecipient = data.leaderEmail?.trim()?.toLowerCase();
 
-  if (data.members && data.members.length > 0) {
-    data.members.forEach((m) => {
-      if (m.email && m.email.trim() && !teamRecipients.includes(m.email.trim().toLowerCase())) {
-        teamRecipients.push(m.email.trim().toLowerCase());
-      }
-    });
+  if (!leaderRecipient) {
+    console.warn("[EMAIL_SERVICE] No leader email found for registration approval email dispatch.");
+    return { success: false, error: "Leader email missing" };
   }
 
-  // 1. Generate the crisp PNG Pass attachment buffer
-  let passBuffer: Buffer | null = null;
-  try {
-    passBuffer = await generatePassPngBuffer({
-      ticketNumber: data.registrationNumber,
-      teamName: data.teamName,
-      dates: EVENT_DATA.displayDates,
-      venueCampus: EVENT_DATA.location?.campus,
-      venueCity: `${EVENT_DATA.location?.city}, ${EVENT_DATA.location?.state}`,
-    });
-  } catch (passErr) {
-    console.error("Failed to generate pass PNG for email attachment:", passErr);
-  }
-
-  // 2. Generate the crisp official PDF Invoice buffer (for Admin records)
+  // 1. Generate the crisp official PDF Invoice buffer
   let invoiceBuffer: Buffer | null = null;
   try {
     const issueDate = new Date().toLocaleDateString("en-US", {
@@ -370,188 +359,110 @@ export async function sendRegistrationApprovedEmail(data: RegistrationEmailData)
   }
 
   // =========================================================================
-  // A. SQUAD PARTICIPANT EMAIL (With Pass PNG attached; Invoice is NOT sent to squad)
+  // TEAM LEADER EMAIL (Official Tax Invoice PDF Attached)
   // =========================================================================
-  const squadContentHtml = `
+  const contentHtml = `
     <div style="background: #dcfce7; border: 3px solid #15803d; padding: 14px; margin-bottom: 20px;">
       <h2 style="font-size: 20px; font-weight: 900; margin: 0; color: #15803d; text-transform: uppercase;">
-        ✓ REGISTRATION APPROVED &amp; CONFIRMED!
+        SQUAD REGISTRATION APPROVED &amp; CONFIRMED
       </h2>
       <div style="font-size: 13px; color: #166534; margin-top: 4px; font-weight: bold;">
-        Your squad and documents have been verified and approved on the HACKVERSE '26 Roster.
+        Your squad and documents have been verified and confirmed on the HACKVERSE '26 Roster.
       </div>
     </div>
 
     <p style="font-size: 14px; line-height: 1.5; color: #3f3f46;">
-      Congratulations <strong>${data.leaderName}</strong> &amp; team <strong>${data.teamName}</strong>! Your squad registration has been verified and officially approved by the organizing committee.
+      Dear <strong>${data.leaderName}</strong>,<br><br>
+      Congratulations! Your squad <strong>${data.teamName}</strong> has been officially approved by the organizing committee. Your official <strong>Tax Invoice (PDF)</strong> is attached to this email for your records.
     </p>
 
-    <!-- Pass Highlights Card -->
-    <div class="card" style="background: #000000; color: #ffffff; border-color: #000000;">
-      <div style="color: #facc15; font-family: monospace; font-size: 11px; font-weight: bold; letter-spacing: 1px;">
-        OFFICIAL ENTRY PASS ATTACHED
+    <!-- Registration Overview Card -->
+    <div class="card" style="background: #ffffff; border-color: #000000;">
+      <div style="color: #ca8a04; font-family: monospace; font-size: 11px; font-weight: bold; letter-spacing: 1px;">
+        OFFICIAL REGISTRATION DETAILS
       </div>
-      <div style="font-size: 26px; font-weight: 900; color: #ffffff; margin: 6px 0;">
+      <div style="font-size: 24px; font-weight: 900; color: #000000; font-family: monospace; margin: 6px 0 12px 0;">
         ${data.registrationNumber}
       </div>
-      <div style="font-size: 12px; color: #a1a1aa; line-height: 1.6;">
-        &bull; <strong>Squad:</strong> ${data.teamName}<br>
-        &bull; <strong>Dates:</strong> ${EVENT_DATA.displayDates}<br>
-        &bull; <strong>Venue:</strong> ${EVENT_DATA.location.campus}, ${EVENT_DATA.location.city}<br>
-        &bull; <strong>Access Tier:</strong> ALL-ACCESS PASS (24h Arena + Meals + Ports)
+
+      <table style="width: 100%; font-size: 13px; line-height: 1.6;">
+        <tr>
+          <td style="color: #71717a; width: 40%;">Squad Name:</td>
+          <td><strong>${data.teamName}</strong></td>
+        </tr>
+        <tr>
+          <td style="color: #71717a;">Institution:</td>
+          <td><strong>${data.collegeName}</strong></td>
+        </tr>
+        <tr>
+          <td style="color: #71717a;">Team Leader:</td>
+          <td>${data.leaderName} (${data.leaderEmail})</td>
+        </tr>
+        <tr>
+          <td style="color: #71717a;">Payment Mode:</td>
+          <td>${data.paymentDetails?.paymentMode || "UPI_QR"}</td>
+        </tr>
+        <tr>
+          <td style="color: #71717a;">Transaction ID:</td>
+          <td>${data.paymentDetails?.transactionId || "N/A"}</td>
+        </tr>
+        <tr>
+          <td style="color: #71717a;">Amount Paid:</td>
+          <td><strong>${data.paymentDetails?.amount ? `₹${data.paymentDetails.amount}` : "₹0 (FREE)"}</strong></td>
+        </tr>
+        <tr>
+          <td style="color: #71717a;">Event Dates:</td>
+          <td>${EVENT_DATA.displayDates}</td>
+        </tr>
+        <tr>
+          <td style="color: #71717a;">Venue:</td>
+          <td>${EVENT_DATA.location?.campus}, ${EVENT_DATA.location?.city}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Invoice Attachment Notice -->
+    <div style="background: #f4f4f5; border: 2px solid #000000; padding: 14px; font-size: 12px; line-height: 1.5; margin: 16px 0;">
+      <strong>Attached Document:</strong>
+      <div style="margin-top: 4px; color: #52525b;">
+        Your official Tax Invoice (<code>invoice-${data.registrationNumber}.pdf</code>) is attached to this email. Please preserve it for college reimbursement and tournament records.
       </div>
     </div>
 
-    <!-- Important Check-in Instructions -->
-    <div style="background: #f4f4f5; border: 2px solid #000000; padding: 14px; font-size: 12px; line-height: 1.5;">
-      <strong>📌 Venue Reporting Instructions:</strong>
-      <ol style="margin: 6px 0 0 16px; padding: 0;">
-        <li>Your digital <strong>Entry Pass (PNG)</strong> is attached to this email. Save it to your phone.</li>
-        <li>Present the QR code at the registration desk on <strong>${EVENT_DATA.displayDates}</strong> for fast-track badge issuance.</li>
-        <li>All squad members must carry their official College Student Photo Identity Cards.</li>
-      </ol>
-    </div>
-
-    <center>
-      <a href="${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}" class="btn">
+    <center style="margin-top: 24px;">
+      <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://hackverse.cbgcek.dev"}" class="btn">
         OPEN EVENT DASHBOARD
       </a>
     </center>
   `;
 
-  const squadHtml = renderEmailShell("HACKVERSE '26 - Registration Approved & Entry Pass", squadContentHtml);
+  const emailHtml = renderEmailShell("HACKVERSE '26 - Registration Approved & Tax Invoice", contentHtml);
 
   if (!resend) {
-    console.log(`[Email Mock] Approval email with pass PNG triggered for team ${teamRecipients.join(", ")} (${data.registrationNumber})`);
+    console.log(`[Email Mock] Approved invoice email triggered for leader: ${leaderRecipient} (${data.registrationNumber})`);
     return { success: true, mocked: true };
   }
 
-  let teamEmailResult: { success: boolean; id?: string; error?: string; mocked?: boolean } = {
-    success: true,
-    id: "",
-  };
-
   try {
-    const teamAttachments: any[] = [];
-    if (passBuffer) {
-      teamAttachments.push({
-        filename: `${data.registrationNumber}-PASS.png`,
-        content: passBuffer,
+    const attachments: any[] = [];
+    if (invoiceBuffer) {
+      attachments.push({
+        filename: `invoice-${data.registrationNumber}.pdf`,
+        content: invoiceBuffer,
       });
     }
 
     const res = await resend.emails.send({
       from: RESEND_FROM_EMAIL,
-      to: teamRecipients,
-      subject: `🎉 HACKVERSE '26 Official Entry Pass: ${data.teamName} (${data.registrationNumber})`,
-      html: squadHtml,
-      attachments: teamAttachments.length > 0 ? teamAttachments : undefined,
+      to: [leaderRecipient],
+      subject: `HACKVERSE '26 | Registration Approved & Official Tax Invoice: ${data.teamName} (${data.registrationNumber})`,
+      html: emailHtml,
+      attachments: attachments.length > 0 ? attachments : undefined,
     });
 
-    teamEmailResult = { success: true, id: res.data?.id || "" };
+    return { success: true, id: res.data?.id || "" };
   } catch (error: any) {
-    console.error("Failed to send team approval email:", error);
-    teamEmailResult = { success: false, error: error.message };
+    console.error("Failed to send leader approval invoice email:", error);
+    return { success: false, error: error.message };
   }
-
-  // =========================================================================
-  // B. ADMIN NOTIFICATION EMAIL (Invoice PDF is sent ONLY to Admin)
-  // =========================================================================
-  try {
-    let adminEmail = process.env.ADMIN_EMAIL || process.env.RESEND_ADMIN_EMAIL || "hackverse26@codebreakersgcek.tech";
-    
-    // Fetch configured admin contact email from settings
-    try {
-      const settings = await prisma.systemSettings.findFirst();
-      if (settings?.contactEmail) {
-        adminEmail = settings.contactEmail;
-      }
-    } catch {
-      // Fallback
-    }
-
-    const adminContentHtml = `
-      <div style="background: #000000; color: #ffffff; padding: 14px; margin-bottom: 20px; border-bottom: 3px solid #facc15;">
-        <div style="font-family: monospace; font-size: 11px; color: #facc15; font-weight: bold;">
-          ADMIN AUDIT &bull; INVOICE GENERATION
-        </div>
-        <h2 style="font-size: 18px; font-weight: 900; margin: 4px 0 0 0; text-transform: uppercase;">
-          SQUAD APPROVED: ${data.teamName} (${data.registrationNumber})
-        </h2>
-      </div>
-
-      <p style="font-size: 13px; line-height: 1.5; color: #3f3f46;">
-        This is an automated audit copy for the HACKVERSE &apos;26 administration team. The squad registration below has been verified and approved. The official Tax Invoice PDF is attached for bookkeeping.
-      </p>
-
-      <div class="card">
-        <table style="width: 100%; font-size: 13px; line-height: 1.6;">
-          <tr>
-            <td style="color: #71717a; width: 40%;">Registration ID:</td>
-            <td><strong>${data.registrationNumber}</strong></td>
-          </tr>
-          <tr>
-            <td style="color: #71717a;">Squad Name:</td>
-            <td><strong>${data.teamName}</strong></td>
-          </tr>
-          <tr>
-            <td style="color: #71717a;">College:</td>
-            <td>${data.collegeName}</td>
-          </tr>
-          <tr>
-            <td style="color: #71717a;">Leader:</td>
-            <td>${data.leaderName} (${data.leaderEmail}, ${data.leaderPhone || "N/A"})</td>
-          </tr>
-          <tr>
-            <td style="color: #71717a;">Payment Mode:</td>
-            <td>${data.paymentDetails?.paymentMode || "FREE_SPONSORED"}</td>
-          </tr>
-          <tr>
-            <td style="color: #71717a;">Transaction ID:</td>
-            <td>${data.paymentDetails?.transactionId || "N/A"}</td>
-          </tr>
-          <tr>
-            <td style="color: #71717a;">Amount:</td>
-            <td>${data.paymentDetails?.amount ? `₹${data.paymentDetails.amount}` : "₹0 (FREE)"}</td>
-          </tr>
-          <tr>
-            <td style="color: #71717a;">Approval Date:</td>
-            <td>${new Date().toISOString()}</td>
-          </tr>
-        </table>
-      </div>
-
-      <div style="background: #f4f4f5; border: 1px solid #e4e4e7; padding: 10px; font-size: 11px; font-family: monospace; color: #71717a;">
-        * Note: Official Tax Invoice PDF is attached to this admin email only and was not attached to student emails as per tournament policy.
-      </div>
-    `;
-
-    const adminHtml = renderEmailShell("HACKVERSE '26 - Admin Audit & Invoice Copy", adminContentHtml);
-
-    const adminAttachments: any[] = [];
-    if (invoiceBuffer) {
-      adminAttachments.push({
-        filename: `invoice-${data.registrationNumber}.pdf`,
-        content: invoiceBuffer,
-      });
-    }
-    if (passBuffer) {
-      adminAttachments.push({
-        filename: `${data.registrationNumber}-PASS.png`,
-        content: passBuffer,
-      });
-    }
-
-    await resend.emails.send({
-      from: RESEND_FROM_EMAIL,
-      to: [adminEmail],
-      subject: `📋 [ADMIN INVOICE & AUDIT] Approved Registration: ${data.teamName} (${data.registrationNumber})`,
-      html: adminHtml,
-      attachments: adminAttachments.length > 0 ? adminAttachments : undefined,
-    });
-  } catch (adminErr) {
-    console.warn("Failed to dispatch admin audit invoice email:", adminErr);
-  }
-
-  return teamEmailResult;
 }

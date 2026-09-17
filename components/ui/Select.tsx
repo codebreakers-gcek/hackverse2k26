@@ -1,5 +1,6 @@
 import React, { SelectHTMLAttributes, forwardRef } from "react";
 import clsx from "clsx";
+import { AlertTriangle, ChevronDown } from "lucide-react";
 
 export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
@@ -47,12 +48,13 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
               : children}
           </select>
           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 font-black text-black">
-            ▼
+            <ChevronDown className="w-4 h-4 stroke-[3px] text-black" />
           </div>
         </div>
         {error && (
           <p id={`${selectId}-error`} className="text-xs font-bold text-red-600 flex items-center gap-1">
-            <span>⚠</span> {error}
+            <AlertTriangle className="w-3.5 h-3.5 stroke-[2.5px] text-red-600 shrink-0" />
+            <span>{error}</span>
           </p>
         )}
         {!error && helperText && (

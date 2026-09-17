@@ -19,6 +19,8 @@ import {
   Flame,
   Check,
   Share2,
+  HelpCircle,
+  Headphones,
 } from "lucide-react";
 import { WhatsappIcon } from "@/components/common/SocialIcons";
 import { SOCIAL_CHANNELS } from "@/data/contactData";
@@ -83,7 +85,8 @@ export function FaqContent() {
           className="object-cover object-center"
         />
         {/* Subtle dark tint to guarantee readability while preserving 100% full image clarity */}
-        <div className="absolute inset-0 bg-black/25 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/85" />
       </div>
 
       <motion.div
@@ -97,8 +100,8 @@ export function FaqContent() {
         {/* ========================================================================= */}
         <motion.div variants={itemVariants} className="w-full max-w-full flex justify-center">
           <div className="flex flex-col items-center text-center space-y-3 sm:space-y-4 max-w-3xl">
-            <span className="font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000] inline-block">
-              ★ KNOWLEDGE BASE // QUERY DESK ★
+            <span className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+              <HelpCircle className="w-3.5 h-3.5" /> KNOWLEDGE BASE // QUERY DESK
             </span>
 
             <h1 className="font-black text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white uppercase tracking-tight leading-tight [text-shadow:_3px_3px_0_#000,_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000]">
@@ -285,8 +288,8 @@ export function FaqContent() {
                 </div>
 
                 <div className="space-y-2 flex-1 min-w-0">
-                  <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000] inline-block">
-                    ★ 24/7 DIRECT MENTOR DESK ★
+                  <span className="inline-flex items-center gap-1.5 font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+                    <Headphones className="w-3.5 h-3.5" /> 24/7 DIRECT MENTOR DESK
                   </span>
                   <h3 className="font-mono font-black text-xl sm:text-2xl md:text-3xl text-white uppercase tracking-tight [text-shadow:_2px_2px_0_#000] leading-tight">
                     STILL GOT UNANSWERED QUERIES?

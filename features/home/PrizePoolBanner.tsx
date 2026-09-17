@@ -13,7 +13,7 @@ export function PrizePoolBanner() {
     {
       // 1st Place - Diamond / Netherite Tier
       borderClass: "border-t-[#55FFFF] border-l-[#55FFFF] border-r-[#008888] border-b-[#008888]",
-      badgeText: "★ DIAMOND CHAMPION ★",
+      badgeText: "DIAMOND CHAMPION",
       badgeClass: "bg-black text-[#55FFFF] border-2 border-[#55FFFF]",
       rankBadge: "OVERWORLD WINNER",
       rankTextClass: "text-[#55FFFF]",
@@ -21,14 +21,14 @@ export function PrizePoolBanner() {
       bountyTag: "GOLD + DIAMOND",
       bountyTagClass: "bg-[#55FFFF]/20 text-[#55FFFF] border-[#55FFFF]/40",
       bulletColor: "text-[#55FFFF]",
-      footerStatus: "⚡ INSTANT CHEST DISBURSAL",
+      footerStatus: "INSTANT CHEST DISBURSAL",
       footerColor: "text-[#55FF55]",
       icon: <Trophy className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2.5px] text-[#FFAA00] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />,
     },
     {
       // 2nd Place - Gold / Emerald Tier
       borderClass: "border-t-[#FFAA00] border-l-[#FFAA00] border-r-[#8F5500] border-b-[#8F5500]",
-      badgeText: "★ GOLD VANGUARD ★",
+      badgeText: "GOLD VANGUARD",
       badgeClass: "bg-black text-[#FFAA00] border-2 border-[#FFAA00]",
       rankBadge: "ELITE RUNNER UP",
       rankTextClass: "text-[#FFAA00]",
@@ -36,14 +36,14 @@ export function PrizePoolBanner() {
       bountyTag: "SILVER BOUNTY",
       bountyTagClass: "bg-[#FFAA00]/20 text-[#FFAA00] border-[#FFAA00]/40",
       bulletColor: "text-[#FFAA00]",
-      footerStatus: "⚡ VERIFIED CASH DISBURSAL",
+      footerStatus: "VERIFIED CASH DISBURSAL",
       footerColor: "text-[#FFAA00]",
       icon: <Award className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2.5px] text-[#FFAA00] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />,
     },
     {
       // 3rd Place - Redstone / Iron Tier
       borderClass: "border-t-[#FF7755] border-l-[#FF7755] border-r-[#882200] border-b-[#882200]",
-      badgeText: "★ REDSTONE FORGER ★",
+      badgeText: "REDSTONE FORGER",
       badgeClass: "bg-black text-[#FF7755] border-2 border-[#FF7755]",
       rankBadge: "TECH APPRENTICE",
       rankTextClass: "text-[#FF7755]",
@@ -51,7 +51,7 @@ export function PrizePoolBanner() {
       bountyTag: "BRONZE BOUNTY",
       bountyTagClass: "bg-[#FF7755]/20 text-[#FF7755] border-[#FF7755]/40",
       bulletColor: "text-[#FF7755]",
-      footerStatus: "⚡ VERIFIED CASH DISBURSAL",
+      footerStatus: "VERIFIED CASH DISBURSAL",
       footerColor: "text-[#FF7755]",
       icon: <Sparkles className="w-8 h-8 sm:w-9 sm:h-9 stroke-[2.5px] text-[#FF7755] drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]" />,
     },
@@ -80,8 +80,8 @@ export function PrizePoolBanner() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
         {/* Minecraft Themed Section Header */}
         <div className="flex flex-col items-center text-center space-y-3 sm:space-y-4">
-          <span className="font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#FFAA00] border-2 border-[#FFAA00] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000] inline-block">
-            ★ BOUNTY CHEST // STATE REWARDS ★
+          <span className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#FFAA00] border-2 border-[#FFAA00] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+            <Trophy className="w-3.5 h-3.5" /> BOUNTY CHEST // STATE REWARDS
           </span>
 
           <h2 className="font-black text-2xl xs:text-3xl sm:text-5xl md:text-6xl text-white uppercase tracking-tight leading-tight [text-shadow:_3px_3px_0_#000,_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000]">

@@ -95,7 +95,8 @@ export default function ProblemStatementsPage() {
           className="object-cover object-center"
         />
         {/* Subtle dark tint to guarantee readability while preserving image clarity */}
-        <div className="absolute inset-0 bg-black/35 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/85" />
       </div>
 
       <div className="relative z-10 flex flex-col min-h-screen">

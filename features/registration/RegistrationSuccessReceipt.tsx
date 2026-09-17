@@ -2,12 +2,12 @@
 
 import React, { useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   CheckCircle2,
   Printer,
   Download,
   Loader2,
-  Terminal,
   Calendar,
   MapPin,
   ArrowRight,
@@ -32,7 +32,8 @@ export function RegistrationSuccessReceipt({
   const passRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const ticketNumber = result.ticketId || result.registrationId || "HV26-241263";
+  const ticketNumber =
+    result.ticketId || result.registrationId || "HV26-241263";
   const baseUrl =
     typeof window !== "undefined" && window.location.origin
       ? window.location.origin
@@ -41,57 +42,56 @@ export function RegistrationSuccessReceipt({
   const barcodeData = encodeCode128B(ticketNumber);
   const barcodeScale = 1.35;
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   // Download pass as PNG
   const handleDownloadPng = async () => {
     if (!passRef.current) return;
-    setIsDownloading(true);
-
     try {
-      // Ensure all styles and assets are rendered cleanly
+      setIsDownloading(true);
       const dataUrl = await toPng(passRef.current, {
         cacheBust: true,
-        pixelRatio: 3, // Ultra-high resolution 3x PNG
+        pixelRatio: 2,
         backgroundColor: "#ffffff",
       });
-
       const link = document.createElement("a");
-      link.download = `${ticketNumber}-PASS.png`;
+      link.download = `HACKVERSE-26-ENTRY-PASS-${ticketNumber}.png`;
       link.href = dataUrl;
       link.click();
       toast.success("Entry pass downloaded as PNG!");
     } catch (err) {
-      console.error("Failed to generate PNG pass:", err);
-      toast.error("PNG export error. Opening print preview...");
-      window.print();
+      console.error("Failed to export entry pass image:", err);
+      toast.error("Failed to generate pass image. You can use Print instead.");
     } finally {
       setIsDownloading(false);
     }
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
-
   return (
-    <div className="max-w-2xl mx-auto space-y-6 animate-in zoom-in-95 duration-200">
-      {/* Success Notification Alert (Hidden on print) */}
-      <div className="border-4 border-black bg-emerald-300 p-6 shadow-neo text-black flex items-start gap-4 print:hidden">
-        <div className="w-10 h-10 bg-black text-white flex items-center justify-center border-2 border-black shrink-0">
-          <CheckCircle2 className="w-6 h-6 stroke-[3px]" />
-        </div>
-        <div>
-          <h3 className="font-black text-xl uppercase tracking-tight">
-            REGISTRATION CONFIRMED!
-          </h3>
-          <p className="text-sm font-bold mt-1 text-black/85">
-            {result.message ||
-              "Your squad entry is officially registered and verified on the HACKVERSE '26 roster."}
-          </p>
+    <div className="max-w-2xl mx-auto space-y-8 animate-in fade-in zoom-in-95 duration-200">
+      {/* ========================================================================= */}
+      {/* 1. STATUS NOTIFICATION HEADER BANNER */}
+      {/* ========================================================================= */}
+      <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-5 sm:p-6 shadow-[6px_6px_0px_#000] text-black print:hidden">
+        <div className="flex items-start sm:items-center gap-3.5">
+          <div className="w-10 h-10 bg-[#5B8731] border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] flex items-center justify-center shrink-0 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)]">
+            <CheckCircle2 className="w-6 h-6 text-white stroke-[3px]" />
+          </div>
+          <div className="space-y-0.5">
+            <h2 className="font-black text-lg sm:text-xl uppercase tracking-tight text-black">
+              SQUAD REGISTRATION CONFIRMED!
+            </h2>
+            <p className="text-xs sm:text-sm font-bold text-black/80 leading-relaxed">
+              Your squad details have been registered into the HACKVERSE &apos;26 database. Save or print your official Entry Pass below.
+            </p>
+          </div>
         </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* OFFICIAL BOARDING PASS TICKET (PNG EXPORT & PRINT TARGET)                 */}
+      {/* 2. OFFICIAL TOURNAMENT ENTRY PASS (PRINT & IMAGE EXPORT CONTAINER) */}
       {/* ========================================================================= */}
       <div
         ref={passRef}
@@ -105,8 +105,16 @@ export function RegistrationSuccessReceipt({
         {/* Ticket Header */}
         <div className="bg-black text-white p-5 sm:p-6 flex flex-row items-center justify-between gap-4 border-b-4 border-black">
           <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 bg-amber-400 text-black flex items-center justify-center border-2 border-black shrink-0 shadow-sm font-mono font-black text-xl tracking-tighter">
-              &gt;_
+            <div className="w-12 h-12 shrink-0 flex items-center justify-center relative">
+              <Image
+                src="/cbhack.webp"
+                alt="Hackverse Logo"
+                width={48}
+                height={48}
+                priority
+                unoptimized
+                className="w-full h-full object-contain"
+              />
             </div>
             <div>
               <div className="font-black text-lg sm:text-xl tracking-wider uppercase font-sans leading-tight">
@@ -220,8 +228,9 @@ export function RegistrationSuccessReceipt({
                 <span className="font-black text-xs sm:text-sm text-black block">
                   Scan at Registration Desk
                 </span>
-                <span className="font-mono text-[11px] text-emerald-600 font-bold block tracking-wide">
-                  ✓ VERIFIED ON ROSTER
+                <span className="font-mono text-[11px] text-emerald-600 font-bold flex items-center gap-1 tracking-wide">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 stroke-[2.5px] shrink-0" />
+                  <span>VERIFIED ON ROSTER</span>
                 </span>
               </div>
             </div>
@@ -261,14 +270,14 @@ export function RegistrationSuccessReceipt({
       </div>
 
       {/* Ticket Action Controls */}
-      <div className="border-4 border-black bg-amber-300 p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-neo print:hidden">
-        <div className="flex flex-col sm:flex-row gap-2">
+      <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 shadow-[6px_6px_0px_#000] print:hidden">
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
           {/* Primary Action: Download PNG */}
           <button
             type="button"
             onClick={handleDownloadPng}
             disabled={isDownloading}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white font-black text-xs uppercase tracking-wider border-3 border-black shadow-neo-sm hover:bg-neutral-800 hover:shadow-none transition-all cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-[#5B8731] hover:bg-[#689B37] text-white font-black text-xs uppercase tracking-wider border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed [text-shadow:_1px_1px_0_#000]"
           >
             {isDownloading ? (
               <>
@@ -286,13 +295,13 @@ export function RegistrationSuccessReceipt({
       </div>
 
       {/* Return Link */}
-      <div className="text-center pt-2 print:hidden">
+      <div className="text-center pt-3 print:hidden flex justify-center">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 font-mono text-xs font-black uppercase underline hover:text-amber-500 transition-colors text-black"
+          className="inline-flex items-center gap-2.5 px-6 py-2.5 bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black border-3 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-mono text-xs font-black uppercase shadow-[4px_4px_0px_#000] active:translate-y-0.5 transition-all cursor-pointer"
         >
-          <span>RETURN TO TECH FEST HOMEPAGE</span>
-          <ArrowRight className="w-3.5 h-3.5" />
+          <span>RETURN TO HACKVERSE HOMEPAGE</span>
+          <ArrowRight className="w-4 h-4 stroke-[3px]" />
         </Link>
       </div>
     </div>

@@ -1,5 +1,6 @@
 import React, { Suspense } from "react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { RegistrationForm } from "@/features/registration/RegistrationForm";
 import { SectionTitle } from "@/components/common/SectionTitle";
 
@@ -79,22 +80,40 @@ export const metadata: Metadata = {
 
 export default function RegisterPage() {
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10">
-      <SectionTitle
-        tag="ENROLLMENT // ZERO ENTRY FEE"
-        title="REGISTER YOUR"
-        highlightText="SQUAD"
-        subtitle="Form a team of 1 to 4 members. Submit your team leader details, problem statement preference, and member credentials below."
-      />
-      <Suspense
-        fallback={
-          <div className="border-4 border-black bg-white p-8 font-black font-mono text-center">
-            LOADING REGISTRATION PORTAL...
-          </div>
-        }
-      >
-        <RegistrationForm />
-      </Suspense>
+    <div className="relative min-h-screen text-black overflow-hidden flex flex-col selection:bg-[#FFAA00] selection:text-black">
+      {/* Minecraft Background Layer with Full Clarity */}
+      <div className="fixed inset-0 z-0 pointer-events-none select-none overflow-hidden">
+        <Image
+          src="/minecraft/wallpaper.webp"
+          alt="HackVerse Registration Minecraft Background"
+          fill
+          priority
+          unoptimized
+          sizes="100vw"
+          className="object-cover object-center"
+        />
+        {/* Subtle dark tint to guarantee readability while preserving image clarity */}
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/85" />
+      </div>
+
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10 w-full">
+        <SectionTitle
+          tag="ENROLLMENT // ZERO ENTRY FEE"
+          title="REGISTER YOUR"
+          highlightText="SQUAD"
+          subtitle="Form a team of 1 to 4 members. Submit your team leader details, problem statement preference, and member credentials below."
+        />
+        <Suspense
+          fallback={
+            <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-8 shadow-[6px_6px_0px_#000] font-black font-mono text-center text-black">
+              LOADING REGISTRATION PORTAL...
+            </div>
+          }
+        >
+          <RegistrationForm />
+        </Suspense>
+      </div>
     </div>
   );
 }

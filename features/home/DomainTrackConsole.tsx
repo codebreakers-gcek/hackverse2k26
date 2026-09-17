@@ -6,6 +6,8 @@ import Image from "next/image";
 import {
   ArrowRight,
   Lock,
+  Swords,
+  Compass,
 } from "lucide-react";
 import clsx from "clsx";
 import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
@@ -23,19 +25,20 @@ export function DomainTrackConsole() {
   };
 
   return (
-    <section className="relative pt-16 pb-0 sm:pt-24 sm:pb-0 border-b-4 border-black overflow-hidden bg-neutral-900">
-      {/* Minecraft Background Layer */}
+    <section className="relative py-16 sm:py-24 border-b-4 border-black overflow-hidden bg-neutral-900 select-none">
+      {/* Minecraft Dungeon Overworld Background Layer */}
       <div className="absolute inset-0 z-0 select-none pointer-events-none overflow-hidden">
         <Image
-          src="/minecraft/wallpaper.webp"
-          alt="Choose Your Battleground Minecraft Background"
+          src="/minecraft/minecraft_natural.webp"
+          alt="Minecraft Biomes Grid"
           fill
           priority
           sizes="100vw"
-          className="object-cover object-center blur-[2px]"
+          className="object-cover object-center"
         />
-        {/* Subtle dark vignette & pixel backdrop */}
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]" />
+        {/* Dark atmospheric overlay */}
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/85" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">
@@ -54,8 +57,8 @@ export function DomainTrackConsole() {
             </div>
           </div> */}
 
-          <span className="font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000] inline-block">
-            ★ BIOMES &amp; REALMS // QUEST TRACKS ★
+          <span className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+            <Compass className="w-3.5 h-3.5" /> BIOMES &amp; REALMS // QUEST TRACKS
           </span>
 
           <h2 className="font-black text-2xl xs:text-3xl sm:text-5xl md:text-6xl text-white uppercase tracking-tight leading-tight [text-shadow:_3px_3px_0_#000,_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000]">
@@ -78,7 +81,7 @@ export function DomainTrackConsole() {
           <div className="bg-[#5B8731] border-b-4 border-black border-t-2 border-t-[#85B745] px-4 sm:px-6 py-3 flex flex-wrap items-center justify-between gap-3 text-white">
             <div className="flex items-center gap-2.5">
               <div className="w-6 h-6 bg-[#2B2B2B] text-[#55FF55] font-mono text-xs font-black flex items-center justify-center border-2 border-black shadow-[2px_2px_0px_#000]">
-                ⚔
+                <Swords className="w-3.5 h-3.5 text-[#55FF55]" />
               </div>
               <span className="font-mono text-xs sm:text-sm font-black uppercase tracking-wider text-white [text-shadow:_2px_2px_0_#000]">
                 {isProblemStatementsPublished

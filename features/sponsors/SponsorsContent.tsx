@@ -372,8 +372,8 @@ export function SponsorsContent() {
       {/* ========================================================================= */}
       <div className="space-y-8">
         <div className="text-center space-y-2">
-          <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-black text-[#FFAA00] border-2 border-[#FFAA00] inline-block shadow-[2px_2px_0px_#000]">
-            ★ TIERS // PATRON REALMS ★
+          <span className="inline-flex items-center gap-2 font-mono text-xs font-black uppercase px-3 py-1 bg-black text-[#FFAA00] border-2 border-[#FFAA00] shadow-[2px_2px_0px_#000]">
+            <Crown className="w-3.5 h-3.5" /> TIERS // PATRON REALMS
           </span>
           <h2 className="font-black text-2xl sm:text-4xl text-white uppercase tracking-tight [text-shadow:_2px_2px_0_#000]">
             SPONSORSHIP TIERS &amp; EMBARGO ROSTER
@@ -451,8 +451,8 @@ export function SponsorsContent() {
       >
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
           <div className="lg:col-span-8 space-y-4">
-            <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-[#FFAA00] text-black border-2 border-black inline-block shadow-[2px_2px_0px_#000]">
-              ★ PARTNERSHIP DISPATCH DESK ★
+            <span className="inline-flex items-center gap-2 font-mono text-xs font-black uppercase px-3 py-1 bg-[#FFAA00] text-black border-2 border-black shadow-[2px_2px_0px_#000]">
+              <Mail className="w-3.5 h-3.5" /> PARTNERSHIP DISPATCH DESK
             </span>
 
             <h3 className="font-black text-2xl sm:text-4xl uppercase tracking-tight [text-shadow:_2px_2px_0_#000]">

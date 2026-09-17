@@ -90,7 +90,8 @@ export function TeamContent() {
           className="object-cover object-center"
         />
         {/* Subtle dark tint to guarantee readability while preserving 100% full image clarity */}
-        <div className="absolute inset-0 bg-black/25 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/85" />
       </div>
 
       <motion.div
@@ -104,8 +105,8 @@ export function TeamContent() {
         {/* ========================================================================= */}
         <motion.div variants={itemVariants} className="w-full max-w-full flex justify-center">
           <div className="flex flex-col items-center text-center space-y-3 sm:space-y-4 max-w-3xl">
-            <span className="font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000] inline-block">
-              ★ THE CREW // CODEBREAKERS GCEK ★
+            <span className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+              <Users className="w-3.5 h-3.5" /> THE CREW // CODEBREAKERS GCEK
             </span>
 
             <h1 className="font-black text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white uppercase tracking-tight leading-tight [text-shadow:_3px_3px_0_#000,_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000]">
@@ -174,7 +175,7 @@ export function TeamContent() {
                 </h3>
               </div>
               <span className="font-mono text-[11px] font-bold text-[#55FFFF] hidden sm:inline-block [text-shadow:_1px_1px_0_#000]">
-                ★ ACADEMIC &amp; INSTITUTIONAL GOVERNANCE ★
+                ACADEMIC &amp; INSTITUTIONAL GOVERNANCE
               </span>
             </div>
 
@@ -238,16 +239,14 @@ export function TeamContent() {
                       </div>
 
                       {/* Quote (Minecraft Inset Slab) */}
-                      <div className="p-3 bg-[#8B8B8B] border-3 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] relative shadow-[inset_2px_2px_4px_rgba(0,0,0,0.5)]">
-                        <Quote className="w-4 h-4 text-black/40 stroke-[3px] mb-1" />
-                        <p className="font-mono text-xs font-bold text-white [text-shadow:_1px_1px_0_#000] italic leading-relaxed">
-                          &quot;{official.quote}&quot;
-                        </p>
-                      </div>
-                    </div>
-
-                    <div className="pt-2.5 border-t-2 border-[#8B8B8B] flex items-center justify-between font-mono text-[10px] font-black text-black/80">
-                      <span>GOVT. COLLEGE OF ENGINEERING KALAHANDI</span>
+                      {official.quote && (
+                        <div className="p-3 bg-[#8B8B8B] border-3 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] relative shadow-[inset_2px_2px_4px_rgba(0,0,0,0.5)]">
+                          <Quote className="w-4 h-4 text-black/40 stroke-[3px] mb-1" />
+                          <p className="font-mono text-xs font-bold text-white [text-shadow:_1px_1px_0_#000] italic leading-relaxed">
+                            &quot;{official.quote}&quot;
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 );
@@ -256,6 +255,35 @@ export function TeamContent() {
           </motion.div>
         )}
 
+        {/* ========================================================================= */}
+        {/* SECTION 4: CORE LEADS & FOUNDERS */}
+        {/* ========================================================================= */}
+        {coreLeads.length > 0 && (
+          <motion.div variants={itemVariants} className="space-y-6">
+            <div className="flex items-center justify-between bg-[#1B1B1B]/90 backdrop-blur-sm px-4 py-2.5 border-3 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] shadow-[4px_4px_0px_#000]">
+              <div className="flex items-center gap-2.5">
+                <Sparkles className="w-5 h-5 sm:w-6 sm:h-6 text-[#FFAA00] stroke-[2.5px]" />
+                <h3 className="font-mono font-black text-base sm:text-xl uppercase tracking-tight text-white [text-shadow:_2px_2px_0_#000]">
+                  FOUNDING ARCHITECTS &amp; CLUB LEADS
+                </h3>
+              </div>
+              <span className="font-mono text-[11px] font-bold text-[#FFAA00] hidden sm:inline-block [text-shadow:_1px_1px_0_#000]">
+                CORE DIRECTORS
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {coreLeads.map((member, idx) => (
+                <MemberCard
+                  key={idx}
+                  member={member}
+                  copiedEmail={copiedEmail}
+                  onCopyEmail={handleCopyEmail}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
 
         {/* ========================================================================= */}
         {/* SECTION 5: DOMAIN & CLUB HEADS */}
@@ -270,7 +298,7 @@ export function TeamContent() {
                 </h3>
               </div>
               <span className="font-mono text-[11px] font-bold text-[#55FFFF] hidden sm:inline-block [text-shadow:_1px_1px_0_#000]">
-                ★ SYSTEMS, PR, EVENTS &amp; DEV OPERATIONS ★
+                SYSTEMS, PR, EVENTS &amp; DEV OPERATIONS
               </span>
             </div>
 

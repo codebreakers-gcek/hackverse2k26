@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { motion, useReducedMotion, type Variants } from "framer-motion";
-import { ArrowRight, Calendar, MapPin, Sparkles, Terminal, Award } from "lucide-react";
+import { ArrowRight, Calendar, MapPin, Sparkles, Terminal, Award, Trophy, Flame } from "lucide-react";
 import { EVENT_DATA } from "@/data/event";
 import { CountdownTimer } from "./CountdownTimer";
 import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
@@ -48,8 +48,9 @@ export function HeroSection() {
           sizes="100vw"
           className="object-cover object-center"
         />
-        {/* Backdrop Filter Layer */}
-        <div className="absolute inset-0 backdrop-blur-xs sm:backdrop-blur-sm bg-black/10" />
+        {/* Dark atmospheric overlay */}
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/85" />
       </div>
 
       {/* Decorative Floating Stickers */}
@@ -59,8 +60,9 @@ export function HeroSection() {
         transition={{ duration: 0.6, delay: 0.3 }}
         className="absolute top-6 left-4 sm:left-12 hidden lg:block select-none pointer-events-none"
       >
-        <div className="bg-neo-accent text-black font-black text-xs uppercase px-3 py-1.5 border-3 border-black shadow-neo-sm">
-          ★ FLAGSHIP 24H HACKATHON
+        <div className="bg-neo-accent text-black font-black text-xs uppercase px-3 py-1.5 border-3 border-black shadow-neo-sm flex items-center gap-1.5">
+          <Flame className="w-3.5 h-3.5 text-black shrink-0" />
+          <span>FLAGSHIP 24H HACKATHON</span>
         </div>
       </motion.div>
 
@@ -70,8 +72,9 @@ export function HeroSection() {
         transition={{ duration: 0.6, delay: 0.35 }}
         className="absolute top-10 right-4 sm:right-12 hidden lg:block select-none pointer-events-none"
       >
-        <div className="bg-neo-secondary text-black font-black text-xs uppercase px-3 py-1.5 border-3 border-black shadow-neo-sm">
-          🏆 ₹35K+ CASH POOL
+        <div className="bg-neo-secondary text-black font-black text-xs uppercase px-3 py-1.5 border-3 border-black shadow-neo-sm flex items-center gap-1.5">
+          <Trophy className="w-3.5 h-3.5 text-black shrink-0" />
+          <span>₹35K+ CASH POOL</span>
         </div>
       </motion.div>
 

@@ -18,8 +18,8 @@ export function SponsorsTeaser() {
           sizes="100vw"
           className="object-cover object-center opacity-40 mix-blend-luminosity"
         />
-        {/* Dark Vignette and Gradient Overlay */}
-        <div className="absolute inset-0 bg-black/40 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/85" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10 sm:space-y-12">

@@ -17,6 +17,7 @@ import {
   Clock,
   CheckCircle2,
   AlertCircle,
+  AlertTriangle,
   Sparkles,
   ArrowRight,
   Eye,
@@ -76,7 +77,8 @@ export function DocumentsContent() {
           className="object-cover object-center"
         />
         {/* Subtle dark tint to guarantee readability while preserving 100% full image clarity */}
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute inset-0 bg-black/55 backdrop-blur-[0.5px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/25 to-black/85" />
       </div>
 
       <div className="relative z-10 flex flex-col min-h-screen">
@@ -102,30 +104,22 @@ export function DocumentsContent() {
           {/* ========================================================================= */}
           {/* SECTION 1: HEADER */}
           {/* ========================================================================= */}
-          <motion.div variants={itemVariants} className="space-y-4 text-center sm:text-left">
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
-              <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-black text-white border-2 border-black shadow-neo-sm flex items-center gap-1.5">
-                <FileText className="w-3.5 h-3.5 text-neo-secondary" />
-                <span>OFFICIAL ASSETS &amp; TEMPLATES</span>
-              </span>
-              <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-[#55FF55] text-black border-2 border-black shadow-neo-sm flex items-center gap-1">
-                <Sparkles className="w-3.5 h-3.5 text-black" />
-                <span>OFFICIAL TEMPLATES READY</span>
-              </span>
-            </div>
+          <motion.div variants={itemVariants} className="space-y-3 flex flex-col items-center sm:items-start text-center sm:text-left">
+            <span className="inline-flex items-center gap-2 font-mono text-xs sm:text-sm font-black uppercase px-3.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+              <FileText className="w-3.5 h-3.5" /> CODEBREAKERS GCEK // OFFICIAL ASSETS &amp; TEMPLATES
+            </span>
 
-            <div className="space-y-2">
-              <h1 className="font-black text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white uppercase tracking-tight leading-tight [text-shadow:_3px_3px_0_#000,_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000]">
-                DOCUMENTS &amp;{" "}
-                <span className="inline-block bg-neo-secondary text-black px-2.5 sm:px-3 py-0.5 border-3 border-black shadow-neo-sm -rotate-1 [text-shadow:none]">
-                  TEMPLATES
-                </span>
-              </h1>
-              <div className="bg-[#1B1B1B]/90 backdrop-blur-sm border-3 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-4 sm:px-5 py-2.5 shadow-[4px_4px_0px_#000] inline-block max-w-2xl">
-                <p className="text-xs sm:text-sm md:text-base font-bold text-[#EAEAEA] font-mono leading-relaxed">
-                  Download standardized presentation decks, the official rule book, and event brochures for HackVerse &apos;26.
-                </p>
-              </div>
+            <h1 className="font-black text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white uppercase tracking-tight leading-tight [text-shadow:_3px_3px_0_#000,_-2px_-2px_0_#000,_2px_-2px_0_#000,_-2px_2px_0_#000]">
+              DOCUMENTS &amp;{" "}
+              <span className="inline-block bg-[#FFAA00] text-black px-2.5 sm:px-3 py-0.5 border-4 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[4px_4px_0px_#000] -rotate-1 [text-shadow:none]">
+                TEMPLATES
+              </span>
+            </h1>
+
+            <div className="bg-[#1B1B1B]/90 backdrop-blur-sm border-3 border-t-[#4A4A4A] border-l-[#4A4A4A] border-r-[#0D0D0D] border-b-[#0D0D0D] px-4 sm:px-6 py-2.5 shadow-[4px_4px_0px_#000] max-w-3xl">
+              <p className="text-xs sm:text-sm md:text-base font-bold text-[#EAEAEA] font-mono leading-relaxed">
+                Download standardized presentation decks, the official rule book, and event brochures for HackVerse &apos;26.
+              </p>
             </div>
           </motion.div>
         {/* ========================================================================= */}
@@ -156,7 +150,13 @@ export function DocumentsContent() {
                 >
                   <div className="flex items-center gap-2">
                     <div className="w-6 h-6 bg-[#2B2B2B] border-2 border-black flex items-center justify-center text-[#55FFFF] font-mono text-xs font-black shadow-[2px_2px_0px_#000]">
-                      {isPPT ? "📽" : isRulebook ? "📖" : "📄"}
+                      {isPPT ? (
+                        <Presentation className="w-3.5 h-3.5 text-[#55FFFF]" />
+                      ) : isRulebook ? (
+                        <BookOpen className="w-3.5 h-3.5 text-[#55FFFF]" />
+                      ) : (
+                        <FileText className="w-3.5 h-3.5 text-[#55FFFF]" />
+                      )}
                     </div>
                     <span className="font-mono text-xs sm:text-sm font-black uppercase tracking-wider text-white [text-shadow:_2px_2px_0_#000]">
                       {doc.badge}
@@ -246,8 +246,8 @@ export function DocumentsContent() {
                             )}
                           </div>
                           <div className="space-y-1.5">
-                            <span className="font-mono text-[11px] font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] inline-block shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
-                              ★ OFFICIAL DOCUMENT READY ★
+                            <span className="inline-flex items-center gap-1.5 font-mono text-[11px] font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-[#55FF55] shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+                              <CheckCircle2 className="w-3.5 h-3.5" /> OFFICIAL DOCUMENT READY
                             </span>
                             <p className="text-xs font-bold text-black/90 max-w-xs mx-auto font-mono">
                               {isPPT
@@ -325,7 +325,7 @@ export function DocumentsContent() {
             <div className="bg-[#8B8B8B] border-4 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] p-4 sm:p-6 space-y-3">
               <div className="flex items-center gap-2.5 text-black">
                 <div className="w-8 h-8 bg-[#2B2B2B] text-[#FFAA00] flex items-center justify-center border-2 border-black font-mono font-black text-base shadow-[2px_2px_0px_#000]">
-                  ⚠
+                  <AlertTriangle className="w-4 h-4 text-[#FFAA00] stroke-[2.5px]" />
                 </div>
                 <h3 className="font-mono font-black text-base sm:text-lg uppercase tracking-wider text-black">
                   IMPORTANT SUBMISSION &amp; TEMPLATE ADVISORY

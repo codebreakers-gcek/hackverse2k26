@@ -15,7 +15,7 @@ import {
   FileCode2,
   BookOpen,
   ClipboardList,
-
+  Sparkles,
 } from "lucide-react";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
@@ -209,22 +209,18 @@ export function Navbar() {
       <header
         ref={headerRef}
         className={clsx(
-          "fixed top-0 left-0 right-0 z-50 w-full max-w-full border-b-4 border-black shadow-neo-sm transition-all duration-300 ease-in-out",
-          mobileMenuOpen
-            ? "bg-[#FFFDF5] backdrop-blur-none"
-            : "bg-[#FFFDF5]/75 backdrop-blur-md supports-[backdrop-filter]:bg-[#FFFDF5]/70",
+          "fixed top-0 left-0 right-0 z-50 w-full max-w-full border-b-4 border-b-[#555555] border-t-2 border-t-[#FFFFFF] shadow-[0_4px_0_#000] transition-all duration-300 ease-in-out bg-[#C6C6C6]",
           hideOnMobile && !mobileMenuOpen && "-translate-y-full lg:translate-y-0 opacity-0 pointer-events-none lg:opacity-100 lg:pointer-events-auto"
         )}
       >
         {/* Top Header Marquee: Live Updates */}
         <div
           className={clsx(
-            "w-full max-w-full border-b-2 border-black flex items-center text-[11px] sm:text-xs font-mono font-bold tracking-wider uppercase overflow-hidden h-8 select-none transition-colors duration-300",
-            mobileMenuOpen ? "bg-black text-white" : "bg-black/90 backdrop-blur-md text-white"
+            "w-full max-w-full border-b-2 border-[#555555] flex items-center text-[11px] sm:text-xs font-mono font-bold tracking-wider uppercase overflow-hidden h-8 select-none transition-colors duration-300 bg-[#2A2A2A] text-white"
           )}
         >
-          <div className="shrink-0 bg-neo-secondary text-black px-2.5 sm:px-3 h-full flex items-center gap-1.5 font-black z-10 border-r-2 border-black shadow-neo-sm text-[10px] sm:text-xs">
-            <span className="w-2 h-2 rounded-full bg-red-600 inline-block" />
+          <div className="shrink-0 bg-[#FFAA00] text-black px-2.5 sm:px-3 h-full flex items-center gap-1.5 font-black z-10 border-r-2 border-r-[#555555] border-b-2 border-b-[#8F5500] border-t-2 border-t-[#FFE285] shadow-[1px_1px_0px_#000] text-[10px] sm:text-xs">
+            <span className="w-2 h-2 rounded-none bg-red-600 inline-block shadow-[1px_1px_0px_#000]" />
             <span>LIVE UPDATES</span>
           </div>
           <div className="overflow-hidden whitespace-nowrap flex-1 min-w-0 flex items-center">
@@ -232,7 +228,7 @@ export function Navbar() {
               {[...HEADER_UPDATES, ...HEADER_UPDATES].map((item, idx) => (
                 <span key={idx} className="inline-flex items-center gap-6">
                   <span>{item}</span>
-                  <span className="text-neo-secondary font-black">★</span>
+                  <Sparkles className="w-3 h-3 text-[#55FF55] shrink-0" />
                 </span>
               ))}
             </div>
@@ -241,7 +237,7 @@ export function Navbar() {
 
         {/* Main Navbar Bar */}
         <div className="w-full px-3 sm:px-6 lg:px-8 xl:px-10 h-14 sm:h-16 flex items-center justify-between gap-3 lg:gap-4 xl:gap-8">
-          {/* Brand / Logo - Pinned Left */}
+          {/* Brand / Logo - Pinned Left (PRESERVED AS REQUESTED) */}
           <div className="shrink-0 flex items-center">
             <Link
               href="/"
@@ -268,7 +264,7 @@ export function Navbar() {
 
           {/* Desktop Primary Navigation - Centered and Spaced Away from Left Brand and Right CTA */}
           <nav
-            className="hidden lg:flex items-center justify-center gap-1 xl:gap-2 flex-1 mx-2 lg:mx-3 xl:mx-8 shrink-0"
+            className="hidden lg:flex items-center justify-center gap-1 xl:gap-1.5 flex-1 mx-2 lg:mx-3 xl:mx-8 shrink-0"
             aria-label="Main Navigation"
           >
             {navLinks.map((link) => {
@@ -319,13 +315,13 @@ export function Navbar() {
                     <Image
                       src={user.image}
                       alt={user.name || "User Avatar"}
-                      width={32}
-                      height={32}
+                      width={28}
+                      height={28}
                       unoptimized
-                      className="w-8 h-8 border-2 border-black object-cover rounded-none"
+                      className="w-7 h-7 border-2 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] object-cover rounded-none"
                     />
                   ) : (
-                    <div className="w-8 h-8 bg-neo-secondary border-2 border-black flex items-center justify-center font-mono font-black text-xs">
+                    <div className="w-7 h-7 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] flex items-center justify-center font-mono font-black text-xs [text-shadow:_1px_1px_0_#000]">
                       {(user.name || user.email || "U").slice(0, 2).toUpperCase()}
                     </div>
                   )}
@@ -349,31 +345,31 @@ export function Navbar() {
                 <AnimatePresence>
                   {userDropdownOpen && (
                     <motion.div
-                      initial={{ opacity: 0, y: 8, scale: 0.96 }}
+                      initial={{ opacity: 0, y: 6, scale: 0.96 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: 6, scale: 0.96 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 mt-2 w-72 bg-white border-4 border-black shadow-neo-lg z-50 overflow-hidden"
+                      className="absolute right-0 mt-2 w-72 bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[8px_8px_0px_#000] z-50 overflow-hidden text-black"
                     >
                       {/* Dropdown User Header */}
-                      <div className="p-4 bg-neo-bg border-b-3 border-black">
+                      <div className="p-3.5 bg-[#DBDBDB] border-b-3 border-[#555555]">
                         <div className="flex items-center gap-3">
                           {user.image ? (
                             <Image
                               src={user.image}
                               alt={user.name || "User"}
-                              width={40}
-                              height={40}
+                              width={36}
+                              height={36}
                               unoptimized
-                              className="w-10 h-10 border-2 border-black object-cover rounded-none shrink-0"
+                              className="w-9 h-9 border-2 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] object-cover rounded-none shrink-0"
                             />
                           ) : (
-                            <div className="w-10 h-10 bg-neo-secondary border-2 border-black flex items-center justify-center font-mono font-black text-sm shrink-0">
+                            <div className="w-9 h-9 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] flex items-center justify-center font-mono font-black text-xs shrink-0 [text-shadow:_1px_1px_0_#000]">
                               {(user.name || user.email || "U").slice(0, 2).toUpperCase()}
                             </div>
                           )}
                           <div className="overflow-hidden">
-                            <div className="font-black text-sm uppercase text-black truncate">
+                            <div className="font-black text-xs sm:text-sm uppercase text-black truncate">
                               {user.name || "AUTHENTICATED"}
                             </div>
                             <div className="font-mono text-[10px] text-black/70 truncate">
@@ -381,8 +377,10 @@ export function Navbar() {
                             </div>
                             <span
                               className={clsx(
-                                "inline-block font-mono text-[9px] font-black uppercase px-1.5 py-0.5 border border-black mt-1",
-                                isAdmin ? "bg-rose-500 text-white" : "bg-neo-secondary text-black"
+                                "inline-block font-mono text-[9px] font-black uppercase px-1.5 py-0.5 border shadow-[1px_1px_0px_#000] mt-1",
+                                isAdmin
+                                  ? "bg-rose-600 text-white border-rose-900"
+                                  : "bg-[#5B8731] text-white border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] [text-shadow:_1px_1px_0_#000]"
                               )}
                             >
                               {isAdmin ? "ORGANIZER ADMIN" : "VERIFIED SQUAD"}
@@ -392,14 +390,14 @@ export function Navbar() {
                       </div>
 
                       {/* Dropdown Navigation Links */}
-                      <div className="p-2 flex flex-col gap-1 text-xs font-black uppercase">
+                      <div className="p-2 flex flex-col gap-1.5 text-xs font-black uppercase">
                         {isAdmin && (
                           <Link
                             href="/admin"
                             onClick={() => setUserDropdownOpen(false)}
-                            className="p-2.5 bg-rose-100 hover:bg-rose-200 border-2 border-black flex items-center gap-2.5 text-rose-950 transition-colors"
+                            className="p-2.5 bg-rose-200 hover:bg-rose-300 border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] flex items-center gap-2.5 text-rose-950 transition-colors shadow-[2px_2px_0px_#000]"
                           >
-                            <Shield className="w-4 h-4 stroke-[2.5px] text-rose-600" />
+                            <Shield className="w-4 h-4 stroke-[2.5px] text-rose-800" />
                             <span>ADMIN COMMAND CONSOLE</span>
                           </Link>
                         )}
@@ -407,7 +405,7 @@ export function Navbar() {
                         <Link
                           href="/register"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="p-2.5 hover:bg-neo-secondary border-2 border-transparent hover:border-black flex items-center gap-2.5 transition-colors text-black"
+                          className="p-2.5 bg-[#DBDBDB] hover:bg-[#EAEAEA] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] flex items-center gap-2.5 transition-colors text-black shadow-[2px_2px_0px_#000]"
                         >
                           <ClipboardList className="w-4 h-4 stroke-[2.5px]" />
                           <span>SQUAD REGISTRATION</span>
@@ -417,19 +415,19 @@ export function Navbar() {
                         <Link
                           href="/register/ps"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="p-2.5 bg-amber-50 hover:bg-neo-secondary border-2 border-black flex items-center gap-2.5 transition-colors text-black shadow-neo-sm"
+                          className="p-2.5 bg-[#FFAA00] hover:bg-[#FFB82E] border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] flex items-center gap-2.5 transition-colors text-black shadow-[2px_2px_0px_#000]"
                         >
-                          <FileCode2 className="w-4 h-4 stroke-[2.5px] text-amber-700" />
+                          <FileCode2 className="w-4 h-4 stroke-[2.5px] text-black" />
                           <div className="flex flex-col text-left">
                             <span>SELECT 2 PROBLEM STATEMENTS</span>
-                            <span className="text-[9px] font-mono font-bold text-black/60">PREFERENCE 1 &amp; PREFERENCE 2</span>
+                            <span className="text-[9px] font-mono font-bold text-black/70">PREFERENCE 1 &amp; PREFERENCE 2</span>
                           </div>
                         </Link>
 
                         <Link
                           href="/problem-statements"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="p-2.5 hover:bg-neo-secondary border-2 border-transparent hover:border-black flex items-center gap-2.5 transition-colors text-black"
+                          className="p-2.5 bg-[#DBDBDB] hover:bg-[#EAEAEA] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] flex items-center gap-2.5 transition-colors text-black shadow-[2px_2px_0px_#000]"
                         >
                           <FileCode2 className="w-4 h-4 stroke-[2.5px]" />
                           <span>ALL PROBLEM SPECS</span>
@@ -438,7 +436,7 @@ export function Navbar() {
                         <Link
                           href="/guidelines"
                           onClick={() => setUserDropdownOpen(false)}
-                          className="p-2.5 hover:bg-neo-secondary border-2 border-transparent hover:border-black flex items-center gap-2.5 transition-colors text-black"
+                          className="p-2.5 bg-[#DBDBDB] hover:bg-[#EAEAEA] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] flex items-center gap-2.5 transition-colors text-black shadow-[2px_2px_0px_#000]"
                         >
                           <BookOpen className="w-4 h-4 stroke-[2.5px]" />
                           <span>RULEBOOK &amp; GUIDELINES</span>
@@ -446,11 +444,11 @@ export function Navbar() {
                       </div>
 
                       {/* Dropdown Footer Logout Button */}
-                      <div className="p-2 border-t-3 border-black bg-neutral-50">
+                      <div className="p-2 border-t-3 border-[#555555] bg-[#DBDBDB]">
                         <button
                           type="button"
                           onClick={handleLogout}
-                          className="w-full p-2.5 bg-white hover:bg-rose-500 hover:text-white border-2 border-black font-black text-xs uppercase flex items-center justify-center gap-2 transition-all shadow-neo-sm active:translate-x-0.5 active:translate-y-0.5"
+                          className="w-full p-2.5 bg-[#AA0000] hover:bg-[#CC0000] text-white border-2 border-t-[#FF5555] border-l-[#FF5555] border-r-[#550000] border-b-[#550000] font-black text-xs uppercase flex items-center justify-center gap-2 transition-all shadow-[2px_2px_0px_#000] active:translate-y-0.5 cursor-pointer [text-shadow:_1px_1px_0_#000]"
                         >
                           <LogOut className="w-4 h-4 stroke-[2.5px]" />
                           <span>LOGOUT OF SESSION</span>
@@ -463,7 +461,7 @@ export function Navbar() {
             ) : (
               <Link
                 href="/register"
-                className="h-12 px-6 inline-flex items-center gap-2 bg-neo-accent text-black font-black text-sm uppercase tracking-wider border-4 border-black shadow-neo hover:-translate-y-0.5 hover:shadow-neo-lg active:translate-x-1 active:translate-y-1 active:shadow-none transition-all duration-200 focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-black"
+                className="h-10 sm:h-11 px-4 sm:px-6 inline-flex items-center gap-2 bg-[#5B8731] hover:bg-[#689B37] text-white font-black text-xs sm:text-sm uppercase tracking-wider border-3 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[3px_3px_0px_#000] active:translate-y-1 transition-all cursor-pointer [text-shadow:_1px_1px_0_#000]"
               >
                 <span>REGISTER</span>
                 <ArrowRight className="w-4 h-4 stroke-[3px]" />
@@ -471,7 +469,7 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile Hamburger Button - Only 3-bar menu on mobile */}
+          {/* Mobile Hamburger Button */}
           <div className="flex lg:hidden items-center">
             <button
               type="button"
@@ -479,12 +477,12 @@ export function Navbar() {
               aria-expanded={mobileMenuOpen}
               aria-controls="mobile-nav-menu"
               aria-label={mobileMenuOpen ? "Close menu" : "Open navigation menu"}
-              className="w-11 h-11 bg-white border-3 border-black shadow-neo-sm flex items-center justify-center text-black active:translate-x-0.5 active:translate-y-0.5 transition-all focus:outline-none focus:bg-neo-secondary cursor-pointer"
+              className="w-10 h-10 bg-[#DBDBDB] hover:bg-[#EAEAEA] border-3 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[3px_3px_0px_#000] flex items-center justify-center text-black active:translate-y-0.5 transition-all cursor-pointer"
             >
               {mobileMenuOpen ? (
-                <X className="w-6 h-6 stroke-[3px]" />
+                <X className="w-5 h-5 stroke-[3px]" />
               ) : (
-                <Menu className="w-6 h-6 stroke-[3px]" />
+                <Menu className="w-5 h-5 stroke-[3px]" />
               )}
             </button>
           </div>
@@ -502,12 +500,12 @@ export function Navbar() {
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] as const }}
-              className="lg:hidden border-t-4 border-black bg-white px-4 sm:px-6 pt-5 pb-10 flex flex-col gap-2.5 shadow-neo-lg max-h-[calc(100dvh-105px)] overflow-y-auto overscroll-contain touch-pan-y"
+              className="lg:hidden border-t-4 border-t-[#555555] bg-[#C6C6C6] px-4 sm:px-6 pt-5 pb-10 flex flex-col gap-2.5 shadow-[8px_8px_0px_#000] max-h-[calc(100dvh-105px)] overflow-y-auto overscroll-contain touch-pan-y text-black"
             >
               {/* User Identity & Actions Card (Inside 3-bar menu only) */}
               {user ? (
-                <div className="p-3.5 bg-neo-bg border-3 border-black flex flex-col gap-3 shadow-neo-sm mb-2">
-                  <div className="flex items-center justify-between gap-2 border-b-2 border-black/20 pb-3">
+                <div className="p-3.5 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] flex flex-col gap-3 shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] mb-2">
+                  <div className="flex items-center justify-between gap-2 border-b-2 border-[#555555]/30 pb-3">
                     <div className="flex items-center gap-2.5 overflow-hidden">
                       {user.image ? (
                         <Image
@@ -516,10 +514,10 @@ export function Navbar() {
                           width={38}
                           height={38}
                           unoptimized
-                          className="w-10 h-10 border-2 border-black object-cover rounded-none shrink-0"
+                          className="w-10 h-10 border-2 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] object-cover rounded-none shrink-0"
                         />
                       ) : (
-                        <div className="w-10 h-10 bg-neo-secondary border-2 border-black flex items-center justify-center font-mono font-black text-sm shrink-0">
+                        <div className="w-10 h-10 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] flex items-center justify-center font-mono font-black text-sm shrink-0 [text-shadow:_1px_1px_0_#000]">
                           {(user.name || user.email || "U").slice(0, 2).toUpperCase()}
                         </div>
                       )}
@@ -532,8 +530,10 @@ export function Navbar() {
                         </div>
                         <span
                           className={clsx(
-                            "inline-block font-mono text-[9px] font-black uppercase px-1.5 py-0.2 border border-black mt-0.5",
-                            isAdmin ? "bg-rose-500 text-white" : "bg-neo-secondary text-black"
+                            "inline-block font-mono text-[9px] font-black uppercase px-1.5 py-0.2 border shadow-[1px_1px_0px_#000] mt-0.5",
+                            isAdmin
+                              ? "bg-rose-600 text-white border-rose-900"
+                              : "bg-[#5B8731] text-white border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] [text-shadow:_1px_1px_0_#000]"
                           )}
                         >
                           {isAdmin ? "ORGANIZER ADMIN" : "LOGGED IN USER"}
@@ -544,7 +544,7 @@ export function Navbar() {
                     <button
                       type="button"
                       onClick={handleLogout}
-                      className="px-2.5 py-1.5 bg-rose-500 hover:bg-rose-600 text-white border-2 border-black font-black text-[10px] uppercase shrink-0 flex items-center gap-1 shadow-neo-sm cursor-pointer"
+                      className="px-2.5 py-1.5 bg-[#AA0000] hover:bg-[#CC0000] text-white border-2 border-t-[#FF5555] border-l-[#FF5555] border-r-[#550000] border-b-[#550000] font-black text-[10px] uppercase shrink-0 flex items-center gap-1 shadow-[2px_2px_0px_#000] cursor-pointer [text-shadow:_1px_1px_0_#000]"
                       title="Logout"
                     >
                       <LogOut className="w-3.5 h-3.5 stroke-[2.5px]" />
@@ -556,13 +556,13 @@ export function Navbar() {
                   <Link
                     href="/register/ps"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="w-full p-2.5 bg-amber-200 hover:bg-neo-secondary border-2 border-black font-black text-xs uppercase flex items-center justify-between text-black shadow-neo-sm transition-all"
+                    className="w-full p-2.5 bg-[#FFAA00] hover:bg-[#FFB82E] border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] font-black text-xs uppercase flex items-center justify-between text-black shadow-[2px_2px_0px_#000] transition-all"
                   >
                     <div className="flex items-center gap-2">
-                      <FileCode2 className="w-4 h-4 text-amber-950 stroke-[2.5px] shrink-0" />
+                      <FileCode2 className="w-4 h-4 text-black stroke-[2.5px] shrink-0" />
                       <div className="flex flex-col text-left">
                         <span className="leading-tight">SELECT 2 PROBLEM STATEMENTS</span>
-                        <span className="font-mono text-[9px] font-bold text-black/60">CHOICE #1 &amp; #2</span>
+                        <span className="font-mono text-[9px] font-bold text-black/70">CHOICE #1 &amp; #2</span>
                       </div>
                     </div>
                     <ArrowRight className="w-4 h-4 stroke-[3px] shrink-0" />
@@ -572,7 +572,7 @@ export function Navbar() {
                   <Link
                     href="/register"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="w-full p-2 bg-white hover:bg-neutral-100 border-2 border-black font-black text-xs uppercase flex items-center justify-between text-black shadow-neo-sm transition-all"
+                    className="w-full p-2 bg-[#DBDBDB] hover:bg-[#EAEAEA] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black text-xs uppercase flex items-center justify-between text-black shadow-[2px_2px_0px_#000] transition-all"
                   >
                     <div className="flex items-center gap-2">
                       <ClipboardList className="w-4 h-4 stroke-[2.5px] shrink-0" />
@@ -595,17 +595,17 @@ export function Navbar() {
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
                     className={clsx(
-                      "px-3.5 py-2.5 border-2 border-black font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-between transition-all",
+                      "px-3.5 py-2.5 border-3 font-black text-xs sm:text-sm uppercase tracking-wider flex items-center justify-between transition-all",
                       isActive
-                        ? "bg-neo-secondary shadow-neo-sm text-black"
-                        : "bg-neo-bg hover:bg-neutral-100 text-black"
+                        ? "bg-[#5B8731] text-white border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[3px_3px_0px_#000] [text-shadow:_1px_1px_0_#000]"
+                        : "bg-[#DBDBDB] hover:bg-[#EAEAEA] text-black border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[2px_2px_0px_#000]"
                     )}
                     aria-current={isActive ? "page" : undefined}
                   >
                     <div className="flex items-center gap-2">
                       <span>{link.label}</span>
                       {link.badge && (
-                        <span className="px-1.5 py-0.2 bg-amber-400 text-black border border-black font-mono text-[9px] font-black shadow-neo-xs animate-pulse">
+                        <span className="px-1.5 py-0.2 bg-[#FFAA00] text-black border border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] font-mono text-[9px] font-black shadow-[1px_1px_0px_#000]">
                           {link.badge}
                         </span>
                       )}
@@ -617,12 +617,12 @@ export function Navbar() {
                 );
               })}
 
-              <div className="pt-2 border-t-2 border-black/20 mt-1">
+              <div className="pt-2 border-t-2 border-[#555555]/30 mt-1">
                 {isAdmin ? (
                   <Link
                     href="/admin"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="w-full h-12 bg-rose-500 text-white font-black text-xs sm:text-sm uppercase tracking-wider border-3 border-black shadow-neo flex items-center justify-center gap-2 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all"
+                    className="w-full h-12 bg-rose-600 hover:bg-rose-700 text-white font-black text-xs sm:text-sm uppercase tracking-wider border-3 border-t-rose-400 border-l-rose-400 border-r-rose-900 border-b-rose-900 shadow-[4px_4px_0px_#000] flex items-center justify-center gap-2 active:translate-y-1 transition-all [text-shadow:_1px_1px_0_#000]"
                   >
                     <Shield className="w-4 h-4 stroke-[2.5px]" />
                     <span>OPEN ADMIN CONSOLE</span>
@@ -631,7 +631,7 @@ export function Navbar() {
                   <Link
                     href="/register"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="w-full h-12 bg-neo-accent text-black font-black text-xs sm:text-sm uppercase tracking-wider border-3 border-black shadow-neo flex items-center justify-center gap-2 active:translate-x-1 active:translate-y-1 active:shadow-none transition-all"
+                    className="w-full h-12 bg-[#5B8731] hover:bg-[#689B37] text-white font-black text-xs sm:text-sm uppercase tracking-wider border-3 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[4px_4px_0px_#000] flex items-center justify-center gap-2 active:translate-y-1 transition-all [text-shadow:_1px_1px_0_#000]"
                   >
                     <span>{user ? "MANAGE SQUAD ENTRY" : "REGISTER SQUAD NOW"}</span>
                     <ArrowRight className="w-4 h-4 stroke-[3px]" />
