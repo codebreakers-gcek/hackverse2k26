@@ -17,20 +17,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Check system settings for problem statements gate
-    const settings = await prisma.systemSettings.findFirst();
-    if (settings && settings.isProblemStatementsPublished === false) {
-      return NextResponse.json(
-        {
-          success: false,
-          message: "Problem statement selection is currently locked. Problem statements have not yet been published by the organizers.",
-        },
-        { status: 403 }
-      );
-    }
-
-    const body = await req.json();
-    const { selectedProblemStatements } = body;
+    const body = await req.json().catch(() => ({}));
+    const { selectedProblemStatements } = body || {};
 
     // 1. Validation: 1 problem statement is mandatory, 2nd is optional
     if (
@@ -47,19 +35,28 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const ps1 = selectedProblemStatements[0];
-    const ps2 = selectedProblemStatements.length === 2 ? selectedProblemStatements[1] : null;
+    const ps1Raw = selectedProblemStatements[0];
+    const ps2Raw = selectedProblemStatements.length === 2 ? selectedProblemStatements[1] : null;
 
-    if (ps2 && ps1 === ps2) {
+    if (ps2Raw && ps1Raw === ps2Raw) {
       return NextResponse.json(
         { success: false, message: "Preference 1 and Preference 2 must be different problem statements." },
         { status: 400 }
       );
     }
 
-    // 2. Validate that selected statements exist in the official dataset
-    const validPsIds = new Set(PROBLEM_STATEMENTS_DATA.map((p) => p.id));
-    if (!validPsIds.has(ps1) || (ps2 && !validPsIds.has(ps2))) {
+    // 2. Validate and resolve that selected statements exist in the official dataset
+    const resolvePs = (idOrCode: string) =>
+      PROBLEM_STATEMENTS_DATA.find(
+        (p) =>
+          p.id.toLowerCase() === idOrCode.toLowerCase() ||
+          p.code.toLowerCase() === idOrCode.toLowerCase()
+      );
+
+    const p1 = resolvePs(ps1Raw);
+    const p2 = ps2Raw ? resolvePs(ps2Raw) : null;
+
+    if (!p1 || (ps2Raw && !p2)) {
       return NextResponse.json(
         { success: false, message: "One or more selected problem statements are invalid." },
         { status: 400 }
@@ -112,14 +109,33 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 4. Update the team registration with the 1 or 2 choices
+    // 4. Ban / Lock System: Check if squad preferences have already been finalized
     const currentDocs = (teamRegistration.documents as Record<string, any>) || {};
-    const finalSelectedList = [ps1, ...(ps2 ? [ps2] : [])];
+    if (
+      currentDocs.isPsLocked === true ||
+      (currentDocs.psSubmittedAt && currentDocs.selectedProblemStatements?.length > 0)
+    ) {
+      return NextResponse.json(
+        {
+          success: false,
+          isLocked: true,
+          message:
+            "Problem statement preferences are already locked and confirmed for this squad. Further modifications are prohibited.",
+        },
+        { status: 403 }
+      );
+    }
+
+    // 5. Update the team registration with the 1 or 2 choices and permanently lock
+    const finalSelectedList = [p1.id, ...(p2 ? [p2.id] : [])];
     const updatedDocuments = {
       ...currentDocs,
       selectedProblemStatements: finalSelectedList,
-      problemStatement1: ps1,
-      problemStatement2: ps2 || null,
+      problemStatement1: p1.id,
+      problemStatement2: p2 ? p2.id : null,
+      problemStatement1Code: p1.code,
+      problemStatement2Code: p2 ? p2.code : null,
+      isPsLocked: true,
       psSubmittedAt: new Date().toISOString(),
       psSubmittedBy: {
         userId: user.id,
@@ -131,14 +147,14 @@ export async function POST(req: NextRequest) {
     const updatedTeam = await prisma.teamRegistration.update({
       where: { id: teamRegistration.id },
       data: {
-        problemStatementId: ps1, // Set primary mandatory preference
+        problemStatementId: p1.id, // Primary PS ID
         documents: updatedDocuments,
       },
     });
 
     return NextResponse.json({
       success: true,
-      message: ps2
+      message: p2
         ? "Primary and secondary problem statements successfully submitted and locked for your squad!"
         : "Primary problem statement successfully submitted and locked for your squad!",
       team: {
@@ -147,8 +163,10 @@ export async function POST(req: NextRequest) {
         teamName: updatedTeam.teamName,
         problemStatementId: updatedTeam.problemStatementId,
         selectedProblemStatements: finalSelectedList,
-        problemStatement1: ps1,
-        problemStatement2: ps2 || null,
+        problemStatement1: p1.id,
+        problemStatement2: p2 ? p2.id : null,
+        problemStatement1Code: p1.code,
+        problemStatement2Code: p2 ? p2.code : null,
         psSubmittedAt: updatedDocuments.psSubmittedAt,
       },
     });

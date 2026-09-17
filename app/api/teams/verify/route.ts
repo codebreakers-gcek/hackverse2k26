@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
+import { scannerPinService } from "@/services/scannerPinService";
 
 export async function POST(req: NextRequest) {
   try {
@@ -28,59 +29,20 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 1. Check Authorization against active ScannerPinSession or SystemSettings
-    const now = new Date();
-    let isPinValid = false;
+    // 1. Check Authorization PIN
+    const authResult = await scannerPinService.authenticateVerifier({
+      pin: pin.trim(),
+      verifierName: verifierName.trim(),
+      deviceInfo: "Scanner Web Interface",
+      ipAddress: "127.0.0.1",
+      userAgent: "Browser/Judge",
+    });
 
-    // Check active dynamic PIN session
-    const activePinSession = prisma.scannerPinSession
-      ? await prisma.scannerPinSession.findFirst({
-          where: {
-            pin: pin.trim(),
-            isActive: true,
-            expiresAt: { gt: now },
-          },
-        })
-      : null;
-
-    if (activePinSession) {
-      isPinValid = true;
-    } else {
-      // Fallback to SystemSettings judgeAuthPin
-      const settings = await prisma.systemSettings.findUnique({
-        where: { id: "default" },
-      });
-      const expectedPin = (settings?.judgeAuthPin || "2026").trim();
-      if (pin.trim() === expectedPin) {
-        isPinValid = true;
-      } else {
-        // Check if expired
-        const expiredPin = prisma.scannerPinSession
-          ? await prisma.scannerPinSession.findFirst({
-              where: { pin: pin.trim() },
-              orderBy: { createdAt: "desc" },
-            })
-          : null;
-
-        if (expiredPin && expiredPin.expiresAt <= now) {
-          return NextResponse.json(
-            {
-              success: false,
-              error:
-                "This Authorization PIN has expired (5-minute validity window exceeded). Please request a fresh PIN from the Admin.",
-              expired: true,
-            },
-            { status: 403 }
-          );
-        }
-      }
-    }
-
-    if (!isPinValid) {
+    if (!authResult.success) {
       return NextResponse.json(
         {
           success: false,
-          error: "Invalid Authorization PIN. Please check the code with the HackVerse Admin desk.",
+          error: (authResult as any).error || "Invalid or expired Authorization PIN.",
         },
         { status: 401 }
       );

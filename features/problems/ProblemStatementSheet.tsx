@@ -15,6 +15,7 @@ import {
   Award,
   Compass,
   Download,
+  Database,
 } from "lucide-react";
 
 export interface ProblemStatementSheetProps {
@@ -168,9 +169,11 @@ export function ProblemStatementSheet({
                   <Sparkles className="w-4 h-4 text-amber-500 stroke-[3px]" />
                   <span>DETAILED PROBLEM BRIEF &amp; OBJECTIVE</span>
                 </div>
-                <p className="text-sm sm:text-base font-bold text-black/90 leading-relaxed">
-                  {problem.fullDescription}
-                </p>
+                <div className="text-sm sm:text-base font-bold text-black/90 leading-relaxed space-y-3.5">
+                  {problem.fullDescription.split("\n\n").map((para, pIdx) => (
+                    <p key={pIdx}>{para}</p>
+                  ))}
+                </div>
               </div>
 
               {/* Expected Solution */}
@@ -212,42 +215,44 @@ export function ProblemStatementSheet({
                 </div>
               )}
 
-              {/* Recommended Toolkit & Evaluation Focus (Stacked as Two Rows) */}
-              <div className="space-y-6">
-                {/* Tech Stack */}
-                <div className="border-4 border-black bg-white p-5 shadow-neo space-y-3">
-                  <div className="font-mono text-xs font-black uppercase text-black/70 flex items-center gap-1.5 border-b-2 border-black/10 pb-2">
-                    <Code2 className="w-4 h-4 stroke-[2.5px]" />
-                    <span>RECOMMENDED TOOLKIT:</span>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {problem.suggestedStack.map((tech) => (
-                      <span
-                        key={tech}
-                        className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-neo-bg border-2 border-black text-black shadow-neo-sm"
-                      >
-                        {tech}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Evaluation Focus */}
-                <div className="border-4 border-black bg-white p-5 sm:p-6 shadow-neo space-y-3">
-                  <div className="font-mono text-xs font-black uppercase text-black/70 flex items-center gap-1.5 border-b-2 border-black/10 pb-2">
-                    <Award className="w-4 h-4 text-amber-500 stroke-[2.5px]" />
-                    <span>EVALUATION EMPHASIS:</span>
-                  </div>
-                  <div className="flex flex-col gap-2.5">
-                    {problem.evaluationFocus.map((crit, idx) => (
+              {/* Relevant Datasets & Data Sources */}
+              {problem.relevantDatasets && problem.relevantDatasets.length > 0 && (
+                <div className="border-4 border-black bg-cyan-50 p-5 sm:p-6 shadow-neo space-y-3">
+                  <h3 className="font-black text-xs sm:text-sm uppercase tracking-wider text-cyan-950 flex items-center gap-2 border-b-2 border-black/20 pb-2">
+                    <Database className="w-4 h-4 text-cyan-800 stroke-[3px]" />
+                    <span>RELEVANT DATASETS &amp; DATA SOURCES:</span>
+                  </h3>
+                  <div className="space-y-2">
+                    {problem.relevantDatasets.map((ds, idx) => (
                       <div
                         key={idx}
-                        className="font-mono text-xs font-black uppercase p-3 bg-neo-secondary border-2 border-black text-black shadow-neo-sm leading-relaxed"
+                        className="flex items-start gap-2.5 p-2.5 bg-white border-2 border-black text-xs sm:text-sm font-bold text-black"
                       >
-                        {crit}
+                        <span className="w-5 h-5 bg-cyan-300 text-black font-mono text-xs font-black flex items-center justify-center shrink-0 border border-black">
+                          {idx + 1}
+                        </span>
+                        <span className="leading-snug pt-0.5">{ds}</span>
                       </div>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {/* Evaluation Focus */}
+              <div className="border-4 border-black bg-white p-5 sm:p-6 shadow-neo space-y-3">
+                <div className="font-mono text-xs font-black uppercase text-black/70 flex items-center gap-1.5 border-b-2 border-black/10 pb-2">
+                  <Award className="w-4 h-4 text-amber-500 stroke-[2.5px]" />
+                  <span>EVALUATION EMPHASIS:</span>
+                </div>
+                <div className="flex flex-col gap-2.5">
+                  {problem.evaluationFocus.map((crit, idx) => (
+                    <div
+                      key={idx}
+                      className="font-mono text-xs font-black uppercase p-3 bg-neo-secondary border-2 border-black text-black shadow-neo-sm leading-relaxed"
+                    >
+                      {crit}
+                    </div>
+                  ))}
                 </div>
               </div>
 

@@ -140,6 +140,7 @@ export async function GET(req: NextRequest) {
         problemStatement1: docs.problemStatement1 || teamRegistration.problemStatementId || null,
         problemStatement2: docs.problemStatement2 || null,
         psSubmittedAt: docs.psSubmittedAt || null,
+        isPsLocked: Boolean(docs.isPsLocked || docs.psSubmittedAt || teamRegistration.problemStatementId),
         editCount,
         maxEdits,
         remainingEdits,

@@ -430,7 +430,7 @@ export default function RootLayout({
         <SmoothScrollProvider>
           <AmbientCodeShapes />
           <Navbar />
-          <main className="flex-1 relative z-10">{children}</main>
+          <main className="flex-1 relative">{children}</main>
           <Footer />
           <ScrollProgressCircle />
           <MinecraftAudioPlayer />

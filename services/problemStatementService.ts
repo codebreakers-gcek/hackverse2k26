@@ -39,7 +39,7 @@ export const problemStatementService = {
             p.domain.toLowerCase().includes(query) ||
             p.shortDescription.toLowerCase().includes(query) ||
             p.code.toLowerCase().includes(query) ||
-            p.suggestedStack.some((tech) => tech.toLowerCase().includes(query))
+            (p.suggestedStack?.some((tech) => tech.toLowerCase().includes(query)) ?? false)
         );
       }
     }

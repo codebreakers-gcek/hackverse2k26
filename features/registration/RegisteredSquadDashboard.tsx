@@ -31,6 +31,7 @@ import {
   HelpCircle,
   Home,
   Check,
+  Eye,
 } from "lucide-react";
 import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
 import { RegistrationSuccessReceipt } from "./RegistrationSuccessReceipt";
@@ -128,19 +129,8 @@ export function RegisteredSquadDashboard({
   );
 
   useEffect(() => {
-    if (typeof isProblemStatementsPublished === "boolean") {
-      setIsLive(isProblemStatementsPublished);
-    } else {
-      fetch("/api/settings")
-        .then((r) => r.json())
-        .then((d) => {
-          if (d?.settings && typeof d.settings.isProblemStatementsPublished === "boolean") {
-            setIsLive(d.settings.isProblemStatementsPublished);
-          }
-        })
-        .catch(() => {});
-    }
-  }, [isProblemStatementsPublished]);
+    setIsLive(true);
+  }, []);
 
   const isLeader = userRoleInTeam === "LEADER";
   const status = teamData.status || "PENDING_VERIFICATION";
@@ -418,12 +408,14 @@ export function RegisteredSquadDashboard({
                   "font-mono text-xs font-black uppercase px-3 py-1 border-2 border-black shadow-neo-sm",
                   status === "CONFIRMED"
                     ? "bg-emerald-300 text-black"
+                    : status === "BANNED"
+                    ? "bg-rose-600 text-white"
                     : status === "REJECTED"
                     ? "bg-rose-400 text-black"
                     : "bg-neo-secondary text-black"
                 )}
               >
-                STATUS: {status}
+                STATUS: {status === "BANNED" ? "⛔ BANNED / DISQUALIFIED" : status}
               </span>
             </div>
 
@@ -465,7 +457,7 @@ export function RegisteredSquadDashboard({
               </div>
             </div>
 
-            {isLeader && (
+            {isLeader ? (
               <button
                 type="button"
                 onClick={handleOpenEditModal}
@@ -489,6 +481,11 @@ export function RegisteredSquadDashboard({
                   </>
                 )}
               </button>
+            ) : (
+              <div className="px-3 py-2 bg-neutral-100 border-2 border-black font-mono text-[11px] font-bold text-black/70 flex items-center justify-center gap-1.5 shadow-neo-sm">
+                <Lock className="w-3.5 h-3.5 text-neutral-600" />
+                <span>EDITING RESERVED FOR SQUAD LEADER</span>
+              </div>
             )}
           </div>
         </div>
@@ -523,131 +520,133 @@ export function RegisteredSquadDashboard({
       {/* ========================================================================= */}
       {/* SECTION 2: PROBLEM STATEMENT PREFERENCES STATUS */}
       {/* ========================================================================= */}
-      {!isLive ? (
-        <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-3 border-black pb-3">
-            <div className="flex items-center gap-2.5">
-              <FileCode2 className="w-5 h-5 text-black stroke-[2.5px]" />
-              <h3 className="font-black text-xl uppercase tracking-tight text-black">
-                PROBLEM STATEMENT ALLOCATION
-              </h3>
-            </div>
-            <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-white border border-black shadow-neo-sm self-start sm:self-auto flex items-center gap-1.5">
-              <Lock className="w-3.5 h-3.5" />
-              <span>RELEASE PENDING</span>
-            </span>
+      {/* ========================================================================= */}
+      {/* SECTION 2: PROBLEM STATEMENT PREFERENCES STATUS */}
+      {/* ========================================================================= */}
+      <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo space-y-5">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-3 border-black pb-3">
+          <div className="flex items-center gap-2.5">
+            <FileCode2 className="w-5 h-5 text-black stroke-[2.5px]" />
+            <h3 className="font-black text-xl uppercase tracking-tight text-black">
+              PROBLEM STATEMENT ALLOCATION {psIds.length >= 1 ? `(${psIds.length} ${psIds.length === 1 ? "TRACK SELECTED" : "TRACKS SELECTED"})` : ""}
+            </h3>
           </div>
 
-          <div className="p-5 bg-neutral-100 border-3 border-black space-y-3">
-            <div className="flex items-center gap-2 text-black font-black text-sm">
-              <Clock className="w-5 h-5 text-amber-700 stroke-[2.5px]" />
-              <span>PROBLEM STATEMENTS COMING SOON</span>
+          {psIds.length >= 1 ? (
+            <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+              <span className="font-mono text-xs font-black uppercase px-3 py-1.5 bg-emerald-300 text-emerald-950 border-2 border-black flex items-center gap-1.5 shadow-neo-sm">
+                <Lock className="w-3.5 h-3.5 stroke-[2.5px]" />
+                <span>LOCKED &amp; FINALIZED</span>
+              </span>
+              <Link
+                href="/register/ps"
+                className="px-3.5 py-1.5 bg-white hover:bg-neutral-100 text-black font-mono font-black text-xs uppercase border-2 border-black shadow-neo-sm hover:shadow-none transition-all flex items-center gap-1.5"
+              >
+                <Eye className="w-3.5 h-3.5 stroke-[2.5px]" />
+                <span>VIEW LOCKED DOSSIER</span>
+              </Link>
             </div>
-            <p className="text-xs sm:text-sm font-bold text-black/75 leading-relaxed">
-              Problem statements are not live yet. Once officially unlocked by the organizers, you will be able to select your squad&apos;s primary (mandatory) and optional secondary track preferences here.
-            </p>
-            <div className="font-mono text-[11px] text-neutral-600 font-bold">
-              STATUS: STANDBY • REGISTRATION LOCKED FOR SQUAD {teamData.teamName}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="border-4 border-black bg-white p-6 sm:p-8 shadow-neo space-y-5">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b-3 border-black pb-3">
-            <div className="flex items-center gap-2.5">
-              <FileCode2 className="w-5 h-5 text-black stroke-[2.5px]" />
-              <h3 className="font-black text-xl uppercase tracking-tight text-black">
-                PROBLEM STATEMENT ALLOCATION {psIds.length >= 1 ? `(${psIds.length} ${psIds.length === 1 ? "PREFERENCE" : "PREFERENCES"})` : ""}
-              </h3>
-            </div>
-
+          ) : (
             <Link
               href="/register/ps"
               className="px-4 py-2 bg-neo-secondary hover:bg-neo-accent text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-neo-sm hover:shadow-none transition-all flex items-center gap-1.5 self-start sm:self-auto cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5 stroke-[2.5px]" />
-              <span>{psIds.length >= 1 ? "MODIFY CHOICES" : "SELECT STATEMENTS NOW"}</span>
+              <span>SELECT STATEMENTS NOW</span>
               <ArrowRight className="w-3.5 h-3.5 stroke-[3px]" />
             </Link>
-          </div>
+          )}
+        </div>
 
-          {psIds.length >= 1 ? (
+        {psIds.length >= 1 ? (
+          <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Preference 1 Card (Mandatory) */}
               <div className="p-4 bg-amber-50 border-3 border-black shadow-neo-sm space-y-2">
-                <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neo-secondary text-black border border-black inline-block">
-                  ★ CHOICE #1 (PRIMARY PREFERENCE - MANDATORY)
-                </span>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neo-secondary text-black border border-black inline-block">
+                    ★ CHOICE #1 (PRIMARY PREFERENCE - MANDATORY)
+                  </span>
+                  <span className="font-mono text-[9px] font-black uppercase px-1.5 py-0.5 bg-emerald-300 text-emerald-950 border border-black">
+                    🔒 LOCKED
+                  </span>
+                </div>
                 <div className="font-black text-base uppercase text-black">
                   [{pref1?.code || psIds[0]}] {pref1?.title || "Problem Statement"}
                 </div>
                 <p className="text-xs font-bold text-black/75 line-clamp-2 leading-relaxed">
                   {pref1?.shortDescription || "Selected as primary 1st preference for hackathon evaluation."}
                 </p>
-                <div className="font-mono text-[11px] text-black/60 pt-1">
-                  Domain: {pref1?.domain || "Assigned Track"}
+                <div className="font-mono text-[11px] text-black/60 pt-1 flex items-center justify-between">
+                  <span>Domain: {pref1?.domain || "Assigned Track"}</span>
+                  <span className="font-bold text-black">{pref1?.category}</span>
                 </div>
               </div>
 
               {/* Preference 2 Card (Optional) */}
               {pref2 || psIds[1] ? (
                 <div className="p-4 bg-rose-50 border-3 border-black shadow-neo-sm space-y-2">
-                  <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neo-accent text-black border border-black inline-block">
-                    ★ CHOICE #2 (SECONDARY PREFERENCE - OPTIONAL)
-                  </span>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neo-accent text-black border border-black inline-block">
+                      ★ CHOICE #2 (SECONDARY PREFERENCE - OPTIONAL)
+                    </span>
+                    <span className="font-mono text-[9px] font-black uppercase px-1.5 py-0.5 bg-emerald-300 text-emerald-950 border border-black">
+                      🔒 LOCKED
+                    </span>
+                  </div>
                   <div className="font-black text-base uppercase text-black">
                     [{pref2?.code || psIds[1]}] {pref2?.title || "Problem Statement"}
                   </div>
                   <p className="text-xs font-bold text-black/75 line-clamp-2 leading-relaxed">
                     {pref2?.shortDescription || "Selected as 2nd preference for hackathon evaluation."}
                   </p>
-                  <div className="font-mono text-[11px] text-black/60 pt-1">
-                    Domain: {pref2?.domain || "Assigned Track"}
+                  <div className="font-mono text-[11px] text-black/60 pt-1 flex items-center justify-between">
+                    <span>Domain: {pref2?.domain || "Assigned Track"}</span>
+                    <span className="font-bold text-black">{pref2?.category}</span>
                   </div>
                 </div>
               ) : (
-                <div className="p-4 bg-neutral-50 border-3 border-dashed border-black/40 flex flex-col justify-between space-y-3">
-                  <div className="space-y-1">
-                    <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neutral-200 text-black border border-black inline-block">
-                      CHOICE #2 (OPTIONAL SECONDARY PREFERENCE)
-                    </span>
-                    <div className="font-black text-sm uppercase text-black/70 pt-1">
-                      No 2nd Preference Added (Optional)
-                    </div>
-                    <p className="text-xs font-bold text-black/50 leading-relaxed">
-                      Your squad has locked 1 primary track. You may optionally choose a secondary track before submission closes.
-                    </p>
+                <div className="p-4 bg-neutral-50 border-3 border-dashed border-black/40 flex flex-col justify-between space-y-2">
+                  <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-neutral-200 text-black border border-black inline-block self-start">
+                    CHOICE #2 (OPTIONAL)
+                  </span>
+                  <div className="font-black text-sm uppercase text-black/70">
+                    No 2nd Preference Selected
                   </div>
-                  <Link
-                    href="/register/ps"
-                    className="self-start px-3 py-1.5 bg-white hover:bg-neutral-100 border-2 border-black font-mono font-bold text-xs uppercase shadow-neo-sm flex items-center gap-1.5"
-                  >
-                    <PlusCircle className="w-3.5 h-3.5" />
-                    <span>Add 2nd Preference (Optional)</span>
-                  </Link>
+                  <p className="text-xs font-bold text-black/50 leading-relaxed">
+                    Your squad is locked into 1 primary problem statement for hackathon jury evaluation.
+                  </p>
                 </div>
               )}
             </div>
-          ) : (
-            <div className="p-5 bg-amber-100 border-3 border-black space-y-3">
-              <div className="flex items-center gap-2 text-amber-950 font-black text-sm">
-                <AlertTriangle className="w-5 h-5 text-amber-800 stroke-[3px]" />
-                <span>PROBLEM STATEMENTS ARE LIVE — SELECTION REQUIRED!</span>
-              </div>
-              <p className="text-xs sm:text-sm font-bold text-amber-900 leading-relaxed">
-                Problem statements are officially live! Every registered squad must select at least <strong>ONE (1) primary problem statement</strong> (Mandatory). You may optionally choose a <strong>2nd preference</strong> (Optional).
-              </p>
-              <Link
-                href="/register/ps"
-                className="inline-flex items-center gap-2 px-6 py-3 bg-neo-secondary hover:bg-neo-accent text-black border-3 border-black font-black text-xs uppercase tracking-wider shadow-neo-sm hover:shadow-none transition-all cursor-pointer"
-              >
-                <span>SELECT PROBLEM STATEMENTS NOW</span>
-                <ArrowRight className="w-4 h-4 stroke-[3px]" />
-              </Link>
+
+            {/* Anti-tamper banner */}
+            <div className="p-3 bg-amber-50 border-2 border-black font-mono text-xs text-neutral-800 flex items-center gap-2">
+              <ShieldCheck className="w-4 h-4 text-emerald-700 stroke-[3px] shrink-0" />
+              <span>
+                <strong>Anti-Tamper Protocol Active:</strong> Problem statement preferences for Squad <strong>{teamData.teamName}</strong> are officially finalized and locked in the jury scoring system. No further edits or modifications are permitted.
+              </span>
             </div>
-          )}
-        </div>
-      )}
+          </div>
+        ) : (
+          <div className="p-5 bg-amber-100 border-3 border-black space-y-3">
+            <div className="flex items-center gap-2 text-amber-950 font-black text-sm">
+              <AlertTriangle className="w-5 h-5 text-amber-800 stroke-[3px]" />
+              <span>PROBLEM STATEMENTS ARE LIVE — SELECTION REQUIRED!</span>
+            </div>
+            <p className="text-xs sm:text-sm font-bold text-amber-900 leading-relaxed">
+              Problem statements are officially live! Every registered squad must select at least <strong>ONE (1) primary problem statement</strong> (Mandatory). You may optionally choose a <strong>2nd preference</strong> (Optional). Once submitted, selection is permanent.
+            </p>
+            <Link
+              href="/register/ps"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-neo-secondary hover:bg-neo-accent text-black border-3 border-black font-black text-xs uppercase tracking-wider shadow-neo-sm hover:shadow-none transition-all cursor-pointer"
+            >
+              <span>SELECT PROBLEM STATEMENTS NOW</span>
+              <ArrowRight className="w-4 h-4 stroke-[3px]" />
+            </Link>
+          </div>
+        )}
+      </div>
 
       {/* ========================================================================= */}
       {/* SECTION 3: SQUAD ROSTER (LEADER & ALL MEMBERS) */}

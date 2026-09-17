@@ -24,7 +24,7 @@ export function Footer() {
   return (
     <footer
       id="main-footer"
-      className="relative z-20 bg-gradient-to-b from-[#1e1327] via-[#110a19] to-[#07040b] text-white pt-16 pb-10 border-t-4 border-black overflow-hidden"
+      className="relative z-10 bg-gradient-to-b from-[#1e1327] via-[#110a19] to-[#07040b] text-white pt-16 pb-10 border-t-4 border-black overflow-hidden"
     >
       {/* Outer Container with Mobs Individually on Left and Right */}
       <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8">

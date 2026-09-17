@@ -50,28 +50,22 @@ export function ProblemStatementCard({ problem, onOpenDetails }: ProblemStatemen
           </p>
         </div>
 
-        {/* Suggested Tech Stack Pills */}
-        <div className="pt-3 border-t-2 border-black/15">
-          <div className="flex items-center gap-1 font-mono text-[10px] font-black uppercase text-black/60 mb-2">
-            <Code2 className="w-3.5 h-3.5 stroke-[2.5px]" />
-            <span>TECH STACK:</span>
+        {/* Expected Solution Preview */}
+        {problem.keyDeliverables && problem.keyDeliverables.length > 0 && (
+          <div className="pt-3 border-t-2 border-black/15 space-y-1.5">
+            <div className="font-mono text-[10px] font-black uppercase text-black/60">
+              EXPECTED SOLUTION:
+            </div>
+            <ul className="space-y-1 text-xs font-bold text-black/80">
+              {problem.keyDeliverables.slice(0, 2).map((item, idx) => (
+                <li key={idx} className="flex items-start gap-1.5">
+                  <span className="text-black font-black shrink-0">▸</span>
+                  <span className="line-clamp-1">{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
-          <div className="flex flex-wrap gap-1.5">
-            {problem.suggestedStack.slice(0, 4).map((tech) => (
-              <span
-                key={tech}
-                className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-white border border-black text-black"
-              >
-                {tech}
-              </span>
-            ))}
-            {problem.suggestedStack.length > 4 && (
-              <span className="font-mono text-[10px] font-black uppercase px-1.5 py-0.5 bg-neutral-100 border border-black text-black/60">
-                +{problem.suggestedStack.length - 4}
-              </span>
-            )}
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Card Footer Action: Full Width View Details Button */}

@@ -114,9 +114,6 @@ export async function POST(req: NextRequest) {
         ...(contactEmail !== undefined && {
           contactEmail: contactEmail?.trim(),
         }),
-        ...(judgeAuthPin !== undefined && {
-          judgeAuthPin: judgeAuthPin?.trim(),
-        }),
         ...(googleDriveEnabled !== undefined && {
           googleDriveEnabled: Boolean(googleDriveEnabled),
         }),
@@ -158,7 +155,6 @@ export async function POST(req: NextRequest) {
         maxSquadSize: Number(maxSquadSize) || 4,
         contactPhone: contactPhone?.trim() || "+91 9876543210",
         contactEmail: contactEmail?.trim() || "hackverse26@codebreakersgcek.tech",
-        judgeAuthPin: judgeAuthPin?.trim() || "2026",
         googleDriveEnabled: Boolean(googleDriveEnabled),
         googleDriveAuthType: googleDriveAuthType ? googleDriveAuthType.trim() : "oauth",
         googleDriveConnectedEmail: googleDriveConnectedEmail ? googleDriveConnectedEmail.trim() : "",

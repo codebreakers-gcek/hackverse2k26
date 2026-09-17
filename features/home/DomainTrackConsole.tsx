@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -12,27 +12,7 @@ import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
 import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 
 export function DomainTrackConsole() {
-  const [isProblemStatementsPublished, setIsProblemStatementsPublished] = useState<boolean>(true);
-  const [loadingSettings, setLoadingSettings] = useState<boolean>(true);
-
-  useEffect(() => {
-    async function checkSettings() {
-      try {
-        const res = await fetch("/api/settings", { cache: "no-store" });
-        const data = await res.json();
-        if (data.success && data.settings) {
-          if (typeof data.settings.isProblemStatementsPublished === "boolean") {
-            setIsProblemStatementsPublished(data.settings.isProblemStatementsPublished);
-          }
-        }
-      } catch (err) {
-        console.error("Error fetching system settings:", err);
-      } finally {
-        setLoadingSettings(false);
-      }
-    }
-    checkSettings();
-  }, []);
+  const [isProblemStatementsPublished] = useState<boolean>(true);
 
 
   // Map difficulty colors (Minecraft theme)
@@ -199,7 +179,9 @@ export function DomainTrackConsole() {
                     {/* Footer CTA */}
                     <div className="mt-3 pt-2 border-t-2 border-neutral-700 flex items-center justify-between text-xs font-mono font-black text-white">
                       <span className="text-neutral-400 uppercase text-[10px]">
-                        {ps.suggestedStack.slice(0, 2).join(" • ")}
+                        {ps.suggestedStack && ps.suggestedStack.length > 0
+                          ? ps.suggestedStack.slice(0, 2).join(" • ")
+                          : ps.domain}
                       </span>
                       <span className="flex items-center gap-1 text-[#FFAA00] group-hover:translate-x-1 transition-transform [text-shadow:_1px_1px_0_#000]">
                         <span>VIEW QUEST</span>

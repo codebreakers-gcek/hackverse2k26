@@ -26,11 +26,6 @@ export async function GET() {
           contactEmail: "hackverse26@codebreakersgcek.tech",
         },
       });
-    } else if (!settings.isProblemStatementsPublished) {
-      settings = await prisma.systemSettings.update({
-        where: { id: "default" },
-        data: { isProblemStatementsPublished: true },
-      });
     }
 
     return NextResponse.json(
@@ -42,7 +37,7 @@ export async function GET() {
           registrationFee: settings.registrationFee,
           isPaymentMandatory: settings.isPaymentMandatory,
           isRegistrationOpen: settings.isRegistrationOpen,
-          isProblemStatementsPublished: settings.isProblemStatementsPublished,
+          isProblemStatementsPublished: true,
           minSquadSize: settings.minSquadSize,
           maxSquadSize: settings.maxSquadSize,
           contactPhone: settings.contactPhone,

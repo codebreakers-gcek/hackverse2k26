@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Modal } from "@/components/ui/Modal";
 import { ProblemStatement } from "@/types/problemStatement";
-import { CheckCircle, AlertTriangle, Cpu, ArrowRight } from "lucide-react";
+import { CheckCircle, AlertTriangle, Cpu, ArrowRight, Sparkles, Database } from "lucide-react";
 
 export interface ProblemStatementModalProps {
   problem: ProblemStatement | null;
@@ -47,9 +47,11 @@ export function ProblemStatementModal({ problem, isOpen, onClose }: ProblemState
           <h3 className="font-black text-lg uppercase tracking-tight mb-2">
             DETAILED PROBLEM SPECIFICATION
           </h3>
-          <p className="text-sm sm:text-base font-bold text-black/85 leading-relaxed bg-neo-bg p-4 border-2 border-black">
-            {problem.fullDescription}
-          </p>
+          <div className="text-sm sm:text-base font-bold text-black/85 leading-relaxed bg-neo-bg p-4 border-2 border-black space-y-3">
+            {problem.fullDescription.split("\n\n").map((para, pIdx) => (
+              <p key={pIdx}>{para}</p>
+            ))}
+          </div>
         </div>
 
         {/* Expected Solution */}
@@ -88,39 +90,40 @@ export function ProblemStatementModal({ problem, isOpen, onClose }: ProblemState
           </div>
         )}
 
-        {/* Recommended Stack & Evaluation Focus (Stacked as Two Rows) */}
-        <div className="space-y-4 pt-2">
-          <div className="border-2 border-black p-3 bg-white space-y-2">
-            <div className="font-mono text-[11px] font-black uppercase text-black/60 flex items-center gap-1 border-b border-black/10 pb-1.5">
-              <Cpu className="w-3.5 h-3.5" />
-              <span>RECOMMENDED TOOLKIT:</span>
-            </div>
-            <div className="flex flex-wrap gap-1.5">
-              {problem.suggestedStack.map((tech) => (
-                <span
-                  key={tech}
-                  className="font-mono text-[11px] font-black px-2 py-0.5 bg-neo-bg border border-black"
-                >
-                  {tech}
-                </span>
+        {/* Relevant Datasets & Data Sources */}
+        {problem.relevantDatasets && problem.relevantDatasets.length > 0 && (
+          <div className="bg-cyan-50 border-3 border-black p-4">
+            <h3 className="font-black text-xs uppercase tracking-wider text-cyan-900 mb-2 flex items-center gap-1.5">
+              <Database className="w-4 h-4 text-cyan-700 stroke-[3px]" />
+              <span>RELEVANT DATASETS &amp; DATA SOURCES:</span>
+            </h3>
+            <ul className="space-y-1.5 text-xs font-bold text-black/85">
+              {problem.relevantDatasets.map((ds, idx) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <span className="w-4 h-4 bg-cyan-300 text-black font-mono text-[10px] font-black flex items-center justify-center shrink-0 border border-black">
+                    {idx + 1}
+                  </span>
+                  <span>{ds}</span>
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
+        )}
 
-          <div className="border-2 border-black p-3 bg-white space-y-2">
-            <div className="font-mono text-[11px] font-black uppercase text-black/60 border-b border-black/10 pb-1.5">
-              EVALUATION EMPHASIS:
-            </div>
-            <div className="flex flex-col gap-1.5">
-              {problem.evaluationFocus.map((crit, idx) => (
-                <div
-                  key={idx}
-                  className="font-mono text-[11px] font-black p-2 bg-neo-secondary border border-black leading-snug"
-                >
-                  {crit}
-                </div>
-              ))}
-            </div>
+        {/* Evaluation Focus */}
+        <div className="border-2 border-black p-3 bg-white space-y-2 pt-2">
+          <div className="font-mono text-[11px] font-black uppercase text-black/60 border-b border-black/10 pb-1.5">
+            EVALUATION EMPHASIS:
+          </div>
+          <div className="flex flex-col gap-1.5">
+            {problem.evaluationFocus.map((crit, idx) => (
+              <div
+                key={idx}
+                className="font-mono text-[11px] font-black p-2 bg-neo-secondary border border-black leading-snug"
+              >
+                {crit}
+              </div>
+            ))}
           </div>
         </div>
 
