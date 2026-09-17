@@ -1,10 +1,13 @@
 export type ProblemCategory = 
   | "All"
+  | "Software"
+  | "Hardware"
   | "AI / ML"
   | "Web Development"
   | "Cybersecurity"
   | "IoT"
-  | "Open Innovation";
+  | "Open Innovation"
+  | (string & {});
 
 export type DifficultyLevel = "Beginner" | "Intermediate" | "Advanced";
 

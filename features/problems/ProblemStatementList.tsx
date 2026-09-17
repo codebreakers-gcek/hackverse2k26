@@ -12,7 +12,7 @@ import Link from "next/link";
 export function ProblemStatementList() {
   const [problems, setProblems] = useState<ProblemStatement[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isPublished, setIsPublished] = useState<boolean>(false);
+  const [isPublished, setIsPublished] = useState<boolean>(true);
   const [activeCategory, setActiveCategory] = useState<ProblemCategory>("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeDifficulty, setActiveDifficulty] = useState<DifficultyLevel | "All">("All");

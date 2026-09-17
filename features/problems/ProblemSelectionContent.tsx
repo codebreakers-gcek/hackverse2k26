@@ -155,8 +155,11 @@ export function ProblemSelectionContent() {
     }
   };
 
-  // Categories list
-  const categories = ["All", "AI / ML", "Web Development", "Cybersecurity", "IoT", "Open Innovation"];
+  // Categories list dynamically derived from data
+  const categories = useMemo(() => {
+    const cats = Array.from(new Set(PROBLEM_STATEMENTS_DATA.map((p) => p.category)));
+    return ["All", ...cats];
+  }, []);
 
   const filteredProblems = useMemo(() => {
     if (filterCategory === "All") return PROBLEM_STATEMENTS_DATA;
@@ -526,10 +529,10 @@ export function ProblemSelectionContent() {
                   </p>
                 </div>
 
-                {/* Key Deliverables Bullet Points */}
+                {/* Expected Solution Bullet Points */}
                 <div className="space-y-1.5 pt-2 border-t-2 border-black/10">
                   <div className="font-mono text-[11px] font-black uppercase text-black/60">
-                    MANDATORY DELIVERABLES:
+                    EXPECTED SOLUTION:
                   </div>
                   <ul className="space-y-1 text-xs font-bold text-black/85">
                     {problem.keyDeliverables.slice(0, 2).map((deliv, idx) => (

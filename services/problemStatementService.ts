@@ -58,6 +58,7 @@ export const problemStatementService = {
   },
 
   getCategories(): ProblemCategory[] {
-    return ["All", "AI / ML", "Web Development", "Cybersecurity", "IoT", "Open Innovation"];
+    const dynamicCats = Array.from(new Set(PROBLEM_STATEMENTS_DATA.map((p) => p.category)));
+    return ["All", ...dynamicCats];
   },
 };

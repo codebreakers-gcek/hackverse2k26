@@ -19,12 +19,17 @@ export async function GET() {
           registrationFee: 0,
           isPaymentMandatory: false,
           isRegistrationOpen: true,
-          isProblemStatementsPublished: false,
+          isProblemStatementsPublished: true,
           minSquadSize: 2,
           maxSquadSize: 4,
           contactPhone: "+91 9876543210",
           contactEmail: "hackverse26@codebreakersgcek.tech",
         },
+      });
+    } else if (!settings.isProblemStatementsPublished) {
+      settings = await prisma.systemSettings.update({
+        where: { id: "default" },
+        data: { isProblemStatementsPublished: true },
       });
     }
 
@@ -62,7 +67,7 @@ export async function GET() {
         registrationFee: 0,
         isPaymentMandatory: false,
         isRegistrationOpen: true,
-        isProblemStatementsPublished: false,
+        isProblemStatementsPublished: true,
         minSquadSize: 2,
         maxSquadSize: 4,
       },
