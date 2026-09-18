@@ -1,6 +1,55 @@
 import { ProblemStatement } from "@/types/problemStatement";
 
 export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
+  // ==========================================
+  // HARDWARE TRACKS
+  // ==========================================
+  {
+    id: "ps-hw-01",
+    code: "CB-HW-01",
+    title: "ENERSENSE — AI-POWERED SMART ELECTRICITY MANAGEMENT SYSTEM FOR CAMPUSES",
+    domain: "GreenTech & Sustainability",
+    category: "Hardware",
+    difficulty: "Advanced",
+    shortDescription:
+      "Colleges and organisations run hundreds of fans, tube-lights, ACs, and other electrical loads that are frequently left running in empty rooms, driving up electricity bills and wearing out equipment faster than necessary. This problem calls for an AI-powered, occupancy-aware system that automatically manages electrical loads and gives facility teams real-time visibility into where energy is actually being wasted.",
+    fullDescription:
+      "Any mid-to-large campus or organisation — classrooms, labs, staff rooms, hostels, offices — has a large number of electrical appliances (fans, tube-lights/LED panels, ACs, projectors, plug loads) spread across many rooms. In practice, these are rarely operated efficiently: lights and fans are switched on in the morning and often stay on well after a room has emptied out, ACs run at full load regardless of actual occupancy or outside temperature, and appliances are left on overnight or over weekends simply because no one remembered to switch them off.\n\nThis has two compounding costs. First, unwanted, unnecessary energy consumption directly inflates electricity bills, and constant unnecessary run-time also shortens the operational lifespan of the equipment itself (motors, ballasts/drivers, compressors), adding avoidable maintenance and replacement costs. Second, there is typically no monitoring or automation layer in place at all — switches are manual, there's no way to know from a central point which rooms have lights/fans on, and there is certainly no automatic system that turns things off when a room becomes unoccupied and back on when someone enters.\n\nThe core challenge, then, is not just \"add a sensor to a switch\" — it's building a system that can reliably distinguish genuine occupancy from false triggers, learn usage patterns across many different room types (classroom vs. lab vs. office vs. hostel), and give administrators a simple, trustworthy way to see and reduce waste — without constant manual intervention and without annoying users with lights that switch off while they're clearly still in the room.",
+    keyDeliverables: [
+      "1. Sensing Layer\n• Occupancy detection — PIR motion sensors and/or ultrasonic sensors per room to detect genuine human presence (not just movement of curtains/fans), with dual-sensor logic to reduce false positives/negatives.\n• Current/energy sensing — non-invasive current sensors (e.g., clamp-on CT sensors) on key circuits to measure real-time power draw per room or per appliance group.\n• Ambient sensing (optional) — light and temperature sensors to support smarter decisions (e.g., don't turn on lights if daylight is sufficient; don't run AC at full blast if the room is already cool).",
+      "2. Automated Control Layer\n• Relay-based switching — microcontroller-driven (e.g., ESP32/Arduino-class boards) relay modules that can automatically switch fans, lights, and other loads on/off based on occupancy and rules.\n• Grace-period logic — a configurable delay before auto-switch-off (e.g., 5–10 minutes of no detected occupancy) to avoid abrupt cut-offs while someone is still present but momentarily still.\n• Manual override — a physical switch or app-based override so users can retain manual control when genuinely needed, without fighting the automation.\n• AC-specific control — smart IR/relay control for ACs that adjusts based on occupancy and, where possible, temperature setpoint optimisation.",
+      "3. Intelligence & Monitoring Layer\n• Central dashboard — a web/mobile dashboard showing real-time status (on/off, power draw) of every connected room/circuit across campus.\n• AI-based usage prediction — a lightweight ML model that learns typical occupancy/usage patterns per room (by day of week, time of day, room type) to anticipate needs and flag anomalies (e.g., 'Lab 3 AC has been running continuously for 48 hours with no logged occupancy').\n• Consumption analytics & reporting — historical energy-use trends, room-wise/department-wise consumption comparisons, and estimated cost savings versus a pre-automation baseline.\n• Alerts — notifications to facility staff for equipment left on unexpectedly, unusual consumption spikes, or sensor/hardware faults.\n• Scalable, retrofit-friendly design — the system should be installable on existing wiring/appliances without requiring a full electrical overhaul, so it can realistically scale across many rooms and buildings.",
+    ],
+    constraints: [
+      "Must support retrofit installation on existing campus wiring/appliances without requiring a full electrical overhaul",
+      "Robust dual-sensor logic with configurable grace-period delay (5–10 min) before auto-switch-off to prevent false cut-offs while someone is present",
+      "Physical and app-based manual override to retain manual control when genuinely needed without fighting automation",
+      "Reliable fail-safe operation to prevent electrical hazards and guarantee continuous power availability",
+    ],
+    relevantDatasets: [
+      "Reference datasheets for PIR/ultrasonic occupancy sensors, CT current sensors, and relay modules (for hardware component selection and calibration).",
+      "Open-source microcontroller/IoT platform documentation (e.g., ESP32, Arduino, ESP-NOW/MQTT protocols) for building the sensor-to-cloud pipeline.",
+      "Sample/simulated room-occupancy and appliance-usage datasets (time-of-day, day-of-week patterns) for training and testing the AI usage-prediction model.",
+      "Public building energy-benchmarking data (typical classroom/office/lab energy-use baselines) to validate expected savings estimates.",
+      "Electricity tariff/billing-structure data (slab rates, time-of-day pricing if applicable) to translate energy savings into rupee-cost savings for reporting.",
+      "Synthetic sensor-fault/anomaly datasets to test the alerting logic for stuck relays, faulty sensors, or abnormal consumption patterns.",
+    ],
+    evaluationFocus: [
+      "Occupancy-detection accuracy — how reliably the system distinguishes real presence from false triggers (fans moving curtains, sensor noise), and how well it avoids annoyingly switching off while someone is present.",
+      "Energy-savings impact — credible, ideally measurable, reduction in energy consumption versus a manual-control baseline.",
+      "Hardware reliability & safety — robustness of the relay/switching hardware for continuous real-world use, with proper electrical safety practices.",
+      "Retrofit feasibility — how easily the system can be installed on existing campus wiring/appliances without major renovation cost.",
+      "Dashboard usability — clarity and actionability of the monitoring dashboard for non-technical facility staff.",
+      "User experience — whether the automation feels helpful rather than intrusive (grace periods, manual override) to actual room occupants.",
+      "Scalability & cost-effectiveness — realistic per-room hardware cost and feasibility of scaling the solution across an entire campus.",
+      "Equipment lifespan impact — plausibility of the reduced unnecessary run-time genuinely extending appliance lifespan and cutting maintenance costs.",
+    ],
+    driveUrl: "https://assets.cbgcek.dev/CB-HW-01.pdf",
+  },
+
+  // ==========================================
+  // SOFTWARE TRACKS
+  // ==========================================
   {
     id: "ps-sw-01",
     code: "CB-SW-01",
@@ -119,48 +168,6 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     driveUrl: "https://assets.cbgcek.dev/CB-SW-03.pdf",
   },
   {
-    id: "ps-hw-01",
-    code: "CB-HW-01",
-    title: "ENERSENSE — AI-POWERED SMART ELECTRICITY MANAGEMENT SYSTEM FOR CAMPUSES",
-    domain: "GreenTech & Sustainability",
-    category: "Hardware",
-    difficulty: "Advanced",
-    shortDescription:
-      "Colleges and organisations run hundreds of fans, tube-lights, ACs, and other electrical loads that are frequently left running in empty rooms, driving up electricity bills and wearing out equipment faster than necessary. This problem calls for an AI-powered, occupancy-aware system that automatically manages electrical loads and gives facility teams real-time visibility into where energy is actually being wasted.",
-    fullDescription:
-      "Any mid-to-large campus or organisation — classrooms, labs, staff rooms, hostels, offices — has a large number of electrical appliances (fans, tube-lights/LED panels, ACs, projectors, plug loads) spread across many rooms. In practice, these are rarely operated efficiently: lights and fans are switched on in the morning and often stay on well after a room has emptied out, ACs run at full load regardless of actual occupancy or outside temperature, and appliances are left on overnight or over weekends simply because no one remembered to switch them off.\n\nThis has two compounding costs. First, unwanted, unnecessary energy consumption directly inflates electricity bills, and constant unnecessary run-time also shortens the operational lifespan of the equipment itself (motors, ballasts/drivers, compressors), adding avoidable maintenance and replacement costs. Second, there is typically no monitoring or automation layer in place at all — switches are manual, there's no way to know from a central point which rooms have lights/fans on, and there is certainly no automatic system that turns things off when a room becomes unoccupied and back on when someone enters.\n\nThe core challenge, then, is not just \"add a sensor to a switch\" — it's building a system that can reliably distinguish genuine occupancy from false triggers, learn usage patterns across many different room types (classroom vs. lab vs. office vs. hostel), and give administrators a simple, trustworthy way to see and reduce waste — without constant manual intervention and without annoying users with lights that switch off while they're clearly still in the room.",
-    keyDeliverables: [
-      "1. Sensing Layer\n• Occupancy detection — PIR motion sensors and/or ultrasonic sensors per room to detect genuine human presence (not just movement of curtains/fans), with dual-sensor logic to reduce false positives/negatives.\n• Current/energy sensing — non-invasive current sensors (e.g., clamp-on CT sensors) on key circuits to measure real-time power draw per room or per appliance group.\n• Ambient sensing (optional) — light and temperature sensors to support smarter decisions (e.g., don't turn on lights if daylight is sufficient; don't run AC at full blast if the room is already cool).",
-      "2. Automated Control Layer\n• Relay-based switching — microcontroller-driven (e.g., ESP32/Arduino-class boards) relay modules that can automatically switch fans, lights, and other loads on/off based on occupancy and rules.\n• Grace-period logic — a configurable delay before auto-switch-off (e.g., 5–10 minutes of no detected occupancy) to avoid abrupt cut-offs while someone is still present but momentarily still.\n• Manual override — a physical switch or app-based override so users can retain manual control when genuinely needed, without fighting the automation.\n• AC-specific control — smart IR/relay control for ACs that adjusts based on occupancy and, where possible, temperature setpoint optimisation.",
-      "3. Intelligence & Monitoring Layer\n• Central dashboard — a web/mobile dashboard showing real-time status (on/off, power draw) of every connected room/circuit across campus.\n• AI-based usage prediction — a lightweight ML model that learns typical occupancy/usage patterns per room (by day of week, time of day, room type) to anticipate needs and flag anomalies (e.g., 'Lab 3 AC has been running continuously for 48 hours with no logged occupancy').\n• Consumption analytics & reporting — historical energy-use trends, room-wise/department-wise consumption comparisons, and estimated cost savings versus a pre-automation baseline.\n• Alerts — notifications to facility staff for equipment left on unexpectedly, unusual consumption spikes, or sensor/hardware faults.\n• Scalable, retrofit-friendly design — the system should be installable on existing wiring/appliances without requiring a full electrical overhaul, so it can realistically scale across many rooms and buildings.",
-    ],
-    constraints: [
-      "Must support retrofit installation on existing campus wiring/appliances without requiring a full electrical overhaul",
-      "Robust dual-sensor logic with configurable grace-period delay (5–10 min) before auto-switch-off to prevent false cut-offs while someone is present",
-      "Physical and app-based manual override to retain manual control when genuinely needed without fighting automation",
-      "Reliable fail-safe operation to prevent electrical hazards and guarantee continuous power availability",
-    ],
-    relevantDatasets: [
-      "Reference datasheets for PIR/ultrasonic occupancy sensors, CT current sensors, and relay modules (for hardware component selection and calibration).",
-      "Open-source microcontroller/IoT platform documentation (e.g., ESP32, Arduino, ESP-NOW/MQTT protocols) for building the sensor-to-cloud pipeline.",
-      "Sample/simulated room-occupancy and appliance-usage datasets (time-of-day, day-of-week patterns) for training and testing the AI usage-prediction model.",
-      "Public building energy-benchmarking data (typical classroom/office/lab energy-use baselines) to validate expected savings estimates.",
-      "Electricity tariff/billing-structure data (slab rates, time-of-day pricing if applicable) to translate energy savings into rupee-cost savings for reporting.",
-      "Synthetic sensor-fault/anomaly datasets to test the alerting logic for stuck relays, faulty sensors, or abnormal consumption patterns.",
-    ],
-    evaluationFocus: [
-      "Occupancy-detection accuracy — how reliably the system distinguishes real presence from false triggers (fans moving curtains, sensor noise), and how well it avoids annoyingly switching off while someone is present.",
-      "Energy-savings impact — credible, ideally measurable, reduction in energy consumption versus a manual-control baseline.",
-      "Hardware reliability & safety — robustness of the relay/switching hardware for continuous real-world use, with proper electrical safety practices.",
-      "Retrofit feasibility — how easily the system can be installed on existing campus wiring/appliances without major renovation cost.",
-      "Dashboard usability — clarity and actionability of the monitoring dashboard for non-technical facility staff.",
-      "User experience — whether the automation feels helpful rather than intrusive (grace periods, manual override) to actual room occupants.",
-      "Scalability & cost-effectiveness — realistic per-room hardware cost and feasibility of scaling the solution across an entire campus.",
-      "Equipment lifespan impact — plausibility of the reduced unnecessary run-time genuinely extending appliance lifespan and cutting maintenance costs.",
-    ],
-    driveUrl: "https://assets.cbgcek.dev/CB-HW-01.pdf",
-  },
-  {
     id: "ps-sw-04",
     code: "CB-SW-04",
     title: "AGRISAGE — UNIFIED AI FARM COPILOT, RISK INTELLIGENCE & MARKET OPTIMIZER",
@@ -206,6 +213,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     driveUrl: "https://assets.cbgcek.dev/CB-SW-04.pdf",
   },
 ];
+
 
 
 
