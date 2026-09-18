@@ -118,5 +118,95 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     ],
     driveUrl: "https://assets.cbgcek.dev/CB-SW-03.pdf",
   },
+  {
+    id: "ps-hw-01",
+    code: "CB-HW-01",
+    title: "ENERSENSE — AI-POWERED SMART ELECTRICITY MANAGEMENT SYSTEM FOR CAMPUSES",
+    domain: "GreenTech & Sustainability",
+    category: "Hardware",
+    difficulty: "Advanced",
+    shortDescription:
+      "Colleges and organisations run hundreds of fans, tube-lights, ACs, and other electrical loads that are frequently left running in empty rooms, driving up electricity bills and wearing out equipment faster than necessary. This problem calls for an AI-powered, occupancy-aware system that automatically manages electrical loads and gives facility teams real-time visibility into where energy is actually being wasted.",
+    fullDescription:
+      "Any mid-to-large campus or organisation — classrooms, labs, staff rooms, hostels, offices — has a large number of electrical appliances (fans, tube-lights/LED panels, ACs, projectors, plug loads) spread across many rooms. In practice, these are rarely operated efficiently: lights and fans are switched on in the morning and often stay on well after a room has emptied out, ACs run at full load regardless of actual occupancy or outside temperature, and appliances are left on overnight or over weekends simply because no one remembered to switch them off.\n\nThis has two compounding costs. First, unwanted, unnecessary energy consumption directly inflates electricity bills, and constant unnecessary run-time also shortens the operational lifespan of the equipment itself (motors, ballasts/drivers, compressors), adding avoidable maintenance and replacement costs. Second, there is typically no monitoring or automation layer in place at all — switches are manual, there's no way to know from a central point which rooms have lights/fans on, and there is certainly no automatic system that turns things off when a room becomes unoccupied and back on when someone enters.\n\nThe core challenge, then, is not just \"add a sensor to a switch\" — it's building a system that can reliably distinguish genuine occupancy from false triggers, learn usage patterns across many different room types (classroom vs. lab vs. office vs. hostel), and give administrators a simple, trustworthy way to see and reduce waste — without constant manual intervention and without annoying users with lights that switch off while they're clearly still in the room.",
+    keyDeliverables: [
+      "1. Sensing Layer\n• Occupancy detection — PIR motion sensors and/or ultrasonic sensors per room to detect genuine human presence (not just movement of curtains/fans), with dual-sensor logic to reduce false positives/negatives.\n• Current/energy sensing — non-invasive current sensors (e.g., clamp-on CT sensors) on key circuits to measure real-time power draw per room or per appliance group.\n• Ambient sensing (optional) — light and temperature sensors to support smarter decisions (e.g., don't turn on lights if daylight is sufficient; don't run AC at full blast if the room is already cool).",
+      "2. Automated Control Layer\n• Relay-based switching — microcontroller-driven (e.g., ESP32/Arduino-class boards) relay modules that can automatically switch fans, lights, and other loads on/off based on occupancy and rules.\n• Grace-period logic — a configurable delay before auto-switch-off (e.g., 5–10 minutes of no detected occupancy) to avoid abrupt cut-offs while someone is still present but momentarily still.\n• Manual override — a physical switch or app-based override so users can retain manual control when genuinely needed, without fighting the automation.\n• AC-specific control — smart IR/relay control for ACs that adjusts based on occupancy and, where possible, temperature setpoint optimisation.",
+      "3. Intelligence & Monitoring Layer\n• Central dashboard — a web/mobile dashboard showing real-time status (on/off, power draw) of every connected room/circuit across campus.\n• AI-based usage prediction — a lightweight ML model that learns typical occupancy/usage patterns per room (by day of week, time of day, room type) to anticipate needs and flag anomalies (e.g., 'Lab 3 AC has been running continuously for 48 hours with no logged occupancy').\n• Consumption analytics & reporting — historical energy-use trends, room-wise/department-wise consumption comparisons, and estimated cost savings versus a pre-automation baseline.\n• Alerts — notifications to facility staff for equipment left on unexpectedly, unusual consumption spikes, or sensor/hardware faults.\n• Scalable, retrofit-friendly design — the system should be installable on existing wiring/appliances without requiring a full electrical overhaul, so it can realistically scale across many rooms and buildings.",
+    ],
+    constraints: [
+      "Must support retrofit installation on existing campus wiring/appliances without requiring a full electrical overhaul",
+      "Robust dual-sensor logic with configurable grace-period delay (5–10 min) before auto-switch-off to prevent false cut-offs while someone is present",
+      "Physical and app-based manual override to retain manual control when genuinely needed without fighting automation",
+      "Reliable fail-safe operation to prevent electrical hazards and guarantee continuous power availability",
+    ],
+    relevantDatasets: [
+      "Reference datasheets for PIR/ultrasonic occupancy sensors, CT current sensors, and relay modules (for hardware component selection and calibration).",
+      "Open-source microcontroller/IoT platform documentation (e.g., ESP32, Arduino, ESP-NOW/MQTT protocols) for building the sensor-to-cloud pipeline.",
+      "Sample/simulated room-occupancy and appliance-usage datasets (time-of-day, day-of-week patterns) for training and testing the AI usage-prediction model.",
+      "Public building energy-benchmarking data (typical classroom/office/lab energy-use baselines) to validate expected savings estimates.",
+      "Electricity tariff/billing-structure data (slab rates, time-of-day pricing if applicable) to translate energy savings into rupee-cost savings for reporting.",
+      "Synthetic sensor-fault/anomaly datasets to test the alerting logic for stuck relays, faulty sensors, or abnormal consumption patterns.",
+    ],
+    evaluationFocus: [
+      "Occupancy-detection accuracy — how reliably the system distinguishes real presence from false triggers (fans moving curtains, sensor noise), and how well it avoids annoyingly switching off while someone is present.",
+      "Energy-savings impact — credible, ideally measurable, reduction in energy consumption versus a manual-control baseline.",
+      "Hardware reliability & safety — robustness of the relay/switching hardware for continuous real-world use, with proper electrical safety practices.",
+      "Retrofit feasibility — how easily the system can be installed on existing campus wiring/appliances without major renovation cost.",
+      "Dashboard usability — clarity and actionability of the monitoring dashboard for non-technical facility staff.",
+      "User experience — whether the automation feels helpful rather than intrusive (grace periods, manual override) to actual room occupants.",
+      "Scalability & cost-effectiveness — realistic per-room hardware cost and feasibility of scaling the solution across an entire campus.",
+      "Equipment lifespan impact — plausibility of the reduced unnecessary run-time genuinely extending appliance lifespan and cutting maintenance costs.",
+    ],
+    driveUrl: "https://assets.cbgcek.dev/CB-HW-01.pdf",
+  },
+  {
+    id: "ps-sw-04",
+    code: "CB-SW-04",
+    title: "AGRISAGE — UNIFIED AI FARM COPILOT, RISK INTELLIGENCE & MARKET OPTIMIZER",
+    domain: "AgriTech & Rural Innovation",
+    category: "Software",
+    difficulty: "Advanced",
+    shortDescription:
+      "Farmers today need three different kinds of support that are rarely offered together: day-to-day crop guidance, early warning against risks that could wipe out a harvest, and smart decisions about what to grow and where to sell it. This problem calls for a single AI copilot that covers the entire journey — from sowing advice, through risk monitoring, to the final sell decision — instead of forcing farmers to piece together three different tools.",
+    fullDescription:
+      "A farmer's decision-making doesn't happen in isolated silos — advisory, risk, and market decisions are all connected parts of the same crop journey, yet most digital farming tools only address one slice of it. A chatbot might answer \"what should I do today,\" a separate risk tool might warn about pests, and a totally different app might show mandi prices — with no single system connecting what's happening in the field to what's happening in the market, or explaining why a recommendation is being made.\n\nThis creates three compounding gaps:\n\n1. Personalised, multimodal guidance is missing. Farmers rarely get advice that's genuinely tailored to their specific crop stage, field conditions, and history — most advisory is generic, text-only, and doesn't account for what a farmer can actually show (a photo of a diseased leaf) or say (a voice query in their own dialect).\n\n2. Risk is detected too late, or not explained at all. Disease outbreaks, pest infestations, extreme weather, water stress, and sudden price crashes are all threats that could be flagged early — but most tools either don't predict them at all, or issue a black-box alert with no explanation of why the risk is rising or what to actually do about it.\n\n3. The \"what to grow, where to sell\" decision is made blind. Even when a farmer successfully grows a good crop, they often have no data-backed guidance on which crop would have been most profitable to plant, which market would pay best, when to sell for the best price, or how to get the produce there efficiently — so good harvests still translate into disappointing income.\n\nThe challenge is to unify all three into a single AI copilot that accompanies a farmer through the entire crop cycle: from the decision of what to plant, through daily advisory and risk monitoring while it grows, to the final decision of when, where, and how to sell.",
+    keyDeliverables: [
+      "Module 1 — Farm Copilot (Personalised Advisory)\n• Multilingual voice & text interface — farmers ask questions or report issues by speaking naturally in their own language/dialect.\n• Image-based crop analysis — farmers upload/photograph crop or leaf images for AI-based identification of visible issues (disease symptoms, nutrient deficiency, pest damage).\n• Weather-aware guidance — combines local weather forecasts with crop stage to time irrigation, spraying, and other operations correctly.\n• Farm-history-aware personalisation — recommendations account for the specific farmer's past crop choices, soil type, and recorded outcomes, not generic advice.\n• Full crop-cycle coverage — guidance spans sowing, growth-stage care, harvest timing, and post-harvest handling, not just a single moment in the season.",
+      "Module 2 — Crop Risk Intelligence (Early Warning)\n• Multi-threat risk modelling — predicts risk across disease outbreaks, pest infestations, extreme weather events, water stress, and market-price volatility, rather than covering only one threat type.\n• Explainable alerts — every warning states why the risk is elevated (e.g., \"high humidity + recent rainfall + susceptible crop stage → elevated fungal-disease risk\") rather than issuing an opaque red flag.\n• Severity & urgency ranking — helps farmers prioritise when facing multiple simultaneous risks.\n• Mitigation guidance — each alert comes paired with concrete, actionable mitigation steps, not just a warning.\n• Feeds back into the Copilot — risk alerts surface directly within the same conversational interface farmers already use for daily advisory, rather than a separate app.",
+      "Module 3 — Farm-to-Market Optimizer (Sell-Side Intelligence)\n• Crop-choice recommendation — before the season starts, suggests what to grow based on predicted yield potential, local suitability, and anticipated demand/price trends.\n• Market-price forecasting — predicts likely price trends across nearby mandis/markets to inform the 'where to sell' decision.\n• Demand prediction — factors in anticipated regional/seasonal demand so farmers aren't blindsided by oversupply-driven price crashes.\n• Sell-timing guidance — recommends when to sell versus when to hold (where storage is feasible), based on price-trend forecasts.\n• Logistics optimisation — suggests transport options/routes to reach the most favourable market at reasonable cost, weighing price gain against transport expense.",
+      "Unifying Design Principles\n• Single shared farmer profile across all three modules — location, crop history, soil data, and past interactions inform advisory, risk, and market recommendations alike.\n• One conversational entry point — farmers interact with one copilot interface, not three separate tools; risk alerts and market suggestions surface naturally within the same advisory conversation.\n• Explainability throughout — every recommendation (advisory, risk, or market) should be able to say why, not just what.\n• Offline/low-bandwidth resilience — core functionality should degrade gracefully under poor connectivity, given the target user base.",
+    ],
+    constraints: [
+      "Single shared farmer profile across all three modules — location, crop history, soil data, and past interactions inform advisory, risk, and market recommendations alike",
+      "One conversational entry point — farmers interact with one copilot interface, not three separate tools; risk alerts and market suggestions surface naturally within the same advisory conversation",
+      "Explainability throughout — every recommendation (advisory, risk, or market) should be able to say why, not just what",
+      "Offline/low-bandwidth resilience — core functionality should degrade gracefully under poor connectivity, given the target user base",
+    ],
+    relevantDatasets: [
+      "Open crop-disease and pest image datasets (e.g., publicly available plant-disease image collections) for the image-analysis module.",
+      "Regional-language speech/NLP datasets for building the multilingual voice interface.",
+      "Open weather-forecast APIs and historical weather datasets for both advisory timing and risk modelling.",
+      "Public agricultural market-price datasets (mandi/wholesale price history) for the price-forecasting and demand-prediction components.",
+      "Open crop-yield and soil-suitability datasets for the crop-choice recommendation engine.",
+      "Public transport/logistics and road-network data for the logistics-optimisation feature.",
+      "Historical regional disease/pest outbreak records for validating the risk-intelligence module.",
+      "Synthetic/sample farmer-profile and farm-history datasets to test personalisation across all three modules.",
+    ],
+    evaluationFocus: [
+      "True integration, not three bolted-together apps — do advisory, risk, and market modules genuinely share data and context, or function as separate features under one login?",
+      "Personalisation quality — how meaningfully recommendations adapt to an individual farmer's crop stage, location, and history.",
+      "Multimodal robustness — real functionality across voice, text, and image inputs, not a text-only demo with token multimodal support.",
+      "Explainability — whether risk alerts and market/crop recommendations clearly communicate their reasoning, not just a conclusion.",
+      "Forecast/prediction accuracy — credibility of yield, price, demand, and risk predictions against historical data.",
+      "End-to-end coverage — does the system genuinely span the full crop cycle (what to grow → how to grow it → how to sell it), or only address one phase well?",
+      "Usability & accessibility — multilingual quality, offline resilience, and ease of use for farmers with limited digital literacy.",
+      "Actionability — how directly outputs from each module translate into a concrete decision or action a farmer can take.",
+    ],
+    driveUrl: "https://assets.cbgcek.dev/CB-SW-04.pdf",
+  },
 ];
+
+
+
 

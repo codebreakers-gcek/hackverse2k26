@@ -739,16 +739,41 @@ export function ProblemSelectionContent() {
                           <div className="font-mono text-[11px] font-black uppercase text-black/70">
                             KEY DELIVERABLES:
                           </div>
-                          <ul className="space-y-1.5 text-xs font-bold text-black/90">
-                            {pref1Obj.keyDeliverables.map((deliv, idx) => (
-                              <li key={idx} className="flex items-start gap-2">
-                                <span className="w-4 h-4 bg-black text-[#55FF55] font-mono text-[10px] flex items-center justify-center shrink-0 mt-0.5 border border-black shadow-[1px_1px_0px_#000]">
-                                  {idx + 1}
-                                </span>
-                                <span>{deliv}</span>
-                              </li>
-                            ))}
-                          </ul>
+                          <div className="space-y-2">
+                            {pref1Obj.keyDeliverables.map((deliv, idx) => {
+                              const lines = deliv.split("\n").filter((l) => l.trim().length > 0);
+                              const hasMultipleLines = lines.length > 1;
+                              const title = hasMultipleLines ? lines[0] : null;
+                              const bulletLines = hasMultipleLines ? lines.slice(1) : lines;
+
+                              return (
+                                <div key={idx} className="flex items-start gap-2 p-2 bg-[#DBDBDB] border border-black text-xs font-bold text-black/90">
+                                  <span className="w-4 h-4 bg-black text-[#55FF55] font-mono text-[10px] flex items-center justify-center shrink-0 mt-0.5 border border-black shadow-[1px_1px_0px_#000]">
+                                    {idx + 1}
+                                  </span>
+                                  <div className="flex-1 space-y-1">
+                                    {title && (
+                                      <div className="font-mono font-black uppercase text-black text-[11px] border-b border-black/20 pb-0.5">
+                                        {title}
+                                      </div>
+                                    )}
+                                    {hasMultipleLines ? (
+                                      <ul className="space-y-1 pt-0.5">
+                                        {bulletLines.map((line, lIdx) => (
+                                          <li key={lIdx} className="flex items-start gap-1.5 text-[11px] leading-relaxed">
+                                            <span className="text-black font-black select-none shrink-0">•</span>
+                                            <span>{line.replace(/^[•\-]\s*/, "")}</span>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    ) : (
+                                      <span>{deliv}</span>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
                         </div>
 
                         {/* Datasets if present */}
@@ -759,8 +784,9 @@ export function ProblemSelectionContent() {
                             </div>
                             <ul className="space-y-1 text-xs font-bold text-black/85">
                               {pref1Obj.relevantDatasets.map((ds, idx) => (
-                                <li key={idx} className="truncate">
-                                  ▸ {ds}
+                                <li key={idx} className="flex items-start gap-2">
+                                  <span className="text-[#0055FF] font-mono font-black">▸</span>
+                                  <span>{ds}</span>
                                 </li>
                               ))}
                             </ul>
@@ -831,16 +857,41 @@ export function ProblemSelectionContent() {
                           <div className="font-mono text-[11px] font-black uppercase text-black/70">
                             KEY DELIVERABLES:
                           </div>
-                          <ul className="space-y-1.5 text-xs font-bold text-black/90">
-                            {pref2Obj.keyDeliverables.map((deliv, idx) => (
-                              <li key={idx} className="flex items-start gap-2">
-                                <span className="w-4 h-4 bg-black text-[#55FF55] font-mono text-[10px] flex items-center justify-center shrink-0 mt-0.5 border border-black shadow-[1px_1px_0px_#000]">
-                                  {idx + 1}
-                                </span>
-                                <span>{deliv}</span>
-                              </li>
-                            ))}
-                          </ul>
+                          <div className="space-y-2">
+                            {pref2Obj.keyDeliverables.map((deliv, idx) => {
+                              const lines = deliv.split("\n").filter((l) => l.trim().length > 0);
+                              const hasMultipleLines = lines.length > 1;
+                              const title = hasMultipleLines ? lines[0] : null;
+                              const bulletLines = hasMultipleLines ? lines.slice(1) : lines;
+
+                              return (
+                                <div key={idx} className="flex items-start gap-2 p-2 bg-[#DBDBDB] border border-black text-xs font-bold text-black/90">
+                                  <span className="w-4 h-4 bg-black text-[#55FF55] font-mono text-[10px] flex items-center justify-center shrink-0 mt-0.5 border border-black shadow-[1px_1px_0px_#000]">
+                                    {idx + 1}
+                                  </span>
+                                  <div className="flex-1 space-y-1">
+                                    {title && (
+                                      <div className="font-mono font-black uppercase text-black text-[11px] border-b border-black/20 pb-0.5">
+                                        {title}
+                                      </div>
+                                    )}
+                                    {hasMultipleLines ? (
+                                      <ul className="space-y-1 pt-0.5">
+                                        {bulletLines.map((line, lIdx) => (
+                                          <li key={lIdx} className="flex items-start gap-1.5 text-[11px] leading-relaxed">
+                                            <span className="text-black font-black select-none shrink-0">•</span>
+                                            <span>{line.replace(/^[•\-]\s*/, "")}</span>
+                                          </li>
+                                        ))}
+                                      </ul>
+                                    ) : (
+                                      <span>{deliv}</span>
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
                         </div>
 
                         {/* Datasets if present */}

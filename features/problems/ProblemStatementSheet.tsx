@@ -171,18 +171,43 @@ export function ProblemStatementSheet({
                   <CheckCircle className="w-4 h-4 text-[#256010] stroke-[3px]" />
                   <span>EXPECTED SOLUTION &amp; KEY DELIVERABLES:</span>
                 </h3>
-                <div className="space-y-2.5">
-                  {problem.keyDeliverables.map((deliv, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-start gap-3 p-3 bg-[#8B8B8B] border-4 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] text-xs sm:text-sm font-mono font-bold text-black"
-                    >
-                      <span className="w-6 h-6 bg-black text-[#55FF55] font-mono text-xs font-black flex items-center justify-center shrink-0 border border-black shadow-[1px_1px_0px_#000]">
-                        {idx + 1}
-                      </span>
-                      <span className="leading-snug pt-0.5">{deliv}</span>
-                    </div>
-                  ))}
+                <div className="space-y-3">
+                  {problem.keyDeliverables.map((deliv, idx) => {
+                    const lines = deliv.split("\n").filter((l) => l.trim().length > 0);
+                    const hasMultipleLines = lines.length > 1;
+                    const title = hasMultipleLines ? lines[0] : null;
+                    const bulletLines = hasMultipleLines ? lines.slice(1) : lines;
+
+                    return (
+                      <div
+                        key={idx}
+                        className="flex items-start gap-3 p-3.5 bg-[#8B8B8B] border-4 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] text-xs sm:text-sm font-mono font-bold text-black shadow-[2px_2px_0px_#000]"
+                      >
+                        <span className="w-6 h-6 bg-black text-[#55FF55] font-mono text-xs font-black flex items-center justify-center shrink-0 border border-black shadow-[1px_1px_0px_#000] mt-0.5">
+                          {idx + 1}
+                        </span>
+                        <div className="leading-snug pt-0.5 flex-1 space-y-2">
+                          {title ? (
+                            <div className="font-mono font-black uppercase text-black text-sm tracking-wide border-b-2 border-black/20 pb-1">
+                              {title}
+                            </div>
+                          ) : null}
+                          {hasMultipleLines ? (
+                            <ul className="space-y-1.5 pt-0.5">
+                              {bulletLines.map((line, lIdx) => (
+                                <li key={lIdx} className="flex items-start gap-2 text-black font-mono font-bold text-xs sm:text-[13px] leading-relaxed">
+                                  <span className="text-black font-black select-none shrink-0 mt-0.5">•</span>
+                                  <span>{line.replace(/^[•\-]\s*/, "")}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          ) : (
+                            <span>{deliv}</span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 
