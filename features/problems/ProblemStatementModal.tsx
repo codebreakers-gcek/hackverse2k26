@@ -58,18 +58,43 @@ export function ProblemStatementModal({ problem, isOpen, onClose }: ProblemState
         <div>
           <h3 className="font-black text-sm uppercase tracking-wider mb-2 flex items-center gap-1.5">
             <CheckCircle className="w-4 h-4 text-emerald-600 stroke-[3px]" />
-            <span>EXPECTED SOLUTION:</span>
+            <span>EXPECTED SOLUTION &amp; KEY DELIVERABLES:</span>
           </h3>
-          <ul className="space-y-2">
-            {problem.keyDeliverables.map((deliv, idx) => (
-              <li key={idx} className="flex items-start gap-2 text-xs sm:text-sm font-bold text-black">
-                <span className="w-5 h-5 bg-black text-white font-mono text-xs flex items-center justify-center shrink-0">
-                  {idx + 1}
-                </span>
-                <span>{deliv}</span>
-              </li>
-            ))}
-          </ul>
+          <div className="space-y-2.5">
+            {problem.keyDeliverables.map((deliv, idx) => {
+              const lines = deliv.split("\n").filter((l) => l.trim().length > 0);
+              const hasMultipleLines = lines.length > 1;
+              const title = hasMultipleLines ? lines[0] : null;
+              const bulletLines = hasMultipleLines ? lines.slice(1) : lines;
+
+              return (
+                <div key={idx} className="flex items-start gap-2.5 p-3 bg-white border-2 border-black text-xs sm:text-sm font-bold text-black shadow-[2px_2px_0px_#000]">
+                  <span className="w-5 h-5 bg-black text-white font-mono text-xs flex items-center justify-center shrink-0 mt-0.5">
+                    {idx + 1}
+                  </span>
+                  <div className="flex-1 space-y-1.5">
+                    {title ? (
+                      <div className="font-black uppercase text-black text-xs sm:text-sm tracking-wide border-b border-black/20 pb-1">
+                        {title}
+                      </div>
+                    ) : null}
+                    {hasMultipleLines ? (
+                      <ul className="space-y-1 pt-0.5">
+                        {bulletLines.map((line, lIdx) => (
+                          <li key={lIdx} className="flex items-start gap-1.5 text-xs sm:text-[13px] leading-relaxed">
+                            <span className="text-black font-black select-none shrink-0">•</span>
+                            <span>{line.replace(/^[•\-]\s*/, "")}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <span>{deliv}</span>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Technical Constraints */}

@@ -1,29 +1,21 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
   Gavel,
-  ShieldCheck,
   ChevronLeft,
-  Sparkles,
-  Award,
-  CheckCircle2,
   Clock,
   Lock,
-  Star,
-  FileCode,
-  Layers,
   BarChart3,
-  HelpCircle,
 } from "lucide-react";
 import { MarqueeBanner } from "@/components/layout/MarqueeBanner";
 import Image from "next/image";
 
 export default function TeamJudgingPage() {
   const params = useParams();
-  const router = useRouter();
   const rawId = (params?.id as string) || "";
   const ticketId = rawId.toUpperCase().startsWith("HV26-")
     ? rawId.toUpperCase()
