@@ -12,7 +12,6 @@ export const metadata: Metadata = {
     "hackathon registration 2026",
     "HACKVERSE registration",
     "register for hackathon Odisha",
-    "free hackathon registration",
     "student hackathon registration",
     "team registration hackathon",
     "squad registration HACKVERSE",
@@ -44,7 +43,7 @@ export const metadata: Metadata = {
     "hackathon team size 1 to 4 members",
     "GCEK Bhawanipatna hackathon register",
     "CodeBreakers hackathon form",
-    "free food and stay hackathon registration",
+    "food and stay hackathon registration",
     "hackathon ticket booking",
     "hackathon entry portal GCEK",
     "student registration dossier",
@@ -99,7 +98,7 @@ export default function RegisterPage() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10 w-full">
         <SectionTitle
-          tag="ENROLL NOW"
+          tag="ENROLL"
           title="REGISTER YOUR"
           highlightText="SQUAD"
           subtitle="Form a team of 1 to 4 members. Submit your team leader details, problem statement preference, and member credentials below."

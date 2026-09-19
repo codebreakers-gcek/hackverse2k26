@@ -269,11 +269,11 @@ export async function sendRegistrationSubmissionEmail(data: RegistrationEmailDat
               <span style="font-size: 11px; color: #71717a;">Includes 24h Arena, Snacks &amp; Goodies</span>
             </td>
             <td style="font-family: monospace; font-size: 12px;">
-              ${data.paymentDetails?.paymentMode || "FREE_SPONSORED"}<br>
+              ${data.paymentDetails?.paymentMode || "UPI_QR"}<br>
               <span style="color: #71717a;">${data.paymentDetails?.transactionId || "N/A"}</span>
             </td>
             <td style="text-align: right; font-weight: 900; font-size: 14px;">
-              ${data.paymentDetails?.amount ? `₹${data.paymentDetails.amount}` : "FREE"}
+              ${data.paymentDetails?.amount ? `₹${data.paymentDetails.amount}` : "PAID"}
             </td>
           </tr>
         </tbody>
@@ -408,7 +408,7 @@ export async function sendRegistrationApprovedEmail(data: RegistrationEmailData)
         </tr>
         <tr>
           <td style="color: #71717a;">Amount Paid:</td>
-          <td><strong>${data.paymentDetails?.amount ? `₹${data.paymentDetails.amount}` : "₹0 (FREE)"}</strong></td>
+          <td><strong>${data.paymentDetails?.amount ? `₹${data.paymentDetails.amount}` : "PAID"}</strong></td>
         </tr>
         <tr>
           <td style="color: #71717a;">Event Dates:</td>

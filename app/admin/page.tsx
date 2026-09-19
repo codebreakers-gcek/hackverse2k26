@@ -976,9 +976,9 @@ export default function AdminDashboardPage() {
       r.leaderPhone,
       r.leaderWhatsapp || "",
       1 + (r.members?.length || 0),
-      r.paymentMode || "FREE",
+      r.paymentMode || "UPI_QR",
       r.transactionId || "",
-      r.paymentStatus || "FREE_TIER",
+      r.paymentStatus || "PENDING",
       r.accommodationRequired ? "YES" : "NO",
       r.hostelBlock || "",
       r.roomNumber || "",
@@ -2616,15 +2616,15 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
 
-                <div className="p-6 bg-cyan-200 border-4 border-black shadow-neo space-y-1">
-                  <div className="font-mono text-xs font-black uppercase text-cyan-950">
-                    SPONSORED / FREE PASS
+                <div className="p-6 bg-rose-200 border-4 border-black shadow-neo space-y-1">
+                  <div className="font-mono text-xs font-black uppercase text-rose-950">
+                    REJECTED / UNPAID
                   </div>
-                  <div className="text-4xl font-black font-mono text-cyan-950">
+                  <div className="text-4xl font-black font-mono text-rose-950">
                     {
                       registrations.filter(
                         (r) =>
-                          !r.paymentStatus || r.paymentStatus === "FREE_TIER",
+                          r.paymentStatus === "REJECTED" || !r.paymentStatus,
                       ).length
                     }
                   </div>
@@ -2653,7 +2653,7 @@ export default function AdminDashboardPage() {
                           {squad.teamName}
                         </td>
                         <td className="p-3.5 font-mono">
-                          {squad.paymentMode || "FREE_SPONSORED"}
+                          {squad.paymentMode || "UPI_QR"}
                         </td>
                         <td className="p-3.5 font-mono font-bold text-amber-800">
                           {squad.transactionId || "N/A"}
@@ -2670,7 +2670,7 @@ export default function AdminDashboardPage() {
                                     : "bg-neutral-200 text-neutral-800"
                             }`}
                           >
-                            {squad.paymentStatus || "FREE_TIER"}
+                            {squad.paymentStatus || "PENDING"}
                           </span>
                         </td>
                         <td
@@ -3521,7 +3521,7 @@ export default function AdminDashboardPage() {
                         Registration Fee (₹ INR)
                       </label>
                       <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-black text-white">
-                        {settings.registrationFee > 0 ? `₹${settings.registrationFee} / SQUAD` : "FREE TIER"}
+                        {settings.registrationFee > 0 ? `₹${settings.registrationFee} / SQUAD` : "PAID FEE"}
                       </span>
                     </div>
                     <div className="relative">
@@ -3530,9 +3530,9 @@ export default function AdminDashboardPage() {
                       </span>
                       <input
                         type="number"
-                        min="0"
+                        min="1"
                         step="1"
-                        placeholder="0 for Free Tier"
+                        placeholder="e.g. 299"
                         value={settings.registrationFee}
                         onChange={(e) =>
                           setSettings({
@@ -3544,7 +3544,7 @@ export default function AdminDashboardPage() {
                       />
                     </div>
                     <p className="font-mono text-[10px] text-black/70">
-                      Sets the locked amount in the dynamic UPI QR code. Enter <strong>0</strong> for Free / Sponsored tier.
+                      Sets the locked amount in the dynamic UPI QR code for all registering squads.
                     </p>
                   </div>
 
@@ -3571,8 +3571,8 @@ export default function AdminDashboardPage() {
                     </label>
                     <p className="font-mono text-[10px] text-black/70">
                       {settings.isPaymentMandatory
-                        ? "All squads must provide a valid UPI Transaction ID."
-                        : "Squads can register on sponsored / free tier if fee is 0."}
+                        ? "All squads must provide a valid UPI Transaction ID and receipt proof."
+                        : "Payment required for all squads."}
                     </p>
                   </div>
 

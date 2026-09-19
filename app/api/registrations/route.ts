@@ -81,11 +81,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Determine actual fee amount from admin system settings
-    const paymentMode = data.paymentDetails?.paymentMode || "FREE_SPONSORED";
-    const feeAmount =
-      paymentMode === "FREE_SPONSORED"
-        ? 0
-        : Number(settings?.registrationFee ?? (data.paymentDetails as any)?.amount ?? 0);
+    const paymentMode = data.paymentDetails?.paymentMode || "UPI_QR";
+    const feeAmount = Number(settings?.registrationFee ?? (data.paymentDetails as any)?.amount ?? 0);
 
     // =========================================================================
     // CASE A: EXISTING REGISTRATION FOUND -> UPDATE IN-PLACE (SINGLE RESPONSE ID)
@@ -171,7 +168,7 @@ export async function POST(req: NextRequest) {
           // Payment Details (maintain or update if provided)
           paymentMode: paymentMode,
           transactionId: data.paymentDetails?.transactionId || existingRegistration.transactionId,
-          paymentStatus: paymentMode === "FREE_SPONSORED" ? "FREE_TIER" : existingRegistration.paymentStatus,
+          paymentStatus: existingRegistration.paymentStatus || "PENDING",
           amount: feeAmount,
 
           // Accommodation
@@ -244,7 +241,7 @@ export async function POST(req: NextRequest) {
         // Payment Details with exact admin fee
         paymentMode: paymentMode,
         transactionId: data.paymentDetails?.transactionId || null,
-        paymentStatus: paymentMode === "FREE_SPONSORED" ? "FREE_TIER" : "PENDING",
+        paymentStatus: "PENDING",
         amount: feeAmount,
 
         // Accommodation

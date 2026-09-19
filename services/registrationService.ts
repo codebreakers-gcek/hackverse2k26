@@ -128,15 +128,13 @@ export function validateStep2(data: RegistrationFormData): Record<string, string
  */
 export function validateStep3(data: RegistrationFormData): Record<string, string> {
   const errors: Record<string, string> = {};
-  if (data.paymentDetails.paymentMode !== "FREE_SPONSORED") {
-    const rawTx = data.paymentDetails.transactionId?.trim() || "";
-    if (!rawTx) {
-      errors["paymentDetails.transactionId"] = "Please enter your numeric transaction reference ID / UTR.";
-    } else if (!/^\d+$/.test(rawTx)) {
-      errors["paymentDetails.transactionId"] = "Transaction ID must contain numbers only (no alphabets or symbols).";
-    } else if (rawTx.length < 6) {
-      errors["paymentDetails.transactionId"] = "Transaction reference / UTR number must be at least 6 digits.";
-    }
+  const rawTx = data.paymentDetails.transactionId?.trim() || "";
+  if (!rawTx) {
+    errors["paymentDetails.transactionId"] = "Please enter your numeric transaction reference ID / UTR.";
+  } else if (!/^\d+$/.test(rawTx)) {
+    errors["paymentDetails.transactionId"] = "Transaction ID must contain numbers only (no alphabets or symbols).";
+  } else if (rawTx.length < 6) {
+    errors["paymentDetails.transactionId"] = "Transaction reference / UTR number must be at least 6 digits.";
   }
   return errors;
 }

@@ -123,9 +123,9 @@ export async function POST(req: NextRequest) {
       },
       members: Array.isArray(squad.members) ? squad.members : [],
       payment: {
-        paymentMode: squad.paymentMode || "FREE_SPONSORED",
+        paymentMode: squad.paymentMode || "UPI_QR",
         transactionId: squad.transactionId || null,
-        paymentStatus: squad.paymentStatus || "FREE_TIER",
+        paymentStatus: squad.paymentStatus || "PENDING",
         amount: squad.amount || 0,
       },
       accommodation: {
