@@ -85,28 +85,11 @@ export const clubLeads: TeamMember[] = [
     },
   },
 
-  {
-    image:
-      "https://res.cloudinary.com/dhyxx8qjf/image/upload/v1786816638/WhatsApp_Image_2026-08-15_at_11.25.32_PM_vqijmi.jpg",
-    title: "Omprakash Behera",
-    subtitle: "Technical Lead",
-    handle: "@Prakash",
-    borderColor: "#10B981",
-    gradient: "linear-gradient(180deg, #10B981, #000)",
-    url: "https://omprakashbehera.me/",
-    email: "omprakashbehera.cse@gmail.com",
-    socials: {
-      github: "https://github.com/CodeByPrakash",
-      instagram: "https://instagram.com/quasar_om",
-      linkedin: "https://linkedin.com/in/omprakash-cse",
-      website: "https://omprakashbehera.me/",
-    },
-  },
     {
     image:
       "https://res.cloudinary.com/dw47ib0sh/image/upload/v1764686998/qqpuw8paqkzjx0iqv9vd.jpg",
     title: "Deepankar Sahoo",
-    subtitle:"Teachnical Co-Lead",
+    subtitle:"Teachnical Lead",
     handle: "@codebydeepankar",
     borderColor: "#06B6D4",
     gradient: "linear-gradient(135deg, #06B6D4, #000)",
@@ -119,24 +102,6 @@ export const clubLeads: TeamMember[] = [
       website: "https://www.deepankar.tech",
     },
   },
-  {
-    image:
-      "https://res.cloudinary.com/dhyxx8qjf/image/upload/v1786815150/32042072951_whoo1r.png",
-    title: "Barsha Priyadarshini Das",
-    subtitle:"Event Head",
-    handle: "@Dbarsha_1118",
-    borderColor: "#EC4899",
-    gradient: "linear-gradient(180deg, #EC4899, #000)",
-    url: "https://www.linkedin.com/in/barsha-priyadarshini-das",
-    email: "dasbarshapriyadarshini1803@gmail.com",
-    socials: {
-      github: "https://github.com/Dbarsha-hub",
-      instagram: "",
-      linkedin: "https://www.linkedin.com/in/barsha-priyadarshini-das",
-      website: "",
-    },
-  },
-
 ];
 
 const items = [...coreLeads, ...clubLeads];
