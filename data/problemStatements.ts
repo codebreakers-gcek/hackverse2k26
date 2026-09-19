@@ -212,6 +212,49 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     ],
     driveUrl: "https://assets.cbgcek.dev/CB-SW-04.pdf",
   },
+  {
+    id: "ps-sw-05",
+    code: "CB-SW-05",
+    title: "GREENSCORE — CAMPUS SUSTAINABILITY TRACKER & AUDITOR",
+    domain: "GreenTech & Sustainability",
+    category: "Software",
+    difficulty: "Intermediate",
+    shortDescription:
+      "Colleges want to track and reduce their environmental footprint — energy, water, waste, and transport — but have no structured tool to actually measure it, motivate improvement, or produce the reports accreditation bodies expect. This problem calls for a campus sustainability app that captures utility data, scores performance, gamifies reduction efforts, and auto-generates audit-ready reports.",
+    fullDescription:
+      "Most colleges genuinely want to reduce their environmental footprint, and many even run isolated green initiatives — a tree-plantation drive, a plastic-free week, an energy-saving notice — but there's rarely a systematic way to actually measure whether the campus's footprint is improving across the metrics that matter: energy consumption, water usage, waste generation, and transport-related emissions. Data, where it exists at all, tends to sit in scattered electricity bills, water-utility records, and manual waste logs that nobody consolidates or tracks over time.\n\nThis creates three linked problems. First, there's no baseline or trend visibility — a college can't tell if this month was better or worse than last month, let alone identify which department, hostel block, or activity is driving the footprint. Second, there's no incentive structure — sustainability efforts rely on goodwill and periodic campaigns rather than sustained, everyday behaviour change among students and staff. Third, accreditation reporting is a manual scramble — institutions preparing for green-campus or environmental-criteria audits (such as the sustainability parameters assessed under India's NAAC accreditation framework) end up compiling scattered data by hand under deadline pressure, rather than pulling from a continuously maintained record.\n\nThe challenge is to build a single platform that solves all three at once: consistent data capture, a motivating scoring/gamification layer, and audit-ready reporting — so sustainability tracking becomes a continuous, engaging habit rather than an annual scramble.",
+    keyDeliverables: [
+      "1. Data Capture Layer\n• Manual logging — simple mobile/web forms for students/staff/facility teams to log utility readings (electricity meter readings, water usage, waste weight/volume by category, transport mode for commutes).\n• Sensor-based auto-capture (where available) — integration with smart meters or IoT sensors (energy meters, water flow meters, smart bins) to pull readings automatically, reducing manual effort and improving accuracy.\n• Hybrid input model — works seamlessly for colleges with zero sensors (fully manual) as well as those with partial or full IoT infrastructure, without forcing hardware investment as a prerequisite.\n• Department/hostel-level granularity — data tagged by building, department, or hostel block to identify hotspots of high consumption.",
+      "2. Sustainability Scoring Engine\n• Monthly sustainability score — composite score computed from energy, water, waste, and transport metrics, normalised against campus size/population for fair cross-scale evaluation.\n• Category-wise breakdown — score decomposes into sub-scores per category to pinpoint strengths and areas needing improvement.\n• Trend tracking — month-over-month and year-over-year comparison with clear visual trend lines.\n• Benchmarking — comparison against historical campus baseline and/or anonymised comparison against similar-sized institutions.",
+      "3. Gamification & Engagement Layer\n• Leaderboards — rankings across departments, hostels, or student clubs to drive friendly competition around sustainability performance.\n• Green challenges — time-bound campaigns (e.g., 'cut hostel water use by 10% this month') with progress tracking and completion rewards.\n• Recognition & rewards — badges, certificates, or point systems recognising consistent, genuine improvement rather than one-off spikes.\n• Community feed — space for students and staff to share green initiatives, tips, and challenge progress, building social momentum.",
+      "4. Audit & Reporting Layer\n• Automated report generation — structured sustainability reports aligned with common green-campus accreditation criteria (e.g., NAAC environmental-consciousness parameters), pulling directly from logged data.\n• Exportable formats — reports exportable as PDF/Excel for submission to accreditation bodies or internal college leadership.\n• Audit trail — maintains a verifiable history of logged data (who logged what, when) to support credibility during formal audits.\n• Custom reporting periods — supports generating reports for any custom date range, not just fixed monthly/annual cycles.",
+    ],
+    constraints: [
+      "Hybrid input model must support campuses with zero sensors (manual logging) as well as partial or full IoT infrastructure without hardware mandates",
+      "Sustainability scoring must be normalised against campus size and population for fair cross-institutional and cross-department benchmarking",
+      "Immutable and verifiable audit trail of all data entries (author, timestamp, raw readings) to satisfy accreditation rigor",
+      "Intuitive, friction-free logging workflows suitable for students and non-technical facility staff with zero sustainability training",
+    ],
+    relevantDatasets: [
+      "Sample/simulated campus utility-consumption datasets (electricity, water, waste, transport) for building and testing the scoring engine.",
+      "Reference datasheets for smart energy/water meters and IoT sensor modules, for the optional auto-capture integration.",
+      "Public sustainability-scoring frameworks and environmental-benchmarking standards (e.g., published green-campus rating rubrics) to ground the scoring methodology.",
+      "Publicly available NAAC/accreditation criteria documentation (environmental-consciousness parameters) to structure the audit-report template accurately.",
+      "Open carbon-footprint conversion factors (e.g., kWh-to-CO2e, waste-category emission factors) to translate raw usage data into environmental-impact terms.",
+      "Synthetic student/department activity datasets to test the leaderboard and challenge-tracking features.",
+    ],
+    evaluationFocus: [
+      "Data capture flexibility — does the system genuinely work for colleges with no sensors as well as those with IoT infrastructure, without one mode being a poor afterthought?",
+      "Scoring credibility — is the sustainability score methodologically sound and fair across different campus sizes, or an arbitrary composite?",
+      "Engagement design — do the gamification features genuinely motivate sustained behaviour change, or just reward one-time app usage?",
+      "Reporting accuracy & usefulness — how directly the generated audit reports would satisfy a real accreditation submission, not just a generic PDF.",
+      "Data integrity — safeguards against manipulated or careless data entry undermining the score's credibility.",
+      "Usability — how easy the logging process is for students/staff with no sustainability-tracking background.",
+      "Scalability — feasibility of deployment across a large, multi-building campus with many contributors.",
+      "Real impact potential — plausibility that continuous visibility + gamification would genuinely reduce a college's environmental footprint over time, not just improve its reported metrics.",
+    ],
+    driveUrl: "https://assets.cbgcek.dev/CB-SW-05.pdf",
+  },
 ];
 
 
