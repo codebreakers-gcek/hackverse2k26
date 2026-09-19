@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     "online hackathon application",
     "college hackathon entry",
     "state level hackathon registration",
-    "zero entry fee hackathon",
+    "entry fee hackathon",
     "hackathon registration link",
     "GCEK hackathon registration",
     "Odisha coding competition entry",
@@ -99,7 +99,7 @@ export default function RegisterPage() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10 w-full">
         <SectionTitle
-          tag="ENROLLMENT // ZERO ENTRY FEE"
+          tag="ENROLL NOW"
           title="REGISTER YOUR"
           highlightText="SQUAD"
           subtitle="Form a team of 1 to 4 members. Submit your team leader details, problem statement preference, and member credentials below."
