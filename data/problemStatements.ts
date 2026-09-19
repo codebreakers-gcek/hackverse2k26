@@ -7,7 +7,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
   {
     id: "ps-hw-01",
     code: "CB-HW-01",
-    title: "ENERSENSE — AI-POWERED SMART ELECTRICITY MANAGEMENT SYSTEM FOR CAMPUSES",
+    title: "AI-POWERED SMART ELECTRICITY MANAGEMENT SYSTEM FOR CAMPUSES",
     domain: "GreenTech & Sustainability",
     category: "Hardware",
     difficulty: "Advanced",
@@ -45,6 +45,49 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
       "Equipment lifespan impact — plausibility of the reduced unnecessary run-time genuinely extending appliance lifespan and cutting maintenance costs.",
     ],
     driveUrl: "https://assets.cbgcek.dev/CB-HW-01.pdf",
+  },
+  {
+    id: "ps-hw-02",
+    code: "CB-HW-02",
+    title: "IR-BASED TEMPLE CROWD COUNTER & QUEUE MANAGEMENT SYSTEM",
+    domain: "Smart Cities & Digital Governance (Travel & Tourism)",
+    category: "Hardware",
+    difficulty: "Intermediate",
+    shortDescription:
+      "Major temples like Puri Jagannath or Konark see huge, unpredictable crowd surges, especially during festivals, but have no simple way to know current footfall or queue length until the crowd is already unmanageable. This problem calls for a straightforward IR-sensor-based system that counts pilgrims in real time and helps manage queues before they become a safety risk.",
+    fullDescription:
+      "Temples that draw large daily footfall — and especially extreme surges during festivals or weekends — struggle with a basic but critical gap: nobody at the gate, in the queue, or at the control room has a real-time number for how many people are currently inside, how fast the queue is moving, or when a section is approaching unsafe density. Crowd management ends up reactive — staff notice a problem only once it's visibly a bottleneck — rather than proactive.\n\nA full computer-vision or AI-camera crowd-analytics system is one way to solve this, but it's often overkill, expensive, and hard to maintain for many temple trusts. A simpler, more robust approach is to count people directly as they pass fixed checkpoints using infrared (IR) break-beam or reflective sensors — a well-understood, low-cost, low-maintenance technology — and turn that raw count into useful, real-time information for both temple authorities and pilgrims.",
+    keyDeliverables: [
+      "IR break-beam/reflective sensor pairs — installed at entry and exit points (and optionally at 1–2 intermediate queue checkpoints) to count people crossing in each direction.",
+      "Microcontroller-based counter unit — (e.g., Arduino/ESP32-class board) reads sensor pulses, calculates net occupancy (entries minus exits), and handles basic debouncing logic to avoid miscounts from people walking closely together.",
+      "Live display board — a simple digital display near the entrance showing current occupancy and estimated wait time, so pilgrims get visible, real-time information rather than guessing.",
+      "Threshold-based alerts — when occupancy crosses a configured safe-capacity threshold, the system triggers an alert (buzzer/light at the control point, plus an SMS/app notification to temple staff) so action can be taken before overcrowding becomes dangerous.",
+      "Simple staff dashboard — a basic web/mobile dashboard showing current occupancy, historical footfall trends (by hour/day), and alert history, so temple management can plan staffing and gate operations around real patterns.",
+      "Multi-checkpoint queue estimation (optional extension) — placing sensor pairs at a couple of points along the queue itself allows a rough estimate of queue length and movement speed, giving a simple 'estimated wait time' figure without needing cameras or complex tracking.",
+    ],
+    constraints: [
+      "Must use low-cost, readily available IR sensors and microcontrollers (Arduino/ESP32) without mandating expensive camera/vision AI infrastructure",
+      "Robust debouncing and beam-break logic to minimize miscounts from rapid or clustered pedestrian movement",
+      "Real-time low-latency alert trigger when occupancy crosses configured safe capacity thresholds",
+      "Durable physical housing suitable for high-footfall outdoor or semi-sheltered temple gateway environments",
+    ],
+    relevantDatasets: [
+      "Reference datasheets for IR break-beam and reflective proximity sensors, and microcontroller boards (Arduino/ESP32) for hardware selection.",
+      "Public safety-guideline references on safe crowd-density thresholds for enclosed/semi-enclosed public spaces, to set alert thresholds sensibly.",
+      "Sample/simulated footfall datasets (hourly/daily pilgrim counts, festival vs. normal-day patterns) to test the dashboard's trend analytics.",
+      "Open queuing-theory references (basic wait-time estimation formulas) for the optional queue-length/wait-time extension.",
+      "Public information on historical festival-day footfall patterns at major temples, for realistic load-testing of the system's alerting logic.",
+    ],
+    evaluationFocus: [
+      "Counting accuracy — how reliably the sensor setup counts individuals without significant over/under-counting, especially when people pass closely together.",
+      "Hardware robustness — durability and reliability of the sensor/microcontroller setup for continuous outdoor/semi-outdoor use in a high-footfall environment.",
+      "Alert timeliness — how quickly and clearly the system flags approaching-capacity situations to staff.",
+      "Usability for temple staff — simplicity of the dashboard and display for non-technical operational staff.",
+      "Cost-effectiveness — realistic, low hardware cost per checkpoint, keeping the solution genuinely deployable for a temple trust's budget.",
+      "Build feasibility — solution should be achievable within a hackathon timeframe using standard, readily available sensor components — no camera-based AI crowd analytics required.",
+      "Scalability — ease of adding more checkpoints or extending to additional temple complexes using the same basic design.",
+    ],
+    driveUrl: "https://assets.cbgcek.dev/CB-HW-02.pdf",
   },
 
   // ==========================================
@@ -170,7 +213,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
   {
     id: "ps-sw-04",
     code: "CB-SW-04",
-    title: "AGRISAGE — UNIFIED AI FARM COPILOT, RISK INTELLIGENCE & MARKET OPTIMIZER",
+    title: "UNIFIED AI FARM COPILOT, RISK INTELLIGENCE & MARKET OPTIMIZER",
     domain: "AgriTech & Rural Innovation",
     category: "Software",
     difficulty: "Advanced",
@@ -254,6 +297,47 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
       "Real impact potential — plausibility that continuous visibility + gamification would genuinely reduce a college's environmental footprint over time, not just improve its reported metrics.",
     ],
     driveUrl: "https://assets.cbgcek.dev/CB-SW-05.pdf",
+  },
+  {
+    id: "ps-sw-06",
+    code: "CB-SW-06",
+    title: "AI-POWERED GAMIFIED FITNESS & LOCALIZED NUTRITION COPILOT",
+    domain: "HealthTech & Wellbeing (Fitness)",
+    category: "Software",
+    difficulty: "Advanced",
+    shortDescription:
+      "Most fitness apps suffer from high drop-off rates because they assume expensive wearables, push unrelatable Western diets, and offer no real local community engagement. This problem calls for an AI-driven, zero-hardware fitness platform tailored to the Indian and specifically Odia context — using just a smartphone camera for exercise tracking and building around local dietary staples and community-driven motivation.",
+    fullDescription:
+      "Staying fit is often framed as an expensive, isolated endeavour. The modern fitness-tech ecosystem typically assumes access to gym memberships, smartwatches, and Western-centric diet plans (recommending quinoa and kale over locally available, equally nutritious alternatives like Ragi/Mandia). As a result, people in semi-urban and rural areas, or students on a tight budget, find these platforms inaccessible and simply unrelatable to their actual life.\n\nSolitary home workouts also lead to rapid motivation loss. Without a personal trainer, users struggle with incorrect exercise posture, which can cause injuries or leave results well short of what's possible.\n\nA localised solution is needed that democratises fitness by removing the hardware barrier entirely. By leveraging edge AI and a smartphone's own camera for real-time form correction, recognising the nutritional value of regional diets, and gamifying activity through community challenges (like a virtual walk across Odisha's heritage sites, or syncing with a city's outdoor public gyms), fitness can become accessible, culturally relevant, and genuinely engaging — instead of another app that gets deleted after week two.",
+    keyDeliverables: [
+      "1. Zero-Hardware AI Tracking (Computer Vision)\n• Real-time pose estimation — uses the smartphone's front camera to track joint movements during home workouts (squats, push-ups, yoga asanas), giving real-time audio-visual feedback on posture and automatically counting reps.\n• Low-end device optimisation — AI models run efficiently on edge devices, without requiring high-speed internet or a flagship processor.\n• Injury-risk flagging — detects clearly unsafe form (e.g., dangerous knee/back alignment) and proactively warns the user before it becomes a repeated habit, rather than only correcting rep count.",
+      "2. Localized Nutrition Engine\n• Regional diet mapping — a diet recommendation and tracking module built on recognised Indian nutritional guidelines, featuring local Odia cuisine (Mandia/millet-based dishes, Dalma, Pakhala) broken down by macronutrients.\n• Affordable alternatives — suggests low-cost, locally sourced protein and vitamin alternatives based on the user's budget and geographic location, rather than generic \"eat more avocado\" advice.\n• Meal-photo logging — lets users log meals by photographing their plate, with AI-assisted recognition of common local dishes to reduce manual entry friction.",
+      "3. Community & Gamification Layer\n• Heritage challenges — step-tracking gamified as virtual treks across Odisha (e.g., \"walk the distance from Lingaraj Temple to Konark\") to unlock digital badges or local-merchant discounts.\n• Social leaderboards — inter-college or inter-hostel fitness leaderboards to drive friendly, community-based competition.\n• Accountability partners — lets users pair up with a friend/classmate for mutual check-ins, since paired accountability is a well-known retention lever beyond leaderboards alone.\n• Local open-gym/park sync — surfaces nearby public parks, running tracks, and city outdoor gyms so challenges connect to real, physical local spaces, not just abstract distance goals.",
+      "4. Progress & Retention Layer\n• Monthly progress reports — a simple, exportable summary of fitness and nutrition trends, useful for personal tracking or sharing with a college wellness cell/coach.\n• Adaptive difficulty — workout and step-challenge targets adjust gradually based on the user's own trend, avoiding the common failure mode of fixed generic targets that feel unreachable and get abandoned.\n• Multilingual interface — core app functionality (instructions, feedback, nutrition labels) available in Odia and other regional languages, not just English.",
+    ],
+    constraints: [
+      "Zero-hardware dependency — posture tracking and rep counting must function entirely via standard smartphone camera sensors without requiring wearables or external hardware",
+      "Edge-optimised computer vision running smoothly on budget/entry-level devices with minimal battery drain and latency",
+      "Culturally grounded nutrition model adhering strictly to Indian and regional dietary compositions",
+      "Strict data privacy — local/edge processing of camera video feeds with no unnecessary cloud transmission of personal workout footage",
+    ],
+    relevantDatasets: [
+      "Open-source human pose-estimation and activity-recognition datasets/models (e.g., COCO, Kinetics-400, or MediaPipe open models) to train and fine-tune exercise-form tracking.",
+      "Indian food-composition reference tables (macronutrient data for regional foods) to build the localised nutrition-tracking database.",
+      "Geospatial data (OpenStreetMap) to map local parks, open gyms, and running tracks for location-based challenges.",
+      "Open meal-image recognition datasets (or transfer-learning from general food-recognition models) for the meal-photo logging feature.",
+      "Sample/synthetic user-activity datasets to model and test gamification-retention algorithms and adaptive-difficulty logic.",
+    ],
+    evaluationFocus: [
+      "Edge AI performance — how accurately and smoothly the computer-vision model tracks exercises on constrained hardware without severe battery drain or lag.",
+      "Cultural relevance — depth and accuracy of the localised nutrition database compared to generic calorie trackers.",
+      "Injury-prevention value — how reliably the form-correction/injury-flagging genuinely catches unsafe posture rather than just counting reps.",
+      "User engagement design — effectiveness of the gamification mechanics (challenges, leaderboards, accountability pairing) in plausibly lowering the typical 30-day fitness-app drop-off rate.",
+      "Accessibility — usability of the interface for non-technical users or those with limited digital literacy, including multilingual support.",
+      "Retention sustainability — whether the adaptive-difficulty and progress-reporting features would keep users engaged past the initial novelty period, not just in the first week.",
+      "Data privacy — responsible handling of camera-based tracking data and personal health/nutrition information.",
+    ],
+    driveUrl: "https://assets.cbgcek.dev/CB-SW-06.pdf",
   },
 ];
 
