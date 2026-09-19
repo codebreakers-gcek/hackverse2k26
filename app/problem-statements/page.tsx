@@ -103,10 +103,10 @@ export default function ProblemStatementsPage() {
         <MarqueeBanner
           items={[
             "OFFICIAL PROBLEM STATEMENTS",
-            "3 LIVE CHALLENGES",
-            "AUTONOMOUS ROBOTICS & IOT",
-            "HEALTHCARE & DISASTER MANAGEMENT",
-            "OFFLINE DIGITAL LEARNING EDUTECH",
+            "6 LIVE CHALLENGES",
+            "HARDWARE & IOT AUTOMATION",
+            "HEALTHCARE, DISASTER & SUSTAINABILITY",
+            "OFFLINE DIGITAL LEARNING & AGRITECH",
             "₹35K+ PRIZE POOL",
           ]}
           bg="secondary"
