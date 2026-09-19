@@ -293,7 +293,7 @@ export const metadata: Metadata = {
     siteName: "HACKVERSE '26 // CodeBreakers GCEK",
     title: "HACKVERSE '26 | Flagship 24H State Tech Fest & Hackathon",
     description:
-      "Join Central & Eastern India's most energetic hackathon at GCEK Kalahandi. 24-Hour sprint, ₹35,000+ prize pool, industry mentorship, free hostel accommodation & swags.",
+      "Join Central & Eastern India's most energetic hackathon at GCEK Kalahandi. 24-Hour sprint, ₹35,000+ prize pool, industry mentorship, swags and many more...",
     images: [
       {
         url: "/og-image.png",

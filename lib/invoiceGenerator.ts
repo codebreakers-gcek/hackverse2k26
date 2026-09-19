@@ -176,10 +176,7 @@ export async function generateInvoicePdfBuffer(
       // 4. Large Amount Display (Positioned below the taller of the two columns)
       currentY = Math.max(leftY, rightY, 250) + 12;
       const rupeePrefix = hasCustomFonts ? "₹" : "Rs.";
-      const formattedAmount =
-        data.amount > 0
-          ? `${rupeePrefix}${data.amount.toFixed(2)} INR`
-          : `${rupeePrefix}0.00 INR (Free Tier)`;
+      const formattedAmount = `${rupeePrefix}${Number(data.amount || 0).toFixed(2)} INR`;
 
       doc
         .fontSize(17)
@@ -320,7 +317,7 @@ export async function generateInvoicePdfBuffer(
       doc.fontSize(10).font(fontBold).fillColor("#000000");
       doc.text("Amount due", pageMargin + 260, currentY);
       doc.text(
-        `${rupeePrefix}0.00 (${data.amount > 0 ? "Paid in Full" : "Free Tier"})`,
+        `${rupeePrefix}0.00 (Paid in Full)`,
         pageMargin + 380,
         currentY,
         {

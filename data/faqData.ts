@@ -110,10 +110,10 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "reg-2",
     question: "IS THERE ANY REGISTRATION FEE TO PARTICIPATE?",
     answer:
-      "Registration for Round 1 (Online Idea Submission) is completely FREE. Teams shortlisted for the Grand Finale offline round will pay a nominal confirmation & accommodation fee (inclusive of food, stay, official delegate kits, and 24/7 facility access) processed securely via the dashboard UPI gateway.",
+      "Yes, participating squads pay a registration fee. The fee covers complete access to the 24-hour hackathon arena, hostel accommodation, meals & refreshments, official delegate kits, mentorship, and facility access, processed securely via the dashboard UPI gateway.",
     category: "registration",
     categoryLabel: "Registration & Fees",
-    tags: ["fee", "cost", "free", "payment", "upi"],
+    tags: ["fee", "cost", "registration fee", "payment", "upi"],
     popular: true,
   },
   {
@@ -189,7 +189,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     question:
       "WILL ACCOMMODATION AND FOOD BE PROVIDED DURING THE OFFLINE EVENT?",
     answer:
-      "YES! All shortlisted participants attending the Grand Finale at GCEK Campus will receive complimentary hostel/guest accommodation, 24/7 snacks & energy drinks, breakfast, lunch, and dinner throughout the 24-hour sprint.",
+      "YES! All confirmed participants attending the Grand Finale at GCEK Campus will receive hostel/guest accommodation, 24/7 snacks & energy drinks, breakfast, lunch, and dinner throughout the 24-hour sprint as part of their confirmed registration pass.",
     category: "logistics",
     categoryLabel: "Venue & Accommodation",
     tags: ["food", "hostel", "accommodation", "stay", "meals"],

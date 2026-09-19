@@ -873,7 +873,7 @@ export function RegisteredSquadDashboard({
             HACKVERSE &apos;26 24-HOUR PASS CONFIRMED
           </h3>
           <p className="text-xs sm:text-sm font-bold text-black/90 max-w-xl">
-            Pass includes continuous 24H arena seating, complimentary food passes, and official state participation certificates.
+            Pass includes continuous 24H arena seating, food passes, and official state participation certificates.
           </p>
         </div>
 

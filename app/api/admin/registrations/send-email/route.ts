@@ -29,7 +29,7 @@ export async function POST(req: NextRequest) {
     }
 
     let feeAmount = (reg as any).amount || 0;
-    if (!feeAmount && reg.paymentMode !== "FREE_SPONSORED") {
+    if (!feeAmount) {
       const settings = await prisma.systemSettings.findFirst();
       if (settings?.registrationFee && settings.registrationFee > 0) {
         feeAmount = settings.registrationFee;

@@ -5,7 +5,7 @@ import { FaqContent } from "@/features/faq/FaqContent";
 export const metadata: Metadata = {
   title: "Frequently Asked Questions (FAQ) & Hacker Guide",
   description:
-    "Everything you need to know about HACKVERSE '26: squad registration, eligibility, free hostel accommodation, food, mentorship, problem statements, and prize distributions.",
+    "Everything you need to know about HACKVERSE '26: squad registration, eligibility, hostel accommodation, food, mentorship, problem statements, and prize distributions.",
   keywords: [
     "HACKVERSE FAQ",
     "HACKVERSE 2026 questions",
@@ -16,14 +16,14 @@ export const metadata: Metadata = {
     "hackathon team size limit",
     "squad registration HACKVERSE",
     "solo participation hackathon",
-    "free accommodation hackathon Odisha",
-    "free food hackathon GCEK",
+    "hostel accommodation hackathon Odisha",
+    "food hackathon GCEK",
     "hackathon lodging Bhawanipatna",
     "hackathon travel guide Kalahandi",
     "how to reach GCEK Kalahandi",
     "GCEK Bhawanipatna campus directions",
     "hackathon registration fee",
-    "is HACKVERSE free to register",
+    "HACKVERSE registration process",
     "hackathon certificate for all participants",
     "hackathon prize distribution",
     "₹35000 prize pool details",
@@ -73,7 +73,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Frequently Asked Questions // HACKVERSE '26",
     description:
-      "Clear answers on squad sizes, free accommodation, food, timeline, hardware access, and judging.",
+      "Clear answers on squad sizes, hostel accommodation, food, timeline, hardware access, and judging.",
     images: ["/og-image.png"],
   },
 };

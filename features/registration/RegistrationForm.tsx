@@ -216,9 +216,9 @@ export function RegistrationForm() {
     ],
     // Step 3
     paymentDetails: {
-      paymentMode: "FREE_SPONSORED",
+      paymentMode: "UPI_QR",
       transactionId: "",
-      status: "FREE_TIER",
+      status: "PENDING_VERIFICATION",
     },
     // Step 4
     documentUploads: {
@@ -262,8 +262,8 @@ export function RegistrationForm() {
   }>({
     upiId: "codebreakers@upi",
     payeeName: "HACKVERSE 2026 GCEK",
-    registrationFee: 0,
-    isPaymentMandatory: false,
+    registrationFee: 299,
+    isPaymentMandatory: true,
     isRegistrationOpen: true,
     isProblemStatementsPublished: true,
   });
@@ -1878,45 +1878,6 @@ export function RegistrationForm() {
                       </div>
                     </div>
 
-                    {/* Free Tier / Waiver Option (If not mandatory) */}
-                    {!paymentSettings.isPaymentMandatory && (
-                      <div
-                        onClick={() =>
-                          setFormData((prev) => ({
-                            ...prev,
-                            paymentDetails: {
-                              paymentMode: "FREE_SPONSORED",
-                              transactionId: "",
-                              status: "FREE_TIER",
-                            },
-                          }))
-                        }
-                        className={clsx(
-                          "p-4 border-3 cursor-pointer transition-all flex items-center justify-between gap-4",
-                          formData.paymentDetails.paymentMode ===
-                            "FREE_SPONSORED"
-                            ? "bg-[#5B8731]/20 border-t-[#5B8731] border-l-[#5B8731] border-r-[#2C4813] border-b-[#2C4813] shadow-[3px_3px_0px_#000]"
-                            : "bg-[#DBDBDB] hover:bg-[#EAEAEA] border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555]",
-                        )}
-                      >
-                        <div className="flex items-center gap-3">
-                          <CheckCircle2 className="w-5 h-5 text-emerald-700 shrink-0" />
-                          <div>
-                            <div className="font-black text-sm uppercase text-black">
-                              APPLY FOR FREE TIER / SPONSORED PASS WAIVER
-                            </div>
-                            <p className="text-[11px] font-bold text-black/70">
-                              Available for eligible GCEK and affiliated college
-                              student hackathon squads.
-                            </p>
-                          </div>
-                        </div>
-                        <span className="font-mono text-xs font-black bg-[#DBDBDB] px-2 py-0.5 border border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] uppercase">
-                          ₹0 WAIVER
-                        </span>
-                      </div>
-                    )}
-
                     {/* Amenities Breakdown Box */}
                     <div className="p-4 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.3)] space-y-2">
                       <div className="font-mono text-xs font-black uppercase text-black">
@@ -1934,7 +1895,7 @@ export function RegistrationForm() {
                         <div className="flex items-center gap-1.5">
                           <Check className="w-3.5 h-3.5 text-[#2C4813] stroke-[3px] shrink-0" />
                           <span>
-                            Complimentary Meals &amp; Energy Refreshments
+                            Full Meals &amp; Energy Refreshments
                           </span>
                         </div>
                         <div className="flex items-center gap-1.5">
