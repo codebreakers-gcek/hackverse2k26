@@ -28,6 +28,7 @@ import {
   Lock,
   Building2,
   LogIn,
+  Clock,
 } from "lucide-react";
 import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
@@ -1027,6 +1028,88 @@ export function ProblemSelectionContent() {
                   const selectionIndex = selectedPsIds.indexOf(problem.id);
                   const isPref1 = selectionIndex === 0;
                   const isPref2 = selectionIndex === 1;
+
+                  if (problem.isLocked) {
+                    return (
+                      <div
+                        key={problem.id}
+                        className="bg-[#1C1815] border-4 border-t-[#D4A368] border-l-[#D4A368] border-r-[#3E2512] border-b-[#3E2512] p-6 shadow-[8px_8px_0px_#000] flex flex-col justify-between space-y-5 relative text-white"
+                      >
+                        {/* Header Strip */}
+                        <div className="space-y-4">
+                          <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-[#3E2512] pb-3">
+                            <div className="flex flex-wrap items-center gap-2">
+                              <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-[#FFAA00] border-2 border-[#FFAA00] shadow-[2px_2px_0px_#000] flex items-center gap-1.5 [text-shadow:_1px_1px_0_#000]">
+                                <Lock className="w-3 h-3 text-[#FFAA00]" />
+                                {problem.code}
+                              </span>
+                              <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-[#282828] text-[#55FFFF] border border-black shadow-[1px_1px_0px_#000]">
+                                {problem.category}
+                              </span>
+                            </div>
+
+                            <span className="font-mono text-[11px] font-black uppercase px-2.5 py-1 bg-[#FF5555] text-white border-2 border-black shadow-[2px_2px_0px_#000] flex items-center gap-1 animate-pulse [text-shadow:_1px_1px_0_#000]">
+                              <Lock className="w-3 h-3" /> SEALED CHEST
+                            </span>
+                          </div>
+
+                          {/* 3D Chest Graphic + Title */}
+                          <div className="text-center space-y-3 py-2">
+                            <div className="relative my-2 flex items-center justify-center">
+                              <div className="absolute inset-0 bg-[#FFAA00]/25 blur-xl rounded-full scale-150 pointer-events-none" />
+                              <div className="relative w-24 h-18 bg-[#8F5A2B] border-4 border-t-[#B8874E] border-l-[#B8874E] border-r-[#4A2D12] border-b-[#4A2D12] shadow-[6px_6px_0px_#000] flex items-center justify-center">
+                                <div className="absolute top-[38%] left-0 right-0 h-1 bg-black/80 border-b border-[#B8874E]/40" />
+                                <div className="absolute top-[28%] w-7 h-7 bg-[#C6C6C6] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[3px_3px_0px_#000] flex items-center justify-center z-10">
+                                  <Lock className="w-4 h-4 text-black stroke-[3px]" />
+                                </div>
+                                <div className="absolute -top-2.5 -right-2.5">
+                                  <Sparkles className="w-4 h-4 text-[#FFE655] animate-bounce" />
+                                </div>
+                              </div>
+                            </div>
+
+                            <div className="space-y-1">
+                              <span className="inline-block font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-[#FFAA00] text-black border border-black shadow-[1px_1px_0px_#000]">
+                                [CLASSIFIED TRACK // EMBARGO ACTIVE]
+                              </span>
+                              <h4 className="font-mono font-black text-lg sm:text-xl text-[#FFE655] uppercase tracking-tight [text-shadow:_2px_2px_0_#000]">
+                                NEW CHEST UNLOCKING TOMORROW
+                              </h4>
+                            </div>
+
+                            <p className="text-xs sm:text-sm font-mono font-bold text-[#D0C4B4] leading-relaxed">
+                              {problem.shortDescription}
+                            </p>
+                          </div>
+                        </div>
+
+                        {/* Minecraft Timer Strip */}
+                        <div className="bg-[#150B04] border-2 border-t-[#0D0702] border-l-[#0D0702] border-r-[#42250F] border-b-[#42250F] p-2.5 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.7)] flex items-center justify-center gap-2">
+                          <Clock className="w-4 h-4 text-[#55FF55] shrink-0 animate-spin" />
+                          <span className="font-mono text-xs font-black uppercase text-[#55FF55] tracking-wide [text-shadow:_1px_1px_0_#000]">
+                            UNLOCKS TOMORROW // STAY TUNED
+                          </span>
+                        </div>
+
+                        {/* Actions Row */}
+                        <div className="pt-2 border-t-2 border-[#3E2512] flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-2.5">
+                          <button
+                            type="button"
+                            onClick={() => setActiveSheetProblem(problem)}
+                            className="px-3.5 py-2.5 bg-[#8F5A2B] hover:bg-[#FFAA00] border-4 border-t-[#B8874E] border-l-[#B8874E] border-r-[#4A2D12] border-b-[#4A2D12] font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 shadow-[3px_3px_0px_#000] active:translate-y-1 transition-all cursor-pointer text-[#FFE655] hover:text-black"
+                          >
+                            <Eye className="w-3.5 h-3.5 stroke-[2.5px]" />
+                            <span>INSPECT CHEST</span>
+                          </button>
+
+                          <div className="px-4 py-2.5 bg-[#2B2B2B] border-4 border-t-[#444444] border-l-[#444444] border-r-[#151515] border-b-[#151515] font-mono font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 text-[#888888] shadow-[2px_2px_0px_#000] cursor-not-allowed">
+                            <Lock className="w-3.5 h-3.5 stroke-[2.5px]" />
+                            <span>CHEST SEALED</span>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
 
                   return (
                     <div

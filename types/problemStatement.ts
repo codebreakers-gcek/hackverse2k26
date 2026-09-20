@@ -18,6 +18,7 @@ export interface ProblemStatement {
   domain: string;
   category: Exclude<ProblemCategory, "All">;
   organization?: string;
+  isLocked?: boolean;
   shortDescription: string;
   fullDescription: string;
   difficulty: DifficultyLevel;
