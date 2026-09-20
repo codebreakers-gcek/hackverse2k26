@@ -9,6 +9,7 @@ import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvide
 import { GsapLoader } from "@/components/ui/GsapLoader";
 import { MinecraftAudioPlayer } from "@/components/ui/MinecraftAudioPlayer";
 import { MinecraftSoundEffects } from "@/components/ui/MinecraftSoundEffects";
+import { Analytics } from "@vercel/analytics/next"
 
 const thuast = localFont({
   src: "../public/font/Thuast-Demo.otf",
@@ -430,6 +431,7 @@ export default function RootLayout({
         <SmoothScrollProvider>
           <AmbientCodeShapes />
           <Navbar />
+          <Analytics />
           <main className="flex-1 relative">{children}</main>
           <Footer />
           <ScrollProgressCircle />
