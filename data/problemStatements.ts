@@ -11,6 +11,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     domain: "GreenTech & Sustainability",
     category: "Hardware",
     difficulty: "Advanced",
+    organization: "DEPT. OF EE, GCE KALAHANDI",
     shortDescription:
       "Colleges and organisations run hundreds of fans, tube-lights, ACs, and other electrical loads that are frequently left running in empty rooms, driving up electricity bills and wearing out equipment faster than necessary. This problem calls for an AI-powered, occupancy-aware system that automatically manages electrical loads and gives facility teams real-time visibility into where energy is actually being wasted.",
     fullDescription:
@@ -50,9 +51,11 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     id: "ps-hw-02",
     code: "CB-HW-02",
     title: "IR-BASED TEMPLE CROWD COUNTER & QUEUE MANAGEMENT SYSTEM",
-    domain: "Smart Cities & Digital Governance (Travel & Tourism)",
+    domain: "Smart Cities & Digital Governance",
     category: "Hardware",
     difficulty: "Intermediate",
+        organization: "DEPT. OF ECE, GCE Kalahandi",
+
     shortDescription:
       "Major temples like Puri Jagannath or Konark see huge, unpredictable crowd surges, especially during festivals, but have no simple way to know current footfall or queue length until the crowd is already unmanageable. This problem calls for a straightforward IR-sensor-based system that counts pilgrims in real time and helps manage queues before they become a safety risk.",
     fullDescription:
@@ -177,6 +180,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     domain: "EduTech & Future Learning",
     category: "Software",
     difficulty: "Intermediate",
+    organization: "DEPT. OF CSE, GCE Kalahandi",
     shortDescription:
       "Many schools in rural and low-connectivity areas lack updated computer infrastructure, reliable internet, and access to quality digital educational content, widening the gap between rural and urban education standards. This problem calls for a mobile and web learning app that works genuinely offline and in local languages.",
     fullDescription:
@@ -223,7 +227,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
       "A farmer's decision-making doesn't happen in isolated silos — advisory, risk, and market decisions are all connected parts of the same crop journey, yet most digital farming tools only address one slice of it. A chatbot might answer \"what should I do today,\" a separate risk tool might warn about pests, and a totally different app might show mandi prices — with no single system connecting what's happening in the field to what's happening in the market, or explaining why a recommendation is being made.\n\nThis creates three compounding gaps:\n\n1. Personalised, multimodal guidance is missing. Farmers rarely get advice that's genuinely tailored to their specific crop stage, field conditions, and history — most advisory is generic, text-only, and doesn't account for what a farmer can actually show (a photo of a diseased leaf) or say (a voice query in their own dialect).\n\n2. Risk is detected too late, or not explained at all. Disease outbreaks, pest infestations, extreme weather, water stress, and sudden price crashes are all threats that could be flagged early — but most tools either don't predict them at all, or issue a black-box alert with no explanation of why the risk is rising or what to actually do about it.\n\n3. The \"what to grow, where to sell\" decision is made blind. Even when a farmer successfully grows a good crop, they often have no data-backed guidance on which crop would have been most profitable to plant, which market would pay best, when to sell for the best price, or how to get the produce there efficiently — so good harvests still translate into disappointing income.\n\nThe challenge is to unify all three into a single AI copilot that accompanies a farmer through the entire crop cycle: from the decision of what to plant, through daily advisory and risk monitoring while it grows, to the final decision of when, where, and how to sell.",
     keyDeliverables: [
       "Module 1 — Farm Copilot (Personalised Advisory)\n• Multilingual voice & text interface — farmers ask questions or report issues by speaking naturally in their own language/dialect.\n• Image-based crop analysis — farmers upload/photograph crop or leaf images for AI-based identification of visible issues (disease symptoms, nutrient deficiency, pest damage).\n• Weather-aware guidance — combines local weather forecasts with crop stage to time irrigation, spraying, and other operations correctly.\n• Farm-history-aware personalisation — recommendations account for the specific farmer's past crop choices, soil type, and recorded outcomes, not generic advice.\n• Full crop-cycle coverage — guidance spans sowing, growth-stage care, harvest timing, and post-harvest handling, not just a single moment in the season.",
-      "Module 2 — Crop Risk Intelligence (Early Warning)\n• Multi-threat risk modelling — predicts risk across disease outbreaks, pest infestations, extreme weather events, water stress, and market-price volatility, rather than covering only one threat type.\n• Explainable alerts — every warning states why the risk is elevated (e.g., \"high humidity + recent rainfall + susceptible crop stage → elevated fungal-disease risk\") rather than issuing an opaque red flag.\n• Severity & urgency ranking — helps farmers prioritise when facing multiple simultaneous risks.\n• Mitigation guidance — each alert comes paired with concrete, actionable mitigation steps, not just a warning.\n• Feeds back into the Copilot — risk alerts surface directly within the same conversational interface farmers already use for daily advisory, rather than a separate app.",
+      'Module 2 — Crop Risk Intelligence (Early Warning)\n• Multi-threat risk modelling — predicts risk across disease outbreaks, pest infestations, extreme weather events, water stress, and market-price volatility, rather than covering only one threat type.\n• Explainable alerts — every warning states why the risk is elevated (e.g., "high humidity + recent rainfall + susceptible crop stage → elevated fungal-disease risk") rather than issuing an opaque red flag.\n• Severity & urgency ranking — helps farmers prioritise when facing multiple simultaneous risks.\n• Mitigation guidance — each alert comes paired with concrete, actionable mitigation steps, not just a warning.\n• Feeds back into the Copilot — risk alerts surface directly within the same conversational interface farmers already use for daily advisory, rather than a separate app.',
       "Module 3 — Farm-to-Market Optimizer (Sell-Side Intelligence)\n• Crop-choice recommendation — before the season starts, suggests what to grow based on predicted yield potential, local suitability, and anticipated demand/price trends.\n• Market-price forecasting — predicts likely price trends across nearby mandis/markets to inform the 'where to sell' decision.\n• Demand prediction — factors in anticipated regional/seasonal demand so farmers aren't blindsided by oversupply-driven price crashes.\n• Sell-timing guidance — recommends when to sell versus when to hold (where storage is feasible), based on price-trend forecasts.\n• Logistics optimisation — suggests transport options/routes to reach the most favourable market at reasonable cost, weighing price gain against transport expense.",
       "Unifying Design Principles\n• Single shared farmer profile across all three modules — location, crop history, soil data, and past interactions inform advisory, risk, and market recommendations alike.\n• One conversational entry point — farmers interact with one copilot interface, not three separate tools; risk alerts and market suggestions surface naturally within the same advisory conversation.\n• Explainability throughout — every recommendation (advisory, risk, or market) should be able to say why, not just what.\n• Offline/low-bandwidth resilience — core functionality should degrade gracefully under poor connectivity, given the target user base.",
     ],
@@ -262,6 +266,8 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     domain: "GreenTech & Sustainability",
     category: "Software",
     difficulty: "Intermediate",
+    organization: "ECO CLUB, GCE Kalahandi",
+
     shortDescription:
       "Colleges want to track and reduce their environmental footprint — energy, water, waste, and transport — but have no structured tool to actually measure it, motivate improvement, or produce the reports accreditation bodies expect. This problem calls for a campus sustainability app that captures utility data, scores performance, gamifies reduction efforts, and auto-generates audit-ready reports.",
     fullDescription:
@@ -302,7 +308,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     id: "ps-sw-06",
     code: "CB-SW-06",
     title: "AI-POWERED GAMIFIED FITNESS & LOCALIZED NUTRITION COPILOT",
-    domain: "HealthTech & Wellbeing (Fitness)",
+    domain: "HealthTech & Wellbeing",
     category: "Software",
     difficulty: "Advanced",
     shortDescription:
@@ -311,8 +317,8 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
       "Staying fit is often framed as an expensive, isolated endeavour. The modern fitness-tech ecosystem typically assumes access to gym memberships, smartwatches, and Western-centric diet plans (recommending quinoa and kale over locally available, equally nutritious alternatives like Ragi/Mandia). As a result, people in semi-urban and rural areas, or students on a tight budget, find these platforms inaccessible and simply unrelatable to their actual life.\n\nSolitary home workouts also lead to rapid motivation loss. Without a personal trainer, users struggle with incorrect exercise posture, which can cause injuries or leave results well short of what's possible.\n\nA localised solution is needed that democratises fitness by removing the hardware barrier entirely. By leveraging edge AI and a smartphone's own camera for real-time form correction, recognising the nutritional value of regional diets, and gamifying activity through community challenges (like a virtual walk across Odisha's heritage sites, or syncing with a city's outdoor public gyms), fitness can become accessible, culturally relevant, and genuinely engaging — instead of another app that gets deleted after week two.",
     keyDeliverables: [
       "1. Zero-Hardware AI Tracking (Computer Vision)\n• Real-time pose estimation — uses the smartphone's front camera to track joint movements during home workouts (squats, push-ups, yoga asanas), giving real-time audio-visual feedback on posture and automatically counting reps.\n• Low-end device optimisation — AI models run efficiently on edge devices, without requiring high-speed internet or a flagship processor.\n• Injury-risk flagging — detects clearly unsafe form (e.g., dangerous knee/back alignment) and proactively warns the user before it becomes a repeated habit, rather than only correcting rep count.",
-      "2. Localized Nutrition Engine\n• Regional diet mapping — a diet recommendation and tracking module built on recognised Indian nutritional guidelines, featuring local Odia cuisine (Mandia/millet-based dishes, Dalma, Pakhala) broken down by macronutrients.\n• Affordable alternatives — suggests low-cost, locally sourced protein and vitamin alternatives based on the user's budget and geographic location, rather than generic \"eat more avocado\" advice.\n• Meal-photo logging — lets users log meals by photographing their plate, with AI-assisted recognition of common local dishes to reduce manual entry friction.",
-      "3. Community & Gamification Layer\n• Heritage challenges — step-tracking gamified as virtual treks across Odisha (e.g., \"walk the distance from Lingaraj Temple to Konark\") to unlock digital badges or local-merchant discounts.\n• Social leaderboards — inter-college or inter-hostel fitness leaderboards to drive friendly, community-based competition.\n• Accountability partners — lets users pair up with a friend/classmate for mutual check-ins, since paired accountability is a well-known retention lever beyond leaderboards alone.\n• Local open-gym/park sync — surfaces nearby public parks, running tracks, and city outdoor gyms so challenges connect to real, physical local spaces, not just abstract distance goals.",
+      '2. Localized Nutrition Engine\n• Regional diet mapping — a diet recommendation and tracking module built on recognised Indian nutritional guidelines, featuring local Odia cuisine (Mandia/millet-based dishes, Dalma, Pakhala) broken down by macronutrients.\n• Affordable alternatives — suggests low-cost, locally sourced protein and vitamin alternatives based on the user\'s budget and geographic location, rather than generic "eat more avocado" advice.\n• Meal-photo logging — lets users log meals by photographing their plate, with AI-assisted recognition of common local dishes to reduce manual entry friction.',
+      '3. Community & Gamification Layer\n• Heritage challenges — step-tracking gamified as virtual treks across Odisha (e.g., "walk the distance from Lingaraj Temple to Konark") to unlock digital badges or local-merchant discounts.\n• Social leaderboards — inter-college or inter-hostel fitness leaderboards to drive friendly, community-based competition.\n• Accountability partners — lets users pair up with a friend/classmate for mutual check-ins, since paired accountability is a well-known retention lever beyond leaderboards alone.\n• Local open-gym/park sync — surfaces nearby public parks, running tracks, and city outdoor gyms so challenges connect to real, physical local spaces, not just abstract distance goals.',
       "4. Progress & Retention Layer\n• Monthly progress reports — a simple, exportable summary of fitness and nutrition trends, useful for personal tracking or sharing with a college wellness cell/coach.\n• Adaptive difficulty — workout and step-challenge targets adjust gradually based on the user's own trend, avoiding the common failure mode of fixed generic targets that feel unreachable and get abandoned.\n• Multilingual interface — core app functionality (instructions, feedback, nutrition labels) available in Odia and other regional languages, not just English.",
     ],
     constraints: [
@@ -339,9 +345,44 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     ],
     driveUrl: "https://assets.cbgcek.dev/CB-SW-06.pdf",
   },
+  {
+    id: "ps-sw-07",
+    code: "CB-SW-07",
+    title: "AI-POWERED SOLAR UNDERPERFORMANCE DIAGNOSIS & ROOT-CAUSE ENGINE",
+    domain: "CleanTech & Renewable Energy",
+    category: "Software",
+    organization: "ADP Green Energy Pvt. Ltd",
+    difficulty: "Advanced",
+    shortDescription:
+      "Solar photovoltaic (PV) power plants routinely experience drops in expected energy generation, forcing operations and maintenance (O&M) teams to spend critical hours manually identifying the root cause. This problem calls for an intelligent, telemetry-driven diagnostic engine that continuously compares expected versus actual generation, isolates the underlying failure mode, and delivers direct, prescriptive recommendations to maximize energy yield and asset life.",
+    fullDescription:
+      'Modern solar power plants — spanning distributed commercial & industrial (C&I) rooftops to multi-megawatt utility installations — rely on extensive arrays of PV modules, multi-MPPT inverters, string combiner boxes, and on-site weather monitoring stations (WMS). Under baseline conditions, energy generation follows predictable physical curves governed by solar irradiance, ambient temperature, and equipment specifications. In practice, actual generation frequently slips below theoretical expectations due to a complex, overlapping web of environmental, electrical, and mechanical factors: dust and particulate accumulation (soiling), localized structural shading, inverter thermal derating caused by blocked cooling paths, string-level open circuits, diode failures, sensor calibration drift, or grid-mandated curtailment.\n\nThis operational ambiguity leads to two compounding costs. First, unresolved underperformance directly degrades asset revenue and energy yields, while unaddressed localized faults (such as hotspots or thermal stress on inverters) accelerate equipment degradation and drive up long-term balance-of-system replacement costs. Second, standard SCADA and monitoring platforms typically offer only coarse, binary alerting (e.g., an inverter is offline, or overall plant output is below a set percentage). These systems fail to diagnose why a drop occurred, causing alert fatigue and forcing O&M teams to dispatch technicians blind — manually troubleshooting inverters and strings across vast facilities.\n\nThe core challenge is to engineer a diagnostic engine capable of moving beyond simple delta detection. The system must accurately distinguish between ambient/weather-driven drops, equipment-specific hardware degradation, and artificial constraints (such as curtailment), disaggregate overlapping failure signatures, and generate clear, natural-language operational guidance — without producing false positives during rapid cloud transients or normal diurnal cycles.\n\nTarget prescriptive output example:\n> "Generation is 18% below expected. Likely causes: inverter derating and high module temperature. Recommended action: inspect inverter 2 and verify cooling conditions."',
+    keyDeliverables: [
+      "1. Data Ingestion & Baseline Modeling Layer\n• SCADA & telemetry ingestion — continuous ingestion of high-resolution time-series data from inverters (AC active/reactive power, DC voltage, DC current per MPPT or string, internal heat-sink temperatures), weather monitoring stations (Plane of Array [POA] irradiance, Global Horizontal Irradiance [GHI], ambient temperature, module surface temperature, wind speed), and grid feed-in status.\n• Physics-informed expected-generation modeling — high-fidelity digital-twin modeling (e.g., PVlib, Sandia/CEC inverter models) that computes dynamic theoretical power output (Pexp) in real time based on observed POA irradiance, module temperature coefficients, and system design specifications.\n• Data sanity & sensor validation — automated data-cleansing routines to detect pyranometer calibration drift, stuck values, and telemetry dropouts before passing inputs to downstream diagnostic models.",
+      "2. Root-Cause Diagnostic Engine\n• Yield-gap quantification — continuous evaluation of the delta between expected and actual generation (ΔP = Pexp − Pact), with dynamic filtering for transient cloud passage and rapid irradiance shifts.\n• Multi-class fault fingerprinting — rule-guided inference and machine-learning classifiers trained to distinguish between specific operational failure modes: uniform soiling vs. partial shading, inverter derating & clipping, string mismatch & open circuits, grid curtailment & external limits, and sensor calibration drift & pyranometer errors.",
+      "3. Operational Decision Support & Reporting Layer\n• Prescriptive action engine — automated generation of concise, human-readable diagnostics and prioritized work-order instructions specifying the exact asset ID, failure mode, and recommended field remedy.\n• Financial & energy-loss quantification — real-time calculation of lost kilowatt-hours (kWh) and associated financial impact based on power purchase agreement (PPA) tariffs, to help O&M teams prioritize maintenance dispatches.\n• O&M dashboard & CMMS integration — a centralized web console displaying plant-health heatmaps, failure-event logs, automated ticket dispatching, and resolution-tracking workflows.",
+    ],
+    constraints: [
+      "Must accurately distinguish between ambient/weather-driven drops, physical equipment faults, and grid-mandated curtailment",
+      "Dynamic filtering to prevent false-positive alarms during rapid cloud transients, solar fluctuations, and normal diurnal cycles",
+      "Prescriptive recommendations must provide explainable, human-readable root-cause guidance with asset ID and prioritized field remedies",
+      "Robust data-cleansing routines capable of operating reliably amidst pyranometer drift, missing telemetry packets, and noisy sensor feeds",
+    ],
+    relevantDatasets: [
+      "Inverter & combiner box SCADA telemetry — time-series logs of DC voltage, DC current, AC output, grid frequency, and internal inverter heat-sink temperatures.",
+      "On-site weather monitoring station (WMS) data — high-frequency pyranometer readings (GHI, POA), ambient temperature, back-of-module temperature, and wind-speed logs.",
+      "Public solar benchmarks & fault repositories — NREL PVDAQ datasets, open-source photovoltaic anomaly benchmarks, and satellite-derived solar irradiance data (e.g., NSRDB, Solargis).",
+      "Asset specifications & layout files — PV module PAN files, inverter efficiency curves, temperature derating coefficients, string configurations, azimuth, and tilt design data.",
+      "Operational historical logs — past module-cleaning schedules, soiling-station metrics, historical maintenance logs, and grid curtailment event records.",
+    ],
+    evaluationFocus: [
+      "Diagnostic accuracy & specificity — precision and recall in correctly isolating and differentiating distinct failure modes (soiling, shading, derating, string fault, sensor error).",
+      "False-alarm rejection — resilience against flagging normal cloud transients, rapid solar fluctuations, or scheduled grid curtailment as hardware faults.",
+      "Prescriptive actionability — clarity, relevance, and operational value of the generated recommendations for non-expert field technicians.",
+      "Quantification precision — accuracy in calculating both instantaneous power loss and cumulative revenue impact attributable to each identified failure.",
+      "Sensor-drift robustness — ability of the engine to maintain diagnostic integrity when individual sensors provide noisy, drifting, or missing telemetry.",
+      "Scalability & processing latency — computational efficiency and speed when scaling the diagnostic pipeline across multi-site, multi-megawatt asset portfolios.",
+    ],
+    driveUrl: "https://assets.cbgcek.dev/CB-SW-07.pdf",
+  },
 ];
-
-
-
-
-
