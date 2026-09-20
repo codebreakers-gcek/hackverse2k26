@@ -1,5 +1,5 @@
 import React from "react";
-import { Eye, ArrowRight, Compass, Terminal } from "lucide-react";
+import { Eye, ArrowRight, Compass, Terminal, Building2 } from "lucide-react";
 import { ProblemStatement } from "@/types/problemStatement";
 
 export interface ProblemStatementCardProps {
@@ -20,26 +20,42 @@ export function ProblemStatementCard({ problem, onOpenDetails }: ProblemStatemen
       className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[6px_6px_0px_#000] hover:shadow-[8px_8px_0px_#000] hover:-translate-y-1 transition-all duration-150 flex flex-col justify-between overflow-hidden group cursor-pointer text-black select-none"
     >
       {/* Minecraft Top Header Strip */}
-      <div className="bg-[#5B8731] border-b-4 border-black p-3.5 sm:p-4 flex items-center justify-between gap-2 border-t-2 border-t-[#85B745]">
-        <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-black text-[#55FF55] border-2 border-black shadow-[2px_2px_0px_#000]">
-          {problem.code}
-        </span>
-        <div className="flex items-center gap-2">
-          <span className="font-mono text-[11px] font-black uppercase px-2.5 py-0.5 bg-[#282828] text-[#55FFFF] border border-black shadow-[1px_1px_0px_#000]">
-            {problem.category}
+      <div className="bg-[#5B8731] border-b-4 border-black p-3.5 sm:p-4 space-y-2.5 border-t-2 border-t-[#85B745]">
+        <div className="flex items-center justify-between gap-2">
+          <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-black text-[#55FF55] border-2 border-black shadow-[2px_2px_0px_#000]">
+            {problem.code}
           </span>
-          <span
-            className={`font-mono text-[10px] font-black uppercase px-2 py-0.5 shadow-[1px_1px_0px_#000] ${difficultyBadgeStyle[problem.difficulty]}`}
-          >
-            {problem.difficulty}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[11px] font-black uppercase px-2.5 py-0.5 bg-[#282828] text-[#55FFFF] border border-black shadow-[1px_1px_0px_#000]">
+              {problem.category}
+            </span>
+            <span
+              className={`font-mono text-[10px] font-black uppercase px-2 py-0.5 shadow-[1px_1px_0px_#000] ${difficultyBadgeStyle[problem.difficulty]}`}
+            >
+              {problem.difficulty}
+            </span>
+          </div>
         </div>
+
+        {/* Minecraft Oak Wood Hanging Signboard for Organization */}
+        {problem.organization && (
+          <div className="bg-[#8A5A2B] border-2 border-black border-t-[#B8874E] border-l-[#B8874E] border-r-[#4A2D12] border-b-[#4A2D12] px-2.5 py-1.5 shadow-[2px_2px_0px_#000] flex items-center gap-2">
+            <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
+              <span className="font-mono text-[9px] font-black text-[#FFE285] uppercase tracking-wider shrink-0 [text-shadow:_1px_1px_0_#000]">
+                ORG //
+              </span>
+              <span className="font-mono text-[11px] sm:text-xs font-black uppercase text-white tracking-wide leading-tight [text-shadow:_1px_1px_0_#000]">
+                {problem.organization}
+              </span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Card Body */}
       <div className="p-5 sm:p-6 space-y-4 flex-1 flex flex-col justify-between">
         <div>
-          <div className="font-mono text-xs text-[#8F5500] uppercase font-black flex items-center gap-1.5">
+          <div className="font-mono text-xs text-[#8F5500] uppercase font-black flex items-center gap-1.5 mb-1">
             <Compass className="w-3.5 h-3.5 shrink-0 stroke-[2.5px]" />
             <span className="truncate">{problem.domain}</span>
           </div>

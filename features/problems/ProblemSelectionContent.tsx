@@ -698,19 +698,35 @@ export function ProblemSelectionContent() {
                     <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-6 sm:p-8 shadow-[6px_6px_0px_#000] space-y-6 flex flex-col justify-between relative text-black">
                       <div className="space-y-4">
                         {/* Badge strip */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-[#555555] pb-3">
-                          <div className="flex items-center gap-2">
-                            <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-black shadow-[2px_2px_0px_#000]">
-                              {pref1Obj.code}
-                            </span>
-                            <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-[#DBDBDB] text-black border-2 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF]">
-                              {pref1Obj.category}
+                        <div className="space-y-2 border-b-2 border-[#555555] pb-3">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-black shadow-[2px_2px_0px_#000]">
+                                {pref1Obj.code}
+                              </span>
+                              <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-[#DBDBDB] text-black border-2 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF]">
+                                {pref1Obj.category}
+                              </span>
+                            </div>
+                            <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[2px_2px_0px_#000] inline-flex items-center gap-1.5 [text-shadow:_1px_1px_0_#000]">
+                              <Sparkles className="w-3 h-3 stroke-[2.5px]" />
+                              <span>CHOICE #1 (PRIMARY - MANDATORY)</span>
                             </span>
                           </div>
-                          <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[2px_2px_0px_#000] inline-flex items-center gap-1.5 [text-shadow:_1px_1px_0_#000]">
-                            <Sparkles className="w-3 h-3 stroke-[2.5px]" />
-                            <span>CHOICE #1 (PRIMARY - MANDATORY)</span>
-                          </span>
+
+                          {/* Minecraft Oak Wood Hanging Signboard for Organization */}
+                          {pref1Obj.organization && (
+                            <div className="bg-[#8A5A2B] border-2 border-black border-t-[#B8874E] border-l-[#B8874E] border-r-[#4A2D12] border-b-[#4A2D12] px-2.5 py-1.5 shadow-[2px_2px_0px_#000] flex items-center gap-2 w-fit">
+                              <div className="flex items-center gap-1.5 min-w-0">
+                                <span className="font-mono text-[9px] font-black text-[#FFE285] uppercase tracking-wider shrink-0 [text-shadow:_1px_1px_0_#000]">
+                                  ORG //
+                                </span>
+                                <span className="font-mono text-[11px] sm:text-xs font-black uppercase text-white tracking-wide leading-tight [text-shadow:_1px_1px_0_#000]">
+                                  {pref1Obj.organization}
+                                </span>
+                              </div>
+                            </div>
+                          )}
                         </div>
 
                         {/* Domain & Title */}
@@ -816,19 +832,35 @@ export function ProblemSelectionContent() {
                     <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-6 sm:p-8 shadow-[6px_6px_0px_#000] space-y-6 flex flex-col justify-between relative text-black">
                       <div className="space-y-4">
                         {/* Badge strip */}
-                        <div className="flex flex-wrap items-center justify-between gap-2 border-b-2 border-[#555555] pb-3">
-                          <div className="flex items-center gap-2">
-                            <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-black shadow-[2px_2px_0px_#000]">
-                              {pref2Obj.code}
-                            </span>
-                            <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-[#DBDBDB] text-black border-2 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF]">
-                              {pref2Obj.category}
+                        <div className="space-y-2 border-b-2 border-[#555555] pb-3">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <div className="flex items-center gap-2">
+                              <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-black shadow-[2px_2px_0px_#000]">
+                                {pref2Obj.code}
+                              </span>
+                              <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-[#DBDBDB] text-black border-2 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF]">
+                                {pref2Obj.category}
+                              </span>
+                            </div>
+                            <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-[#FFAA00] text-black border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[2px_2px_0px_#000] inline-flex items-center gap-1.5">
+                              <Sparkles className="w-3 h-3 stroke-[2.5px]" />
+                              <span>CHOICE #2 (SECONDARY - OPTIONAL)</span>
                             </span>
                           </div>
-                          <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-[#FFAA00] text-black border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[2px_2px_0px_#000] inline-flex items-center gap-1.5">
-                            <Sparkles className="w-3 h-3 stroke-[2.5px]" />
-                            <span>CHOICE #2 (SECONDARY - OPTIONAL)</span>
-                          </span>
+
+                          {/* Minecraft Oak Wood Hanging Signboard for Organization */}
+                          {pref2Obj.organization && (
+                            <div className="bg-[#8A5A2B] border-2 border-black border-t-[#B8874E] border-l-[#B8874E] border-r-[#4A2D12] border-b-[#4A2D12] px-2.5 py-1.5 shadow-[2px_2px_0px_#000] flex items-center gap-2 w-fit">
+                              <div className="flex items-center gap-1.5 min-w-0">
+                                <span className="font-mono text-[9px] font-black text-[#FFE285] uppercase tracking-wider shrink-0 [text-shadow:_1px_1px_0_#000]">
+                                  ORG //
+                                </span>
+                                <span className="font-mono text-[11px] sm:text-xs font-black uppercase text-white tracking-wide leading-tight [text-shadow:_1px_1px_0_#000]">
+                                  {pref2Obj.organization}
+                                </span>
+                              </div>
+                            </div>
+                          )}
                         </div>
 
                         {/* Domain & Title */}
@@ -1007,7 +1039,7 @@ export function ProblemSelectionContent() {
                       )}
                     >
                       {/* Header Strip */}
-                      <div className="space-y-3">
+                      <div className="space-y-2.5">
                         <div className="flex flex-wrap items-center justify-between gap-2">
                           <div className="flex flex-wrap items-center gap-2">
                             <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-black shadow-[2px_2px_0px_#000]">
@@ -1032,6 +1064,20 @@ export function ProblemSelectionContent() {
                             </span>
                           )}
                         </div>
+
+                        {/* Minecraft Oak Wood Hanging Signboard for Organization */}
+                        {problem.organization && (
+                          <div className="bg-[#8A5A2B] border-2 border-black border-t-[#B8874E] border-l-[#B8874E] border-r-[#4A2D12] border-b-[#4A2D12] px-2.5 py-1.5 shadow-[2px_2px_0px_#000] flex items-center gap-2">
+                            <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
+                              <span className="font-mono text-[9px] font-black text-[#FFE285] uppercase tracking-wider shrink-0 [text-shadow:_1px_1px_0_#000]">
+                                ORG //
+                              </span>
+                              <span className="font-mono text-[11px] sm:text-xs font-black uppercase text-white tracking-wide leading-tight [text-shadow:_1px_1px_0_#000]">
+                                {problem.organization}
+                              </span>
+                            </div>
+                          </div>
+                        )}
 
                         <div>
                           <div className="font-mono text-[11px] font-black uppercase tracking-wider text-black/70 flex items-center gap-1">

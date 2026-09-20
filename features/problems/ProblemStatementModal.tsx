@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Modal } from "@/components/ui/Modal";
 import { ProblemStatement } from "@/types/problemStatement";
-import { CheckCircle, AlertTriangle, Cpu, ArrowRight, Sparkles, Database } from "lucide-react";
+import { CheckCircle, AlertTriangle, Cpu, ArrowRight, Sparkles, Database, Building2 } from "lucide-react";
 
 export interface ProblemStatementModalProps {
   problem: ProblemStatement | null;
@@ -35,6 +35,12 @@ export function ProblemStatementModal({ problem, isOpen, onClose }: ProblemState
           <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-white border-2 border-black">
             DIFFICULTY: {problem.difficulty}
           </span>
+          {problem.organization && (
+            <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-[#8A5A2B] text-white border-2 border-black border-t-[#B8874E] border-l-[#B8874E] border-r-[#4A2D12] border-b-[#4A2D12] shadow-[2px_2px_0px_#000] flex items-center gap-1.5 [text-shadow:_1px_1px_0_#000]">
+              <Building2 className="w-3.5 h-3.5 text-[#FFE285]" />
+              <span className="text-[#FFE285]">ORG:</span> {problem.organization}
+            </span>
+          )}
           {problem.sponsorOrMentor && (
             <span className="font-mono text-xs font-bold text-black/70 ml-auto">
               MENTORSHIP: {problem.sponsorOrMentor}

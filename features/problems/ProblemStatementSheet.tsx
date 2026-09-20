@@ -15,6 +15,7 @@ import {
   Compass,
   Download,
   Database,
+  Building2,
 } from "lucide-react";
 
 export interface ProblemStatementSheetProps {
@@ -102,7 +103,7 @@ export function ProblemStatementSheet({
             {/* ------------------------------------------------------------- */}
             {/* FIXED HEADER STRIP */}
             {/* ------------------------------------------------------------- */}
-            <div className="shrink-0 bg-[#5B8731] border-b-4 border-black p-5 sm:p-6 space-y-3 select-none text-white border-t-2 border-t-[#85B745]">
+            <div className="shrink-0 bg-[#5B8731] border-b-4 border-black p-5 sm:p-6 space-y-3.5 select-none text-white border-t-2 border-t-[#85B745]">
               <div className="flex items-center justify-between gap-3">
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="font-mono text-xs font-black uppercase px-2.5 py-1 bg-black text-[#55FF55] border-2 border-black shadow-[2px_2px_0px_#000]">
@@ -128,6 +129,20 @@ export function ProblemStatementSheet({
                   <X className="w-5 h-5 stroke-[3px]" />
                 </button>
               </div>
+
+              {/* Minecraft Oak Wood Hanging Signboard for Organization */}
+              {problem.organization && (
+                <div className="bg-[#8A5A2B] border-2 border-black border-t-[#B8874E] border-l-[#B8874E] border-r-[#4A2D12] border-b-[#4A2D12] px-3 py-1.5 shadow-[2px_2px_0px_#000] flex items-center gap-2 w-fit">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <span className="font-mono text-[10px] font-black text-[#FFE285] uppercase tracking-wider shrink-0 [text-shadow:_1px_1px_0_#000]">
+                      ORG //
+                    </span>
+                    <span className="font-mono text-xs sm:text-sm font-black uppercase text-white tracking-wide leading-tight [text-shadow:_1px_1px_0_#000]">
+                      {problem.organization}
+                    </span>
+                  </div>
+                </div>
+              )}
 
               <div>
                 <div className="font-mono text-xs font-bold uppercase tracking-wider text-[#FFE285] flex items-center gap-1.5 [text-shadow:_1px_1px_0_#000]">
@@ -272,12 +287,27 @@ export function ProblemStatementSheet({
 
               {/* Mentorship & Support */}
               {problem.sponsorOrMentor && (
-                <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-4 flex items-center justify-between gap-3">
+                <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-4 flex items-center justify-between gap-3 shadow-[3px_3px_0px_#000]">
                   <span className="font-mono text-xs font-bold text-black/80">
                     INDUSTRY SPONSOR &amp; MENTORSHIP:
                   </span>
                   <span className="font-mono text-xs font-black bg-black text-[#55FF55] px-2 py-0.5 border border-black shadow-[1px_1px_0px_#000]">
                     {problem.sponsorOrMentor}
+                  </span>
+                </div>
+              )}
+
+              {/* Problem Statement Organization */}
+              {problem.organization && (
+                <div className="bg-[#8A5A2B] border-4 border-t-[#B8874E] border-l-[#B8874E] border-r-[#4A2D12] border-b-[#4A2D12] p-4 flex flex-wrap items-center justify-between gap-3 shadow-[4px_4px_0px_#000]">
+                  <div className="flex items-center gap-2 font-mono text-xs font-black uppercase text-[#FFE285] [text-shadow:_1px_1px_0_#000]">
+                    <div className="w-5 h-5 bg-[#4A2D12] border border-black flex items-center justify-center shrink-0 shadow-[1px_1px_0px_#000]">
+                      <Building2 className="w-3 h-3 text-[#FFE285]" />
+                    </div>
+                    <span>PROBLEM STATEMENT ORGANISATION / BENEFICIARY:</span>
+                  </div>
+                  <span className="font-mono text-xs font-black bg-[#4A2D12] text-white px-3 py-1 border-2 border-black shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+                    {problem.organization}
                   </span>
                 </div>
               )}
