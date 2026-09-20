@@ -99,7 +99,7 @@ export const clubLeads: TeamMember[] = [
       github: "https://github.com/codebydeepankar",
       instagram: "",
       linkedin: "",
-      website: "https://www.deepankar.tech",
+      website: "https://deepankar.tech",
     },
   },
 ];
