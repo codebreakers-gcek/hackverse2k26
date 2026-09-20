@@ -385,4 +385,33 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     ],
     driveUrl: "https://assets.cbgcek.dev/CB-SW-07.pdf",
   },
+  {
+    id: "ps-sw-08",
+    code: "CB-SW-08",
+    title: "CLASSIFIED QUEST // UNLOCKING TOMORROW",
+    domain: "Open Innovation & Emerging Tech",
+    category: "Software",
+    organization: "REVEALING SOON",
+    difficulty: "Advanced",
+    isLocked: true,
+    shortDescription:
+      "A brand-new software problem statement is currently sealed in the loot chest. Full challenge specifications, dataset access, and evaluation criteria will be unlocked tomorrow.",
+    fullDescription:
+      "A new challenge quest is being forged for HACKVERSE '26 Software Track. The loot chest will be officially unlocked tomorrow with complete real-world problem statements, technical specifications, dataset links, and evaluation rubrics.\n\nKeep your squad ready and check back tomorrow for the full mission brief!",
+    keyDeliverables: [
+      "1. Loot Chest Sealed — Unlocking tomorrow with full technical specifications and key deliverables.",
+      "2. Real-world software engineering challenge, industry dataset access, and evaluation rubrics revealing soon.",
+    ],
+    constraints: [
+      "Full specifications currently sealed under hackathon embargo",
+      "Loot chest unlocks tomorrow — stay tuned for updates",
+    ],
+    relevantDatasets: [
+      "Industry dataset links and developer resources will be disclosed when the chest unlocks.",
+    ],
+    evaluationFocus: [
+      "Problem statement specifications releasing tomorrow — prepare your squad!",
+    ],
+    driveUrl: "#",
+  },
 ];

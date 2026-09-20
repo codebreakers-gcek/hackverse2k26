@@ -16,6 +16,8 @@ import {
   Download,
   Database,
   Building2,
+  Lock,
+  Clock,
 } from "lucide-react";
 
 export interface ProblemStatementSheetProps {
@@ -167,149 +169,209 @@ export function ProblemStatementSheet({
               data-lenis-prevent-touch="true"
               className="flex-1 overflow-y-auto p-5 sm:p-7 space-y-6 bg-[#DBDBDB] overscroll-contain touch-pan-y"
             >
-              {/* Detailed Brief Card */}
-              <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-3">
-                <div className="flex items-center gap-2 font-mono text-xs font-black uppercase text-[#256010]">
-                  <Sparkles className="w-4 h-4 stroke-[2.5px]" />
-                  <span>DETAILED PROBLEM BRIEF &amp; OBJECTIVE</span>
-                </div>
-                <div className="text-xs sm:text-sm font-mono font-bold text-black/85 leading-relaxed space-y-3.5">
-                  {problem.fullDescription.split("\n\n").map((para, pIdx) => (
-                    <p key={pIdx}>{para}</p>
-                  ))}
-                </div>
-              </div>
-
-              {/* Expected Solution */}
-              <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-4">
-                <h3 className="font-mono font-black text-xs sm:text-sm uppercase tracking-wider text-black flex items-center gap-2 border-b-2 border-black/20 pb-2">
-                  <CheckCircle className="w-4 h-4 text-[#256010] stroke-[3px]" />
-                  <span>EXPECTED SOLUTION &amp; KEY DELIVERABLES:</span>
-                </h3>
-                <div className="space-y-3">
-                  {problem.keyDeliverables.map((deliv, idx) => {
-                    const lines = deliv.split("\n").filter((l) => l.trim().length > 0);
-                    const hasMultipleLines = lines.length > 1;
-                    const title = hasMultipleLines ? lines[0] : null;
-                    const bulletLines = hasMultipleLines ? lines.slice(1) : lines;
-
-                    return (
-                      <div
-                        key={idx}
-                        className="flex items-start gap-3 p-3.5 bg-[#8B8B8B] border-4 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] text-xs sm:text-sm font-mono font-bold text-black shadow-[2px_2px_0px_#000]"
-                      >
-                        <span className="w-6 h-6 bg-black text-[#55FF55] font-mono text-xs font-black flex items-center justify-center shrink-0 border border-black shadow-[1px_1px_0px_#000] mt-0.5">
-                          {idx + 1}
-                        </span>
-                        <div className="leading-snug pt-0.5 flex-1 space-y-2">
-                          {title ? (
-                            <div className="font-mono font-black uppercase text-black text-sm tracking-wide border-b-2 border-black/20 pb-1">
-                              {title}
-                            </div>
-                          ) : null}
-                          {hasMultipleLines ? (
-                            <ul className="space-y-1.5 pt-0.5">
-                              {bulletLines.map((line, lIdx) => (
-                                <li key={lIdx} className="flex items-start gap-2 text-black font-mono font-bold text-xs sm:text-[13px] leading-relaxed">
-                                  <span className="text-black font-black select-none shrink-0 mt-0.5">•</span>
-                                  <span>{line.replace(/^[•\-]\s*/, "")}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          ) : (
-                            <span>{deliv}</span>
-                          )}
+              {problem.isLocked ? (
+                /* Minecraft Mystery Sealed Chest View */
+                <div className="space-y-6">
+                  <div className="bg-[#1C1815] border-4 border-t-[#D4A368] border-l-[#D4A368] border-r-[#3E2512] border-b-[#3E2512] p-6 sm:p-8 shadow-[6px_6px_0px_#000] text-center space-y-5 text-white">
+                    {/* Chest Model */}
+                    <div className="relative my-3 flex items-center justify-center">
+                      <div className="absolute inset-0 bg-[#FFAA00]/25 blur-xl rounded-full scale-150 pointer-events-none" />
+                      <div className="relative w-32 h-24 bg-[#8F5A2B] border-4 border-t-[#B8874E] border-l-[#B8874E] border-r-[#4A2D12] border-b-[#4A2D12] shadow-[6px_6px_0px_#000] flex items-center justify-center">
+                        <div className="absolute top-[38%] left-0 right-0 h-1 bg-black/80 border-b border-[#B8874E]/40" />
+                        <div className="absolute top-[28%] w-8 h-8 bg-[#C6C6C6] border-2 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[3px_3px_0px_#000] flex items-center justify-center z-10">
+                          <Lock className="w-4 h-4 text-black stroke-[3px]" />
+                        </div>
+                        <div className="absolute -top-3 -right-3">
+                          <Sparkles className="w-5 h-5 text-[#FFE655] " />
+                        </div>
+                        <div className="absolute -bottom-2 -left-2">
+                          <Sparkles className="w-4 h-4 text-[#FFAA00]" />
                         </div>
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
+                    </div>
 
-              {/* Technical Constraints */}
-              {problem.constraints && problem.constraints.length > 0 && (
-                <div className="bg-[#E8C5C5] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#883333] border-b-[#883333] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-3">
-                  <h3 className="font-mono font-black text-xs sm:text-sm uppercase tracking-wider text-[#991B1B] flex items-center gap-2 border-b-2 border-[#991B1B]/30 pb-2">
-                    <AlertTriangle className="w-4 h-4 text-[#991B1B] stroke-[3px]" />
-                    <span>TECHNICAL BOUNDARY CONSTRAINTS &amp; RULES:</span>
-                  </h3>
-                  <ul className="space-y-1.5 text-xs sm:text-sm font-mono font-bold text-black/90">
-                    {problem.constraints.map((c, i) => (
-                      <li key={i} className="flex items-start gap-2">
-                        <span className="text-[#991B1B] font-mono font-black">▸</span>
-                        <span>{c}</span>
+                    <div className="space-y-2">
+                      <span className="inline-block font-mono text-xs font-black uppercase px-3 py-1 bg-black text-[#FFAA00] border-2 border-[#FFAA00] shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+                        [QUEST EMBARGO ACTIVE // CHEST SEALED]
+                      </span>
+                      <h3 className="font-mono font-black text-2xl sm:text-3xl text-[#FFE655] uppercase tracking-tight [text-shadow:_2px_2px_0_#000]">
+                        OFFICIAL SOFTWARE TRACK UNLOCKING TOMORROW
+                      </h3>
+                      <p className="text-xs sm:text-sm font-mono font-bold text-[#E5D7C5] leading-relaxed max-w-lg mx-auto">
+                        This 8th challenge track for HACKVERSE &apos;26 Software Edition is currently locked under embargo. The loot chest will officially unlock tomorrow with complete real-world problem statements, technical architecture requirements, dataset endpoints, and grading rubrics.
+                      </p>
+                    </div>
+
+                    <div className="bg-[#150B04] border-3 border-t-[#0D0702] border-l-[#0D0702] border-r-[#42250F] border-b-[#42250F] p-3.5 shadow-[inset_2px_2px_4px_rgba(0,0,0,0.7)] flex items-center justify-center gap-2">
+                      <Clock className="w-4 h-4 text-[#55FF55] shrink-0 animate-spin" />
+                      <span className="font-mono text-xs sm:text-sm font-black uppercase text-[#55FF55] tracking-wide [text-shadow:_1px_1px_0_#000]">
+                        UNLOCKS TOMORROW // KEEP YOUR SQUAD READY
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Instructions Box */}
+                  <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-3">
+                    <h4 className="font-mono font-black text-xs sm:text-sm uppercase tracking-wider text-black flex items-center gap-2">
+                      <Sparkles className="w-4 h-4 text-[#8F5500] stroke-[2.5px]" />
+                      <span>HOW TO PREPARE YOUR TEAM:</span>
+                    </h4>
+                    <ul className="space-y-2 text-xs sm:text-sm font-mono font-bold text-black/85">
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#8F5500] font-black">▸</span>
+                        <span>Register your squad today to secure your team slot in HACKVERSE &apos;26.</span>
                       </li>
-                    ))}
-                  </ul>
+                      <li className="flex items-start gap-2">
+                        <span className="text-[#8F5500] font-black">▸</span>
+                        <span>Once this chest unlocks tomorrow, team leaders will be able to select this track directly in the Problem Selection portal.</span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-              )}
+              ) : (
+                <>
+                  {/* Detailed Brief Card */}
+                  <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-3">
+                    <div className="flex items-center gap-2 font-mono text-xs font-black uppercase text-[#256010]">
+                      <Sparkles className="w-4 h-4 stroke-[2.5px]" />
+                      <span>DETAILED PROBLEM BRIEF &amp; OBJECTIVE</span>
+                    </div>
+                    <div className="text-xs sm:text-sm font-mono font-bold text-black/85 leading-relaxed space-y-3.5">
+                      {problem.fullDescription.split("\n\n").map((para, pIdx) => (
+                        <p key={pIdx}>{para}</p>
+                      ))}
+                    </div>
+                  </div>
 
-              {/* Relevant Datasets & Data Sources */}
-              {problem.relevantDatasets && problem.relevantDatasets.length > 0 && (
-                <div className="bg-[#C5DCE8] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#336688] border-b-[#336688] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-3">
-                  <h3 className="font-mono font-black text-xs sm:text-sm uppercase tracking-wider text-[#0C4A6E] flex items-center gap-2 border-b-2 border-[#0C4A6E]/30 pb-2">
-                    <Database className="w-4 h-4 text-[#0C4A6E] stroke-[3px]" />
-                    <span>RELEVANT DATASETS &amp; DATA SOURCES:</span>
-                  </h3>
-                  <div className="space-y-2">
-                    {problem.relevantDatasets.map((ds, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-start gap-2.5 p-2.5 bg-[#8B8B8B] border-2 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] text-xs sm:text-sm font-mono font-bold text-black"
-                      >
-                        <span className="w-5 h-5 bg-black text-[#55FFFF] font-mono text-xs font-black flex items-center justify-center shrink-0 border border-black shadow-[1px_1px_0px_#000]">
-                          {idx + 1}
-                        </span>
-                        <span className="leading-snug pt-0.5">{ds}</span>
+                  {/* Expected Solution */}
+                  <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-4">
+                    <h3 className="font-mono font-black text-xs sm:text-sm uppercase tracking-wider text-black flex items-center gap-2 border-b-2 border-black/20 pb-2">
+                      <CheckCircle className="w-4 h-4 text-[#256010] stroke-[3px]" />
+                      <span>EXPECTED SOLUTION &amp; KEY DELIVERABLES:</span>
+                    </h3>
+                    <div className="space-y-3">
+                      {problem.keyDeliverables.map((deliv, idx) => {
+                        const lines = deliv.split("\n").filter((l) => l.trim().length > 0);
+                        const hasMultipleLines = lines.length > 1;
+                        const title = hasMultipleLines ? lines[0] : null;
+                        const bulletLines = hasMultipleLines ? lines.slice(1) : lines;
+
+                        return (
+                          <div
+                            key={idx}
+                            className="flex items-start gap-3 p-3.5 bg-[#8B8B8B] border-4 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] text-xs sm:text-sm font-mono font-bold text-black shadow-[2px_2px_0px_#000]"
+                          >
+                            <span className="w-6 h-6 bg-black text-[#55FF55] font-mono text-xs font-black flex items-center justify-center shrink-0 border border-black shadow-[1px_1px_0px_#000] mt-0.5">
+                              {idx + 1}
+                            </span>
+                            <div className="leading-snug pt-0.5 flex-1 space-y-2">
+                              {title ? (
+                                <div className="font-mono font-black uppercase text-black text-sm tracking-wide border-b-2 border-black/20 pb-1">
+                                  {title}
+                                </div>
+                              ) : null}
+                              {hasMultipleLines ? (
+                                <ul className="space-y-1.5 pt-0.5">
+                                  {bulletLines.map((line, lIdx) => (
+                                    <li key={lIdx} className="flex items-start gap-2 text-black font-mono font-bold text-xs sm:text-[13px] leading-relaxed">
+                                      <span className="text-black font-black select-none shrink-0 mt-0.5">•</span>
+                                      <span>{line.replace(/^[•\-]\s*/, "")}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              ) : (
+                                <span>{deliv}</span>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Technical Constraints */}
+                  {problem.constraints && problem.constraints.length > 0 && (
+                    <div className="bg-[#E8C5C5] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#883333] border-b-[#883333] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-3">
+                      <h3 className="font-mono font-black text-xs sm:text-sm uppercase tracking-wider text-[#991B1B] flex items-center gap-2 border-b-2 border-[#991B1B]/30 pb-2">
+                        <AlertTriangle className="w-4 h-4 text-[#991B1B] stroke-[3px]" />
+                        <span>TECHNICAL BOUNDARY CONSTRAINTS &amp; RULES:</span>
+                      </h3>
+                      <ul className="space-y-1.5 text-xs sm:text-sm font-mono font-bold text-black/90">
+                        {problem.constraints.map((c, i) => (
+                          <li key={i} className="flex items-start gap-2">
+                            <span className="text-[#991B1B] font-mono font-black">▸</span>
+                            <span>{c}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Relevant Datasets & Data Sources */}
+                  {problem.relevantDatasets && problem.relevantDatasets.length > 0 && (
+                    <div className="bg-[#C5DCE8] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#336688] border-b-[#336688] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-3">
+                      <h3 className="font-mono font-black text-xs sm:text-sm uppercase tracking-wider text-[#0C4A6E] flex items-center gap-2 border-b-2 border-[#0C4A6E]/30 pb-2">
+                        <Database className="w-4 h-4 text-[#0C4A6E] stroke-[3px]" />
+                        <span>RELEVANT DATASETS &amp; DATA SOURCES:</span>
+                      </h3>
+                      <div className="space-y-2">
+                        {problem.relevantDatasets.map((ds, idx) => (
+                          <div
+                            key={idx}
+                            className="flex items-start gap-2.5 p-2.5 bg-[#8B8B8B] border-2 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] text-xs sm:text-sm font-mono font-bold text-black"
+                          >
+                            <span className="w-5 h-5 bg-black text-[#55FFFF] font-mono text-xs font-black flex items-center justify-center shrink-0 border border-black shadow-[1px_1px_0px_#000]">
+                              {idx + 1}
+                            </span>
+                            <span className="leading-snug pt-0.5">{ds}</span>
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Evaluation Focus */}
-              <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-3">
-                <div className="font-mono text-xs font-black uppercase text-black flex items-center gap-1.5 border-b-2 border-black/20 pb-2">
-                  <Award className="w-4 h-4 text-[#8F5500] stroke-[2.5px]" />
-                  <span>EVALUATION EMPHASIS:</span>
-                </div>
-                <div className="flex flex-col gap-2.5">
-                  {problem.evaluationFocus.map((crit, idx) => (
-                    <div
-                      key={idx}
-                      className="font-mono text-xs font-black uppercase p-3 bg-[#8B8B8B] border-2 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] text-black shadow-[2px_2px_0px_#000] leading-relaxed"
-                    >
-                      {crit}
                     </div>
-                  ))}
-                </div>
-              </div>
+                  )}
 
-              {/* Mentorship & Support */}
-              {problem.sponsorOrMentor && (
-                <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-4 flex items-center justify-between gap-3 shadow-[3px_3px_0px_#000]">
-                  <span className="font-mono text-xs font-bold text-black/80">
-                    INDUSTRY SPONSOR &amp; MENTORSHIP:
-                  </span>
-                  <span className="font-mono text-xs font-black bg-black text-[#55FF55] px-2 py-0.5 border border-black shadow-[1px_1px_0px_#000]">
-                    {problem.sponsorOrMentor}
-                  </span>
-                </div>
-              )}
-
-              {/* Problem Statement Organization */}
-              {problem.organization && (
-                <div className="bg-[#8A5A2B] border-4 border-t-[#B8874E] border-l-[#B8874E] border-r-[#4A2D12] border-b-[#4A2D12] p-4 flex flex-wrap items-center justify-between gap-3 shadow-[4px_4px_0px_#000]">
-                  <div className="flex items-center gap-2 font-mono text-xs font-black uppercase text-[#FFE285] [text-shadow:_1px_1px_0_#000]">
-                    <div className="w-5 h-5 bg-[#4A2D12] border border-black flex items-center justify-center shrink-0 shadow-[1px_1px_0px_#000]">
-                      <Building2 className="w-3 h-3 text-[#FFE285]" />
+                  {/* Evaluation Focus */}
+                  <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-5 sm:p-6 shadow-[4px_4px_0px_#000] space-y-3">
+                    <div className="font-mono text-xs font-black uppercase text-black flex items-center gap-1.5 border-b-2 border-black/20 pb-2">
+                      <Award className="w-4 h-4 text-[#8F5500] stroke-[2.5px]" />
+                      <span>EVALUATION EMPHASIS:</span>
                     </div>
-                    <span>PROBLEM STATEMENT ORGANISATION / BENEFICIARY:</span>
+                    <div className="flex flex-col gap-2.5">
+                      {problem.evaluationFocus.map((crit, idx) => (
+                        <div
+                          key={idx}
+                          className="font-mono text-xs font-black uppercase p-3 bg-[#8B8B8B] border-2 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] text-black shadow-[2px_2px_0px_#000] leading-relaxed"
+                        >
+                          {crit}
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                  <span className="font-mono text-xs font-black bg-[#4A2D12] text-white px-3 py-1 border-2 border-black shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
-                    {problem.organization}
-                  </span>
-                </div>
+
+                  {/* Mentorship & Support */}
+                  {problem.sponsorOrMentor && (
+                    <div className="bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] p-4 flex items-center justify-between gap-3 shadow-[3px_3px_0px_#000]">
+                      <span className="font-mono text-xs font-bold text-black/80">
+                        INDUSTRY SPONSOR &amp; MENTORSHIP:
+                      </span>
+                      <span className="font-mono text-xs font-black bg-black text-[#55FF55] px-2 py-0.5 border border-black shadow-[1px_1px_0px_#000]">
+                        {problem.sponsorOrMentor}
+                      </span>
+                    </div>
+                  )}
+
+                  {/* Problem Statement Organization */}
+                  {problem.organization && (
+                    <div className="bg-[#8A5A2B] border-4 border-t-[#B8874E] border-l-[#B8874E] border-r-[#4A2D12] border-b-[#4A2D12] p-4 flex flex-wrap items-center justify-between gap-3 shadow-[4px_4px_0px_#000]">
+                      <div className="flex items-center gap-2 font-mono text-xs font-black uppercase text-[#FFE285] [text-shadow:_1px_1px_0_#000]">
+                        <span>PROBLEM STATEMENT ORGANISATION / BENEFICIARY:</span>
+                      </div>
+                      <span className="font-mono text-xs font-black bg-[#4A2D12] text-white px-3 py-1 border-2 border-black shadow-[2px_2px_0px_#000] [text-shadow:_1px_1px_0_#000]">
+                        {problem.organization}
+                      </span>
+                    </div>
+                  )}
+                </>
               )}
             </div>
 
@@ -317,15 +379,22 @@ export function ProblemStatementSheet({
             {/* FIXED FOOTER ACTIONS */}
             {/* ------------------------------------------------------------- */}
             <div className="shrink-0 bg-[#C6C6C6] border-t-4 border-black p-4 sm:p-5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 select-none">
-              <a
-                href={problem.driveUrl || "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-3.5 font-mono font-black text-xs uppercase tracking-wider bg-[#5B8731] hover:bg-[#70B237] text-white border-3 border-t-[#85B745] border-l-[#85B745] border-r-[#38591E] border-b-[#38591E] shadow-[2px_2px_0px_#000] flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <Download className="w-4 h-4 stroke-[3px]" />
-                <span>DOWNLOAD SPEC DOCUMENT</span>
-              </a>
+              {problem.isLocked ? (
+                <div className="w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-3.5 font-mono font-black text-xs uppercase tracking-wider bg-[#555555] text-[#AAAAAA] border-3 border-t-[#777777] border-l-[#777777] border-r-[#222222] border-b-[#222222] shadow-[2px_2px_0px_#000] flex items-center justify-center gap-2 cursor-not-allowed">
+                  <Lock className="w-4 h-4 stroke-[3px]" />
+                  <span>SPEC SHEET SEALED IN CHEST</span>
+                </div>
+              ) : (
+                <a
+                  href={problem.driveUrl || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto px-4 sm:px-6 py-3 sm:py-3.5 font-mono font-black text-xs uppercase tracking-wider bg-[#5B8731] hover:bg-[#70B237] text-white border-3 border-t-[#85B745] border-l-[#85B745] border-r-[#38591E] border-b-[#38591E] shadow-[2px_2px_0px_#000] flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <Download className="w-4 h-4 stroke-[3px]" />
+                  <span>DOWNLOAD SPEC DOCUMENT</span>
+                </a>
+              )}
 
               <Link
                 href="/register"
