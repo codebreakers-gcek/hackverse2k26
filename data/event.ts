@@ -20,7 +20,7 @@ export const EVENT_DATA: EventInfo = {
     googleMapsUrl:
       "https://maps.google.com/?q=Government+College+of+Engineering+Kalahandi",
   },
-  registrationDeadline: "SEPTEMBER 25, 2026 // 23:59 IST",
+  registrationDeadline: "SEPTEMBER 26, 2026 // 23:59 IST",
   totalPrizePool: "₹35K",
   organizer: {
     name: "CodeBreakers GCEK",
@@ -134,4 +134,12 @@ export const EVENT_DATA: EventInfo = {
       color: "muted",
     },
   ],
+  registrationExtended: {
+    enabled: true,
+    previousDeadline: "15th Sept, 2026",
+    newDeadline: "26th Sept, 2026",
+    deadlineISO: "2026-09-26T23:59:59+05:30",
+    heading: "Did you miss the hackathon registration?",
+    subheading: "Don't worry, we've got you! Registration has officially been extended until 26th September.",
+  },
 };

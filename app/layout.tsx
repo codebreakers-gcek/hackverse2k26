@@ -7,8 +7,8 @@ import { ScrollProgressCircle } from "@/components/layout/ScrollProgressCircle";
 import { AmbientCodeShapes } from "@/components/layout/AmbientCodeShapes";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { GsapLoader } from "@/components/ui/GsapLoader";
-import { MinecraftAudioPlayer } from "@/components/ui/MinecraftAudioPlayer";
 import { MinecraftSoundEffects } from "@/components/ui/MinecraftSoundEffects";
+import { RegistrationExtendedModal } from "@/components/ui/RegistrationExtendedModal";
 import { Analytics } from "@vercel/analytics/next"
 
 const thuast = localFont({
@@ -435,7 +435,7 @@ export default function RootLayout({
           <main className="flex-1 relative">{children}</main>
           <Footer />
           <ScrollProgressCircle />
-          <MinecraftAudioPlayer />
+          <RegistrationExtendedModal />
         </SmoothScrollProvider>
       </body>
     </html>

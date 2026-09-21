@@ -58,4 +58,12 @@ export interface EventInfo {
   stats: EventStat[];
   tracks: EventTrack[];
   prizes: PrizeItem[];
+  registrationExtended?: {
+    enabled: boolean;
+    previousDeadline: string;
+    newDeadline: string;
+    deadlineISO: string;
+    heading?: string;
+    subheading?: string;
+  };
 }
