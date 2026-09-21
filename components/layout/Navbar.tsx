@@ -21,6 +21,7 @@ import clsx from "clsx";
 import { motion, AnimatePresence } from "framer-motion";
 import { HEADER_UPDATES } from "@/data/updates";
 import { useSession, signOut } from "@/lib/auth-client";
+import { MinecraftNavbarMusicPlayer } from "@/components/ui/MinecraftNavbarMusicPlayer";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -298,6 +299,9 @@ export function Navbar() {
 
           {/* Right side CTA & User Dropdown */}
           <div className="hidden lg:flex items-center gap-3 shrink-0">
+            {/* Minecraft Navbar Music Player */}
+            <MinecraftNavbarMusicPlayer />
+
             {user ? (
               <div className="relative" ref={dropdownRef}>
                 {/* User Dropdown Trigger Button */}
@@ -469,8 +473,10 @@ export function Navbar() {
             )}
           </div>
 
-          {/* Mobile Hamburger Button */}
-          <div className="flex lg:hidden items-center">
+          {/* Mobile Right Controls: Music Player + Hamburger Button */}
+          <div className="flex lg:hidden items-center gap-2">
+            <MinecraftNavbarMusicPlayer />
+
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
