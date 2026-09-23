@@ -391,6 +391,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     title: "AI-DRIVEN CAREER INTELLIGENCE & EMPLOYMENT MANAGEMENT PLATFORM",
     domain: "AI, Data & Emerging Tech (EdTech / HR-Tech)",
     category: "Software",
+    organization: "Venus Global Technology Pvt. Ltd.",
     difficulty: "Advanced",
     shortDescription:
       "Students, fresh graduates, and job seekers struggle to discover relevant opportunities, understand companies, prepare for interviews, and identify the skills needed for their target roles — while existing job portals only list vacancies and leave everything else to the candidate. This calls for a centralized, AI-driven Career Intelligence Platform that unifies job discovery, company research, interview preparation, skill-gap analysis, and application tracking into one intelligent ecosystem, while giving institutions a real-time view of student employability.",
@@ -438,6 +439,7 @@ export const PROBLEM_STATEMENTS_DATA: ProblemStatement[] = [
     domain: "AI, Data & Emerging Tech (Smart Manufacturing / Industry 4.0)",
     category: "Software",
     difficulty: "Advanced",
+    organization:"Venus Global Technology Pvt. Ltd.",
     shortDescription:
       "Manufacturing businesses typically run production, inventory, procurement, workforce, quality control, and finance through disconnected systems and manual processes, leaving management with no real-time, unified view of operations. This problem calls for a centralized, AI-driven Smart Manufacturing ERP that connects every core business function on one platform while using AI to predict failures, optimize production, and automate routine decisions.",
     fullDescription:
