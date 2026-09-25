@@ -17,6 +17,7 @@
     "@prisma/adapter-pg": "^7.10.0",
     "@prisma/client": "^7.10.0",
     "@resvg/resvg-js": "^2.6.2",
+    "@supabase/supabase-js": "^2.117.2",
     "@tanstack/react-table": "^9.2.4",
     "@types/pdfkit": "^0.17.6",
     "@types/qrcode": "^1.5.6",

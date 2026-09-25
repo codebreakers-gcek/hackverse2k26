@@ -1,13 +1,20 @@
 import React from "react";
-import { Eye, ArrowRight, Compass, Terminal, Building2, Lock, Sparkles, Clock } from "lucide-react";
+import { Eye, ArrowRight, Compass, Terminal, Lock, Sparkles, Clock, Users } from "lucide-react";
+import clsx from "clsx";
 import { ProblemStatement } from "@/types/problemStatement";
 
 export interface ProblemStatementCardProps {
   problem: ProblemStatement;
   onOpenDetails: (problem: ProblemStatement) => void;
+  stats?: {
+    count: number;
+    primaryCount?: number;
+    secondaryCount?: number;
+  };
 }
 
-export function ProblemStatementCard({ problem, onOpenDetails }: ProblemStatementCardProps) {
+export function ProblemStatementCard({ problem, onOpenDetails, stats }: ProblemStatementCardProps) {
+  const teamCount = stats?.count ?? 0;
   const difficultyBadgeStyle = {
     Beginner: "bg-[#008800] text-white border border-black",
     Intermediate: "bg-[#FFAA00] text-black border border-black",
@@ -147,6 +154,39 @@ export function ProblemStatementCard({ problem, onOpenDetails }: ProblemStatemen
             </div>
           </div>
         )}
+
+        {/* Live Squad Selection Counter Pill */}
+        <div className="pt-0.5">
+          <div
+            className={clsx(
+              "w-full px-2.5 py-1.5 flex items-center justify-between gap-2 font-mono text-[10px] sm:text-[11px] font-black uppercase shadow-[2px_2px_0px_#000] border-2 transition-all",
+              teamCount > 0
+                ? "bg-[#11240D] text-[#55FF55] border-[#55FF55] [text-shadow:_1px_1px_0_#000]"
+                : "bg-[#222222] text-[#D4D4D4] border-[#444444]"
+            )}
+          >
+            <div className="flex items-center gap-1.5 min-w-0">
+              <Users
+                className={clsx(
+                  "w-3.5 h-3.5 shrink-0",
+                  teamCount > 0 ? "text-[#55FF55] " : "text-[#AAAAAA]"
+                )}
+              />
+              <span className="truncate">SQUADS SELECTED:</span>
+            </div>
+            <span
+              className={clsx(
+                "px-2 py-0.5 font-mono font-black border shadow-[1px_1px_0px_#000] shrink-0",
+                teamCount > 0
+                  ? "bg-black text-[#55FF55] border-[#55FF55] flex items-center gap-1"
+                  : "bg-black text-[#AAAAAA] border-[#444444]"
+              )}
+            >
+              {teamCount > 0 && <span className="w-1.5 h-1.5 rounded-full bg-[#55FF55] inline-block" />}
+              {teamCount === 1 ? "01 SQUAD" : teamCount < 10 ? `0${teamCount} SQUADS` : `${teamCount} SQUADS`}
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Card Body */}
