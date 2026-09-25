@@ -18,11 +18,9 @@ import {
   Mail,
   Phone,
   MapPin,
-  ExternalLink,
   Copy,
   Check,
   Users,
-  Search,
   Sparkles,
   Train,
   Plane,
@@ -283,29 +281,6 @@ export function ContactContent() {
                 );
               })}
             </div>
-          </div>
-
-          {/* Search Bar for Directory (Minecraft Inset Slot) */}
-          <div className="relative">
-            <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-[#55FFFF]">
-              <Search className="w-4 h-4 stroke-[2.5px]" />
-            </div>
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search team by name, role, phone, or email (e.g. Subham, Ayushman, Rohan, Full-Stack, Logistics)..."
-              className="w-full pl-10 pr-10 py-3 bg-[#8B8B8B] border-4 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] font-mono font-bold text-xs sm:text-sm text-white placeholder:text-white/70 shadow-[inset_3px_3px_6px_rgba(0,0,0,0.6)] [text-shadow:_1px_1px_0_#000] focus:outline-none focus:bg-[#7D7D7D] transition-all"
-            />
-            {searchQuery && (
-              <button
-                type="button"
-                onClick={() => setSearchQuery("")}
-                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-white/80 hover:text-white font-black cursor-pointer"
-              >
-                <X className="w-4 h-4 stroke-[3px]" />
-              </button>
-            )}
           </div>
 
           {/* Contact Cards Grid */}

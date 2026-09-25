@@ -31,10 +31,10 @@ export const OFFICIAL_SPONSORS: OfficialSponsor[] = [
   {
     id: "venus-global",
     name: "Venus Global Technology",
-    category: "OFFICIAL SPONSOR",
+    category: "TITLE SPONSOR",
     tier: "title",
     logoUrl: "/sponsors/venus.png",
-    websiteUrl: "https://venusglobaltechnology.com",
+    websiteUrl: "https://venusglobaltech.com/",
     tagline: "Empowering Next-Gen Technology & Solutions",
     accentColor: "#3770FF",
   },

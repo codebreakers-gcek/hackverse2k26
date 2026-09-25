@@ -30,6 +30,42 @@ export const OFFICIAL_EMAILS: OfficialEmail[] = [
   },
 ];
 
+export const MANAGEMENT_TEAM: ContactPerson[] = [
+  {
+    id: "mgmt-lead-1",
+    name: "Gyanranjan Priyam",
+    role: "Convenor & Treasurer",
+    category: "management",
+    categoryLabel: "Organising Head",
+    department: "CodeBreakers Club, GCEK",
+    phone: "+918895220675",
+    displayPhone: "+918895220675",
+    email: "priyam@cbgcek.dev",
+    whatsapp: "+918895220675",
+    github: "https://github.com/gyanranjan-priyam",
+    linkedin: "https://www.linkedin.com/in/gyanranjan-priyam",
+    bio: "Head coordinator for inter-college delegations, institutional liaisons, and event master schedule.",
+    avatarColor: "bg-neo-secondary",
+    featured: true,
+  },
+  {
+    id: "mgmt-lead-2",
+    name: "Smruti Ranjan Adhikari",
+    role: "Assistant Secretary & Participant Support Lead",
+    category: "management",
+    categoryLabel: "Management Head",
+    department: "CodeBreakers Student Council, GCEK",
+    phone: "+91 88957 96609",
+    displayPhone: "+91 88957 96609",
+    email: "smruti@cbgcek.dev",
+    whatsapp: "918895796609",
+    github: "https://github.com/Smrutiranjan8895",
+    linkedin: "https://www.linkedin.com/in/smruti-ranjan-adhikari-b83751370",
+    bio: "Direct helpline for squad registrations, teammate changes, certificate queries, and team passes.",
+    avatarColor: "bg-neo-accent",
+  },
+];
+
 export const TECHNICAL_TEAM: ContactPerson[] = [
   {
     id: "tech-lead-2",
@@ -49,45 +85,11 @@ export const TECHNICAL_TEAM: ContactPerson[] = [
   },
 ];
 
-export const MANAGEMENT_TEAM: ContactPerson[] = [
-  {
-    id: "mgmt-lead-1",
-    name: "Gyanranjan Priyam",
-    role: "Convenor & Treasurer",
-    category: "management",
-    categoryLabel: "Management Lead",
-    department: "CodeBreakers Club, GCEK",
-    phone: "+918895220675",
-    displayPhone: "+918895220675",
-    email: "priyam@cbgcek.dev",
-    whatsapp: "+918895220675",
-    github: "https://github.com/gyanranjan-priyam",
-    linkedin: "https://www.linkedin.com/in/gyanranjan-priyam",
-    bio: "Head coordinator for inter-college delegations, institutional liaisons, and event master schedule.",
-    avatarColor: "bg-neo-secondary",
-    featured: true,
-  },
-  {
-    id: "mgmt-lead-2",
-    name: "Smruti Ranjan Adhikari",
-    role: "Assistant Secretary & Participant Support Lead",
-    category: "management",
-    categoryLabel: "Management Co-Lead",
-    department: "CodeBreakers Student Council, GCEK",
-    phone: "+91 88957 96609",
-    displayPhone: "+91 88957 96609",
-    email: "smruti@cbgcek.dev",
-    whatsapp: "918895796609",
-    github: "https://github.com/Smrutiranjan8895",
-    linkedin: "https://www.linkedin.com/in/smruti-ranjan-adhikari-b83751370",
-    bio: "Direct helpline for squad registrations, teammate changes, certificate queries, and team passes.",
-    avatarColor: "bg-neo-accent",
-  },
-];
+
 
 export const ALL_CONTACTS: ContactPerson[] = [
-  ...TECHNICAL_TEAM,
   ...MANAGEMENT_TEAM,
+  ...TECHNICAL_TEAM,
 ];
 
 export const VENUE_DETAILS: VenueInfo = {

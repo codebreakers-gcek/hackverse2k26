@@ -75,14 +75,6 @@ export function SponsorsTeaser() {
                 OFFICIAL SPONSORS &amp; PARTNERS // 2026 LINEUP
               </span>
             </div>
-
-            <Link
-              href="/sponsors"
-              className="font-mono text-xs font-black uppercase text-[#FFE655] hover:text-white [text-shadow:_1px_1px_0_#000] flex items-center gap-1.5 transition-colors"
-            >
-              <span>VIEW SPONSORSHIP PACKET</span>
-              <ArrowRight className="w-3.5 h-3.5 stroke-[3px]" />
-            </Link>
           </div>
 
           {/* Minecraft Inset Inner Grey Slot Container */}

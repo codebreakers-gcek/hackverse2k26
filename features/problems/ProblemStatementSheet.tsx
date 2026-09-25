@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import React, { useEffect, useState } from "react";
@@ -15,21 +16,28 @@ import {
   Compass,
   Download,
   Database,
-  Building2,
   Lock,
   Clock,
+  Users,
 } from "lucide-react";
+import clsx from "clsx";
 
 export interface ProblemStatementSheetProps {
   problem: ProblemStatement | null;
   isOpen: boolean;
   onClose: () => void;
+  stats?: {
+    count: number;
+    primaryCount?: number;
+    secondaryCount?: number;
+  };
 }
 
 export function ProblemStatementSheet({
   problem,
   isOpen,
   onClose,
+  stats,
 }: ProblemStatementSheetProps) {
   const [mounted, setMounted] = useState(false);
 
@@ -157,6 +165,45 @@ export function ProblemStatementSheet({
                 >
                   {problem.title}
                 </h2>
+
+                {/* Live Squad Selection Counter Badge */}
+                {!problem.isLocked && (
+                  <div
+                    className={clsx(
+                      "px-3 py-1.5 flex items-center justify-between gap-3 font-mono text-xs font-black uppercase shadow-[2px_2px_0px_#000] border-2 w-fit mt-3",
+                      (stats?.count ?? 0) > 0
+                        ? "bg-[#11240D] text-[#55FF55] border-[#55FF55] [text-shadow:_1px_1px_0_#000]"
+                        : "bg-[#222222] text-[#D4D4D4] border-[#444444]"
+                    )}
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <Users
+                        className={clsx(
+                          "w-4 h-4 shrink-0",
+                          (stats?.count ?? 0) > 0 ? "text-[#55FF55] " : "text-[#AAAAAA]"
+                        )}
+                      />
+                      <span>SQUADS SELECTED:</span>
+                    </div>
+                    <span
+                      className={clsx(
+                        "px-2 py-0.5 font-mono font-black border shadow-[1px_1px_0px_#000]",
+                        (stats?.count ?? 0) > 0
+                          ? "bg-black text-[#55FF55] border-[#55FF55] flex items-center gap-1.5"
+                          : "bg-black text-[#AAAAAA] border-[#444444]"
+                      )}
+                    >
+                      {(stats?.count ?? 0) > 0 && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#55FF55] inline-block" />
+                      )}
+                      {(stats?.count ?? 0) === 1
+                        ? "01 SQUAD"
+                        : (stats?.count ?? 0) < 10
+                        ? `0${stats?.count ?? 0} SQUADS`
+                        : `${stats?.count ?? 0} SQUADS`}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 

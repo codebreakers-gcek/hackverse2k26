@@ -6,6 +6,7 @@ import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
 import { ProblemStatement } from "@/types/problemStatement";
 import { ProblemStatementCard } from "./ProblemStatementCard";
 import { ProblemStatementSheet } from "./ProblemStatementSheet";
+import { useProblemStatementStats } from "@/hooks/useProblemStatementStats";
 import { AlertCircle, Cpu, Code2, Layers, Filter, RefreshCw } from "lucide-react";
 import clsx from "clsx";
 
@@ -16,6 +17,7 @@ export function ProblemStatementList() {
   const [selectedProblem, setSelectedProblem] = useState<ProblemStatement | null>(null);
   const [sheetOpen, setSheetOpen] = useState(false);
   const [activeFilter, setActiveFilter] = useState<FilterType>("ALL");
+  const { stats: psStats, isRealtimeConnected } = useProblemStatementStats();
 
   useEffect(() => {
     async function loadData() {
@@ -160,12 +162,14 @@ export function ProblemStatementList() {
             </div>
           </div>
 
-          {/* Status Indicator Badge */}
-          <div className="bg-[#8B8B8B] border-3 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] px-3.5 py-2 sm:py-1.5 flex items-center justify-between sm:justify-start gap-2 font-mono text-xs font-black text-black shrink-0 w-full lg:w-auto">
-            <span className="text-[10px] uppercase text-black/70">STATUS:</span>
-            <span className="text-[#005500] font-black uppercase">
-              SHOWING {filteredProblems.length} OF {totalCount} TRACKS
-            </span>
+          {/* Status Indicator Badge with Supabase Realtime Pulse */}
+          <div className="flex flex-wrap items-center gap-2 shrink-0 w-full lg:w-auto">
+            <div className="bg-[#8B8B8B] border-3 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] px-3.5 py-1.5 flex items-center justify-between sm:justify-start gap-2 font-mono text-xs font-black text-black shrink-0">
+              <span className="text-[10px] uppercase text-black/70">STATUS:</span>
+              <span className="text-[#005500] font-black uppercase">
+                SHOWING {filteredProblems.length} OF {totalCount} TRACKS
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -197,6 +201,7 @@ export function ProblemStatementList() {
               key={problem.id}
               problem={problem}
               onOpenDetails={handleOpenDetails}
+              stats={psStats[problem.id] || psStats[problem.code]}
             />
           ))}
         </div>
@@ -207,6 +212,7 @@ export function ProblemStatementList() {
         problem={selectedProblem}
         isOpen={sheetOpen}
         onClose={handleCloseSheet}
+        stats={selectedProblem ? (psStats[selectedProblem.id] || psStats[selectedProblem.code]) : undefined}
       />
     </div>
   );
