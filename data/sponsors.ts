@@ -5,6 +5,41 @@ export interface BenefitRow {
   bronze: boolean;
 }
 
+export interface OfficialSponsor {
+  id: string;
+  name: string;
+  category: string;
+  tier: "organizer" | "title" | "gold" | "silver" | "bronze" | "partner";
+  logoUrl?: string;
+  brandKey?: string;
+  websiteUrl: string;
+  tagline?: string;
+  accentColor?: string;
+}
+
+export const OFFICIAL_SPONSORS: OfficialSponsor[] = [
+  {
+    id: "codebreakers",
+    name: "CodeBreakers GCEK",
+    category: "ORGANIZING BODY",
+    tier: "organizer",
+    logoUrl: "/cblogo.png",
+    websiteUrl: "https://www.codebreakersgcek.tech",
+    tagline: "The Premier Coding & Tech Club of GCEK",
+    accentColor: "#55FF55",
+  },
+  {
+    id: "venus-global",
+    name: "Venus Global Technology",
+    category: "OFFICIAL SPONSOR",
+    tier: "title",
+    logoUrl: "/sponsors/venus.png",
+    websiteUrl: "https://venusglobaltechnology.com",
+    tagline: "Empowering Next-Gen Technology & Solutions",
+    accentColor: "#3770FF",
+  },
+];
+
 export const SPONSORS_DATA = {
   header: {
     tag: "SPONSORSHIP PACKET // HACKVERSE '26",
