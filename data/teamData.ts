@@ -37,7 +37,7 @@ export const clubLeads: TeamMember[] = [
     image:
       "https://res.cloudinary.com/dhyxx8qjf/image/upload/v1786779293/IMG_0230_2_vmnw90.jpg",
     title: "Gyanranjan Priyam",
-    subtitle: "Chief Co-ordinator",
+    subtitle: "Organising Head",
     handle: "@gyanranjanpriyam",
     borderColor: "#8B5CF6",
     gradient: "linear-gradient(225deg,#8B5CF6,#000)",
