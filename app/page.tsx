@@ -38,7 +38,7 @@ export default function HomePage() {
         items={[
           "PATRON GUILD",
           "OFFICIAL SPONSORS",
-          "ROSTER REVEALING SOON",
+          "POWERED BY INDUSTRY LEADERS",
           "CLOUD COMPUTE PARTNERS",
           "HACKVERSE '26",
           "TOOLING GRANTS",

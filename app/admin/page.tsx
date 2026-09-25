@@ -67,6 +67,10 @@ import {
 } from "@/components/ui/sheet";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
 import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
+import {
+  exportSquadsAndRostersExcel,
+  exportPaymentDetailsExcel,
+} from "@/lib/adminExcelExport";
 
 type AdminTab =
   | "dashboard"
@@ -932,7 +936,35 @@ export default function AdminDashboardPage() {
     }
   };
 
-  // CSV Export
+  // Export Squads & Rosters to Excel (.xlsx)
+  const handleExportSquadsExcel = () => {
+    if (registrations.length === 0) {
+      toast.error("No squad registrations available to export.");
+      return;
+    }
+    try {
+      const fileName = exportSquadsAndRostersExcel(registrations as any);
+      toast.success(`Squads & Rosters exported successfully as "${fileName}"`);
+    } catch (err: any) {
+      toast.error(err.message || "Failed to export Squads to Excel.");
+    }
+  };
+
+  // Export Payment Audit Ledger to Excel (.xlsx)
+  const handleExportPaymentsExcel = () => {
+    if (registrations.length === 0) {
+      toast.error("No registration records available for payment export.");
+      return;
+    }
+    try {
+      const fileName = exportPaymentDetailsExcel(registrations as any);
+      toast.success(`Payment Details Ledger exported successfully as "${fileName}"`);
+    } catch (err: any) {
+      toast.error(err.message || "Failed to export Payment Details to Excel.");
+    }
+  };
+
+  // Legacy CSV Export
   const handleExportCSV = () => {
     if (registrations.length === 0) {
       toast.error("No registrations available to export.");
@@ -1366,7 +1398,7 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5 flex-wrap">
             <button
               onClick={fetchData}
               disabled={isLoading}
@@ -1379,13 +1411,25 @@ export default function AdminDashboardPage() {
               <span className="hidden sm:inline">SYNC</span>
             </button>
 
-            <button
-              onClick={handleExportCSV}
-              className="px-4 py-2 bg-amber-300 hover:bg-amber-400 text-black border-2 border-black font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-neo-sm active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
-            >
-              <Download className="w-3.5 h-3.5 stroke-[2.5px]" />
-              <span className="hidden sm:inline">EXPORT CSV</span>
-            </button>
+            {activeTab === "payments" ? (
+              <button
+                onClick={handleExportPaymentsExcel}
+                className="px-4 py-2 bg-emerald-300 hover:bg-emerald-400 text-emerald-950 border-2 border-black font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-neo-sm active:translate-x-0.5 active:translate-y-0.5 cursor-pointer transition-all"
+                title="Export verified payment details and financial summary to Excel (.xlsx)"
+              >
+                <Download className="w-3.5 h-3.5 stroke-[2.5px]" />
+                <span>EXPORT PAYMENTS (.XLSX)</span>
+              </button>
+            ) : (
+              <button
+                onClick={handleExportSquadsExcel}
+                className="px-4 py-2 bg-amber-300 hover:bg-amber-400 text-black border-2 border-black font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-neo-sm active:translate-x-0.5 active:translate-y-0.5 cursor-pointer transition-all"
+                title="Export complete squad overview and participant roster to Excel (.xlsx)"
+              >
+                <Download className="w-3.5 h-3.5 stroke-[2.5px]" />
+                <span>EXPORT SQUADS &amp; ROSTERS (.XLSX)</span>
+              </button>
+            )}
           </div>
         </header>
 
@@ -1684,19 +1728,30 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
 
-                <div className="flex items-center justify-between text-xs font-mono font-bold text-neutral-600 pt-1 border-t-2 border-neutral-200">
-                  <span>
-                    SHOWING {filteredSquads.length} OF {registrations.length}{" "}
-                    REGISTERED SQUADS
-                  </span>
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery("")}
-                      className="text-rose-700 underline cursor-pointer"
-                    >
-                      Clear Search
-                    </button>
-                  )}
+                <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-mono font-bold text-neutral-600 pt-2 border-t-2 border-neutral-200">
+                  <div className="flex items-center gap-3">
+                    <span>
+                      SHOWING {filteredSquads.length} OF {registrations.length}{" "}
+                      REGISTERED SQUADS
+                    </span>
+                    {searchQuery && (
+                      <button
+                        onClick={() => setSearchQuery("")}
+                        className="text-rose-700 underline cursor-pointer"
+                      >
+                        Clear Search
+                      </button>
+                    )}
+                  </div>
+
+                  <button
+                    onClick={handleExportSquadsExcel}
+                    className="px-3.5 py-1.5 bg-amber-300 hover:bg-amber-400 text-black border-2 border-black font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 cursor-pointer"
+                    title="Export complete squad overview and participant roster to Excel (.xlsx)"
+                  >
+                    <Download className="w-3.5 h-3.5 stroke-[2.5px]" />
+                    <span>EXPORT SQUADS &amp; ROSTERS (.XLSX)</span>
+                  </button>
                 </div>
               </div>
 
@@ -2629,6 +2684,24 @@ export default function AdminDashboardPage() {
                     }
                   </div>
                 </div>
+              </div>
+
+              {/* Payments Controls & Export Bar */}
+              <div className="border-4 border-black bg-white p-4 shadow-neo flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-mono text-xs font-black uppercase text-neutral-600">
+                    TRANSACTION LEDGER ({registrations.length} TOTAL SQUADS)
+                  </span>
+                </div>
+
+                <button
+                  onClick={handleExportPaymentsExcel}
+                  className="px-4 py-2 bg-emerald-300 hover:bg-emerald-400 text-emerald-950 border-2 border-black font-black text-xs uppercase tracking-wider flex items-center gap-2 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:translate-x-0.5 active:translate-y-0.5 cursor-pointer transition-all"
+                  title="Export verified payment details, UTR numbers, and financial summary to Excel (.xlsx)"
+                >
+                  <Download className="w-3.5 h-3.5 stroke-[2.5px]" />
+                  <span>EXPORT PAYMENT DETAILS (.XLSX)</span>
+                </button>
               </div>
 
               <div className="border-4 border-black bg-white shadow-neo overflow-x-auto min-h-[380px] pb-24">
