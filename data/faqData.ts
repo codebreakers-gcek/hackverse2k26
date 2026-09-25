@@ -142,7 +142,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "team-1",
     question: "WHAT IS THE TEAM SIZE REQUIREMENT?",
     answer:
-      "Teams must consist of 2 to 4 members. Inter-disciplinary squads (combining software engineers, UI/UX designers, hardware enthusiasts, and domain thinkers) are highly encouraged.",
+      "Teams must consist of 3 to 4 members (1 Team Leader + 2 to 3 Co-hackers). Inter-disciplinary squads (combining software engineers, UI/UX designers, hardware enthusiasts, and domain thinkers) are highly encouraged.",
     category: "teams",
     categoryLabel: "Teams & Eligibility",
     tags: ["team size", "members", "min max"],

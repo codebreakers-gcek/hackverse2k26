@@ -79,9 +79,9 @@ export function validateStep2(data: RegistrationFormData): Record<string, string
     errors["teamLeader.yearOfStudy"] = "Select current year of study.";
   }
 
-  // Squad Size Validation: Min 2 members (1 Leader + 1 Member), Max 4 members (1 Leader + 3 Members)
-  if (!data.members || data.members.length < 1) {
-    errors["members"] = "A squad must have a minimum of 2 members (1 Leader + at least 1 Co-hacker).";
+  // Squad Size Validation: Min 3 members (1 Leader + 2 Members), Max 4 members (1 Leader + 3 Members)
+  if (!data.members || data.members.length < 2) {
+    errors["members"] = "A squad must have a minimum of 3 members (1 Leader + at least 2 Co-hackers).";
   } else if (data.members.length > 3) {
     errors["members"] = "A squad can have a maximum of 4 members (1 Leader + up to 3 Co-hackers).";
   }

@@ -198,7 +198,7 @@ export function RegistrationForm() {
       role: "Leader",
       githubUsername: "",
     },
-    // Initialize with 1 Co-Hacker to enforce minimum 2 squad members (1 Leader + 1 Member)
+    // Initialize with 2 Co-Hackers to enforce minimum 3 squad members (1 Leader + 2 Members)
     members: [
       {
         fullName: "",
@@ -208,6 +208,19 @@ export function RegistrationForm() {
         sameAsPhone: true,
         dateOfBirth: "",
         role: "Frontend",
+        branch: "Computer Science & Engineering",
+        customBranch: "",
+        yearOfStudy: "3rd Year",
+        githubUsername: "",
+      },
+      {
+        fullName: "",
+        email: "",
+        phone: "",
+        whatsappNumber: "",
+        sameAsPhone: true,
+        dateOfBirth: "",
+        role: "Backend",
         branch: "Computer Science & Engineering",
         customBranch: "",
         yearOfStudy: "3rd Year",
@@ -367,10 +380,25 @@ export function RegistrationForm() {
                 ...prev.documentUploads,
                 ...(parsed.documentUploads || {}),
               },
-              members:
-                Array.isArray(parsed.members) && parsed.members.length > 0
-                  ? parsed.members
-                  : prev.members,
+              members: (() => {
+                const restored = Array.isArray(parsed.members) ? [...parsed.members] : [];
+                while (restored.length < 2) {
+                  restored.push({
+                    fullName: "",
+                    email: "",
+                    phone: "",
+                    whatsappNumber: "",
+                    sameAsPhone: true,
+                    dateOfBirth: "",
+                    role: restored.length === 1 ? "Backend" : "Frontend",
+                    branch: "Computer Science & Engineering",
+                    customBranch: "",
+                    yearOfStudy: "3rd Year",
+                    githubUsername: "",
+                  });
+                }
+                return restored;
+              })(),
               selectedProblemStatementId:
                 preselectedPsId ||
                 parsed.selectedProblemStatementId ||
@@ -538,7 +566,7 @@ export function RegistrationForm() {
     }
   };
 
-  // Step 2: Member Handlers (Min 1 Co-Hacker, Max 3 Co-Hackers -> Total 2 to 4 Squad Members)
+  // Step 2: Member Handlers (Min 2 Co-Hackers, Max 3 Co-Hackers -> Total 3 to 4 Squad Members)
   const handleAddMember = () => {
     if (formData.members.length >= 3) return; // Up to 3 co-hackers (max 4 members total)
     const newMember: TeamMember = {
@@ -548,7 +576,7 @@ export function RegistrationForm() {
       whatsappNumber: "",
       sameAsPhone: true,
       dateOfBirth: "",
-      role: "Frontend",
+      role: formData.members.length === 2 ? "AI/ML" : "Backend",
       branch: "Computer Science & Engineering",
       customBranch: "",
       yearOfStudy: "3rd Year",
@@ -568,7 +596,7 @@ export function RegistrationForm() {
   };
 
   const handleRemoveMember = (index: number) => {
-    if (formData.members.length <= 1) return; // Minimum 1 co-hacker required (min 2 members total)
+    if (formData.members.length <= 2) return; // Minimum 2 co-hackers required (min 3 members total)
     setFormData((prev) => ({
       ...prev,
       members: prev.members.filter((_, i) => i !== index),
@@ -1428,8 +1456,8 @@ export function RegistrationForm() {
                             OF MAX 3 CO-HACKERS)
                           </h3>
                           <p className="font-mono text-[11px] text-black/70">
-                            Squad Capacity: <strong>Minimum 2 members</strong>{" "}
-                            (1 Leader + 1 Co-hacker),{" "}
+                            Squad Capacity: <strong>Minimum 3 members</strong>{" "}
+                            (1 Leader + 2 Co-hackers),{" "}
                             <strong>Maximum 4 members</strong> (1 Leader + up to
                             3 Co-hackers)
                           </p>
@@ -1463,11 +1491,20 @@ export function RegistrationForm() {
                       </div>
                     )}
 
+                    {formData.members.length < 2 && (
+                      <div className="p-4 bg-amber-100 border-2 border-amber-600 text-amber-900 font-mono text-xs font-bold flex items-center gap-2">
+                        <AlertTriangle className="w-4 h-4 text-amber-700 shrink-0" />
+                        <span>
+                          A minimum of 2 co-hackers are required (total squad size of 3 members minimum including Team Leader). Please add required co-hackers.
+                        </span>
+                      </div>
+                    )}
+
                     {formData.members.length === 0 ? (
                       <div className="p-6 bg-[#DBDBDB] border-3 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] text-center space-y-2">
                         <p className="font-bold text-sm text-black/90">
-                          A minimum of 1 co-hacker is required (total 2 members
-                          minimum). Please click &quot;ADD CO-HACKER&quot;
+                          A minimum of 2 co-hackers are required (total 3 members
+                          minimum including Leader). Please click &quot;ADD CO-HACKER&quot;
                           above.
                         </p>
                       </div>
@@ -1482,27 +1519,29 @@ export function RegistrationForm() {
                               <span className="font-mono text-xs font-black uppercase bg-[#555555] text-white px-2 py-0.5 border border-t-[#707070] border-l-[#707070] border-r-[#333333] border-b-[#333333]">
                                 CO-HACKER #{idx + 2}{" "}
                                 {idx === 0 && "(MANDATORY 2ND MEMBER)"}
+                                {idx === 1 && "(MANDATORY 3RD MEMBER)"}
+                                {idx === 2 && "(OPTIONAL 4TH MEMBER)"}
                               </span>
                               <button
                                 type="button"
                                 onClick={() => handleRemoveMember(idx)}
-                                disabled={formData.members.length <= 1}
+                                disabled={formData.members.length <= 2}
                                 title={
-                                  formData.members.length <= 1
-                                    ? "Minimum 2 squad members required (1 Leader + 1 Co-hacker)"
+                                  formData.members.length <= 2
+                                    ? "Minimum 3 squad members required (1 Leader + 2 Co-hackers)"
                                     : "Remove this co-hacker"
                                 }
                                 className={clsx(
                                   "px-2.5 py-1 text-white font-black text-xs uppercase border-2 flex items-center gap-1 transition-all shadow-[2px_2px_0px_#000] active:translate-y-0.5",
-                                  formData.members.length <= 1
+                                  formData.members.length <= 2
                                     ? "bg-[#707070] opacity-60 cursor-not-allowed border-t-[#8A8A8A] border-l-[#8A8A8A] border-r-[#4A4A4A] border-b-[#4A4A4A] text-neutral-300"
                                     : "bg-[#B83131] hover:bg-[#C93B3B] border-t-[#E05353] border-l-[#E05353] border-r-[#731818] border-b-[#731818] cursor-pointer",
                                 )}
                               >
                                 <Trash2 className="w-3.5 h-3.5 stroke-[2.5px]" />
                                 <span>
-                                  {formData.members.length <= 1
-                                    ? "MIN 2 REQUIRED"
+                                  {formData.members.length <= 2
+                                    ? "MIN 3 REQUIRED"
                                     : "REMOVE"}
                                 </span>
                               </button>
@@ -1687,7 +1726,6 @@ export function RegistrationForm() {
                               <div className="sm:col-span-2">
                                 <Input
                                   label={`MEMBER ${idx + 2} GITHUB / PORTFOLIO (OPTIONAL)`}
-                                  placeholder="e.g. github.com/member or handle"
                                   value={member.githubUsername || ""}
                                   onChange={(e) =>
                                     handleMemberChange(

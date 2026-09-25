@@ -205,8 +205,21 @@ export function RegisteredSquadDashboard({
         github: teamData.leader?.github || teamData.leaderGithub || "",
         dateOfBirth: teamData.leader?.dateOfBirth || teamData.leaderDob || "",
       },
-      members: currentMembers.length > 0 ? currentMembers : [
-        {
+      members: currentMembers.length >= 2 ? currentMembers : [
+        ...(currentMembers.length > 0 ? currentMembers : [
+          {
+            fullName: "",
+            email: "",
+            phone: "",
+            whatsappNumber: "",
+            branch: "Computer Science & Engineering",
+            customBranch: "",
+            yearOfStudy: "3rd Year",
+            role: "Frontend",
+            githubUsername: "",
+          }
+        ]),
+        ...(currentMembers.length < 2 ? Array(2 - Math.max(0, currentMembers.length)).fill(null).map((_, i) => ({
           fullName: "",
           email: "",
           phone: "",
@@ -214,9 +227,9 @@ export function RegisteredSquadDashboard({
           branch: "Computer Science & Engineering",
           customBranch: "",
           yearOfStudy: "3rd Year",
-          role: "Frontend",
+          role: "Backend",
           githubUsername: "",
-        }
+        })) : [])
       ],
       accommodationRequired: Boolean(teamData.accommodationRequired),
     });
@@ -225,7 +238,7 @@ export function RegisteredSquadDashboard({
     setShowEditModal(true);
   };
 
-  // Add a new member in Edit Modal (Total members 1 to 3 co-hackers)
+  // Add a new member in Edit Modal (Total members 2 to 3 co-hackers)
   const handleAddMember = () => {
     if (editForm.members.length >= 3) {
       toast.error("Maximum 4 total squad members allowed (1 Leader + 3 Co-Hackers).");
@@ -243,17 +256,17 @@ export function RegisteredSquadDashboard({
           branch: "Computer Science & Engineering",
           customBranch: "",
           yearOfStudy: "3rd Year",
-          role: "Frontend",
+          role: prev.members.length === 2 ? "AI/ML" : "Backend",
           githubUsername: "",
         },
       ],
     }));
   };
 
-  // Remove a member in Edit Modal (Minimum 1 co-hacker required for min squad size 2)
+  // Remove a member in Edit Modal (Minimum 2 co-hackers required for min squad size 3)
   const handleRemoveMember = (indexToRemove: number) => {
-    if (editForm.members.length <= 1) {
-      toast.error("Squad must have at least 1 Co-Hacker (minimum 2 total members).");
+    if (editForm.members.length <= 2) {
+      toast.error("Squad must have at least 2 Co-Hackers (minimum 3 total members including Leader).");
       return;
     }
     setEditForm((prev) => ({
@@ -288,8 +301,8 @@ export function RegisteredSquadDashboard({
       return;
     }
 
-    if (editForm.members.length < 1 || editForm.members.length > 3) {
-      setEditError("Squad must have between 1 and 3 co-hackers (total 2 to 4 members).");
+    if (editForm.members.length < 2 || editForm.members.length > 3) {
+      setEditError("Squad must have between 2 and 3 co-hackers (total 3 to 4 members including Leader).");
       return;
     }
 
@@ -1230,7 +1243,7 @@ export function RegisteredSquadDashboard({
                           CO-HACKER #{idx + 2}
                         </span>
 
-                        {editForm.members.length > 1 && (
+                        {editForm.members.length > 2 && (
                           <button
                             type="button"
                             onClick={() => handleRemoveMember(idx)}

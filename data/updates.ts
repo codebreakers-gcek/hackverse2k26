@@ -13,5 +13,5 @@ export const HEADER_UPDATES: string[] = [
   "[VENUE] HACKATHON MODE: OFFSITE // Government College of Engineering Kalahandi",
   "[TIMELINE] REGISTRATION STARTS FROM 12 SEPTEMBER 2026",
   "[FINALE] GRAND FINALE DATES: OCTOBER 08 – 10, 2026 // Government College of Engineering Kalahandi",
-  "[SQUADS] SQUAD SIZE: 2 TO 4 MEMBERS PER TEAM — Secure your squad pass before October 1",
+  "[SQUADS] SQUAD SIZE: 3 TO 4 MEMBERS PER TEAM — Secure your squad pass before October 1",
 ];

@@ -140,12 +140,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Members validation (Total squad size: 1 Leader + 1-3 Members = 2 to 4 members)
-    if (!Array.isArray(members) || members.length < 1 || members.length > 3) {
+    // Members validation (Total squad size: 1 Leader + 2-3 Members = 3 to 4 members)
+    if (!Array.isArray(members) || members.length < 2 || members.length > 3) {
       return NextResponse.json(
         {
           success: false,
-          message: "Squad must have between 1 and 3 co-hackers (total squad size 2 to 4 including leader).",
+          message: "Squad must have between 2 and 3 co-hackers (total squad size 3 to 4 including leader).",
         },
         { status: 400 }
       );
