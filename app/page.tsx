@@ -117,8 +117,10 @@ export default function HomePage() {
               </span>
             </div>
 
-            <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-[#FFAA00] text-black border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[2px_2px_0px_#000] inline-block">
-              REGISTRATION DEADLINE // SEPTEMBER 26, 2026
+            <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-[#FFAA00] text-black border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] shadow-[2px_2px_0px_#000] inline-flex items-center gap-1.5 flex-wrap">
+              <span className="line-through text-black/60 decoration-[#B91C1C] decoration-2">SEPTEMBER 26</span>
+              <span>➔</span>
+              <span>REGISTRATION EXTENDED: SEPTEMBER 28, 2026 (2:00 PM IST)</span>
             </span>
 
             <h2 className="font-black text-4xl sm:text-6xl text-white uppercase tracking-tight leading-tight [text-shadow:_3px_3px_0_#000]">

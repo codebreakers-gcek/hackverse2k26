@@ -120,7 +120,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "reg-3",
     question: "WHAT IS THE DEADLINE TO REGISTER?",
     answer:
-      "Online squad registrations and Phase 1 abstract submissions close on September 26, 2026 at 23:59 IST. We strongly recommend completing registration early to receive mentorship updates and problem statement document packs.",
+      "Online squad registrations and Phase 1 abstract submissions close on September 28, 2026 at 14:00 (2:00 PM) IST. We strongly recommend completing registration early to receive mentorship updates and problem statement document packs.",
     category: "registration",
     categoryLabel: "Registration & Fees",
     tags: ["deadline", "last date", "closing time"],

@@ -374,8 +374,16 @@ export function RegisteredSquadDashboard({
     ? [teamData.problemStatementId]
     : [];
 
-  const pref1 = PROBLEM_STATEMENTS_DATA.find((p) => p.id === psIds[0]);
-  const pref2 = PROBLEM_STATEMENTS_DATA.find((p) => p.id === psIds[1]);
+  const pref1 = PROBLEM_STATEMENTS_DATA.find(
+    (p) =>
+      p.id.toLowerCase() === psIds[0]?.toLowerCase() ||
+      p.code.toLowerCase() === psIds[0]?.toLowerCase()
+  );
+  const pref2 = PROBLEM_STATEMENTS_DATA.find(
+    (p) =>
+      p.id.toLowerCase() === psIds[1]?.toLowerCase() ||
+      p.code.toLowerCase() === psIds[1]?.toLowerCase()
+  );
 
   const membersList: any[] = Array.isArray(teamData.members) ? teamData.members : [];
 

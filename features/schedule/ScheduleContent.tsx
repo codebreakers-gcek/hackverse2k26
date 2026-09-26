@@ -193,16 +193,22 @@ export function ScheduleContent() {
                 </div>
 
                 {/* Right Content Column */}
-                <div className="flex-1 space-y-4">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b-2 border-[#8B8B8B] pb-3">
+                <div className="flex-1 space-y-4 min-w-0">
+                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3 border-b-2 border-[#8B8B8B] pb-3">
                     <h3 className="font-mono font-black text-xl sm:text-2xl text-black uppercase tracking-tight">
                       {phase.title}
                     </h3>
                     {/* Timeframe Inset Slot */}
-                    <span className="font-mono text-xs sm:text-sm font-black bg-[#8B8B8B] text-white px-3 py-1 border-2 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.5)] [text-shadow:_1px_1px_0_#000] inline-flex items-center gap-1.5 shrink-0 self-start sm:self-auto">
-                      <Clock className="w-3.5 h-3.5 text-[#55FFFF]" />
-                      {phase.displayDates}
-                    </span>
+                    <div className="font-mono text-xs sm:text-sm font-black bg-[#8B8B8B] text-white px-3 py-1.5 border-2 border-t-[#373737] border-l-[#373737] border-r-[#DBDBDB] border-b-[#DBDBDB] shadow-[inset_1px_1px_2px_rgba(0,0,0,0.5)] [text-shadow:_1px_1px_0_#000] inline-flex items-center flex-wrap gap-1.5 max-w-full self-start lg:self-auto">
+                      <Clock className="w-3.5 h-3.5 text-[#55FFFF] shrink-0" />
+                      {phase.previousDeadline ? (
+                        <span className="inline-flex items-center gap-1.5 flex-wrap">
+                          <span className="text-[#FFFF55] font-black">{phase.displayDates}</span>
+                        </span>
+                      ) : (
+                        <span>{phase.displayDates}</span>
+                      )}
+                    </div>
                   </div>
 
                   {/* Bullet Points */}
