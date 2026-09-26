@@ -41,8 +41,9 @@ interface TimeRemaining {
 }
 
 export function RegistrationExtendedModal({
-  newDeadline = EVENT_DATA.registrationExtended?.newDeadline || "26th Sept, 2026",
-  deadlineISO = EVENT_DATA.registrationExtended?.deadlineISO || "2026-09-26T23:59:59+05:30",
+  previousDeadline = EVENT_DATA.registrationExtended?.previousDeadline || "26th Sept, 2026",
+  newDeadline = EVENT_DATA.registrationExtended?.newDeadline || "28th Sept, 2026",
+  deadlineISO = EVENT_DATA.registrationExtended?.deadlineISO || "2026-09-28T14:00:00+05:30",
   isOpen: controlledIsOpen,
   onClose: controlledOnClose,
   disableAutoOpen = false,
@@ -249,13 +250,18 @@ export function RegistrationExtendedModal({
               <div className="flex flex-col text-left">
                 <span className="text-[11px] sm:text-xs font-black uppercase text-[#FFAA00] tracking-wider flex items-center gap-1">
                   <Sparkles className="w-3 h-3 text-[#FFAA00]" />
-                  REGISTRATION DEADLINE!
+                  REGISTRATION EXTENDED!
                 </span>
-                <span className="text-[10px] sm:text-[11px] font-bold text-[#55FFFF] tracking-tight">
-                  UNTIL {newDeadline.toUpperCase()} •{" "}
-                  {timeRemaining.isExpired
-                    ? "CLOSED"
-                    : `${timeRemaining.days}D ${timeRemaining.hours}H ${timeRemaining.minutes}M LEFT`}
+                <span className="text-[10px] sm:text-[11px] font-bold text-[#55FFFF] tracking-tight flex items-center gap-1 flex-wrap">
+                  <span className="line-through text-[#FF8585] decoration-[#FF5555]">{previousDeadline.toUpperCase()}</span>
+                  <span className="text-white">➔</span>
+                  <span className="text-[#FFFF55]">{newDeadline.toUpperCase()}</span>
+                  <span>•</span>
+                  <span>
+                    {timeRemaining.isExpired
+                      ? "CLOSED"
+                      : `${timeRemaining.days}D ${timeRemaining.hours}H ${timeRemaining.minutes}M LEFT`}
+                  </span>
                 </span>
               </div>
 
@@ -340,35 +346,44 @@ export function RegistrationExtendedModal({
                     id="minecraft-reg-dialog-title"
                     className="font-black text-xl sm:text-2xl text-[#1E1B24] tracking-tight uppercase leading-snug"
                   >
-                    DID YOU MISS THE HACKVERSE&apos;26 REGISTRATION?
+                    REGISTRATION DEADLINE EXTENDED!
                   </h2>
 
-                  <div className="text-sm text-black/80 font-bold leading-relaxed max-w-md mx-auto space-y-1">
+                  <div className="text-sm text-black/80 font-bold leading-relaxed max-w-md mx-auto space-y-1.5">
                     <p>
-                      Don’t worry,{" "}
+                      Missed the deadline?{" "}
                       <span className="inline-block px-2 py-0.5 bg-[#2E1065] text-[#E9D5FF] font-black border border-t-[#C084FC] border-l-[#C084FC] border-r-[#1E0B36] border-b-[#1E0B36] shadow-[1px_1px_0px_#000] uppercase text-xs sm:text-sm">
-                        WE’VE GOT YOU!
+                        WE’VE GOT YOU COVERED!
                       </span>
                     </p>
-                    <p>
-                      Still you have time to register your team by{" "}
-                      <span className="inline-block px-2 py-0.5 bg-[#14532D] text-[#86EFAC] font-black border border-t-[#4ADE80] border-l-[#4ADE80] border-r-[#052E16] border-b-[#052E16] shadow-[1px_1px_0px_#000] uppercase text-xs sm:text-sm">
-                        {newDeadline}
-                      </span>
-                    </p>
+                    <div className="flex flex-wrap items-center justify-center gap-1.5 pt-0.5">
+                      <span>Due to overwhelming demand, registration is open until</span>
+                      <div className="inline-flex items-center gap-1.5">
+                        <span className="inline-block px-1.5 py-0.5 bg-[#4A1515] text-[#FFAAAA] line-through decoration-[#FF5555] decoration-2 font-mono font-bold text-xs sm:text-sm border border-black shadow-[1px_1px_0px_#000]">
+                          {previousDeadline}
+                        </span>
+                        <span className="font-black text-black text-sm">➔</span>
+                        <span className="inline-block px-2 py-0.5 bg-[#14532D] text-[#86EFAC] font-black border border-t-[#4ADE80] border-l-[#4ADE80] border-r-[#052E16] border-b-[#052E16] shadow-[1px_1px_0px_#000] uppercase text-xs sm:text-sm">
+                          {newDeadline} (2:00 PM)
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 {/* ── 3. Official Deadline Item Tooltip Card ── */}
-                <div className="p-3 sm:p-4 bg-[#100C1C] border-3 border-t-[#7E22CE] border-l-[#7E22CE] border-r-[#2E1065] border-b-[#2E1065] shadow-[3px_3px_0px_#000] flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left">
-                  <div className="flex flex-col justify-center items-center">
-                    <div className="flex items-center gap-1.5 font-mono text-[11px] sm:text-xs font-black uppercase text-[#55FF55] tracking-wider mb-0.5 [text-shadow:_1px_1px_0_#000]">
-                      <CheckCircle2 className="w-4 h-4 text-[#55FF55] stroke-[2.5px]" />
-                      <span>OFFICIAL REGISTRATION DEADLINE</span>
-                    </div>
-                    <div className="text-2xl sm:text-3xl font-mono font-black text-[#FFFF55] tracking-tight [text-shadow:_1px_1px_0_#000]">
+                <div className="p-3 sm:p-4 bg-[#100C1C] border-3 border-t-[#7E22CE] border-l-[#7E22CE] border-r-[#2E1065] border-b-[#2E1065] shadow-[3px_3px_0px_#000] flex flex-col items-center justify-center gap-1.5 text-center">
+                  <div className="flex items-center gap-1.5 font-mono text-[11px] sm:text-xs font-black uppercase text-[#55FF55] tracking-wider mb-0.5 [text-shadow:_1px_1px_0_#000]">
+                    <CheckCircle2 className="w-4 h-4 text-[#55FF55] stroke-[2.5px]" />
+                    <span>OFFICIAL REGISTRATION DEADLINE (EXTENDED)</span>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 font-mono">
+                    <span className="text-base sm:text-xl font-bold text-[#FF7777] line-through decoration-[#FF5555] decoration-2 [text-shadow:_1px_1px_0_#000]">
+                      {previousDeadline}
+                    </span>
+                    <span className="text-2xl sm:text-3xl font-black text-[#FFFF55] tracking-tight [text-shadow:_1px_1px_0_#000]">
                       {newDeadline}
-                    </div>
+                    </span>
                   </div>
                 </div>
 

@@ -11,6 +11,7 @@ export interface SchedulePhase {
   title: string;
   startDate: string;
   endDate: string;
+  previousDeadline?: string;
   displayDates: string;
   status?: PhaseStatus;
   progressPercentage?: number;
@@ -113,12 +114,14 @@ export const SCHEDULE_DATA: ScheduleData = {
       phase: "Phase 1",
       title: "Launch & Registration",
       startDate: "2026-09-12",
-      endDate: "2026-09-26",
-      displayDates: "12 Sep 2026 – 26 Sep 2026",
+      endDate: "2026-09-28T14:00:00+05:30",
+      previousDeadline: "26 Sep",
+      displayDates: "26 Sep - 28 Sep 2026 (2:00 PM)",
       items: [
         "Official announcement and problem statements launch.",
         "Online team registration portal opens at https://hackverse.codebreakersgcek.tech.",
         "Eligibility verification and initial squad roster processing.",
+        "Registration extended from 26th Sept to 28th September 2026, 2:00 PM IST.",
       ],
     },
     {

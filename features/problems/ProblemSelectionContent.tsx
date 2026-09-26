@@ -230,8 +230,16 @@ export function ProblemSelectionContent() {
     return PROBLEM_STATEMENTS_DATA.filter((p) => p.category === filterCategory);
   }, [filterCategory]);
 
-  const pref1Obj = PROBLEM_STATEMENTS_DATA.find((p) => p.id === selectedPsIds[0]);
-  const pref2Obj = PROBLEM_STATEMENTS_DATA.find((p) => p.id === selectedPsIds[1]);
+  const pref1Obj = PROBLEM_STATEMENTS_DATA.find(
+    (p) =>
+      p.id.toLowerCase() === selectedPsIds[0]?.toLowerCase() ||
+      p.code.toLowerCase() === selectedPsIds[0]?.toLowerCase()
+  );
+  const pref2Obj = PROBLEM_STATEMENTS_DATA.find(
+    (p) =>
+      p.id.toLowerCase() === selectedPsIds[1]?.toLowerCase() ||
+      p.code.toLowerCase() === selectedPsIds[1]?.toLowerCase()
+  );
 
   // Loading State
   if (sessionLoading || teamLoading) {
