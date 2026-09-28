@@ -137,11 +137,11 @@ export function RegisteredSquadDashboard({
   const isLeader = userRoleInTeam === "LEADER";
   const status = teamData.status || "PENDING_VERIFICATION";
 
-  // Edit Quota calculations
+  // Edit Quota calculations - Closed
   const maxEdits = teamData.maxEdits ?? 3;
   const editCount = teamData.editCount ?? 0;
   const remainingEdits = Math.max(0, maxEdits - editCount);
-  const canLeaderEdit = isLeader && remainingEdits > 0;
+  const canLeaderEdit = false; // Squad detail editing is officially closed
 
   // Edit Form State
   const [editForm, setEditForm] = useState({
@@ -171,71 +171,7 @@ export function RegisteredSquadDashboard({
 
   // Open Edit Modal & Populate Form
   const handleOpenEditModal = () => {
-    if (!canLeaderEdit) {
-      if (!isLeader) {
-        toast.error("Only the Team Leader is authorized to edit squad details.");
-      } else {
-        toast.error("Maximum edit limit reached (3/3 edits used). Contact organizers for assistance.");
-      }
-      return;
-    }
-
-    const currentMembers = Array.isArray(teamData.members)
-      ? JSON.parse(JSON.stringify(teamData.members))
-      : [];
-
-    setEditForm({
-      teamName: teamData.teamName || "",
-      collegeName: teamData.collegeName || "",
-      collegeAddress: {
-        fullAddress: teamData.collegeAddress?.fullAddress || "",
-        city: teamData.collegeAddress?.city || "",
-        state: teamData.collegeAddress?.state || "Odisha",
-        pincode: teamData.collegeAddress?.pincode || "",
-      },
-      leader: {
-        name: teamData.leader?.name || teamData.leaderName || "",
-        email: teamData.leader?.email || teamData.leaderEmail || "",
-        phone: teamData.leader?.phone || teamData.leaderPhone || "",
-        whatsapp: teamData.leader?.whatsapp || teamData.leaderWhatsapp || teamData.leaderPhone || "",
-        branch: teamData.leader?.branch || teamData.leaderBranch || "Computer Science & Engineering",
-        customBranch: teamData.leader?.customBranch || teamData.leaderCustomBranch || "",
-        year: teamData.leader?.year || teamData.leaderYear || "3rd Year",
-        role: teamData.leader?.role || teamData.leaderRole || "Leader",
-        github: teamData.leader?.github || teamData.leaderGithub || "",
-        dateOfBirth: teamData.leader?.dateOfBirth || teamData.leaderDob || "",
-      },
-      members: currentMembers.length >= 2 ? currentMembers : [
-        ...(currentMembers.length > 0 ? currentMembers : [
-          {
-            fullName: "",
-            email: "",
-            phone: "",
-            whatsappNumber: "",
-            branch: "Computer Science & Engineering",
-            customBranch: "",
-            yearOfStudy: "3rd Year",
-            role: "Frontend",
-            githubUsername: "",
-          }
-        ]),
-        ...(currentMembers.length < 2 ? Array(2 - Math.max(0, currentMembers.length)).fill(null).map((_, i) => ({
-          fullName: "",
-          email: "",
-          phone: "",
-          whatsappNumber: "",
-          branch: "Computer Science & Engineering",
-          customBranch: "",
-          yearOfStudy: "3rd Year",
-          role: "Backend",
-          githubUsername: "",
-        })) : [])
-      ],
-      accommodationRequired: Boolean(teamData.accommodationRequired),
-    });
-
-    setEditError(null);
-    setShowEditModal(true);
+    toast.error("Squad detail editing is officially closed. No further modifications are permitted.");
   };
 
   // Add a new member in Edit Modal (Total members 2 to 3 co-hackers)
@@ -511,7 +447,7 @@ export function RegisteredSquadDashboard({
                 ) : (
                   <>
                     <Lock className="w-4 h-4" />
-                    <span>EDITS LOCKED (3/3 USED)</span>
+                    <span>EDITS CLOSED</span>
                   </>
                 )}
               </button>

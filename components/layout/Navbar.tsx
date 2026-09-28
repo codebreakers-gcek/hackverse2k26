@@ -467,7 +467,7 @@ export function Navbar() {
                 href="/register"
                 className="h-10 sm:h-11 px-4 sm:px-6 inline-flex items-center gap-2 bg-[#5B8731] hover:bg-[#689B37] text-white font-black text-xs sm:text-sm uppercase tracking-wider border-3 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[3px_3px_0px_#000] active:translate-y-1 transition-all cursor-pointer [text-shadow:_1px_1px_0_#000]"
               >
-                <span>REGISTER</span>
+                <span>LOGIN</span>
                 <ArrowRight className="w-4 h-4 stroke-[3px]" />
               </Link>
             )}
@@ -639,7 +639,7 @@ export function Navbar() {
                     onClick={() => setMobileMenuOpen(false)}
                     className="w-full h-12 bg-[#5B8731] hover:bg-[#689B37] text-white font-black text-xs sm:text-sm uppercase tracking-wider border-3 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] shadow-[4px_4px_0px_#000] flex items-center justify-center gap-2 active:translate-y-1 transition-all [text-shadow:_1px_1px_0_#000]"
                   >
-                    <span>{user ? "MANAGE SQUAD ENTRY" : "REGISTER SQUAD NOW"}</span>
+                    <span>{user ? "MANAGE SQUAD ENTRY" : "SQUAD LOGIN"}</span>
                     <ArrowRight className="w-4 h-4 stroke-[3px]" />
                   </Link>
                 )}

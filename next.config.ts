@@ -31,6 +31,7 @@ const nextConfig: NextConfig = {
   // Allow mobile devices and local network hosts in development
   allowedDevOrigins: [
     "localhost",
+    "172.20.10.4",
     "127.0.0.1",
     "192.168.1.42",
     "192.168.*",

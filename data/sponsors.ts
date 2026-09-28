@@ -38,6 +38,16 @@ export const OFFICIAL_SPONSORS: OfficialSponsor[] = [
     tagline: "Empowering Next-Gen Technology & Solutions",
     accentColor: "#3770FF",
   },
+  {
+    id: "adp-green",
+    name: "ADP Green Energies PVT. Ltd.",
+    category: "CO-SPONSOR",
+    tier: "silver",
+    logoUrl: "/sponsors/adp.png",
+    websiteUrl: "https://www.solariseodisha.com/",
+    tagline: "Turn Odisha's sunshine into zero electricity bills.",
+    accentColor: "#030712",
+  },
 ];
 
 export const SPONSORS_DATA = {

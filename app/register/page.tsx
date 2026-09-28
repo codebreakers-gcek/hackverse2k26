@@ -98,10 +98,10 @@ export default function RegisterPage() {
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 space-y-10 w-full">
         <SectionTitle
-          tag="ENROLL"
-          title="REGISTER YOUR"
-          highlightText="SQUAD"
-          subtitle="Form a team of 1 to 4 members. Submit your team leader details, problem statement preference, and member credentials below."
+          tag="SQUAD ACCESS"
+          title="PARTICIPANT"
+          highlightText="PORTAL"
+          subtitle="Registration for HACKVERSE '26 is officially closed. Registered participants and team leaders can sign in below to access their squad dossier and tournament pass."
         />
         <Suspense
           fallback={
