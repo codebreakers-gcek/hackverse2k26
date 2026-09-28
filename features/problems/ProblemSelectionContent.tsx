@@ -358,14 +358,13 @@ export function ProblemSelectionContent() {
 
           <div className="space-y-2">
             <span className="font-mono text-xs font-black uppercase px-3 py-1 bg-[#FFAA00] text-black border-2 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] inline-block shadow-[2px_2px_0px_#000]">
-              [SQUAD NOT REGISTERED]
+              [REGISTRATION CLOSED]
             </span>
             <h2 className="font-black text-2xl sm:text-3xl uppercase tracking-tight text-black">
               NO TEAM REGISTRATION FOUND
             </h2>
-            <p className="text-sm font-bold text-black/75 leading-relaxed">
-              Hello <span className="text-black font-black">{session.user.name || session.user.email}</span>!
-              You need to complete your official team registration before locking in your 2 problem statements.
+            <p className="text-sm font-bold text-red-700 leading-relaxed bg-red-100 p-3 border-2 border-red-500 shadow-[2px_2px_0px_#000]">
+              Sorry registration is close we will happy to se you in next year.
             </p>
           </div>
 
@@ -374,7 +373,7 @@ export function ProblemSelectionContent() {
               href="/register"
               className="w-full sm:w-auto px-8 py-3.5 bg-[#5B8731] hover:bg-[#689B37] text-white border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] font-black text-xs sm:text-sm uppercase tracking-wider shadow-[4px_4px_0px_#000] active:translate-y-1 transition-all flex items-center justify-center gap-2 [text-shadow:_1px_1px_0_#000]"
             >
-              <span>REGISTER SQUAD NOW</span>
+              <span>RETURN TO PORTAL</span>
               <ArrowRight className="w-4 h-4 stroke-[3px]" />
             </Link>
             <Link

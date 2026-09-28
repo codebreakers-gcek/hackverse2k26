@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { signIn, signOut, useSession } from "@/lib/auth-client";
 import {
@@ -22,9 +22,21 @@ interface OAuthLoginSectionProps {
 
 export function OAuthLoginSection({ onUserPrefill }: OAuthLoginSectionProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: session, isPending } = useSession();
   const [loadingProvider, setLoadingProvider] = useState<"google" | "github" | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+
+  // Check URL error parameter from OAuth redirect
+  useEffect(() => {
+    const errorParam = searchParams.get("error");
+    const errorDesc = searchParams.get("error_description");
+    if (errorParam || errorDesc) {
+      setErrorMsg(
+        "Sorry, registration is closed. We will happy to see you in next year."
+      );
+    }
+  }, [searchParams]);
 
   // Check user role: If admin, redirect to /admin, otherwise keep on /register
   useEffect(() => {
@@ -59,9 +71,7 @@ export function OAuthLoginSection({ onUserPrefill }: OAuthLoginSectionProps) {
     } catch (err: unknown) {
       console.error("OAuth sign-in error:", err);
       setErrorMsg(
-        err instanceof Error
-          ? err.message
-          : `Failed to authenticate with ${provider}. Please verify OAuth credentials in .env.`
+        "Sorry, registration is closed. We will happy to see you in next year."
       );
       setLoadingProvider(null);
     }
@@ -102,20 +112,20 @@ export function OAuthLoginSection({ onUserPrefill }: OAuthLoginSectionProps) {
           </div>
           <div>
             <span className="font-mono text-[10px] font-black uppercase text-[#333333]">
-              STEP 01 // IDENTITY VERIFICATION
+              PARTICIPANT ACCESS // IDENTITY VERIFICATION
             </span>
             <h3 className="font-mono font-black text-lg sm:text-xl text-black uppercase tracking-tight">
-              SIGN IN WITH OAUTH (GOOGLE / GITHUB)
+              SIGN IN TO SQUAD PORTAL (GOOGLE / GITHUB)
             </h3>
           </div>
         </div>
         <div className="font-mono text-[11px] font-bold bg-[#DBDBDB] px-2.5 py-1 border-2 border-t-[#555555] border-l-[#555555] border-r-[#FFFFFF] border-b-[#FFFFFF] text-black">
-          AUTONOMOUS ROLE DISPATCH
+          REGISTERED USERS ONLY
         </div>
       </div>
 
       <p className="text-xs sm:text-sm font-bold text-[#1A1A1A] font-mono leading-relaxed">
-        Sign in with your Google or GitHub account to authenticate your squad credentials. Otherwise, your details will be pre-filled below for fast squad registration.
+        Squad registrations are closed. Registered participants can sign in with their registered Google or GitHub email to access tournament passes and squad dossiers.
       </p>
 
       {/* OAuth Buttons */}

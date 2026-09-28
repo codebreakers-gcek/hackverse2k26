@@ -993,12 +993,13 @@ export function RegistrationForm() {
             </div>
             <div className="space-y-2">
               <h3 className="font-black text-2xl sm:text-3xl text-black uppercase tracking-tight">
-                REGISTRATIONS ARE CURRENTLY CLOSED
+                REGISTRATIONS ARE CLOSED
               </h3>
-              <p className="font-mono text-xs sm:text-sm font-bold text-black/80 max-w-lg mx-auto leading-relaxed">
-                The organizing committee has closed or paused squad
-                registrations for HACKVERSE &apos;26. No new submissions are
-                being accepted at this time.
+              <p className="font-mono text-sm sm:text-base font-bold text-red-700 max-w-lg mx-auto leading-relaxed bg-red-100 p-4 border-2 border-red-500 shadow-[2px_2px_0px_#000]">
+                Sorry registration is close we will happy to se you in next year.
+              </p>
+              <p className="font-mono text-xs text-black/70 max-w-md mx-auto pt-2">
+                If you are a registered participant, please ensure you sign in with your registered squad email.
               </p>
             </div>
             {existingTeamData && forceNewRegistration && (

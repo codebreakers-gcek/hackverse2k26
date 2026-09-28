@@ -435,7 +435,7 @@ export default function RootLayout({
           <main className="flex-1 relative">{children}</main>
           <Footer />
           <ScrollProgressCircle />
-          <RegistrationExtendedModal />
+          {/* <RegistrationExtendedModal /> */}
         </SmoothScrollProvider>
       </body>
     </html>
