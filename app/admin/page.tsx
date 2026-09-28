@@ -271,6 +271,13 @@ export default function AdminDashboardPage() {
   const [selectedPassSquad, setSelectedPassSquad] = useState<RegistrationRecord | null>(null);
   const [isPassModalOpen, setIsPassModalOpen] = useState(false);
 
+  // Modify Problem Statement Modal State
+  const [selectedPsSquad, setSelectedPsSquad] = useState<RegistrationRecord | null>(null);
+  const [isPsModalOpen, setIsPsModalOpen] = useState(false);
+  const [pref1Input, setPref1Input] = useState<string>("");
+  const [pref2Input, setPref2Input] = useState<string>("");
+  const [isUpdatingPs, setIsUpdatingPs] = useState(false);
+
   // Custom Neo-Brutalist Confirmation Dialog State
   const [confirmDialog, setConfirmDialog] = useState<{
     isOpen: boolean;
@@ -774,6 +781,79 @@ export default function AdminDashboardPage() {
         }
       },
     });
+  };
+
+  // Open Modify Problem Statement Modal
+  const handleOpenPsModal = (squad: RegistrationRecord) => {
+    const { p1, p2, p1Raw, p2Raw } = getSquadPs(squad);
+    setSelectedPsSquad(squad);
+    setPref1Input(p1?.id || p1Raw || "");
+    setPref2Input(p2?.id || p2Raw || "");
+    setIsPsModalOpen(true);
+  };
+
+  // Save Modified Problem Statement Choices
+  const handleSavePsSelection = async (clearOrUnlock?: "clear" | "unlock") => {
+    if (!selectedPsSquad) return;
+    try {
+      setIsUpdatingPs(true);
+
+      const payload: any = { id: selectedPsSquad.id };
+      if (clearOrUnlock === "clear" || clearOrUnlock === "unlock") {
+        payload.problemStatementId = null;
+        payload.unlockPs = true;
+      } else {
+        if (!pref1Input) {
+          toast.error("Please select a primary problem statement (Choice #1).");
+          setIsUpdatingPs(false);
+          return;
+        }
+        if (pref2Input && pref1Input === pref2Input) {
+          toast.error("Choice #1 and Choice #2 must be different problem statements.");
+          setIsUpdatingPs(false);
+          return;
+        }
+        payload.problemStatementId = pref1Input;
+        payload.problemStatement2 = pref2Input || null;
+        payload.selectedProblemStatements = [pref1Input, ...(pref2Input ? [pref2Input] : [])];
+      }
+
+      const res = await fetch("/api/admin/registrations", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await res.json();
+      if (data.success && data.data) {
+        toast.success(
+          clearOrUnlock === "unlock"
+            ? `Problem statement selection unlocked for ${selectedPsSquad.teamName}.`
+            : clearOrUnlock === "clear"
+            ? `Problem statement cleared for ${selectedPsSquad.teamName}.`
+            : `Problem statement updated for ${selectedPsSquad.teamName}!`
+        );
+
+        // Update local state in registrations array
+        setRegistrations((prev) =>
+          prev.map((r) => (r.id === selectedPsSquad.id ? data.data : r))
+        );
+
+        // Update selected squad in sheet if currently viewing
+        if (selectedSquad?.id === selectedPsSquad.id) {
+          setSelectedSquad(data.data);
+        }
+
+        setIsPsModalOpen(false);
+      } else {
+        toast.error(data.error || "Failed to update problem statement.");
+      }
+    } catch (err: any) {
+      console.error("Error modifying PS:", err);
+      toast.error(err.message || "Network error while saving problem statement.");
+    } finally {
+      setIsUpdatingPs(false);
+    }
   };
 
   // Save Settings
@@ -1939,6 +2019,15 @@ export default function AdminDashboardPage() {
                           <td className="p-3.5 text-right whitespace-nowrap">
                             <div className="flex items-center justify-end gap-1.5">
                               <button
+                                onClick={() => handleOpenPsModal(squad)}
+                                className="px-2 py-1.5 bg-blue-200 hover:bg-blue-300 text-black border-2 border-black font-black font-mono text-[10px] uppercase shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer flex items-center gap-1"
+                                title="Change or reassign Problem Statement"
+                              >
+                                <Target className="w-3 h-3" />
+                                <span>PS</span>
+                              </button>
+
+                              <button
                                 onClick={() => {
                                   setSelectedPassSquad(squad);
                                   setIsPassModalOpen(true);
@@ -2288,16 +2377,25 @@ export default function AdminDashboardPage() {
                                     </div>
                                   </div>
 
-                                  <button
-                                    onClick={() => {
-                                      setSelectedSquad(squad);
-                                      setIsSquadSheetOpen(true);
-                                    }}
-                                    className="w-full py-2 bg-white hover:bg-black hover:text-white text-black border-2 border-black font-black font-mono text-[11px] uppercase transition-all shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer flex items-center justify-center gap-1.5 mt-2"
-                                  >
-                                    <Eye className="w-3.5 h-3.5" />
-                                    <span>Inspect Squad</span>
-                                  </button>
+                                  <div className="grid grid-cols-2 gap-2 mt-2">
+                                    <button
+                                      onClick={() => {
+                                        setSelectedSquad(squad);
+                                        setIsSquadSheetOpen(true);
+                                      }}
+                                      className="py-2 bg-white hover:bg-neutral-100 text-black border-2 border-black font-black font-mono text-[11px] uppercase transition-all shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer flex items-center justify-center gap-1"
+                                    >
+                                      <Eye className="w-3.5 h-3.5" />
+                                      <span>Inspect</span>
+                                    </button>
+                                    <button
+                                      onClick={() => handleOpenPsModal(squad)}
+                                      className="py-2 bg-amber-300 hover:bg-amber-400 text-black border-2 border-black font-black font-mono text-[11px] uppercase transition-all shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer flex items-center justify-center gap-1"
+                                    >
+                                      <Target className="w-3.5 h-3.5" />
+                                      <span>Change PS</span>
+                                    </button>
+                                  </div>
                                 </div>
                               );
                             })}
@@ -2434,16 +2532,25 @@ export default function AdminDashboardPage() {
                                   {squad.status === "BANNED" ? "BANNED" : squad.status}
                                 </span>
                               </td>
-                              <td className="p-3.5 text-right">
-                                <button
-                                  onClick={() => {
-                                    setSelectedSquad(squad);
-                                    setIsSquadSheetOpen(true);
-                                  }}
-                                  className="px-2.5 py-1.5 bg-white hover:bg-neutral-100 border-2 border-black font-black font-mono text-[10px] uppercase shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer"
-                                >
-                                  INSPECT
-                                </button>
+                              <td className="p-3.5 text-right whitespace-nowrap">
+                                <div className="flex items-center justify-end gap-1.5">
+                                  <button
+                                    onClick={() => handleOpenPsModal(squad)}
+                                    className="px-2.5 py-1.5 bg-amber-300 hover:bg-amber-400 border-2 border-black font-black font-mono text-[10px] uppercase shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer"
+                                    title="Modify or reassign problem statement"
+                                  >
+                                    EDIT PS
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      setSelectedSquad(squad);
+                                      setIsSquadSheetOpen(true);
+                                    }}
+                                    className="px-2.5 py-1.5 bg-white hover:bg-neutral-100 border-2 border-black font-black font-mono text-[10px] uppercase shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer"
+                                  >
+                                    INSPECT
+                                  </button>
+                                </div>
                               </td>
                             </tr>
                           );
@@ -2519,16 +2626,25 @@ export default function AdminDashboardPage() {
                                     {squad.status}
                                   </span>
                                 </td>
-                                <td className="p-3.5 text-right">
-                                  <button
-                                    onClick={() => {
-                                      setSelectedSquad(squad);
-                                      setIsSquadSheetOpen(true);
-                                    }}
-                                    className="px-2.5 py-1.5 bg-white hover:bg-neutral-100 border-2 border-black font-black font-mono text-[10px] uppercase shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer"
-                                  >
-                                    INSPECT
-                                  </button>
+                                <td className="p-3.5 text-right whitespace-nowrap">
+                                  <div className="flex items-center justify-end gap-1.5">
+                                    <button
+                                      onClick={() => handleOpenPsModal(squad)}
+                                      className="px-2.5 py-1.5 bg-amber-300 hover:bg-amber-400 text-black border-2 border-black font-black font-mono text-[10px] uppercase shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer flex items-center gap-1"
+                                    >
+                                      <Target className="w-3 h-3" />
+                                      <span>ASSIGN PS</span>
+                                    </button>
+                                    <button
+                                      onClick={() => {
+                                        setSelectedSquad(squad);
+                                        setIsSquadSheetOpen(true);
+                                      }}
+                                      className="px-2.5 py-1.5 bg-white hover:bg-neutral-100 border-2 border-black font-black font-mono text-[10px] uppercase shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] cursor-pointer"
+                                    >
+                                      INSPECT
+                                    </button>
+                                  </div>
                                 </td>
                               </tr>
                             ))
@@ -4154,6 +4270,17 @@ export default function AdminDashboardPage() {
                           Squad has not locked or submitted problem statement preferences yet.
                         </div>
                       )}
+
+                      <div className="pt-2 border-t border-black/10">
+                        <button
+                          type="button"
+                          onClick={() => handleOpenPsModal(selectedSquad)}
+                          className="w-full py-2.5 bg-amber-300 hover:bg-amber-400 text-black border-2 border-black font-black text-xs uppercase flex items-center justify-center gap-2 cursor-pointer shadow-neo-sm transition-all active:translate-y-0.5"
+                        >
+                          <Target className="w-4 h-4 stroke-[2.5px]" />
+                          <span>MODIFY / REASSIGN PROBLEM STATEMENT</span>
+                        </button>
+                      </div>
                     </div>
                   );
                 })()}
@@ -4940,6 +5067,221 @@ export default function AdminDashboardPage() {
                 <ExternalLink className="w-3.5 h-3.5" />
                 <span>OPEN SQUAD DOSSIER (/teams/{selectedPassSquad.registrationNumber})</span>
               </Link>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* MODIFY / REASSIGN PROBLEM STATEMENT MODAL DIALOG                          */}
+      {/* ========================================================================= */}
+      {isPsModalOpen && selectedPsSquad && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/75 backdrop-blur-xs transition-opacity"
+            onClick={() => !isUpdatingPs && setIsPsModalOpen(false)}
+          />
+
+          <div className="relative w-full max-w-2xl bg-white border-4 border-black p-6 sm:p-8 shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] z-10 space-y-6 max-h-[90vh] overflow-y-auto text-black font-sans">
+            {/* Modal Header */}
+            <div className="flex items-start justify-between gap-4 border-b-4 border-black pb-4">
+              <div>
+                <div className="flex items-center gap-2 flex-wrap mb-1">
+                  <span className="font-mono text-xs font-black uppercase px-2.5 py-0.5 bg-amber-300 text-black border border-black">
+                    {selectedPsSquad.registrationNumber}
+                  </span>
+                  <span className="font-mono text-xs font-bold text-neutral-600">
+                    {selectedPsSquad.collegeName}
+                  </span>
+                </div>
+                <h3 className="text-xl sm:text-2xl font-black uppercase text-black tracking-tight">
+                  MODIFY PROBLEM STATEMENT: {selectedPsSquad.teamName}
+                </h3>
+                <p className="font-mono text-xs text-neutral-600 mt-1">
+                  Reassign or update problem statement preferences for this squad. Changes immediately reflect in team dashboards and judging terminals.
+                </p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setIsPsModalOpen(false)}
+                disabled={isUpdatingPs}
+                className="p-1.5 hover:bg-neutral-100 border-2 border-black transition-all cursor-pointer shrink-0"
+              >
+                <X className="w-5 h-5 stroke-[2.5px]" />
+              </button>
+            </div>
+
+            {/* Current Status Banner */}
+            {(() => {
+              const { p1, p2, p1Raw, p2Raw, hasPs } = getSquadPs(selectedPsSquad);
+              return (
+                <div className="p-3.5 bg-amber-50 border-2 border-black font-mono text-xs space-y-1.5">
+                  <div className="font-bold text-neutral-700 flex items-center justify-between">
+                    <span>CURRENT SELECTION ON RECORD:</span>
+                    <span
+                      className={`text-[10px] font-black uppercase px-2 py-0.5 border border-black ${
+                        hasPs ? "bg-emerald-300 text-emerald-950" : "bg-rose-200 text-rose-950"
+                      }`}
+                    >
+                      {hasPs ? "ASSIGNED & LOCKED" : "UNASSIGNED"}
+                    </span>
+                  </div>
+                  <div className="text-black font-bold">
+                    Primary Choice: {p1 ? `[${p1.code}] ${p1.title}` : p1Raw || "None Assigned"}
+                  </div>
+                  {p2 || p2Raw ? (
+                    <div className="text-neutral-700">
+                      Backup Choice: {p2 ? `[${p2.code}] ${p2.title}` : p2Raw}
+                    </div>
+                  ) : null}
+                </div>
+              );
+            })()}
+
+            {/* Form Fields */}
+            <div className="space-y-4">
+              {/* Preference #1 Dropdown */}
+              <div className="space-y-1.5">
+                <label className="block font-mono text-xs font-black uppercase text-black">
+                  CHOICE #1 (PRIMARY PROBLEM STATEMENT - MANDATORY) <span className="text-rose-600">*</span>
+                </label>
+                <select
+                  value={pref1Input}
+                  onChange={(e) => setPref1Input(e.target.value)}
+                  className="w-full px-3.5 py-3 bg-amber-50/60 border-3 border-black font-mono text-xs font-bold text-black focus:outline-none focus:bg-amber-100/80 cursor-pointer shadow-neo-xs"
+                >
+                  <option value="">-- SELECT PRIMARY PROBLEM STATEMENT --</option>
+                  {PROBLEM_STATEMENTS_DATA.map((ps) => (
+                    <option key={ps.id} value={ps.id}>
+                      [{ps.code}] {ps.category.toUpperCase()} • {ps.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Preference #1 Live Preview Card */}
+              {(() => {
+                const p1Obj = PROBLEM_STATEMENTS_DATA.find(
+                  (p) => p.id.toLowerCase() === pref1Input.toLowerCase() || p.code.toLowerCase() === pref1Input.toLowerCase()
+                );
+                if (!p1Obj) return null;
+                return (
+                  <div className="p-3.5 bg-amber-100/70 border-2 border-black space-y-1.5 animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-black text-white">
+                        {p1Obj.code} • {p1Obj.category}
+                      </span>
+                      <span className="font-mono text-[10px] font-bold text-neutral-600">
+                        {p1Obj.domain}
+                      </span>
+                    </div>
+                    <div className="font-black text-xs text-black">
+                      {p1Obj.title}
+                    </div>
+                    <p className="text-[11px] text-neutral-700 line-clamp-2">
+                      {p1Obj.shortDescription}
+                    </p>
+                  </div>
+                );
+              })()}
+
+              {/* Preference #2 Dropdown */}
+              <div className="space-y-1.5 pt-2">
+                <label className="block font-mono text-xs font-black uppercase text-black flex items-center justify-between">
+                  <span>CHOICE #2 (SECONDARY PREFERENCE - OPTIONAL)</span>
+                  <span className="text-[10px] font-mono font-bold text-neutral-500">OPTIONAL BACKUP</span>
+                </label>
+                <select
+                  value={pref2Input}
+                  onChange={(e) => setPref2Input(e.target.value)}
+                  className="w-full px-3.5 py-3 bg-neutral-50 border-3 border-black font-mono text-xs font-bold text-black focus:outline-none focus:bg-blue-50 cursor-pointer shadow-neo-xs"
+                >
+                  <option value="">-- NONE (SINGLE PRIMARY PREFERENCE ONLY) --</option>
+                  {PROBLEM_STATEMENTS_DATA.filter((ps) => ps.id.toLowerCase() !== pref1Input.toLowerCase()).map((ps) => (
+                    <option key={ps.id} value={ps.id}>
+                      [{ps.code}] {ps.category.toUpperCase()} • {ps.title}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Preference #2 Live Preview Card */}
+              {(() => {
+                const p2Obj = PROBLEM_STATEMENTS_DATA.find(
+                  (p) => p.id.toLowerCase() === pref2Input.toLowerCase() || p.code.toLowerCase() === pref2Input.toLowerCase()
+                );
+                if (!p2Obj) return null;
+                return (
+                  <div className="p-3.5 bg-blue-100/70 border-2 border-black space-y-1.5 animate-in fade-in duration-150">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-mono text-[10px] font-black uppercase px-2 py-0.5 bg-black text-white">
+                        {p2Obj.code} • {p2Obj.category}
+                      </span>
+                      <span className="font-mono text-[10px] font-bold text-neutral-600">
+                        {p2Obj.domain}
+                      </span>
+                    </div>
+                    <div className="font-black text-xs text-black">
+                      {p2Obj.title}
+                    </div>
+                    <p className="text-[11px] text-neutral-700 line-clamp-2">
+                      {p2Obj.shortDescription}
+                    </p>
+                  </div>
+                );
+              })()}
+            </div>
+
+            {/* Action Buttons */}
+            <div className="space-y-3 pt-3 border-t-2 border-black/20">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <button
+                  type="button"
+                  onClick={() => handleSavePsSelection()}
+                  disabled={isUpdatingPs || !pref1Input}
+                  className="py-3 px-4 bg-emerald-400 hover:bg-emerald-500 disabled:opacity-50 text-black border-3 border-black font-black text-xs uppercase flex items-center justify-center gap-2 shadow-neo-sm cursor-pointer transition-all active:translate-y-0.5"
+                >
+                  {isUpdatingPs ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <Check className="w-4 h-4 stroke-[3px]" />
+                  )}
+                  <span>SAVE &amp; SYNC TO TEAM</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleSavePsSelection("unlock")}
+                  disabled={isUpdatingPs}
+                  className="py-3 px-4 bg-amber-300 hover:bg-amber-400 text-black border-3 border-black font-black text-xs uppercase flex items-center justify-center gap-2 shadow-neo-sm cursor-pointer transition-all active:translate-y-0.5"
+                  title="Unlock so the squad leader can choose again"
+                >
+                  <Lock className="w-4 h-4" />
+                  <span>UNLOCK FOR TEAM TO CHOOSE</span>
+                </button>
+              </div>
+
+              <div className="flex items-center justify-between gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => handleSavePsSelection("clear")}
+                  disabled={isUpdatingPs}
+                  className="text-xs font-mono font-bold text-rose-700 hover:text-rose-900 underline cursor-pointer"
+                >
+                  Clear / Unassign Problem Statement
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setIsPsModalOpen(false)}
+                  disabled={isUpdatingPs}
+                  className="px-4 py-2 bg-neutral-200 hover:bg-neutral-300 text-black border-2 border-black font-mono font-black text-xs uppercase cursor-pointer shadow-neo-xs"
+                >
+                  CANCEL
+                </button>
+              </div>
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyAdminSession } from "@/lib/adminAuth";
 import { sendRegistrationApprovedEmail } from "@/lib/email";
+import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
 
 export async function GET(req: NextRequest) {
   try {
@@ -73,10 +74,31 @@ export async function PATCH(req: NextRequest) {
     }
 
     const body = await req.json();
-    const { id, status, accommodationStatus, accommodationRequired, roomNumber, hostelBlock, paymentStatus, transactionId } = body;
+    const {
+      id,
+      status,
+      accommodationStatus,
+      accommodationRequired,
+      roomNumber,
+      hostelBlock,
+      paymentStatus,
+      transactionId,
+      problemStatementId,
+      problemStatement2,
+      selectedProblemStatements,
+      unlockPs,
+    } = body;
 
     if (!id) {
       return NextResponse.json({ error: "Registration ID is required" }, { status: 400 });
+    }
+
+    const existingSquad = await prisma.teamRegistration.findUnique({
+      where: { id },
+    });
+
+    if (!existingSquad) {
+      return NextResponse.json({ error: "Team registration not found" }, { status: 404 });
     }
 
     const updateData: any = {};
@@ -101,6 +123,64 @@ export async function PATCH(req: NextRequest) {
       }
     }
     if (transactionId !== undefined) updateData.transactionId = transactionId;
+
+    // Handle Admin Modification of Problem Statement
+    const currentDocs = (existingSquad.documents as Record<string, any>) || {};
+
+    if (unlockPs === true || problemStatementId === "" || (problemStatementId === null && selectedProblemStatements === undefined)) {
+      // Clear / Unlock Problem Statement
+      updateData.problemStatementId = null;
+      updateData.documents = {
+        ...currentDocs,
+        selectedProblemStatements: [],
+        problemStatement1: null,
+        problemStatement2: null,
+        problemStatement1Code: null,
+        problemStatement2Code: null,
+        isPsLocked: false,
+        psSubmittedAt: null,
+        psAdminModifiedAt: new Date().toISOString(),
+        psAdminModifiedBy: admin.email || admin.name || "admin",
+      };
+    } else if (problemStatementId !== undefined || selectedProblemStatements !== undefined) {
+      const resolvePs = (val?: string | null) => {
+        if (!val) return null;
+        return (
+          PROBLEM_STATEMENTS_DATA.find(
+            (p) =>
+              p.id.toLowerCase() === val.toLowerCase() ||
+              p.code.toLowerCase() === val.toLowerCase()
+          ) || null
+        );
+      };
+
+      const rawP1 = Array.isArray(selectedProblemStatements) && selectedProblemStatements[0]
+        ? selectedProblemStatements[0]
+        : problemStatementId;
+      const rawP2 = Array.isArray(selectedProblemStatements) && selectedProblemStatements[1]
+        ? selectedProblemStatements[1]
+        : problemStatement2;
+
+      const p1Obj = resolvePs(rawP1);
+      const p2Obj = resolvePs(rawP2);
+
+      if (p1Obj) {
+        const finalList = [p1Obj.id, ...(p2Obj && p2Obj.id !== p1Obj.id ? [p2Obj.id] : [])];
+        updateData.problemStatementId = p1Obj.id;
+        updateData.documents = {
+          ...currentDocs,
+          selectedProblemStatements: finalList,
+          problemStatement1: p1Obj.id,
+          problemStatement2: p2Obj && p2Obj.id !== p1Obj.id ? p2Obj.id : null,
+          problemStatement1Code: p1Obj.code,
+          problemStatement2Code: p2Obj && p2Obj.id !== p1Obj.id ? p2Obj.code : null,
+          isPsLocked: true,
+          psSubmittedAt: currentDocs.psSubmittedAt || new Date().toISOString(),
+          psAdminModifiedAt: new Date().toISOString(),
+          psAdminModifiedBy: admin.email || admin.name || "admin",
+        };
+      }
+    }
 
     const updated = await prisma.teamRegistration.update({
       where: { id },
