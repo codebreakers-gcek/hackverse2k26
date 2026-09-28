@@ -77,12 +77,15 @@ export async function POST(req: NextRequest) {
     // 3. Match Problem Statement
     let psInfo = null;
     if (squad.problemStatementId) {
+      const targetPs = squad.problemStatementId.toLowerCase().trim();
       const foundPs = PROBLEM_STATEMENTS_DATA.find(
-        (p) => p.id === squad.problemStatementId
+        (p) => p.id.toLowerCase() === targetPs || p.code.toLowerCase() === targetPs
       );
       if (foundPs) {
         psInfo = {
-          id: foundPs.id,
+          id: foundPs.code || foundPs.id,
+          psId: foundPs.id,
+          code: foundPs.code,
           title: foundPs.title,
           category: foundPs.category,
           domain: foundPs.domain,
@@ -91,6 +94,7 @@ export async function POST(req: NextRequest) {
       } else {
         psInfo = {
           id: squad.problemStatementId,
+          code: squad.problemStatementId,
           title: `Problem Statement ${squad.problemStatementId}`,
           category: "General Track",
           domain: "Open Innovation",

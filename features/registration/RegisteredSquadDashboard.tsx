@@ -304,22 +304,31 @@ export function RegisteredSquadDashboard({
   };
 
   // Find problem statement objects if selected (1 mandatory, optional 2nd)
-  const psIds = Array.isArray(teamData.selectedProblemStatements)
+  const docs = (teamData.documents as Record<string, any>) || {};
+  const psIds: string[] = Array.isArray(teamData.selectedProblemStatements) && teamData.selectedProblemStatements.length > 0
     ? teamData.selectedProblemStatements
+    : Array.isArray(docs.selectedProblemStatements) && docs.selectedProblemStatements.length > 0
+    ? docs.selectedProblemStatements
     : teamData.problemStatementId
     ? [teamData.problemStatementId]
     : [];
 
+  const rawP1 = psIds[0] || teamData.problemStatement1 || docs.problemStatement1 || teamData.problemStatementId;
+  const rawP2 = psIds[1] || teamData.problemStatement2 || docs.problemStatement2;
+
   const pref1 = PROBLEM_STATEMENTS_DATA.find(
     (p) =>
-      p.id.toLowerCase() === psIds[0]?.toLowerCase() ||
-      p.code.toLowerCase() === psIds[0]?.toLowerCase()
+      p.id.toLowerCase() === rawP1?.toLowerCase() ||
+      p.code.toLowerCase() === rawP1?.toLowerCase()
   );
   const pref2 = PROBLEM_STATEMENTS_DATA.find(
     (p) =>
-      p.id.toLowerCase() === psIds[1]?.toLowerCase() ||
-      p.code.toLowerCase() === psIds[1]?.toLowerCase()
+      p.id.toLowerCase() === rawP2?.toLowerCase() ||
+      p.code.toLowerCase() === rawP2?.toLowerCase()
   );
+
+  const hasPs = Boolean(pref1 || rawP1 || psIds.length >= 1);
+  const isModifiedByAdmin = Boolean(teamData.psAdminModifiedAt || docs.psAdminModifiedAt);
 
   const membersList: any[] = Array.isArray(teamData.members) ? teamData.members : [];
 
@@ -495,12 +504,18 @@ export function RegisteredSquadDashboard({
           <div className="flex items-center gap-2.5">
             <FileCode2 className="w-5 h-5 text-black stroke-[2.5px]" />
             <h3 className="font-black text-xl uppercase tracking-tight text-black">
-              PROBLEM STATEMENT ALLOCATION {psIds.length >= 1 ? `(${psIds.length} ${psIds.length === 1 ? "TRACK SELECTED" : "TRACKS SELECTED"})` : ""}
+              PROBLEM STATEMENT ALLOCATION {hasPs ? `(${pref2 || rawP2 ? "2 TRACKS SELECTED" : "1 TRACK SELECTED"})` : ""}
             </h3>
           </div>
 
-          {psIds.length >= 1 ? (
+          {hasPs ? (
             <div className="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+              {isModifiedByAdmin && (
+                <span className="font-mono text-[10px] font-black uppercase px-2.5 py-1 bg-[#FFAA00] text-black border-2 border-black flex items-center gap-1 shadow-[2px_2px_0px_#000]">
+                  <Sparkles className="w-3 h-3 text-black stroke-[2.5px]" />
+                  <span>SYNCED BY ADMIN</span>
+                </span>
+              )}
               <span className="font-mono text-xs font-black uppercase px-3 py-1.5 bg-[#5B8731] text-white border-2 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] flex items-center gap-1.5 shadow-[2px_2px_0px_#000]">
                 <Lock className="w-3.5 h-3.5 stroke-[2.5px]" />
                 <span>LOCKED &amp; FINALIZED</span>
@@ -547,7 +562,7 @@ export function RegisteredSquadDashboard({
           )}
         </div>
 
-        {psIds.length >= 1 ? (
+        {hasPs ? (
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* Preference 1 Card (Mandatory) */}

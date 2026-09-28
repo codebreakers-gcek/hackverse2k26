@@ -85,10 +85,13 @@ export function ProblemSelectionContent() {
           setSelectedPsIds(data.team.selectedProblemStatements.slice(0, 2));
         } else if (data.team.problemStatementId) {
           setSelectedPsIds([data.team.problemStatementId]);
+        } else {
+          setSelectedPsIds([]);
         }
       } else {
         setIsRegistered(false);
         setTeamData(null);
+        setSelectedPsIds([]);
       }
     } catch (err) {
       console.error("Failed to load team data:", err);
@@ -137,11 +140,8 @@ export function ProblemSelectionContent() {
   }, [showConfirmModal, submitting]);
 
   const isLocked = Boolean(
-    teamData?.psSubmittedAt ||
-    teamData?.isPsLocked ||
-    teamData?.documents?.isPsLocked ||
-    teamData?.documents?.psSubmittedAt ||
-    (teamData?.problemStatementId && teamData?.selectedProblemStatements?.length > 0) ||
+    ((teamData?.psSubmittedAt || teamData?.isPsLocked || teamData?.documents?.isPsLocked || teamData?.documents?.psSubmittedAt) &&
+      (teamData?.problemStatementId || (teamData?.selectedProblemStatements && teamData.selectedProblemStatements.length > 0))) ||
     submitSuccess
   );
 
