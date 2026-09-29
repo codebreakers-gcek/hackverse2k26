@@ -4,7 +4,7 @@ import { EVENT_DATA } from "@/data/event";
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const RESEND_FROM_EMAIL =
-  process.env.RESEND_FROM_EMAIL || "HACKVERSE '26 <onboarding@resend.dev>";
+  process.env.RESEND_FROM_EMAIL || "HACKVERSE '26 <support@hackverse.cbgcek.dev>";
 
 // Lazy initialize Resend client
 function getResendClient() {
@@ -307,9 +307,16 @@ export async function sendRegistrationSubmissionEmail(data: RegistrationEmailDat
     const res = await resend.emails.send({
       from: RESEND_FROM_EMAIL,
       to: recipients,
+      replyTo: process.env.RESEND_REPLY_TO || "support@hackverse.cbgcek.dev",
       subject: `⏳ HACKVERSE '26 | Registration Captured & Under Review: ${data.teamName} (${data.registrationNumber})`,
       html,
     });
+
+    if (res.error) {
+      console.error("Resend API error:", res.error);
+      return { success: false, error: res.error.message || JSON.stringify(res.error) };
+    }
+
     return { success: true, id: res.data?.id };
   } catch (error: any) {
     console.error("Failed to send registration submission email:", error);
@@ -454,10 +461,16 @@ export async function sendRegistrationApprovedEmail(data: RegistrationEmailData)
     const res = await resend.emails.send({
       from: RESEND_FROM_EMAIL,
       to: [leaderRecipient],
+      replyTo: process.env.RESEND_REPLY_TO || "support@hackverse.cbgcek.dev",
       subject: `HACKVERSE '26 | Registration Approved & Official Tax Invoice: ${data.teamName} (${data.registrationNumber})`,
       html: emailHtml,
       attachments: attachments.length > 0 ? attachments : undefined,
     });
+
+    if (res.error) {
+      console.error("Resend API error:", res.error);
+      return { success: false, error: res.error.message || JSON.stringify(res.error) };
+    }
 
     return { success: true, id: res.data?.id || "" };
   } catch (error: any) {
@@ -777,12 +790,68 @@ export async function sendTeamDetailsUpdatedNotification(data: {
     const res = await resend.emails.send({
       from: RESEND_FROM_EMAIL,
       to: [leaderRecipient],
+      replyTo: process.env.RESEND_REPLY_TO || "support@hackverse.cbgcek.dev",
       subject: `🛡️ HACKVERSE '26 | Squad Parameters Updated: ${data.teamName} (${data.registrationNumber})`,
       html: emailHtml,
     });
+
+    if (res.error) {
+      console.error("Resend API error:", res.error);
+      return { success: false, error: res.error.message || JSON.stringify(res.error) };
+    }
+
     return { success: true, id: res.data?.id };
   } catch (error: any) {
     console.error("Failed to send team details update email:", error);
     return { success: false, error: error.message };
   }
 }
+
+import {
+  EvaluationSlot,
+  OnlineMidEvaluationEmailData,
+  generateOnlineMidEvaluationEmailHtml,
+  generateOnlineMidEvaluationEmailText,
+} from "./midEvalEmailTemplates";
+
+export type { EvaluationSlot, OnlineMidEvaluationEmailData };
+export { generateOnlineMidEvaluationEmailHtml, generateOnlineMidEvaluationEmailText };
+
+export async function sendOnlineMidEvaluationEmail(data: OnlineMidEvaluationEmailData) {
+  const resend = getResendClient();
+  const leaderRecipient = data.leaderEmail.trim().toLowerCase();
+
+  const emailHtml = generateOnlineMidEvaluationEmailHtml(data);
+  const emailText = generateOnlineMidEvaluationEmailText(data);
+
+  if (!resend) {
+    console.log(`[Email Mock] Online Mid-Evaluation email triggered for ${data.teamName} (${leaderRecipient})`);
+    return { success: true, mocked: true };
+  }
+
+  try {
+    const res = await resend.emails.send({
+      from: RESEND_FROM_EMAIL,
+      to: [leaderRecipient],
+      replyTo: process.env.RESEND_REPLY_TO || "support@hackverse.cbgcek.dev",
+      subject: `HACKVERSE ’26 | Online Mid-Evaluation Schedule for Team ${data.teamName}`,
+      html: emailHtml,
+      text: emailText,
+      headers: {
+        "X-Entity-Ref-ID": `mid-eval-${data.registrationNumber || data.teamName}-${Date.now()}`,
+      },
+    });
+
+    if (res.error) {
+      console.error(`[Resend Error] Failed to send Mid-Evaluation email to ${leaderRecipient}:`, res.error);
+      return { success: false, error: res.error.message || JSON.stringify(res.error) };
+    }
+
+    return { success: true, id: res.data?.id };
+  } catch (error: any) {
+    console.error(`Failed to send Mid-Evaluation email to ${leaderRecipient}:`, error);
+    return { success: false, error: error.message };
+  }
+}
+
+

@@ -31,6 +31,7 @@ import {
   Compass,
   CreditCard,
   KeyRound,
+  Mail,
   Settings,
   LogOut,
   ExternalLink,
@@ -109,6 +110,13 @@ export function AdminSidebar({
       badgeColor: scannerData.active
         ? "bg-lime-400 text-black font-black"
         : "bg-neutral-800 text-neutral-400 border-neutral-700",
+    },
+    {
+      title: "Mid-Eval Emails",
+      href: "/admin/email",
+      icon: Mail,
+      badge: "MID-EVAL",
+      badgeColor: "bg-emerald-400 text-black font-black",
     },
     {
       title: "Storage & Settings",
