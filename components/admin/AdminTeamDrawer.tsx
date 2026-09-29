@@ -37,6 +37,7 @@ import {
   Edit3,
 } from "lucide-react";
 import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
+import { getSquadProblemStatements } from "@/lib/adminProblemUtils";
 import { AdminEditSquadModal } from "@/components/admin/AdminEditSquadModal";
 import { toast } from "sonner";
 
@@ -71,9 +72,7 @@ export function AdminTeamDrawer() {
   const totalMembers = 1 + (activeSquad.members?.length || 0);
 
   // Problem statement lookup
-  const ps = PROBLEM_STATEMENTS_DATA.find(
-    (p) => p.id === activeSquad.problemStatementId
-  );
+  const psChoices = getSquadProblemStatements(activeSquad);
 
   return (
     <>
@@ -178,28 +177,64 @@ export function AdminTeamDrawer() {
           {activeTab === "overview" && (
             <div className="space-y-6">
               {/* Problem Statement Card */}
-              <div className="border-2 border-neutral-800 bg-neutral-950 p-4 shadow-[2px_2px_0px_0px_#000000]">
-                <div className="font-mono text-xs font-black uppercase text-neutral-400 mb-1 flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  ASSIGNED PROBLEM STATEMENT
+              <div className="border-2 border-neutral-800 bg-neutral-950 p-4 shadow-[2px_2px_0px_0px_#000000] space-y-3">
+                <div className="font-mono text-xs font-black uppercase text-neutral-400 flex items-center justify-between border-b border-neutral-800 pb-2">
+                  <div className="flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+                    <span>PROBLEM STATEMENT PREFERENCES</span>
+                  </div>
+                  {psChoices.hasSelection && (
+                    <span className="px-2 py-0.5 bg-neutral-900 border border-neutral-700 text-neutral-300 text-[10px] font-mono font-bold">
+                      {psChoices.secondary ? "2 CHOICES SUBMITTED" : "1 CHOICE SUBMITTED"}
+                    </span>
+                  )}
                 </div>
-                {activeSquad.problemStatementId ? (
-                  <div>
-                    <div className="font-mono text-xs font-black text-cyan-300 bg-cyan-950/60 px-2 py-0.5 border border-cyan-800 inline-block mb-1">
-                      {activeSquad.problemStatementId}
-                    </div>
-                    <div className="font-black text-sm text-white">
-                      {ps?.title || activeSquad.problemStatementId}
-                    </div>
-                    {ps && (
-                      <div className="font-mono text-xs text-neutral-400 mt-1">
-                        Category: <span className="font-bold text-neutral-200">{ps.category}</span> ({ps.domain})
+
+                {psChoices.hasSelection ? (
+                  <div className="space-y-3 font-mono text-xs">
+                    {/* Primary Preference */}
+                    {psChoices.primary && (
+                      <div className="p-3 border-2 border-cyan-900/60 bg-cyan-950/20 space-y-1">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="px-2 py-0.5 bg-cyan-400 text-black font-black text-[10px] uppercase">
+                            PREFERENCE #1 (PRIMARY)
+                          </span>
+                          <span className="text-cyan-300 font-black text-xs">
+                            {psChoices.primary.code} [{psChoices.primary.id}]
+                          </span>
+                        </div>
+                        <div className="font-black text-sm text-white font-sans mt-1">
+                          {psChoices.primary.title}
+                        </div>
+                        <div className="text-[11px] text-neutral-400">
+                          Category: <strong className="text-neutral-200">{psChoices.primary.category}</strong> ({psChoices.primary.domain})
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Secondary Preference */}
+                    {psChoices.secondary && (
+                      <div className="p-3 border-2 border-purple-900/60 bg-purple-950/20 space-y-1">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="px-2 py-0.5 bg-purple-400 text-black font-black text-[10px] uppercase">
+                            PREFERENCE #2 (SECONDARY)
+                          </span>
+                          <span className="text-purple-300 font-black text-xs">
+                            {psChoices.secondary.code} [{psChoices.secondary.id}]
+                          </span>
+                        </div>
+                        <div className="font-black text-sm text-white font-sans mt-1">
+                          {psChoices.secondary.title}
+                        </div>
+                        <div className="text-[11px] text-neutral-400">
+                          Category: <strong className="text-neutral-200">{psChoices.secondary.category}</strong> ({psChoices.secondary.domain})
+                        </div>
                       </div>
                     )}
                   </div>
                 ) : (
-                  <div className="font-mono text-xs text-neutral-500 italic">
-                    No problem statement chosen yet (Open Innovation / Pending).
+                  <div className="font-mono text-xs text-neutral-500 italic py-2">
+                    No problem statement chosen yet (Open Innovation / Pending selection).
                   </div>
                 )}
               </div>

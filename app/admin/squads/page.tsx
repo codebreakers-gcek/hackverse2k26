@@ -24,6 +24,7 @@ import {
   RefreshCw,
   Ban,
 } from "lucide-react";
+import { getSquadProblemStatements } from "@/lib/adminProblemUtils";
 import { toast } from "sonner";
 
 export default function AdminSquadsPage() {
@@ -95,11 +96,20 @@ export default function AdminSquadsPage() {
           return false;
       }
 
-      // PS filter
+      // PS filter (Checks both Primary and Secondary preferences)
       if (psFilter !== "ALL") {
-        if (psFilter === "UNASSIGNED" && squad.problemStatementId) return false;
-        if (psFilter !== "UNASSIGNED" && squad.problemStatementId !== psFilter)
-          return false;
+        const { primary, secondary, hasSelection } = getSquadProblemStatements(squad);
+        if (psFilter === "UNASSIGNED") {
+          if (hasSelection) return false;
+        } else {
+          const matchP1 =
+            primary?.id === psFilter ||
+            primary?.code.toLowerCase() === psFilter.toLowerCase();
+          const matchP2 =
+            secondary?.id === psFilter ||
+            secondary?.code.toLowerCase() === psFilter.toLowerCase();
+          if (!matchP1 && !matchP2) return false;
+        }
       }
 
       return true;
@@ -120,6 +130,10 @@ export default function AdminSquadsPage() {
       toast.error("Failed to export Excel file.");
     }
   };
+
+  const unassignedSquadsCount = useMemo(() => {
+    return registrations.filter((r) => !getSquadProblemStatements(r).hasSelection).length;
+  }, [registrations]);
 
   return (
     <div className="space-y-6 select-none text-white">
@@ -218,7 +232,7 @@ export default function AdminSquadsPage() {
               <option value="UNASSIGNED">Unassigned Track</option>
               {PROBLEM_STATEMENTS_DATA.map((p) => (
                 <option key={p.id} value={p.id}>
-                  {p.id}: {p.title.slice(0, 30)}...
+                  [{p.code}] {p.title.slice(0, 28)}...
                 </option>
               ))}
             </select>
@@ -257,7 +271,7 @@ export default function AdminSquadsPage() {
             }}
             className="px-2 py-0.5 border border-cyan-800 bg-cyan-950/60 hover:bg-cyan-900/80 text-cyan-300 font-black cursor-pointer"
           >
-            Unassigned Track ({registrations.filter((r) => !r.problemStatementId).length})
+            Unassigned Track ({unassignedSquadsCount})
           </button>
           <button
             onClick={() => {
@@ -297,7 +311,7 @@ export default function AdminSquadsPage() {
                   <th className="p-3 font-black uppercase">Reg ID</th>
                   <th className="p-3 font-black uppercase">Squad / College</th>
                   <th className="p-3 font-black uppercase">Leader / Contact</th>
-                  <th className="p-3 font-black uppercase">Track</th>
+                  <th className="p-3 font-black uppercase">Problem Statements</th>
                   <th className="p-3 font-black uppercase">Roster</th>
                   <th className="p-3 font-black uppercase">Status</th>
                   <th className="p-3 font-black uppercase text-right">Actions</th>
@@ -306,9 +320,7 @@ export default function AdminSquadsPage() {
               <tbody className="divide-y divide-neutral-800">
                 {filteredSquads.map((squad) => {
                   const totalMembers = 1 + (squad.members?.length || 0);
-                  const ps = PROBLEM_STATEMENTS_DATA.find(
-                    (p) => p.id === squad.problemStatementId
-                  );
+                  const { primary, secondary, hasSelection } = getSquadProblemStatements(squad);
 
                   return (
                     <tr
@@ -346,20 +358,40 @@ export default function AdminSquadsPage() {
                         </div>
                       </td>
 
-                      {/* Problem Statement Track */}
+                      {/* Problem Statement Track (Shows Primary & Secondary) */}
                       <td className="p-3">
-                        {squad.problemStatementId ? (
-                          <div className="max-w-[160px]">
-                            <span className="px-1.5 py-0.5 bg-cyan-950/60 border border-cyan-800 text-cyan-300 font-black text-[10px] inline-block mb-0.5">
-                              {squad.problemStatementId}
-                            </span>
-                            <div className="text-[10px] text-neutral-300 truncate font-bold">
-                              {ps?.title || squad.problemStatementId}
-                            </div>
+                        {hasSelection ? (
+                          <div className="max-w-[220px] space-y-1">
+                            {primary && (
+                              <div className="flex items-center gap-1 flex-wrap">
+                                <span className="px-1.5 py-0.2 bg-cyan-950/80 border border-cyan-800 text-cyan-300 font-black text-[9px]">
+                                  P1: {primary.code}
+                                </span>
+                                <span
+                                  className="text-[10px] text-neutral-200 truncate font-bold max-w-[140px]"
+                                  title={primary.title}
+                                >
+                                  {primary.title}
+                                </span>
+                              </div>
+                            )}
+                            {secondary && (
+                              <div className="flex items-center gap-1 flex-wrap">
+                                <span className="px-1.5 py-0.2 bg-purple-950/80 border border-purple-800 text-purple-300 font-black text-[9px]">
+                                  P2: {secondary.code}
+                                </span>
+                                <span
+                                  className="text-[10px] text-neutral-400 truncate font-medium max-w-[140px]"
+                                  title={secondary.title}
+                                >
+                                  {secondary.title}
+                                </span>
+                              </div>
+                            )}
                           </div>
                         ) : (
                           <span className="text-[10px] text-neutral-500 italic">
-                            Unassigned
+                            Unassigned Track
                           </span>
                         )}
                       </td>
@@ -419,9 +451,7 @@ export default function AdminSquadsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredSquads.map((squad) => {
             const totalMembers = 1 + (squad.members?.length || 0);
-            const ps = PROBLEM_STATEMENTS_DATA.find(
-              (p) => p.id === squad.problemStatementId
-            );
+            const { primary, secondary, hasSelection } = getSquadProblemStatements(squad);
 
             return (
               <div
@@ -469,11 +499,25 @@ export default function AdminSquadsPage() {
                     </div>
                   </div>
 
-                  {/* PS Badge */}
-                  {squad.problemStatementId && (
-                    <div className="mt-2 text-[10px] font-mono text-cyan-300 bg-cyan-950/60 border border-cyan-800 p-1.5 truncate">
-                      <span className="font-black">{squad.problemStatementId}:</span>{" "}
-                      {ps?.title || squad.problemStatementId}
+                  {/* Problem Statement Badges (P1 & P2) */}
+                  {hasSelection ? (
+                    <div className="mt-2 space-y-1">
+                      {primary && (
+                        <div className="text-[10px] font-mono text-cyan-300 bg-cyan-950/60 border border-cyan-800 p-1.5 truncate">
+                          <span className="font-black">P1 [{primary.code}]:</span>{" "}
+                          {primary.title}
+                        </div>
+                      )}
+                      {secondary && (
+                        <div className="text-[10px] font-mono text-purple-300 bg-purple-950/60 border border-purple-800 p-1.5 truncate">
+                          <span className="font-black">P2 [{secondary.code}]:</span>{" "}
+                          {secondary.title}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="mt-2 text-[10px] font-mono text-neutral-500 bg-neutral-950 p-1.5 border border-neutral-800 italic">
+                      Unassigned Track
                     </div>
                   )}
                 </div>
@@ -519,7 +563,7 @@ export default function AdminSquadsPage() {
             }}
             className="px-4 py-2 border-2 border-amber-400 bg-amber-400 text-black font-mono text-xs font-black uppercase shadow-[2px_2px_0px_0px_#000000] cursor-pointer"
           >
-            CLEAR ALL FILTERS
+            RESET ALL FILTERS
           </button>
         </div>
       )}

@@ -217,6 +217,8 @@ export async function PUT(req: NextRequest) {
       collegeName,
       collegeAddress,
       problemStatementId,
+      problemStatement2,
+      selectedProblemStatements,
       status,
       leaderName,
       leaderEmail,
@@ -483,8 +485,68 @@ export async function PUT(req: NextRequest) {
     if (teamName !== undefined) updatePayload.teamName = teamName;
     if (collegeName !== undefined) updatePayload.collegeName = collegeName;
     if (collegeAddress !== undefined) updatePayload.collegeAddress = collegeAddress;
-    if (problemStatementId !== undefined) updatePayload.problemStatementId = problemStatementId || null;
     if (status !== undefined) updatePayload.status = status;
+
+    // Handle problem statement & documents sync
+    const currentDocs = (existingSquad.documents as Record<string, any>) || {};
+    let finalDocs = documents !== undefined ? { ...documents } : { ...currentDocs };
+
+    if (
+      problemStatementId !== undefined ||
+      problemStatement2 !== undefined ||
+      selectedProblemStatements !== undefined
+    ) {
+      const resolvePs = (val?: string | null) => {
+        if (!val) return null;
+        return (
+          PROBLEM_STATEMENTS_DATA.find(
+            (p) =>
+              p.id.toLowerCase() === String(val).toLowerCase() ||
+              p.code.toLowerCase() === String(val).toLowerCase()
+          ) || null
+        );
+      };
+
+      const rawP1 =
+        Array.isArray(selectedProblemStatements) && selectedProblemStatements[0]
+          ? selectedProblemStatements[0]
+          : problemStatementId;
+      const rawP2 =
+        Array.isArray(selectedProblemStatements) && selectedProblemStatements[1]
+          ? selectedProblemStatements[1]
+          : problemStatement2;
+
+      const p1Obj = resolvePs(rawP1);
+      const p2Obj = resolvePs(rawP2);
+
+      if (p1Obj) {
+        const finalList = [p1Obj.id, ...(p2Obj && p2Obj.id !== p1Obj.id ? [p2Obj.id] : [])];
+        updatePayload.problemStatementId = p1Obj.id;
+        finalDocs = {
+          ...finalDocs,
+          selectedProblemStatements: finalList,
+          problemStatement1: p1Obj.id,
+          problemStatement2: p2Obj && p2Obj.id !== p1Obj.id ? p2Obj.id : null,
+          problemStatement1Code: p1Obj.code,
+          problemStatement2Code: p2Obj && p2Obj.id !== p1Obj.id ? p2Obj.code : null,
+          isPsLocked: true,
+          psSubmittedAt: finalDocs.psSubmittedAt || new Date().toISOString(),
+          psAdminModifiedAt: new Date().toISOString(),
+          psAdminModifiedBy: admin.email || admin.name || "admin",
+        };
+      } else {
+        updatePayload.problemStatementId = null;
+        finalDocs = {
+          ...finalDocs,
+          selectedProblemStatements: [],
+          problemStatement1: null,
+          problemStatement2: null,
+          problemStatement1Code: null,
+          problemStatement2Code: null,
+          isPsLocked: false,
+        };
+      }
+    }
 
     if (leaderName !== undefined) updatePayload.leaderName = leaderName;
     if (leaderEmail !== undefined) updatePayload.leaderEmail = newLeaderEmail;
@@ -503,7 +565,7 @@ export async function PUT(req: NextRequest) {
     if (paymentMode !== undefined) updatePayload.paymentMode = paymentMode;
     if (transactionId !== undefined) updatePayload.transactionId = transactionId;
     if (amount !== undefined) updatePayload.amount = Number(amount);
-    if (documents !== undefined) updatePayload.documents = documents;
+    updatePayload.documents = finalDocs;
 
     // Execute Database Update
     const updated = await prisma.teamRegistration.update({
