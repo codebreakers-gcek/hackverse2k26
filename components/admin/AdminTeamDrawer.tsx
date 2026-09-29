@@ -154,7 +154,7 @@ export function AdminTeamDrawer() {
                 { id: "overview", label: "Squad Info" },
                 { id: "members", label: `Roster (${totalMembers})` },
                 { id: "docs", label: "Documents" },
-                { id: "finance", label: "Finance & Stay" },
+                { id: "finance", label: "Finance & Receipt" },
               ] as const
             ).map((tab) => (
               <button
@@ -430,7 +430,7 @@ export function AdminTeamDrawer() {
             </div>
           )}
 
-          {/* TAB 4: FINANCE & STAY */}
+          {/* TAB 4: FINANCE & RECEIPT */}
           {activeTab === "finance" && (
             <div className="space-y-6">
               {/* Payment Card */}
@@ -466,38 +466,6 @@ export function AdminTeamDrawer() {
                     <span className="text-neutral-500 block">Transaction UTR:</span>
                     <span className="font-bold font-mono bg-neutral-900 px-2 py-1 border border-neutral-800 block text-neutral-200 truncate">
                       {activeSquad.transactionId || "N/A (Free Registration)"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Accommodation Card */}
-              <div className="border-2 border-neutral-800 bg-neutral-950 p-4 shadow-[2px_2px_0px_0px_#000000] space-y-3">
-                <div className="font-mono text-xs font-black uppercase text-neutral-400 border-b border-neutral-800 pb-2 flex items-center justify-between">
-                  <span>HOSTEL ACCOMMODATION</span>
-                  <span
-                    className={`px-2 py-0.5 border border-black font-mono text-[10px] font-black uppercase ${
-                      activeSquad.accommodationStatus === "ALLOCATED"
-                        ? "bg-emerald-400 text-black"
-                        : activeSquad.accommodationRequired
-                        ? "bg-amber-400 text-black"
-                        : "bg-neutral-800 text-neutral-300"
-                    }`}
-                  >
-                    {activeSquad.accommodationStatus || (activeSquad.accommodationRequired ? "REQUESTED" : "NOT REQUESTED")}
-                  </span>
-                </div>
-                <div className="grid grid-cols-2 gap-3 font-mono text-xs">
-                  <div>
-                    <span className="text-neutral-500 block">Hostel Block:</span>
-                    <span className="font-black text-white">
-                      {activeSquad.hostelBlock || "Not Allocated"}
-                    </span>
-                  </div>
-                  <div>
-                    <span className="text-neutral-500 block">Room Number:</span>
-                    <span className="font-black text-white">
-                      {activeSquad.roomNumber || "Not Allocated"}
                     </span>
                   </div>
                 </div>

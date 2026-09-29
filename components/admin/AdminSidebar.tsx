@@ -29,7 +29,6 @@ import {
   LayoutDashboard,
   Users,
   Compass,
-  BedDouble,
   CreditCard,
   KeyRound,
   Settings,
@@ -86,16 +85,6 @@ export function AdminSidebar({
           ? Object.values(stats.psDistribution).reduce((a, b) => a + b, 0)
           : undefined,
       badgeColor: "bg-fuchsia-400 text-black",
-    },
-    {
-      title: "Hostel Allocation",
-      href: "/admin/accommodation",
-      icon: BedDouble,
-      badge:
-        stats?.accommodationRequested !== undefined
-          ? `${stats.accommodationAllocated}/${stats.accommodationRequested}`
-          : undefined,
-      badgeColor: "bg-emerald-400 text-black",
     },
     {
       title: "Payment Verification",

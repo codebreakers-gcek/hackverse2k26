@@ -41,7 +41,6 @@ export interface RegistrationEmailData {
     paymentStatus?: string;
     amount?: number;
   };
-  accommodationRequired?: boolean;
 }
 
 /**
@@ -740,13 +739,13 @@ export async function sendTeamDetailsUpdatedNotification(data: {
         SQUAD RECORD UPDATE
       </div>
       <h2 style="font-size: 20px; font-weight: 900; margin: 4px 0 0 0; color: #075985; text-transform: uppercase;">
-        Team Details Modified by Admin
+        Team Details Modified As Per Request
       </h2>
     </div>
 
     <p style="font-size: 14px; line-height: 1.5; color: #3f3f46;">
       Dear <strong>${data.leaderName}</strong> (Squad Leader),<br><br>
-      An administrator has updated the tournament record for squad <strong>${data.teamName}</strong> (${data.registrationNumber}). Here is a summary of the modified team parameters:
+      As per your request for update, the tournament record for squad <strong>${data.teamName}</strong> (${data.registrationNumber}) has been successfully modified. Here is a summary of the updated parameters:
     </p>
 
     <div class="card" style="background: #ffffff; border-color: #000000;">
@@ -757,7 +756,7 @@ export async function sendTeamDetailsUpdatedNotification(data: {
     </div>
 
     <div style="background: #f4f4f5; border: 2px solid #000000; padding: 12px; font-size: 12px; line-height: 1.5; margin: 16px 0;">
-      You can verify your updated squad configuration, room allocations, problem statements, and roster anytime on your dashboard.
+      You can verify your updated squad configuration, problem statements, and roster anytime on your dashboard.
     </div>
 
     <center style="margin-top: 24px;">

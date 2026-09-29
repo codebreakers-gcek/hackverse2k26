@@ -44,11 +44,6 @@ export interface ExportRegistrationRecord {
   paymentStatus?: string;
   amount?: number;
 
-  accommodationRequired?: boolean;
-  accommodationStatus?: string;
-  roomNumber?: string;
-  hostelBlock?: string;
-
   documents?: {
     collegeIdFileName?: string;
     collegeIdFileSize?: string;
@@ -173,10 +168,6 @@ export function exportSquadsAndRostersExcel(registrations: ExportRegistrationRec
       "Payment Mode": squad.paymentMode || "UPI_QR",
       "Transaction UTR": squad.transactionId || "N/A",
       "Amount (INR)": squad.amount ?? 0,
-      "Hostel Accommodation": squad.accommodationRequired ? "YES" : "NO",
-      "Hostel Status": squad.accommodationStatus || (squad.accommodationRequired ? "REQUESTED" : "NOT_REQUESTED"),
-      "Hostel Block": squad.hostelBlock || "",
-      "Hostel Room": squad.roomNumber || "",
       "College ID File / Link": docs.collegeIdDriveUrl || docs.collegeIdUrl || docs.collegeIdFileName || "",
       "Synopsis File / Link": docs.synopsisDriveUrl || docs.synopsisUrl || docs.synopsisFileName || "",
       "Registered At (IST)": formatDate(squad.createdAt),
@@ -227,10 +218,6 @@ export function exportSquadsAndRostersExcel(registrations: ExportRegistrationRec
     { wch: 14 }, // Payment Mode
     { wch: 20 }, // Transaction UTR
     { wch: 12 }, // Amount
-    { wch: 18 }, // Hostel
-    { wch: 16 }, // Hostel Status
-    { wch: 14 }, // Block
-    { wch: 14 }, // Room
     { wch: 35 }, // College ID
     { wch: 35 }, // Synopsis
     { wch: 22 }, // Registered At
@@ -270,8 +257,6 @@ export function exportSquadsAndRostersExcel(registrations: ExportRegistrationRec
       "GitHub Profile": squad.leaderGithub || "",
       "Squad Status": squad.status,
       "Primary Track": `${p1Info.code} - ${p1Info.title}`,
-      "Hostel Required": squad.accommodationRequired ? "YES" : "NO",
-      "Hostel Allocation": squad.hostelBlock ? `${squad.hostelBlock} - Room ${squad.roomNumber}` : squad.accommodationRequired ? "PENDING" : "NO",
       "Payment Verified": squad.paymentStatus === "VERIFIED" ? "YES" : "NO",
       "Registration Date": formatDate(squad.createdAt),
     });
@@ -294,8 +279,6 @@ export function exportSquadsAndRostersExcel(registrations: ExportRegistrationRec
         "GitHub Profile": member.githubUsername || "",
         "Squad Status": squad.status,
         "Primary Track": `${p1Info.code} - ${p1Info.title}`,
-        "Hostel Required": squad.accommodationRequired ? "YES" : "NO",
-        "Hostel Allocation": squad.hostelBlock ? `${squad.hostelBlock} - Room ${squad.roomNumber}` : squad.accommodationRequired ? "PENDING" : "NO",
         "Payment Verified": squad.paymentStatus === "VERIFIED" ? "YES" : "NO",
         "Registration Date": formatDate(squad.createdAt),
       });
@@ -319,8 +302,6 @@ export function exportSquadsAndRostersExcel(registrations: ExportRegistrationRec
     { wch: 18 }, // GitHub
     { wch: 16 }, // Status
     { wch: 36 }, // Primary Track
-    { wch: 16 }, // Hostel
-    { wch: 20 }, // Allocation
     { wch: 16 }, // Payment Verified
     { wch: 22 }, // Date
   ];
@@ -367,7 +348,6 @@ export function exportPaymentDetailsExcel(registrations: ExportRegistrationRecor
       "Transaction ID / UTR": squad.transactionId || "N/A",
       "Amount (INR)": squad.amount ?? 0,
       "Registration Status": squad.status || "PENDING_VERIFICATION",
-      "Hostel Accommodation": squad.accommodationRequired ? "YES" : "NO",
       "Payment Proof URL": docs.paymentProofUrl || docs.collegeIdDriveUrl || "",
       "Registered At (IST)": formatDate(squad.createdAt),
       "Last Audited (IST)": formatDate(squad.updatedAt),
@@ -390,7 +370,6 @@ export function exportPaymentDetailsExcel(registrations: ExportRegistrationRecor
     { wch: 24 }, // UTR
     { wch: 14 }, // Amount
     { wch: 20 }, // Reg Status
-    { wch: 18 }, // Hostel
     { wch: 35 }, // Proof URL
     { wch: 22 }, // Registered At
     { wch: 22 }, // Last Audited
