@@ -18,10 +18,7 @@ import {
   X,
   Shuffle,
   Filter,
-  Layers,
   RotateCcw,
-  Cpu,
-  Code2,
 } from "lucide-react";
 import { RegistrationRecord } from "@/types/admin";
 import { toast } from "sonner";
@@ -430,104 +427,6 @@ export default function AdminProblemsPage() {
               <span>RESET FILTERS</span>
             </button>
           )}
-        </div>
-      </div>
-
-      {/* ========================================================================= */}
-      {/* QUICK TRACK CHIPS / HORIZONTAL PILL SELECTOR */}
-      {/* ========================================================================= */}
-      <div className="space-y-2">
-        <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-thin">
-          {/* ALL TRACKS PILL */}
-          <button
-            onClick={() => {
-              setSelectedPsId("ALL");
-              setCategoryFilter("ALL");
-            }}
-            className={`px-3 py-1.5 border-2 font-mono text-xs font-black uppercase shrink-0 transition-all cursor-pointer ${
-              selectedPsId === "ALL" && categoryFilter === "ALL"
-                ? "bg-amber-400 text-black border-amber-400 shadow-[2px_2px_0px_0px_#000000]"
-                : "bg-neutral-900 hover:bg-neutral-800 text-neutral-400 border-neutral-800 shadow-[1px_1px_0px_0px_#000000]"
-            }`}
-          >
-            ALL TRACKS ({registrations.length})
-          </button>
-
-          {/* UNASSIGNED PILL */}
-          <button
-            onClick={() => {
-              setSelectedPsId("unassigned");
-              setCategoryFilter("UNASSIGNED");
-            }}
-            className={`px-3 py-1.5 border-2 font-mono text-xs font-black uppercase shrink-0 transition-all cursor-pointer ${
-              selectedPsId === "unassigned" || categoryFilter === "UNASSIGNED"
-                ? "bg-rose-500 text-white border-rose-500 shadow-[2px_2px_0px_0px_#000000]"
-                : "bg-neutral-900 hover:bg-neutral-800 text-neutral-400 border-neutral-800 shadow-[1px_1px_0px_0px_#000000]"
-            }`}
-          >
-            UNASSIGNED ({unassignedCount})
-          </button>
-
-          {/* HARDWARE ONLY PILL */}
-          <button
-            onClick={() => {
-              setCategoryFilter("HW");
-              if (selectedPsId !== "ALL" && !selectedPsId.includes("HW")) {
-                setSelectedPsId("ALL");
-              }
-            }}
-            className={`px-3 py-1.5 border-2 font-mono text-xs font-black uppercase shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
-              categoryFilter === "HW" && selectedPsId === "ALL"
-                ? "bg-emerald-400 text-black border-emerald-400 shadow-[2px_2px_0px_0px_#000000]"
-                : "bg-neutral-900 hover:bg-neutral-800 text-neutral-400 border-neutral-800 shadow-[1px_1px_0px_0px_#000000]"
-            }`}
-          >
-            <Cpu className="w-3.5 h-3.5" />
-            <span>HARDWARE HW</span>
-          </button>
-
-          {/* SOFTWARE ONLY PILL */}
-          <button
-            onClick={() => {
-              setCategoryFilter("SW");
-              if (selectedPsId !== "ALL" && !selectedPsId.includes("SW")) {
-                setSelectedPsId("ALL");
-              }
-            }}
-            className={`px-3 py-1.5 border-2 font-mono text-xs font-black uppercase shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${
-              categoryFilter === "SW" && selectedPsId === "ALL"
-                ? "bg-cyan-400 text-black border-cyan-400 shadow-[2px_2px_0px_0px_#000000]"
-                : "bg-neutral-900 hover:bg-neutral-800 text-neutral-400 border-neutral-800 shadow-[1px_1px_0px_0px_#000000]"
-            }`}
-          >
-            <Code2 className="w-3.5 h-3.5" />
-            <span>SOFTWARE SW</span>
-          </button>
-
-          {/* DYNAMIC TRACK CHIPS */}
-          {PROBLEM_STATEMENTS_DATA.filter((p) => {
-            if (categoryFilter === "HW") return p.id.includes("HW") || p.category === "HARDWARE";
-            if (categoryFilter === "SW") return p.id.includes("SW") || p.category === "SOFTWARE";
-            return true;
-          }).map((p) => {
-            const count = psGroups[p.id]?.length || 0;
-            const isSelected = selectedPsId === p.id;
-            return (
-              <button
-                key={p.id}
-                onClick={() => setSelectedPsId(p.id)}
-                className={`px-3 py-1.5 border-2 font-mono text-xs font-black uppercase shrink-0 transition-all cursor-pointer ${
-                  isSelected
-                    ? "bg-cyan-400 text-black border-cyan-400 shadow-[2px_2px_0px_0px_#000000]"
-                    : count > 0
-                    ? "bg-neutral-900 hover:bg-neutral-800 text-neutral-200 border-neutral-700 shadow-[1px_1px_0px_0px_#000000]"
-                    : "bg-neutral-950 hover:bg-neutral-900 text-neutral-500 border-neutral-850 shadow-[1px_1px_0px_0px_#000000]"
-                }`}
-              >
-                {p.id} ({count})
-              </button>
-            );
-          })}
         </div>
       </div>
 
