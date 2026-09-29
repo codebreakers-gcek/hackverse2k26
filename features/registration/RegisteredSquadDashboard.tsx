@@ -412,11 +412,6 @@ export function RegisteredSquadDashboard({
                   • {teamData.collegeAddress.city}, {teamData.collegeAddress.state}
                 </span>
               )}
-              {teamData.accommodationRequired && (
-                <span className="px-2 py-0.5 bg-[#DBDBDB] text-blue-900 border border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] font-black text-[10px] uppercase shadow-[1px_1px_0px_#000]">
-                  HOSTEL ACCOMMODATION REQUESTED
-                </span>
-              )}
             </div>
           </div>
 

@@ -42,7 +42,6 @@ export default function AdminSquadsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [paymentFilter, setPaymentFilter] = useState("ALL");
-  const [accomFilter, setAccomFilter] = useState("ALL");
   const [psFilter, setPsFilter] = useState("ALL");
   const [viewMode, setViewMode] = useState<"table" | "cards">("table");
 
@@ -96,19 +95,6 @@ export default function AdminSquadsPage() {
           return false;
       }
 
-      // Accommodation filter
-      if (accomFilter !== "ALL") {
-        if (
-          accomFilter === "REQUESTED" &&
-          (!squad.accommodationRequired ||
-            squad.accommodationStatus === "ALLOCATED")
-        )
-          return false;
-        if (accomFilter === "ALLOCATED" && squad.accommodationStatus !== "ALLOCATED")
-          return false;
-        if (accomFilter === "NONE" && squad.accommodationRequired) return false;
-      }
-
       // PS filter
       if (psFilter !== "ALL") {
         if (psFilter === "UNASSIGNED" && squad.problemStatementId) return false;
@@ -123,7 +109,6 @@ export default function AdminSquadsPage() {
     searchQuery,
     statusFilter,
     paymentFilter,
-    accomFilter,
     psFilter,
   ]);
 
@@ -276,23 +261,21 @@ export default function AdminSquadsPage() {
           </button>
           <button
             onClick={() => {
-              setAccomFilter("REQUESTED");
+              setPaymentFilter("VERIFIED");
             }}
-            className="px-2 py-0.5 border border-fuchsia-800 bg-fuchsia-950/60 hover:bg-fuchsia-900/80 text-fuchsia-300 font-black cursor-pointer"
+            className="px-2 py-0.5 border border-emerald-800 bg-emerald-950/60 hover:bg-emerald-900/80 text-emerald-300 font-black cursor-pointer"
           >
-            Hostel Requested ({registrations.filter((r) => r.accommodationRequired && r.accommodationStatus !== "ALLOCATED").length})
+            Payment Verified ({registrations.filter((r) => r.paymentStatus === "VERIFIED").length})
           </button>
           {(statusFilter !== "ALL" ||
             psFilter !== "ALL" ||
             paymentFilter !== "ALL" ||
-            accomFilter !== "ALL" ||
             searchQuery) && (
             <button
               onClick={() => {
                 setStatusFilter("ALL");
                 setPsFilter("ALL");
                 setPaymentFilter("ALL");
-                setAccomFilter("ALL");
                 setSearchQuery("");
               }}
               className="px-2 py-0.5 border border-neutral-700 bg-neutral-800 hover:bg-neutral-700 text-white font-black ml-auto cursor-pointer"
@@ -532,7 +515,6 @@ export default function AdminSquadsPage() {
               setSearchQuery("");
               setStatusFilter("ALL");
               setPaymentFilter("ALL");
-              setAccomFilter("ALL");
               setPsFilter("ALL");
             }}
             className="px-4 py-2 border-2 border-amber-400 bg-amber-400 text-black font-mono text-xs font-black uppercase shadow-[2px_2px_0px_0px_#000000] cursor-pointer"

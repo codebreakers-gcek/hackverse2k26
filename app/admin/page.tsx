@@ -9,7 +9,6 @@ import {
   LayoutDashboard,
   Users,
   Compass,
-  BedDouble,
   CreditCard,
   KeyRound,
   Settings,
@@ -49,9 +48,6 @@ export default function AdminOverviewPage() {
   const pendingTeams =
     stats?.pendingTeams ??
     registrations.filter((r) => r.status === "PENDING_VERIFICATION").length;
-  const accomRequested =
-    stats?.accommodationRequested ??
-    registrations.filter((r) => r.accommodationRequired).length;
   const paymentPending = stats?.paymentPending ?? 0;
 
   // Recent 5 squads
@@ -79,7 +75,7 @@ export default function AdminOverviewPage() {
             MISSION CONTROL &amp; TELEMETRY
           </h1>
           <p className="font-mono text-xs text-neutral-400 mt-1">
-            Live overview of squad submissions, problem statement distribution, accommodation, and access gates.
+            Live overview of squad submissions, challenge track allocations, and access gates.
           </p>
         </div>
 
@@ -164,12 +160,13 @@ export default function AdminOverviewPage() {
           badgeBg="bg-emerald-950/60 text-emerald-400 border-emerald-800"
         />
         <AdminStatCard
-          title="Hostel Requests"
-          value={accomRequested}
-          description={`${stats?.accommodationAllocated || 0} allocated so far`}
-          icon={BedDouble}
-          colorBg="bg-fuchsia-400"
-          badgeText="LOGISTICS"
+          title="Payment Review"
+          value={paymentPending > 0 ? `${paymentPending} PENDING` : "CLEAR"}
+          description={paymentPending > 0 ? "UTR verifications pending" : "All payments verified"}
+          icon={CreditCard}
+          colorBg="bg-amber-400"
+          badgeText="FINANCE"
+          badgeBg={paymentPending > 0 ? "bg-rose-950 text-rose-400 border-rose-800" : "bg-emerald-950/60 text-emerald-400 border-emerald-800"}
         />
       </div>
 

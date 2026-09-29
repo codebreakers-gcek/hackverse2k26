@@ -13,7 +13,6 @@ import {
   Phone,
   GraduationCap,
   CreditCard,
-  BedDouble,
   Sparkles,
   Plus,
   Trash2,
@@ -40,7 +39,7 @@ export function AdminEditSquadModal({
   const { handleSaveFullSquad, isUpdating } = useAdmin();
 
   const [activeTab, setActiveTab] = useState<
-    "team" | "leader" | "roster" | "finance" | "accommodation"
+    "team" | "leader" | "roster" | "finance"
   >("team");
 
   // Editable Form State
@@ -81,12 +80,6 @@ export function AdminEditSquadModal({
     paymentMode: "FREE_SPONSORED",
     transactionId: "",
     amount: 0,
-
-    // Accommodation
-    accommodationRequired: false,
-    accommodationStatus: "NOT_REQUESTED",
-    hostelBlock: "",
-    roomNumber: "",
   });
 
   // Initial population from squad
@@ -131,11 +124,6 @@ export function AdminEditSquadModal({
         paymentMode: squad.paymentMode || "FREE_SPONSORED",
         transactionId: squad.transactionId || "",
         amount: squad.amount ?? 0,
-
-        accommodationRequired: Boolean(squad.accommodationRequired),
-        accommodationStatus: squad.accommodationStatus || "NOT_REQUESTED",
-        hostelBlock: squad.hostelBlock || "",
-        roomNumber: squad.roomNumber || "",
       });
     }
   }, [squad, isOpen]);
@@ -253,11 +241,6 @@ export function AdminEditSquadModal({
       paymentMode: formData.paymentMode,
       transactionId: formData.transactionId.trim(),
       amount: Number(formData.amount) || 0,
-
-      accommodationRequired: formData.accommodationRequired,
-      accommodationStatus: formData.accommodationStatus,
-      hostelBlock: formData.hostelBlock.trim(),
-      roomNumber: formData.roomNumber.trim(),
     };
 
     const res = await handleSaveFullSquad(squad.id, payload as any);
@@ -308,7 +291,6 @@ export function AdminEditSquadModal({
               icon: Users,
             },
             { id: "finance", label: "Finance & UTR", icon: CreditCard },
-            { id: "accommodation", label: "Accommodation", icon: BedDouble },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -930,102 +912,6 @@ export function AdminEditSquadModal({
                         })
                       }
                       placeholder="e.g. 508210394829"
-                      className="w-full px-3 py-2 border-2 border-neutral-700 bg-neutral-900 text-white font-mono text-xs focus:border-amber-400 focus:outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB 5: ACCOMMODATION */}
-            {activeTab === "accommodation" && (
-              <div className="p-4 border-2 border-neutral-800 bg-neutral-950 space-y-4">
-                <div className="font-mono text-xs font-black uppercase text-neutral-400 border-b border-neutral-800 pb-2">
-                  CAMPUS HOSTEL STAY ALLOCATION
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Accommodation Required Toggle */}
-                  <div className="space-y-1.5">
-                    <label className="block font-mono text-xs font-black uppercase text-neutral-300">
-                      Hostel Required?
-                    </label>
-                    <select
-                      value={formData.accommodationRequired ? "true" : "false"}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          accommodationRequired: e.target.value === "true",
-                          accommodationStatus:
-                            e.target.value === "true" &&
-                            formData.accommodationStatus === "NOT_REQUESTED"
-                              ? "REQUESTED"
-                              : formData.accommodationStatus,
-                        })
-                      }
-                      className="w-full px-3 py-2 border-2 border-neutral-700 bg-neutral-900 text-white font-mono text-xs focus:border-amber-400 focus:outline-none"
-                    >
-                      <option value="true">YES - Accommodation Needed</option>
-                      <option value="false">NO - Day Scholar / Local</option>
-                    </select>
-                  </div>
-
-                  {/* Accommodation Status */}
-                  <div className="space-y-1.5">
-                    <label className="block font-mono text-xs font-black uppercase text-neutral-300">
-                      Allocation Status
-                    </label>
-                    <select
-                      value={formData.accommodationStatus}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          accommodationStatus: e.target.value,
-                        })
-                      }
-                      className="w-full px-3 py-2 border-2 border-neutral-700 bg-neutral-900 text-white font-mono text-xs focus:border-amber-400 focus:outline-none"
-                    >
-                      <option value="NOT_REQUESTED">NOT_REQUESTED</option>
-                      <option value="REQUESTED">REQUESTED</option>
-                      <option value="ALLOCATED">ALLOCATED (Assigned)</option>
-                      <option value="REJECTED">REJECTED</option>
-                    </select>
-                  </div>
-
-                  {/* Hostel Block */}
-                  <div className="space-y-1.5">
-                    <label className="block font-mono text-xs font-black uppercase text-neutral-300">
-                      Hostel Block
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.hostelBlock}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          hostelBlock: e.target.value,
-                        })
-                      }
-                      placeholder="e.g. Block A, Girls Hostel B"
-                      className="w-full px-3 py-2 border-2 border-neutral-700 bg-neutral-900 text-white font-sans text-xs focus:border-amber-400 focus:outline-none"
-                    />
-                  </div>
-
-                  {/* Room Number */}
-                  <div className="space-y-1.5">
-                    <label className="block font-mono text-xs font-black uppercase text-neutral-300">
-                      Room Number
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.roomNumber}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          roomNumber: e.target.value,
-                        })
-                      }
-                      placeholder="e.g. Room 204"
                       className="w-full px-3 py-2 border-2 border-neutral-700 bg-neutral-900 text-white font-mono text-xs focus:border-amber-400 focus:outline-none"
                     />
                   </div>

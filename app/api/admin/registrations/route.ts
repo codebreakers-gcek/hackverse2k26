@@ -19,25 +19,12 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const status = searchParams.get("status");
     const search = searchParams.get("search")?.toLowerCase().trim();
-    const accommodation = searchParams.get("accommodation");
     const payment = searchParams.get("payment");
 
     const where: any = {};
 
     if (status && status !== "ALL") {
       where.status = status;
-    }
-
-    if (accommodation && accommodation !== "ALL") {
-      if (accommodation === "REQUESTED") {
-        where.accommodationRequired = true;
-      } else if (accommodation === "ALLOCATED") {
-        where.accommodationStatus = "ALLOCATED";
-      } else if (accommodation === "NOT_REQUESTED") {
-        where.accommodationRequired = false;
-      } else {
-        where.accommodationStatus = accommodation;
-      }
     }
 
     if (payment && payment !== "ALL") {
@@ -83,10 +70,6 @@ export async function PATCH(req: NextRequest) {
     const {
       id,
       status,
-      accommodationStatus,
-      accommodationRequired,
-      roomNumber,
-      hostelBlock,
       paymentStatus,
       transactionId,
       problemStatementId,
@@ -109,19 +92,6 @@ export async function PATCH(req: NextRequest) {
 
     const updateData: any = {};
     if (status !== undefined) updateData.status = status;
-    if (accommodationStatus !== undefined) {
-      updateData.accommodationStatus = accommodationStatus;
-      if (accommodationStatus === "ALLOCATED" || accommodationStatus === "REQUESTED") {
-        updateData.accommodationRequired = true;
-      } else if (accommodationStatus === "NOT_REQUESTED") {
-        updateData.accommodationRequired = false;
-      }
-    }
-    if (accommodationRequired !== undefined) {
-      updateData.accommodationRequired = Boolean(accommodationRequired);
-    }
-    if (roomNumber !== undefined) updateData.roomNumber = roomNumber;
-    if (hostelBlock !== undefined) updateData.hostelBlock = hostelBlock;
     if (paymentStatus !== undefined) {
       updateData.paymentStatus = paymentStatus;
       if (paymentStatus === "VERIFIED" && status === undefined) {
@@ -211,7 +181,6 @@ export async function PATCH(req: NextRequest) {
           paymentStatus: updated.paymentStatus || undefined,
           amount: (updated as any).amount || undefined,
         },
-        accommodationRequired: Boolean(updated.accommodationRequired),
       }).catch((err) => {
         console.warn("Could not dispatch approval email:", err);
       });
@@ -264,10 +233,6 @@ export async function PUT(req: NextRequest) {
       paymentMode,
       transactionId,
       amount,
-      accommodationRequired,
-      accommodationStatus,
-      hostelBlock,
-      roomNumber,
       documents,
     } = body;
 
@@ -513,18 +478,6 @@ export async function PUT(req: NextRequest) {
       });
     }
 
-    if (
-      accommodationStatus !== undefined &&
-      (accommodationStatus !== existingSquad.accommodationStatus ||
-        hostelBlock !== existingSquad.hostelBlock ||
-        roomNumber !== existingSquad.roomNumber)
-    ) {
-      teamChanges.push({
-        category: "Accommodation",
-        description: `Status: ${accommodationStatus}, Block: ${hostelBlock || "N/A"}, Room: ${roomNumber || "N/A"}`,
-      });
-    }
-
     // Build update object
     const updatePayload: any = {};
     if (teamName !== undefined) updatePayload.teamName = teamName;
@@ -550,13 +503,6 @@ export async function PUT(req: NextRequest) {
     if (paymentMode !== undefined) updatePayload.paymentMode = paymentMode;
     if (transactionId !== undefined) updatePayload.transactionId = transactionId;
     if (amount !== undefined) updatePayload.amount = Number(amount);
-
-    if (accommodationRequired !== undefined) {
-      updatePayload.accommodationRequired = Boolean(accommodationRequired);
-    }
-    if (accommodationStatus !== undefined) updatePayload.accommodationStatus = accommodationStatus;
-    if (hostelBlock !== undefined) updatePayload.hostelBlock = hostelBlock;
-    if (roomNumber !== undefined) updatePayload.roomNumber = roomNumber;
     if (documents !== undefined) updatePayload.documents = documents;
 
     // Execute Database Update
