@@ -466,3 +466,324 @@ export async function sendRegistrationApprovedEmail(data: RegistrationEmailData)
     return { success: false, error: error.message };
   }
 }
+
+/**
+ * 3. Send Email Change Security Notifications (Dispatches to BOTH old and new email IDs)
+ */
+export async function sendEmailChangedNotification(data: {
+  oldEmail: string;
+  newEmail: string;
+  userName: string;
+  userRole?: string; // "Team Leader" | "Member"
+  teamName: string;
+  registrationNumber: string;
+  adminEmail?: string;
+}) {
+  const resend = getResendClient();
+  const oldEmailClean = data.oldEmail.trim().toLowerCase();
+  const newEmailClean = data.newEmail.trim().toLowerCase();
+
+  // A. Notification for OLD EMAIL (Security Notice & Revocation)
+  const oldEmailHtml = renderEmailShell(
+    "HACKVERSE '26 - Account Email Changed (Access Revoked)",
+    `
+    <div style="background: #fee2e2; border: 3px solid #dc2626; padding: 16px; margin-bottom: 20px;">
+      <div style="color: #dc2626; font-size: 11px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">
+        SECURITY NOTICE: ACCESS TRANSFERRED
+      </div>
+      <h2 style="font-size: 20px; font-weight: 900; margin: 4px 0 0 0; color: #991b1b; text-transform: uppercase;">
+        Login Email Changed by Administrator
+      </h2>
+    </div>
+
+    <p style="font-size: 14px; line-height: 1.5; color: #3f3f46;">
+      Hello <strong>${data.userName}</strong>,<br><br>
+      This is a security alert to notify you that the login email address for your account on team <strong>${data.teamName}</strong> (${data.registrationNumber}) has been changed by a Hackathon Administrator.
+    </p>
+
+    <div class="card" style="background: #ffffff; border-color: #000000;">
+      <div style="font-size: 13px; font-weight: 900; color: #000000; text-transform: uppercase; margin-bottom: 10px; border-bottom: 2px solid #e4e4e7; pb-2;">
+        Email Transfer Summary
+      </div>
+      <table style="width: 100%; font-size: 13px; line-height: 1.7;">
+        <tr>
+          <td style="color: #71717a; width: 40%;">Squad:</td>
+          <td><strong>${data.teamName}</strong> (${data.registrationNumber})</td>
+        </tr>
+        <tr>
+          <td style="color: #71717a;">Role:</td>
+          <td><strong>${data.userRole || "Participant"}</strong></td>
+        </tr>
+        <tr>
+          <td style="color: #dc2626;">Previous Email:</td>
+          <td style="color: #dc2626; font-family: monospace; font-weight: bold; text-decoration: line-through;">${oldEmailClean}</td>
+        </tr>
+        <tr>
+          <td style="color: #16a34a;">New Authorized Email:</td>
+          <td style="color: #16a34a; font-family: monospace; font-weight: bold;">${newEmailClean}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="background: #fef2f2; border: 2px solid #ef4444; padding: 14px; font-size: 13px; line-height: 1.5; margin: 18px 0; color: #991b1b;">
+      <strong>Important Notice:</strong><br>
+      Access from this email address (<code>${oldEmailClean}</code>) has been revoked and all active sessions have been terminated. You can no longer log in using this email.
+    </div>
+
+    <p style="font-size: 12px; color: #71717a; line-height: 1.5;">
+      If you did not authorize this change or believe this was done in error, please immediately contact the HACKVERSE Organizing Team at <a href="mailto:hackverse26@codebreakersgcek.tech" style="color: #000; font-weight: bold;">hackverse26@codebreakersgcek.tech</a>.
+    </p>
+    `
+  );
+
+  // B. Notification for NEW EMAIL (Access Granted & Login Instructions)
+  const newEmailHtml = renderEmailShell(
+    "HACKVERSE '26 - Account Email Updated & Access Granted",
+    `
+    <div style="background: #dcfce7; border: 3px solid #16a34a; padding: 16px; margin-bottom: 20px;">
+      <div style="color: #16a34a; font-size: 11px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">
+        ACCOUNT ACCESS READY
+      </div>
+      <h2 style="font-size: 20px; font-weight: 900; margin: 4px 0 0 0; color: #15803d; text-transform: uppercase;">
+        Your Login Email Has Been Configured
+      </h2>
+    </div>
+
+    <p style="font-size: 14px; line-height: 1.5; color: #3f3f46;">
+      Hello <strong>${data.userName}</strong>,<br><br>
+      A Hackathon Administrator has updated the login email for your participation in squad <strong>${data.teamName}</strong> (${data.registrationNumber}) to this email address.
+    </p>
+
+    <div class="card" style="background: #ffffff; border-color: #000000;">
+      <div style="font-size: 13px; font-weight: 900; color: #000000; text-transform: uppercase; margin-bottom: 10px;">
+        Account Access Credentials
+      </div>
+      <table style="width: 100%; font-size: 13px; line-height: 1.7;">
+        <tr>
+          <td style="color: #71717a; width: 40%;">Squad:</td>
+          <td><strong>${data.teamName}</strong></td>
+        </tr>
+        <tr>
+          <td style="color: #71717a;">Registration ID:</td>
+          <td><strong style="font-family: monospace;">${data.registrationNumber}</strong></td>
+        </tr>
+        <tr>
+          <td style="color: #71717a;">Role:</td>
+          <td><strong>${data.userRole || "Participant"}</strong></td>
+        </tr>
+        <tr>
+          <td style="color: #71717a;">Authorized Login Email:</td>
+          <td style="color: #16a34a; font-family: monospace; font-weight: bold;">${newEmailClean}</td>
+        </tr>
+      </table>
+    </div>
+
+    <div style="background: #ecfdf5; border: 2px solid #10b981; padding: 14px; font-size: 13px; line-height: 1.5; margin: 18px 0; color: #065f46;">
+      <strong>How to Login:</strong><br>
+      You can now log in to the official HACKVERSE '26 portal using this email (<code>${newEmailClean}</code>) via Google / GitHub OAuth.
+    </div>
+
+    <center style="margin-top: 24px;">
+      <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://hackverse.cbgcek.dev"}/dashboard" class="btn" style="display: inline-block; background: #facc15; color: #000000; font-weight: 900; padding: 12px 24px; border: 3px solid #000000; text-decoration: none; box-shadow: 4px 4px 0px #000000; font-family: monospace;">
+        LOG IN TO HACKVERSE DASHBOARD
+      </a>
+    </center>
+    `
+  );
+
+  if (!resend) {
+    console.log(`[Email Mock] Email change dispatched to old: ${oldEmailClean} and new: ${newEmailClean}`);
+    return { success: true, mocked: true };
+  }
+
+  const results = { oldSent: false, newSent: false };
+
+  // Dispatch to Old Email
+  try {
+    await resend.emails.send({
+      from: RESEND_FROM_EMAIL,
+      to: [oldEmailClean],
+      subject: `🚨 HACKVERSE '26 Security Notice: Account Email Changed for ${data.teamName}`,
+      html: oldEmailHtml,
+    });
+    results.oldSent = true;
+  } catch (err) {
+    console.error("Failed to send old email notice:", err);
+  }
+
+  // Dispatch to New Email
+  try {
+    await resend.emails.send({
+      from: RESEND_FROM_EMAIL,
+      to: [newEmailClean],
+      subject: `🔑 HACKVERSE '26 Account Access: Login Email Updated for ${data.teamName}`,
+      html: newEmailHtml,
+    });
+    results.newSent = true;
+  } catch (err) {
+    console.error("Failed to send new email notice:", err);
+  }
+
+  return { success: results.oldSent || results.newSent, results };
+}
+
+/**
+ * 4. Send Personal Details Changed Notification to specific participant
+ */
+export async function sendUserPersonalDetailsChangedNotification(data: {
+  email: string;
+  userName: string;
+  teamName: string;
+  registrationNumber: string;
+  changedFields: Array<{ field: string; oldValue: string; newValue: string }>;
+}) {
+  const resend = getResendClient();
+  const recipient = data.email.trim().toLowerCase();
+
+  const changesListHtml = data.changedFields
+    .map(
+      (c) => `
+      <tr>
+        <td style="color: #71717a; padding: 6px 0; border-bottom: 1px solid #e4e4e7;">${c.field}:</td>
+        <td style="color: #dc2626; padding: 6px 0; border-bottom: 1px solid #e4e4e7; text-decoration: line-through;">${c.oldValue || "(empty)"}</td>
+        <td style="color: #16a34a; font-weight: bold; padding: 6px 0; border-bottom: 1px solid #e4e4e7;">${c.newValue || "(empty)"}</td>
+      </tr>
+    `
+    )
+    .join("");
+
+  const contentHtml = `
+    <div style="background: #fef08a; border: 3px solid #ca8a04; padding: 14px; margin-bottom: 20px;">
+      <h2 style="font-size: 18px; font-weight: 900; margin: 0; color: #854d0e; text-transform: uppercase;">
+        Personal Profile Details Updated
+      </h2>
+      <div style="font-size: 12px; color: #713f12; margin-top: 4px; font-weight: bold;">
+        An administrator has updated your participant profile details.
+      </div>
+    </div>
+
+    <p style="font-size: 14px; line-height: 1.5; color: #3f3f46;">
+      Hello <strong>${data.userName}</strong>,<br><br>
+      The following details on your participant profile for team <strong>${data.teamName}</strong> (${data.registrationNumber}) were recently modified:
+    </p>
+
+    <div class="card" style="background: #ffffff; border-color: #000000;">
+      <table style="width: 100%; font-size: 13px; border-collapse: collapse;">
+        <thead>
+          <tr style="text-align: left; font-size: 11px; text-transform: uppercase; color: #a1a1aa; border-bottom: 2px solid #000;">
+            <th style="padding-bottom: 6px;">Field</th>
+            <th style="padding-bottom: 6px;">Previous</th>
+            <th style="padding-bottom: 6px;">Updated</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${changesListHtml}
+        </tbody>
+      </table>
+    </div>
+
+    <center style="margin-top: 24px;">
+      <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://hackverse.cbgcek.dev"}/dashboard" class="btn" style="display: inline-block; background: #facc15; color: #000000; font-weight: 900; padding: 10px 20px; border: 3px solid #000000; text-decoration: none; box-shadow: 3px 3px 0px #000000; font-family: monospace;">
+        VIEW PORTAL
+      </a>
+    </center>
+  `;
+
+  const emailHtml = renderEmailShell("HACKVERSE '26 - Profile Details Updated", contentHtml);
+
+  if (!resend) {
+    console.log(`[Email Mock] Personal details change email triggered for ${recipient}`);
+    return { success: true, mocked: true };
+  }
+
+  try {
+    const res = await resend.emails.send({
+      from: RESEND_FROM_EMAIL,
+      to: [recipient],
+      subject: `📝 HACKVERSE '26 | Profile Details Updated for ${data.userName} (${data.teamName})`,
+      html: emailHtml,
+    });
+    return { success: true, id: res.data?.id };
+  } catch (error: any) {
+    console.error("Failed to send personal details update email:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * 5. Send Team Details Changed Notification to Team Leader
+ */
+export async function sendTeamDetailsUpdatedNotification(data: {
+  leaderEmail: string;
+  leaderName: string;
+  teamName: string;
+  registrationNumber: string;
+  changedCategories: Array<{ category: string; description: string }>;
+}) {
+  const resend = getResendClient();
+  const leaderRecipient = data.leaderEmail.trim().toLowerCase();
+
+  const itemsHtml = data.changedCategories
+    .map(
+      (c) => `
+      <div style="border-left: 3px solid #f59e0b; padding-left: 12px; margin-bottom: 12px;">
+        <div style="font-weight: 900; font-size: 13px; text-transform: uppercase; color: #000000;">${c.category}</div>
+        <div style="font-size: 13px; color: #52525b; margin-top: 2px;">${c.description}</div>
+      </div>
+    `
+    )
+    .join("");
+
+  const contentHtml = `
+    <div style="background: #e0f2fe; border: 3px solid #0284c7; padding: 16px; margin-bottom: 20px;">
+      <div style="color: #0369a1; font-size: 11px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;">
+        SQUAD RECORD UPDATE
+      </div>
+      <h2 style="font-size: 20px; font-weight: 900; margin: 4px 0 0 0; color: #075985; text-transform: uppercase;">
+        Team Details Modified by Admin
+      </h2>
+    </div>
+
+    <p style="font-size: 14px; line-height: 1.5; color: #3f3f46;">
+      Dear <strong>${data.leaderName}</strong> (Squad Leader),<br><br>
+      An administrator has updated the tournament record for squad <strong>${data.teamName}</strong> (${data.registrationNumber}). Here is a summary of the modified team parameters:
+    </p>
+
+    <div class="card" style="background: #ffffff; border-color: #000000;">
+      <div style="font-size: 13px; font-weight: 900; color: #000000; text-transform: uppercase; margin-bottom: 12px;">
+        Updated Squad Parameters
+      </div>
+      ${itemsHtml}
+    </div>
+
+    <div style="background: #f4f4f5; border: 2px solid #000000; padding: 12px; font-size: 12px; line-height: 1.5; margin: 16px 0;">
+      You can verify your updated squad configuration, room allocations, problem statements, and roster anytime on your dashboard.
+    </div>
+
+    <center style="margin-top: 24px;">
+      <a href="${process.env.NEXT_PUBLIC_APP_URL || "https://hackverse.cbgcek.dev"}/dashboard" class="btn" style="display: inline-block; background: #facc15; color: #000000; font-weight: 900; padding: 12px 24px; border: 3px solid #000000; text-decoration: none; box-shadow: 4px 4px 0px #000000; font-family: monospace;">
+        OPEN SQUAD DASHBOARD
+      </a>
+    </center>
+  `;
+
+  const emailHtml = renderEmailShell("HACKVERSE '26 - Team Details Updated", contentHtml);
+
+  if (!resend) {
+    console.log(`[Email Mock] Team details update email triggered for leader: ${leaderRecipient}`);
+    return { success: true, mocked: true };
+  }
+
+  try {
+    const res = await resend.emails.send({
+      from: RESEND_FROM_EMAIL,
+      to: [leaderRecipient],
+      subject: `🛡️ HACKVERSE '26 | Squad Parameters Updated: ${data.teamName} (${data.registrationNumber})`,
+      html: emailHtml,
+    });
+    return { success: true, id: res.data?.id };
+  } catch (error: any) {
+    console.error("Failed to send team details update email:", error);
+    return { success: false, error: error.message };
+  }
+}
