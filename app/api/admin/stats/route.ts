@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { verifyAdminSession } from "@/lib/adminAuth";
+import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
+import { getSquadProblemStatements } from "@/lib/adminProblemUtils";
 
 export async function GET(req: NextRequest) {
   try {
@@ -27,8 +29,18 @@ export async function GET(req: NextRequest) {
     let paymentFreeTier = 0;
 
     const psDistribution: Record<string, number> = {};
+    const psPrimaryDistribution: Record<string, number> = {};
+    const psSecondaryDistribution: Record<string, number> = {};
+
+    PROBLEM_STATEMENTS_DATA.forEach((p) => {
+      psDistribution[p.id] = 0;
+      psPrimaryDistribution[p.id] = 0;
+      psSecondaryDistribution[p.id] = 0;
+    });
+    psDistribution["UNASSIGNED"] = 0;
 
     allRegistrations.forEach((r) => {
+      // Don't count rejected or banned teams in competition allocation metrics if needed, or count all active
       // Members count (1 leader + members)
       const members = Array.isArray(r.members) ? r.members : [];
       totalParticipants += 1 + members.length;
@@ -47,9 +59,20 @@ export async function GET(req: NextRequest) {
       else if (r.paymentStatus === "PENDING") paymentPending++;
       else paymentFreeTier++;
 
-      // Problem statements
-      const ps = r.problemStatementId || "UNASSIGNED";
-      psDistribution[ps] = (psDistribution[ps] || 0) + 1;
+      // Problem statements (Count all selections including secondary)
+      const { primary, secondary, hasSelection } = getSquadProblemStatements(r);
+
+      if (primary) {
+        psDistribution[primary.id] = (psDistribution[primary.id] || 0) + 1;
+        psPrimaryDistribution[primary.id] = (psPrimaryDistribution[primary.id] || 0) + 1;
+      }
+      if (secondary) {
+        psDistribution[secondary.id] = (psDistribution[secondary.id] || 0) + 1;
+        psSecondaryDistribution[secondary.id] = (psSecondaryDistribution[secondary.id] || 0) + 1;
+      }
+      if (!hasSelection) {
+        psDistribution["UNASSIGNED"] = (psDistribution["UNASSIGNED"] || 0) + 1;
+      }
     });
 
     const recentRegistrations = allRegistrations.slice(0, 5).map((r) => ({
@@ -77,6 +100,8 @@ export async function GET(req: NextRequest) {
         paymentPending,
         paymentFreeTier,
         psDistribution,
+        psPrimaryDistribution,
+        psSecondaryDistribution,
       },
       recentRegistrations,
     });

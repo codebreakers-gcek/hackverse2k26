@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { RegistrationRecord } from "@/types/admin";
 import { useAdmin } from "@/features/admin/AdminDataContext";
 import { PROBLEM_STATEMENTS_DATA } from "@/data/problemStatements";
+import { getSquadProblemStatements } from "@/lib/adminProblemUtils";
 import {
   X,
   Save,
@@ -51,6 +52,7 @@ export function AdminEditSquadModal({
     state: "",
     pincode: "",
     problemStatementId: "",
+    problemStatement2: "",
     status: "PENDING_VERIFICATION",
 
     // Leader Details
@@ -86,6 +88,7 @@ export function AdminEditSquadModal({
   useEffect(() => {
     if (squad) {
       const address = squad.collegeAddress || {};
+      const { primary, secondary } = getSquadProblemStatements(squad);
       const membersList = Array.isArray(squad.members)
         ? (squad.members as any[]).map((m) => ({
             fullName: m.fullName || "",
@@ -105,7 +108,8 @@ export function AdminEditSquadModal({
         city: address.city || "",
         state: address.state || "",
         pincode: address.pincode || "",
-        problemStatementId: squad.problemStatementId || "",
+        problemStatementId: primary?.id || squad.problemStatementId || "",
+        problemStatement2: secondary?.id || "",
         status: squad.status || "PENDING_VERIFICATION",
 
         leaderName: squad.leaderName || "",
@@ -215,6 +219,13 @@ export function AdminEditSquadModal({
         fullAddress: `${formData.street.trim()}, ${formData.city.trim()}, ${formData.state.trim()} - ${formData.pincode.trim()}`,
       },
       problemStatementId: formData.problemStatementId || null,
+      problemStatement2: formData.problemStatement2 || null,
+      selectedProblemStatements: [
+        formData.problemStatementId,
+        ...(formData.problemStatement2 && formData.problemStatement2 !== formData.problemStatementId
+          ? [formData.problemStatement2]
+          : []),
+      ].filter(Boolean),
       status: formData.status,
 
       leaderName: formData.leaderName.trim(),
@@ -357,30 +368,68 @@ export function AdminEditSquadModal({
                   </div>
                 </div>
 
-                {/* Problem Statement Picker */}
-                <div className="space-y-1.5">
-                  <label className="block font-mono text-xs font-black uppercase text-neutral-300">
-                    Assigned Problem Statement
-                  </label>
-                  <select
-                    value={formData.problemStatementId}
-                    onChange={(e) =>
-                      setFormData({
-                        ...formData,
-                        problemStatementId: e.target.value,
-                      })
-                    }
-                    className="w-full px-3 py-2 border-2 border-neutral-700 bg-neutral-950 text-white font-mono text-xs focus:border-amber-400 focus:outline-none"
-                  >
-                    <option value="">
-                      -- Unassigned / Open Innovation Track --
-                    </option>
-                    {PROBLEM_STATEMENTS_DATA.map((ps) => (
-                      <option key={ps.id} value={ps.id}>
-                        [{ps.code}] {ps.title} ({ps.category} - {ps.domain})
-                      </option>
-                    ))}
-                  </select>
+                {/* Problem Statement Pickers (Primary & Secondary) */}
+                <div className="p-4 border-2 border-neutral-800 bg-neutral-950 space-y-3">
+                  <div className="font-mono text-xs font-black uppercase text-neutral-400 border-b border-neutral-800 pb-2 flex items-center justify-between">
+                    <span>PROBLEM STATEMENT PREFERENCES</span>
+                    <span className="text-[10px] text-cyan-400 font-bold">CHOICE #1 MANDATORY / CHOICE #2 OPTIONAL</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Primary Choice #1 */}
+                    <div className="space-y-1.5">
+                      <label className="block font-mono text-xs font-black uppercase text-cyan-300">
+                        Primary Preference (Choice #1)
+                      </label>
+                      <select
+                        value={formData.problemStatementId}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            problemStatementId: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border-2 border-cyan-800/80 bg-neutral-900 text-white font-mono text-xs focus:border-cyan-400 focus:outline-none"
+                      >
+                        <option value="">
+                          -- Unassigned / Open Innovation Track --
+                        </option>
+                        {PROBLEM_STATEMENTS_DATA.map((ps) => (
+                          <option key={ps.id} value={ps.id}>
+                            [{ps.code}] {ps.title} ({ps.category})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Secondary Choice #2 */}
+                    <div className="space-y-1.5">
+                      <label className="block font-mono text-xs font-black uppercase text-purple-300">
+                        Secondary Preference (Choice #2)
+                      </label>
+                      <select
+                        value={formData.problemStatement2}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            problemStatement2: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border-2 border-purple-800/80 bg-neutral-900 text-white font-mono text-xs focus:border-purple-400 focus:outline-none"
+                      >
+                        <option value="">
+                          -- None / No Secondary Preference --
+                        </option>
+                        {PROBLEM_STATEMENTS_DATA.filter(
+                          (ps) => ps.id !== formData.problemStatementId
+                        ).map((ps) => (
+                          <option key={ps.id} value={ps.id}>
+                            [{ps.code}] {ps.title} ({ps.category})
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
                 </div>
 
                 {/* College / Institute Details */}
