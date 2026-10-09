@@ -268,7 +268,7 @@ export const FAQ_ITEMS: FaqItem[] = [
     id: "priz-1",
     question: "WHAT IS THE TOTAL PRIZE POOL AND WHAT ARE THE AWARDS?",
     answer:
-      "HACKVERSE '26 boasts a massive prize pool including cash awards for 1st, 2nd, and 3rd Overall Winners, Category Track Champions, Best All-Women Squad, Best UI/UX Design, and Best First-Year Freshers Team, alongside sponsor bounties, cloud credits, and swags.",
+      "HACKVERSE '26 boasts a massive prize pool including cash awards for 1st, 2nd, and 3rd Overall Winners, Category Track Champions, Best All-Women Squad, Best UI/UX Design, and Best First-Year Freshers Team, alongside sponsor bounties, and swags.",
     category: "prizes",
     categoryLabel: "Evaluation & Prizes",
     tags: ["prizes", "cash", "rewards", "bounties", "swag"],
