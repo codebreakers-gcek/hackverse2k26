@@ -108,7 +108,6 @@ export const EVENT_DATA: EventInfo = {
       perks: [
         "Cash Prize & Certificate",
         "Direct Tech Interview Referrals",
-        "Cloud Credits & Premium Dev Tool Licenses",
         "Featured on CodeBreakers Official Wall of Fame",
       ],
       color: "secondary",
