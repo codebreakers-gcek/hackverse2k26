@@ -178,13 +178,21 @@ export function HeroSection() {
             transition={{ duration: 0.12 }}
             className="w-full sm:w-auto"
           >
-            <Link
-              href="/register"
-              className="w-full sm:w-auto h-13 sm:h-14 px-6 sm:px-8 bg-[#5B8731] hover:bg-[#689B37] text-white font-mono font-black text-sm sm:text-base uppercase tracking-wider border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] active:border-t-[#2C4813] active:border-l-[#2C4813] active:border-r-[#85B745] active:border-b-[#85B745] shadow-[4px_4px_0px_#000] [text-shadow:_2px_2px_0_#000] flex items-center justify-center gap-2 transition-colors"
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(
+                    new CustomEvent("open-thankyou-modal", { detail: { step: "thank_you" } })
+                  );
+                }
+              }}
+              className="w-full sm:w-auto h-13 sm:h-14 px-6 sm:px-8 bg-[#FFAA00] hover:bg-[#FFB72B] text-black font-mono font-black text-sm sm:text-base uppercase tracking-wider border-4 border-t-[#FFE285] border-l-[#FFE285] border-r-[#8F5500] border-b-[#8F5500] active:border-t-[#8F5500] active:border-l-[#8F5500] active:border-r-[#FFE285] active:border-b-[#FFE285] shadow-[4px_4px_0px_#000] flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
-              <span>REGISTER YOUR TEAM</span>
+              <Sparkles className="w-4 h-4 sm:w-5 sm:h-5 text-black shrink-0" />
+              <span>THANK YOU NOTE // 2.0 PREVIEW</span>
               <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 stroke-[3px]" />
-            </Link>
+            </button>
           </motion.div>
 
           <motion.div

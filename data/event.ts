@@ -133,6 +133,72 @@ export const EVENT_DATA: EventInfo = {
       color: "muted",
     },
   ],
+  winners: [
+    {
+      id: "first-prize",
+      title: "FIRST PRIZE // JOINT WINNERS",
+      rank: "RANK 01",
+      award: "OVERWORLD CHAMPIONS",
+      prize: "₹20,000 CASH POOL + TROPHY & MERCH",
+      badge: "DIAMOND & GOLD",
+      colorTheme: "gold",
+      teams: [
+        {
+          teamName: "Team FPS",
+          institution: "Government College of Engineering Kalahandi (GCE Kalahandi)",
+        },
+        {
+          teamName: "Team BRUTEFORCE",
+          institution: "GITAM Bhubaneswar",
+        },
+      ],
+    },
+    {
+      id: "second-prize",
+      title: "SECOND PRIZE // 1ST RUNNER UP",
+      rank: "RANK 02",
+      award: "ELITE RUNNER UP",
+      prize: "₹10,000 CASH + CERTIFICATE & PERKS",
+      badge: "SILVER / EMERALD",
+      colorTheme: "silver",
+      teams: [
+        {
+          teamName: "CODE WARRIORS",
+          institution: "Government College of Engineering Kalahandi (GCE Kalahandi)",
+        },
+      ],
+    },
+    {
+      id: "third-prize",
+      title: "THIRD PRIZE // 2ND RUNNER UP",
+      rank: "RANK 03",
+      award: "TECH APPRENTICE",
+      prize: "₹5,000 CASH + CERTIFICATE & PERKS",
+      badge: "BRONZE / REDSTONE",
+      colorTheme: "bronze",
+      teams: [
+        {
+          teamName: "Team ACEBits",
+          institution: "Government College of Engineering Keonjhar (GCE Keonjhar)",
+        },
+      ],
+    },
+    {
+      id: "best-female-led",
+      title: "SPECIAL AWARD // BEST FEMALE-LED TEAM",
+      rank: "SPECIAL",
+      award: "WOMEN IN TECH EXCELLENCE",
+      prize: "SPECIAL TROPHY, CASH & EXCLUSIVE PERKS",
+      badge: "AMETHYST SPECIAL",
+      colorTheme: "special",
+      teams: [
+        {
+          teamName: "code_crash",
+          institution: "Government College of Engineering Kalahandi (GCE Kalahandi)",
+        },
+      ],
+    },
+  ],
   registrationExtended: {
     enabled: true,
     previousDeadline: "26th Sept, 2026",

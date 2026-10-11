@@ -57,6 +57,7 @@ export function Navbar() {
   // Primary navigation links
   const navLinks: Array<{ label: string; href: string; badge?: string }> = [
     { label: "ABOUT", href: "/about" },
+    { label: "WINNERS", href: "/winners", badge: "NEW" },
     {
       label: "PROBLEM STATEMENTS",
       href: "/problem-statements",

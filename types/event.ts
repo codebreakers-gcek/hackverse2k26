@@ -22,6 +22,20 @@ export interface PrizeItem {
   color: "accent" | "secondary" | "muted" | "white";
 }
 
+export interface EventWinner {
+  id: string;
+  title: string;
+  rank: string;
+  award: string;
+  prize?: string;
+  teams: Array<{
+    teamName: string;
+    institution: string;
+  }>;
+  badge: string;
+  colorTheme: "gold" | "silver" | "bronze" | "special";
+}
+
 export interface EventInfo {
   name: string;
   edition: string;
@@ -58,6 +72,7 @@ export interface EventInfo {
   stats: EventStat[];
   tracks: EventTrack[];
   prizes: PrizeItem[];
+  winners?: EventWinner[];
   registrationExtended?: {
     enabled: boolean;
     previousDeadline: string;
