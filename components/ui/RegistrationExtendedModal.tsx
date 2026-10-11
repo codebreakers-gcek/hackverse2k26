@@ -167,12 +167,7 @@ export function RegistrationExtendedModal({
     }
 
     const originalBodyOverflow = document.body.style.overflow;
-    const originalHtmlOverflow = document.documentElement.style.overflow;
-    const originalBodyTouchAction = document.body.style.touchAction;
-
     document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.touchAction = "none";
 
     return () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -181,8 +176,6 @@ export function RegistrationExtendedModal({
         activeLenis.start();
       }
       document.body.style.overflow = originalBodyOverflow;
-      document.documentElement.style.overflow = originalHtmlOverflow;
-      document.body.style.touchAction = originalBodyTouchAction;
     };
   }, [isOpen]);
 
@@ -276,7 +269,12 @@ export function RegistrationExtendedModal({
       {/* ── Main Minecraft GUI Inventory Dialog Screen ── */}
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto overflow-x-hidden font-sans overscroll-contain">
+          <div
+            data-lenis-prevent="true"
+            data-lenis-prevent-wheel="true"
+            data-lenis-prevent-touch="true"
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto overflow-x-hidden font-sans overscroll-contain"
+          >
             {/* Dark Nether Atmospheric Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -284,7 +282,7 @@ export function RegistrationExtendedModal({
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={handleClose}
-              className="fixed inset-0 bg-black/80 backdrop-blur-xs cursor-pointer touch-none"
+              className="fixed inset-0 bg-black/80 backdrop-blur-xs cursor-pointer"
               aria-hidden="true"
             />
 
@@ -293,6 +291,9 @@ export function RegistrationExtendedModal({
               role="dialog"
               aria-modal="true"
               aria-labelledby="minecraft-reg-dialog-title"
+              data-lenis-prevent="true"
+              data-lenis-prevent-wheel="true"
+              data-lenis-prevent-touch="true"
               initial={
                 shouldReduceMotion
                   ? { opacity: 0 }
