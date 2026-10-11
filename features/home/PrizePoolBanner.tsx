@@ -171,17 +171,48 @@ export function PrizePoolBanner() {
                   </div>
                 </div>
 
-                {/* Bottom Card Footer */}
-                <div className="mt-8 pt-3 border-t-2 border-neutral-700">
+                {/* Bottom Card Footer: Claimed Winning Squad */}
+                <div className="mt-8 pt-3 border-t-2 border-neutral-700 space-y-2">
                   <div className="bg-[#141414] border-2 border-t-[#050505] border-l-[#050505] border-r-[#2A2A2A] border-b-[#2A2A2A] py-2 px-3 text-center">
                     <span className={`font-mono text-[11px] font-black uppercase tracking-widest ${config.footerColor} [text-shadow:_1px_1px_0_#000] block`}>
-                      {config.footerStatus}
+                      {idx === 0 && "🏆 CLAIMED: TEAM FPS & BRUTEFORCE"}
+                      {idx === 1 && "🥈 CLAIMED: CODE WARRIORS (GCEK)"}
+                      {idx === 2 && "🥉 CLAIMED: TEAM ACEBits (GCEK)"}
                     </span>
+                  </div>
+
+                  <div className="text-center font-mono text-[10px] font-bold text-[#CCCCCC]">
+                    {idx === 0 && "GCE Kalahandi & GITAM Bhubaneswar"}
+                    {idx === 1 && "Government College of Engineering Kalahandi"}
+                    {idx === 2 && "Government College of Engineering Keonjhar"}
                   </div>
                 </div>
               </div>
             );
           })}
+        </div>
+
+        {/* Special Category: Best Female-Led Team Banner */}
+        <div className="bg-[#241326] border-4 border-t-[#F472B6] border-l-[#F472B6] border-r-[#831843] border-b-[#831843] p-5 sm:p-6 shadow-[6px_6px_0px_#000] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3.5">
+            <div className="w-12 h-12 bg-[#831843] border-2 border-[#F472B6] flex items-center justify-center text-white text-xl font-black shrink-0 shadow-[2px_2px_0px_#000]">
+              🌸
+            </div>
+            <div>
+              <span className="font-mono text-xs font-black uppercase text-[#F472B6] tracking-wider block">
+                SPECIAL RECOGNITION // BEST FEMALE-LED TEAM
+              </span>
+              <h4 className="font-mono font-black text-xl text-white uppercase tracking-wider mt-0.5">
+                code_crash <span className="text-xs font-bold text-[#FBCFE8] normal-case">(Government College of Engineering Kalahandi)</span>
+              </h4>
+            </div>
+          </div>
+          <Link
+            href="/winners"
+            className="w-full sm:w-auto px-4 py-2 bg-[#F472B6] hover:bg-[#EC4899] text-black font-mono font-black text-xs uppercase border-2 border-black shadow-[2px_2px_0px_#000] transition-colors cursor-pointer shrink-0 text-center"
+          >
+            VIEW FULL PODIUM DOSSIER →
+          </Link>
         </div>
 
         {/* Bottom Minecraft Loot Chest Banner */}
@@ -207,10 +238,10 @@ export function PrizePoolBanner() {
           </div>
 
           <Link
-            href="/register"
-            className="w-full md:w-auto bg-[#5B8731] hover:bg-[#689B37] text-white font-mono font-black text-xs sm:text-sm uppercase tracking-wider border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] active:border-t-[#2C4813] active:border-l-[#2C4813] active:border-r-[#85B745] active:border-b-[#85B745] px-7 py-3.5 shadow-[4px_4px_0px_#000] [text-shadow:_2px_2px_0_#000] transition-colors flex items-center justify-center gap-2 shrink-0"
+            href="/winners"
+            className="w-full md:w-auto bg-[#5B8731] hover:bg-[#689B37] text-white font-mono font-black text-xs sm:text-sm uppercase tracking-wider border-4 border-t-[#85B745] border-l-[#85B745] border-r-[#2C4813] border-b-[#2C4813] active:border-t-[#2C4813] active:border-l-[#2C4813] active:border-r-[#85B745] active:border-b-[#85B745] px-7 py-3.5 shadow-[4px_4px_0px_#000] [text-shadow:_2px_2px_0_#000] transition-colors flex items-center justify-center gap-2 shrink-0 cursor-pointer"
           >
-            <span>CLAIM SQUAD SLOT</span>
+            <span>VIEW WINNERS PODIUM</span>
             <ArrowRight className="w-4 h-4 stroke-[3px]" />
           </Link>
         </div>
