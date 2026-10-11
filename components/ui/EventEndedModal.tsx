@@ -134,12 +134,7 @@ export function EventEndedModal({
     }
 
     const originalBodyOverflow = document.body.style.overflow;
-    const originalHtmlOverflow = document.documentElement.style.overflow;
-    const originalBodyTouchAction = document.body.style.touchAction;
-
     document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-    document.body.style.touchAction = "none";
 
     return () => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -148,8 +143,6 @@ export function EventEndedModal({
         activeLenis.start();
       }
       document.body.style.overflow = originalBodyOverflow;
-      document.documentElement.style.overflow = originalHtmlOverflow;
-      document.body.style.touchAction = originalBodyTouchAction;
     };
   }, [isOpen]);
 
@@ -239,7 +232,12 @@ export function EventEndedModal({
       {/* ── Main Minecraft GUI Modal Dialog Screen ── */}
       <AnimatePresence>
         {isOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto overflow-x-hidden font-sans overscroll-contain">
+          <div
+            data-lenis-prevent="true"
+            data-lenis-prevent-wheel="true"
+            data-lenis-prevent-touch="true"
+            className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 overflow-y-auto overflow-x-hidden font-sans overscroll-contain"
+          >
             {/* Atmospheric Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -247,7 +245,7 @@ export function EventEndedModal({
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2 }}
               onClick={handleClose}
-              className="fixed inset-0 bg-black/80 backdrop-blur-xs cursor-pointer touch-none"
+              className="fixed inset-0 bg-black/80 backdrop-blur-xs cursor-pointer"
               aria-hidden="true"
             />
 
@@ -256,6 +254,9 @@ export function EventEndedModal({
               role="dialog"
               aria-modal="true"
               aria-labelledby="event-ended-dialog-title"
+              data-lenis-prevent="true"
+              data-lenis-prevent-wheel="true"
+              data-lenis-prevent-touch="true"
               initial={
                 shouldReduceMotion
                   ? { opacity: 0 }
@@ -276,7 +277,7 @@ export function EventEndedModal({
                 damping: 26,
                 stiffness: 350,
               }}
-              className="relative w-full max-w-xl bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[8px_8px_0px_#000000] z-50 my-auto overflow-hidden select-none max-h-[92vh] flex flex-col"
+              className="relative w-full max-w-xl bg-[#C6C6C6] border-4 border-t-[#FFFFFF] border-l-[#FFFFFF] border-r-[#555555] border-b-[#555555] shadow-[8px_8px_0px_#000000] z-50 my-auto overflow-hidden select-none max-h-[88vh] sm:max-h-[85vh] flex flex-col touch-auto"
             >
               {/* ── 1. Minecraft GUI Window Header ── */}
               <div className="flex items-center justify-between px-3.5 py-2.5 bg-[#2A2A2A] border-b-3 border-b-[#555555] border-t-2 border-t-[#3A3A3A] font-mono shrink-0">
@@ -338,7 +339,13 @@ export function EventEndedModal({
               </div>
 
               {/* ── 3. GUI Inner Body (Scrollable) ── */}
-              <div className="p-4 sm:p-5 overflow-y-auto max-h-[calc(92vh-100px)]">
+              <div
+                data-lenis-prevent="true"
+                data-lenis-prevent-wheel="true"
+                data-lenis-prevent-touch="true"
+                onWheel={(e) => e.stopPropagation()}
+                className="flex-1 min-h-0 overflow-y-auto p-4 sm:p-5 overscroll-contain select-text touch-pan-y retro-modal-scrollbar [scrollbar-width:thin] [scrollbar-color:#4A4A4A_#A8A8A8]"
+              >
                 <AnimatePresence mode="wait">
                   {/* ══════════════════════════════════════════════════════════
                      STEP 1: THANK YOU NOTE
@@ -480,7 +487,7 @@ export function EventEndedModal({
                       </div>
 
                       {/* Action Navigation */}
-                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-1 font-mono">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-1.5 pb-2.5 font-mono">
                         {/* Primary Button to Step 2: Hackverse 2.0 */}
                         <button
                           type="button"
@@ -647,7 +654,7 @@ export function EventEndedModal({
                       </div>
 
                       {/* Action Navigation */}
-                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-1 font-mono">
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5 pt-1.5 pb-2.5 font-mono">
                         {/* Back to Thank You Note */}
                         <button
                           type="button"

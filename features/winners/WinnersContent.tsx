@@ -138,7 +138,7 @@ export function WinnersContent() {
 
                 <div className="flex items-center gap-2 text-sm text-[#E5E7EB] font-mono font-bold mt-2">
                   <Building className="w-4 h-4 text-[#FFAA00] shrink-0" />
-                  <span>GITAM University, Bhubaneswar</span>
+                  <span>GITAM College, Bhubaneswar</span>
                 </div>
 
                 <p className="font-mono text-xs text-[#D1D5DB] font-semibold mt-3 leading-relaxed">
